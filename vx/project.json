@@ -48,6 +48,14 @@
       "command": "pnpm exec fallow",
       "cache": false
     },
+    "@vx-ws/audit:fallow-fix-preview": {
+      "command": "pnpm exec fallow fix --dry-run --no-create-config",
+      "cache": false
+    },
+    "@vx-ws/audit:fallow-fix": {
+      "command": "pnpm exec fallow fix --yes --no-create-config",
+      "cache": false
+    },
     "@vx-ws/audit:react-doctor": {
       "command": "pnpm exec react-doctor --yes --no-supply-chain",
       "cache": false
