@@ -111,6 +111,11 @@
     "yaml",
     "yargs"
   ],
+  "ignoreDependencyOverrides": [
+    // vx-bot/NOTE: These transitive peer aliases resolve to the forks in pnpm-lock.yaml.
+    { "package": "fumadocs-core", "source": "pnpm-workspace.yaml" },
+    { "package": "fumadocs-ui", "source": "pnpm-workspace.yaml" }
+  ],
   "ignoreExports": [
     {
       "file": "**/src/app/**/layout.tsx",
@@ -119,6 +124,8 @@
   ],
   "duplicates": {
     "ignore": [
+      // vx-bot/NOTE: CLI app Vite configs stay local so generated apps are self-contained.
+      "apps/*/vite.config.ts",
       "apps*/**/src/pages/{home,pro}/index.tsx",
       "apps*/**/__tests__/app.test.tsx",
       "apps*/**/*-e2e/**"

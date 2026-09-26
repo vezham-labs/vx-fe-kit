@@ -44,6 +44,14 @@
       "dependsOn": ["test:eslint"],
       "cache": false
     },
+    "@vx-ws/audit:fallow": {
+      "command": "pnpm exec fallow",
+      "cache": false
+    },
+    "@vx-ws/audit:react-doctor": {
+      "command": "pnpm exec react-doctor --yes --no-supply-chain",
+      "cache": false
+    },
     "@hui-pro/status": {
       "command": "pnpm dlx --allow-build=@zowe/secrets-for-zowe-sdk heroui-pro@latest status"
     },
