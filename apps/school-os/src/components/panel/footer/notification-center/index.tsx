@@ -2,15 +2,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { forwardRef } from 'react'
 
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
-import {
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  ScrollShadow
-} from '@vezham/react-v2'
-import { Chip, CloseButton } from '@vezham/react-v3'
+import { Chip, CloseButton, Drawer, ScrollShadow } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
 import WidgetsGrid from '@pages/widgets'
@@ -42,6 +34,7 @@ const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
     ...props,
     ref
   })
+  const drawerBaseProps = getDrawerBaseProps()
 
   const navigate = useNavigate()
 
@@ -54,53 +47,57 @@ const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
   }
 
   return (
-    <Component {...getDrawerBaseProps()}>
-      <Drawer
-        backdrop={backdrop}
-        hideCloseButton
-        placement={placement}
+    <Component {...drawerBaseProps}>
+      <Drawer.Backdrop
         isOpen={isOpen}
-        onClose={onClose}
-        classNames={{
-          base: getDrawerBaseProps().className,
-          wrapper: getDrawerWrapperProps().className
-        }}>
-        <DrawerContent className={getDrawerContentProps().className}>
-          <DrawerHeader {...getDrawerHeaderProps()}>
-            <span {...getHeaderTitleProps()} />
-            <CloseButton className={closeButtonClassName} onPress={onClose} />
-          </DrawerHeader>
+        onOpenChange={open => !open && onClose()}
+        variant={backdrop}
+        className={getDrawerWrapperProps().className}>
+        <Drawer.Content
+          placement={placement}
+          className={drawerBaseProps.className}>
+          <Drawer.Dialog className={getDrawerContentProps().className}>
+            <Drawer.Header {...getDrawerHeaderProps()}>
+              <span {...getHeaderTitleProps()} />
+              <CloseButton className={closeButtonClassName} onPress={onClose} />
+            </Drawer.Header>
 
-          <DrawerBody {...getDrawerBodyProps()}>
-            <ScrollShadow {...getScrollShadowProps()}>
-              {isEmpty ? (
-                <div {...getEmptyStateProps()}>
-                  <EmptyState className="rounded-2xl">
-                    <EmptyState.Media>
-                      <AppIcon
-                        {...getEmptyStateIconProps()}
-                        size="1em"
-                        aria-hidden="true"
-                      />
-                    </EmptyState.Media>
-                    <EmptyState.Title>Notifications are Empty</EmptyState.Title>
-                  </EmptyState>
-                </div>
-              ) : (
-                <WidgetsGrid />
-              )}
-            </ScrollShadow>
-          </DrawerBody>
+            <Drawer.Body {...getDrawerBodyProps()}>
+              <ScrollShadow {...getScrollShadowProps()}>
+                {isEmpty ? (
+                  <div {...getEmptyStateProps()}>
+                    <EmptyState className="rounded-2xl">
+                      <EmptyState.Media>
+                        <AppIcon
+                          {...getEmptyStateIconProps()}
+                          size="1em"
+                          aria-hidden="true"
+                        />
+                      </EmptyState.Media>
+                      <EmptyState.Title>
+                        Notifications are Empty
+                      </EmptyState.Title>
+                    </EmptyState>
+                  </div>
+                ) : (
+                  <WidgetsGrid />
+                )}
+              </ScrollShadow>
+            </Drawer.Body>
 
-          {!isEmpty && (
-            <DrawerFooter {...getDrawerFooterProps()}>
-              <Chip variant="primary" {...getChipProps()} onClick={handleEdit}>
-                Edit
-              </Chip>
-            </DrawerFooter>
-          )}
-        </DrawerContent>
-      </Drawer>
+            {!isEmpty && (
+              <Drawer.Footer {...getDrawerFooterProps()}>
+                <Chip
+                  variant="primary"
+                  {...getChipProps()}
+                  onClick={handleEdit}>
+                  Edit
+                </Chip>
+              </Drawer.Footer>
+            )}
+          </Drawer.Dialog>
+        </Drawer.Content>
+      </Drawer.Backdrop>
     </Component>
   )
 })

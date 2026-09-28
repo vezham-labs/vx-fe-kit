@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 
 import { Phone as PhoneIcon } from '@vezham/icons-react'
-import { Avatar, ScrollShadow } from '@vezham/react-v2'
+import { Avatar, ScrollShadow } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
 import { AppView } from '@components/app-view'
@@ -32,7 +32,10 @@ export function PhoneApp({ isOpen, onClose }: PhoneAppProps) {
             animate="visible"
             custom={index}
             className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg p-2 hover:bg-white/10">
-            <Avatar src={call.avatar} size="sm" />
+            <Avatar size="sm">
+              <Avatar.Image src={call.avatar} alt={call.name} />
+              <Avatar.Fallback>{call.name[0]}</Avatar.Fallback>
+            </Avatar>
 
             <div className="flex-1">
               <p className="text-sm font-medium">{call.name}</p>

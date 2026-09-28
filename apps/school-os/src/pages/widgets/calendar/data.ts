@@ -11,7 +11,7 @@ export const events: Event[] = [
     title: 'Team Meeting',
     time: '10:00 AM',
     type: 'meeting',
-    color: 'primary'
+    color: 'accent'
   },
   {
     id: 2,

@@ -5,7 +5,7 @@ import {
   FileText as FileTextIcon,
   Paperclip as PaperclipIcon
 } from '@vezham/icons-react'
-import { Avatar, ScrollShadow } from '@vezham/react-v2'
+import { Avatar, ScrollShadow } from '@vezham/react-v3'
 
 import { AppView } from '@components/app-view'
 
@@ -23,7 +23,7 @@ export function MailApp({ isOpen, onClose }: MailAppProps) {
     if (selectedEmail) {
       setSelectedEmail(null)
     } else {
-      onClose()
+      onClose?.()
     }
   }
 
@@ -51,10 +51,11 @@ export function MailApp({ isOpen, onClose }: MailAppProps) {
                 }`}>
                 <div className="flex items-start gap-3">
                   <Avatar
-                    src={email.avatar}
                     size="sm"
-                    className={email.unread ? 'ring-2 ring-blue-500' : ''}
-                  />
+                    className={email.unread ? 'ring-2 ring-blue-500' : ''}>
+                    <Avatar.Image src={email.avatar} alt={email.sender} />
+                    <Avatar.Fallback>{email.sender[0]}</Avatar.Fallback>
+                  </Avatar>
 
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
@@ -102,7 +103,15 @@ export function MailApp({ isOpen, onClose }: MailAppProps) {
             animate={{ opacity: 1, y: 0 }}
             className="p-4">
             <div className="mb-4 flex items-center gap-3">
-              <Avatar src={selectedEmailData?.avatar} size="lg" />
+              <Avatar size="lg">
+                <Avatar.Image
+                  src={selectedEmailData?.avatar}
+                  alt={selectedEmailData?.sender}
+                />
+                <Avatar.Fallback>
+                  {selectedEmailData?.sender[0]}
+                </Avatar.Fallback>
+              </Avatar>
               <div>
                 <h3 className="font-semibold">{selectedEmailData?.sender}</h3>
                 <p className="text-muted text-sm">{selectedEmailData?.time}</p>

@@ -1,6 +1,6 @@
 export type EventType = 'meeting' | 'reminder' | 'workout'
 
-export type EventColor = 'primary' | 'success' | 'warning'
+export type EventColor = 'accent' | 'success' | 'warning'
 
 export interface Event {
   id: number

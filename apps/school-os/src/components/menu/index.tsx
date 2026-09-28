@@ -7,8 +7,7 @@ import {
   Magnifier as MagnifierIcon,
   MenuDots as MenuDotsIcon
 } from '@vezham/icons-react'
-import { useDisclosure } from '@vezham/react-v2'
-import { Button } from '@vezham/react-v3'
+import { Button, useOverlayState } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
 
@@ -54,7 +53,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
 
   const flatItems = useMemo(() => flattenMenuItems(items), [items])
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, open: onOpen, close: onClose } = useOverlayState()
   const [mainVisibleCount, setMainVisibleCount] = useState(flatItems.length)
 
   useEffect(() => {

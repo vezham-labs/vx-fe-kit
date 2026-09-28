@@ -1,4 +1,4 @@
-import { cn } from '@vezham/react-v2'
+import { cn } from '@vezham/react-v3'
 
 export const getNavbarContainerClasses = ({
   bgColorClass = '',

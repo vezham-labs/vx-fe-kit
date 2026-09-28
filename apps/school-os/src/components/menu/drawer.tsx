@@ -1,13 +1,7 @@
 import { useEffect } from 'react'
 
 import { Close as CloseIcon } from '@vezham/icons-react'
-import {
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerHeader
-} from '@vezham/react-v2'
-import { Button, Typography } from '@vezham/react-v3'
+import { Button, Drawer, Typography } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
 
@@ -40,59 +34,58 @@ const MenuDrawer = ({
   }, [isOpen, onClose])
 
   return (
-    <Drawer
+    <Drawer.Backdrop
       isOpen={isOpen}
-      placement="bottom"
-      backdrop="blur"
       onOpenChange={open => !open && onClose()}
-      classNames={{
-        backdrop: 'backdrop-blur-xs'
-      }}>
-      <DrawerContent className={getDrawerContentClasses({ isDarkMode })}>
-        <DrawerHeader className={getDrawerHeaderClasses({ isDarkMode })}>
-          <Button
-            variant="ghost"
-            onClick={onClose}
-            className={getDrawerCloseButtonClasses({ isDarkMode })}>
-            <CloseIcon className="h-4 w-4" size="1em" aria-hidden="true" />
-          </Button>
-        </DrawerHeader>
-        <DrawerBody className={getDrawerBodyClasses()}>
-          <div className={getDrawerGridClasses()}>
-            {items.map(item => (
-              <Button
-                variant="ghost"
-                key={item.key}
-                onClick={() => {
-                  onItemSelect(item)
-                  onClose()
-                }}
-                className={getDrawerButtonClasses({
-                  isSelected: selectedKey === item.key,
-                  isDarkMode
-                })}>
-                <div
-                  className={getDrawerGridItemInnerClasses(
-                    buttonTextColor ?? ''
-                  )}>
-                  {item.icon && (
-                    <AppIcon
-                      icon={item.icon}
-                      className="h-6 w-6"
-                      size="1em"
-                      aria-hidden="true"
-                    />
-                  )}
-                  <Typography.Paragraph className="text-center">
-                    {item.title}
-                  </Typography.Paragraph>
-                </div>
-              </Button>
-            ))}
-          </div>
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
+      variant="blur"
+      className="backdrop-blur-xs">
+      <Drawer.Content placement="bottom">
+        <Drawer.Dialog className={getDrawerContentClasses({ isDarkMode })}>
+          <Drawer.Header className={getDrawerHeaderClasses({ isDarkMode })}>
+            <Button
+              variant="ghost"
+              onPress={onClose}
+              className={getDrawerCloseButtonClasses({ isDarkMode })}>
+              <CloseIcon className="h-4 w-4" size="1em" aria-hidden="true" />
+            </Button>
+          </Drawer.Header>
+          <Drawer.Body className={getDrawerBodyClasses()}>
+            <div className={getDrawerGridClasses()}>
+              {items.map(item => (
+                <Button
+                  variant="ghost"
+                  key={item.key}
+                  onPress={() => {
+                    onItemSelect(item)
+                    onClose()
+                  }}
+                  className={getDrawerButtonClasses({
+                    isSelected: selectedKey === item.key,
+                    isDarkMode
+                  })}>
+                  <div
+                    className={getDrawerGridItemInnerClasses(
+                      buttonTextColor ?? ''
+                    )}>
+                    {item.icon && (
+                      <AppIcon
+                        icon={item.icon}
+                        className="h-6 w-6"
+                        size="1em"
+                        aria-hidden="true"
+                      />
+                    )}
+                    <Typography.Paragraph className="text-center">
+                      {item.title}
+                    </Typography.Paragraph>
+                  </div>
+                </Button>
+              ))}
+            </div>
+          </Drawer.Body>
+        </Drawer.Dialog>
+      </Drawer.Content>
+    </Drawer.Backdrop>
   )
 }
 

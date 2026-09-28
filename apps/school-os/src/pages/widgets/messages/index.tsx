@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-import { Avatar, ScrollShadow } from '@vezham/react-v2'
+import { Avatar, ScrollShadow } from '@vezham/react-v3'
 
 import { AppView } from '@components/app-view'
 
@@ -20,7 +20,10 @@ export function MessagesApp({ isOpen, onClose }: MessagesAppProps) {
             custom={index}
             className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg p-2 hover:bg-white/10">
             <div className="relative">
-              <Avatar src={message.avatar} size="sm" />
+              <Avatar size="sm">
+                <Avatar.Image src={message.avatar} alt={message.name} />
+                <Avatar.Fallback>{message.name[0]}</Avatar.Fallback>
+              </Avatar>
 
               {message.unread && (
                 <motion.div

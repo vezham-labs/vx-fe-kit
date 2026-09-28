@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
-import { Drawer, DrawerBody, DrawerContent } from '@vezham/react-v2'
+import { Drawer } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
 import { InfoPanelDefinition } from '@components/panel/info-panel'
@@ -44,24 +44,23 @@ const AIDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
     ...props,
     ref
   })
+  const baseProps = getBaseProps()
 
   return (
-    <Component {...getBaseProps()}>
-      <Drawer
-        backdrop={backdrop}
-        placement={placement}
+    <Component {...baseProps}>
+      <Drawer.Backdrop
         isOpen={isOpen}
-        onClose={onClose}
-        classNames={{
-          base: getBaseProps().className,
-          wrapper: getWrapperProps().className
-        }}>
-        <DrawerContent className={getContentProps().className}>
-          <DrawerBody>
-            <AIContent {...props} />
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+        onOpenChange={open => !open && onClose()}
+        variant={backdrop}
+        className={getWrapperProps().className}>
+        <Drawer.Content placement={placement} className={baseProps.className}>
+          <Drawer.Dialog className={getContentProps().className}>
+            <Drawer.Body>
+              <AIContent {...props} />
+            </Drawer.Body>
+          </Drawer.Dialog>
+        </Drawer.Content>
+      </Drawer.Backdrop>
     </Component>
   )
 })
