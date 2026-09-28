@@ -2,6 +2,7 @@ import {
   TanStackDevtools,
   TanStackDevtoolsReactPlugin
 } from '@tanstack/react-devtools'
+import { hotkeysDevtoolsPlugin } from '@tanstack/react-hotkeys-devtools'
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 
@@ -22,7 +23,8 @@ export const Devtools = ({
     {
       name: 'Vezham Devtools',
       render: (_element, { theme }) => <DevtoolsPanel app={app} theme={theme} />
-    }
+    },
+    hotkeysDevtoolsPlugin()
   ]
 
   if (query) {

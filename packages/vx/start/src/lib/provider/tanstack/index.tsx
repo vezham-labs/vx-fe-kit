@@ -37,10 +37,8 @@ const RootDocument = ({
   )
 }
 
-const defineConfig = (props: Props) => (
-  <RootDocument {...props}>
-    <Outlet />
-  </RootDocument>
+const defineConfig = ({ children, ...props }: Props) => (
+  <RootDocument {...props}>{children ?? <Outlet />}</RootDocument>
 )
 
 const createRootComponent = (props: Props) => () => defineConfig(props)

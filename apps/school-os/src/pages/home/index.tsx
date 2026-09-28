@@ -1,26 +1,12 @@
-import { Link as VLink, useNavigate } from '@tanstack/react-router'
+import ReorderableGridList from '../../components/panel/header/bookmarks/favorites'
 
-import { Link } from '@vezham/react-v3'
-
-import { Home } from '@vx/template/pages'
-
-export default () => {
-  const navigate = useNavigate()
-
+const HomePage = () => {
   return (
-    <>
-      <VLink to="/pro" className="link">
-        Open Pro page
-        <Link.Icon />
-      </VLink>
-
-      <Link onPress={() => navigate({ to: '/pro' })}>
-        <Link.Icon />
-        Navigate with Vezham UI
-        <Link.Icon />
-      </Link>
-
-      <Home onPress={() => navigate({ to: '/pro' })} />
-    </>
+    <div className="mx-auto w-full max-w-[1600px] px-2 py-4 md:px-6 md:pt-20 md:pb-12">
+      Welcome to School!...
+      <ReorderableGridList />
+    </div>
   )
 }
+
+export default HomePage
