@@ -2,6 +2,12 @@ import type { ChangeEvent } from 'react'
 
 import { useNavigate } from '@tanstack/react-router'
 
+import {
+  Archive as ArchiveIcon,
+  ArchiveUp as ArchiveUpIcon,
+  Document as DocumentIcon,
+  TrashBinTrash as TrashIcon
+} from '@vezham/icons-react'
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Button, Input, ScrollShadow, Typography } from '@vezham/react-v3'
 
@@ -135,9 +141,9 @@ function Archive(props: ArchiveProps) {
         <div {...getEmptyContainerProps()}>
           <EmptyState className="rounded-2xl">
             <EmptyState.Media>
-              <AppIcon
-                {...getEmptyIconProps('solar:archive-linear')}
-                size="1em"
+              <ArchiveIcon
+                {...getEmptyIconProps()}
+                weight="outline"
                 aria-hidden="true"
               />
             </EmptyState.Media>
@@ -178,9 +184,9 @@ function Archive(props: ArchiveProps) {
                     {item.favicon ? (
                       <img src={item.favicon} {...getItemFaviconProps()} />
                     ) : (
-                      <AppIcon
+                      <DocumentIcon
                         {...getItemFallbackIconProps()}
-                        size="1em"
+                        weight="outline"
                         aria-hidden="true"
                       />
                     )}
@@ -199,12 +205,9 @@ function Archive(props: ArchiveProps) {
                           e.stopPropagation()
                           handleUnarchive(item.id)
                         }}>
-                        <AppIcon
-                          {...getActionIconProps(
-                            'solar:archive-up-linear',
-                            'default'
-                          )}
-                          size="1em"
+                        <ArchiveUpIcon
+                          {...getActionIconProps('default')}
+                          weight="outline"
                           aria-hidden="true"
                         />
                       </Button>
@@ -216,12 +219,9 @@ function Archive(props: ArchiveProps) {
                           e.stopPropagation()
                           handleDeleteFromArchive(item.id)
                         }}>
-                        <AppIcon
-                          {...getActionIconProps(
-                            'solar:trash-bin-trash-linear',
-                            'danger'
-                          )}
-                          size="1em"
+                        <TrashIcon
+                          {...getActionIconProps('danger')}
+                          weight="outline"
                           aria-hidden="true"
                         />
                       </Button>

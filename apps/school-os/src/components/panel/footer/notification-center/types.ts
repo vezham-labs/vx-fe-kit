@@ -86,8 +86,7 @@ const useProps = (originalProps: Props) => {
   })
 
   const getEmptyStateIconProps = () => ({
-    icon: 'solar:bell-linear' as const,
-    width: 64,
+    size: 64,
     className: slots.empty_state_icon({
       class: classNames?.empty_state_icon
     })

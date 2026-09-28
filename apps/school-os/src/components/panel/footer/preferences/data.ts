@@ -41,19 +41,19 @@ export const settingsSidebar: SidebarSection[] = [
       {
         id: 'account',
         label: 'My Account',
-        icon: 'solar:user-linear',
+        icon: 'vx:user',
         component: Account
       },
       {
         id: 'content-social',
         label: 'Content & Social',
-        icon: 'solar:share-linear',
+        icon: 'vx:share',
         component: ContentSocial
       },
       {
         id: 'privacy',
         label: 'Data & Privacy',
-        icon: 'solar:shield-check-linear',
+        icon: 'vx:shield-check',
         component: Privacy,
         children: [
           {
@@ -69,28 +69,28 @@ export const settingsSidebar: SidebarSection[] = [
       {
         id: 'family-center',
         label: 'Family Center',
-        icon: 'solar:devices-linear',
+        icon: 'vx:devices',
         component: FamilyCenter
       },
       {
         id: 'authorized-apps',
         label: 'Authorized Apps',
-        icon: 'solar:devices-linear'
+        icon: 'vx:devices'
       },
       {
         id: 'devices',
         label: 'Devices',
-        icon: 'solar:devices-linear'
+        icon: 'vx:devices'
       },
       {
         id: 'connections',
         label: 'Connections',
-        icon: 'solar:devices-linear'
+        icon: 'vx:devices'
       },
       {
         id: 'notifications',
         label: 'Notifications',
-        icon: 'solar:devices-linear',
+        icon: 'vx:devices',
         children: [
           {
             id: 'notifications-overview',
@@ -123,27 +123,27 @@ export const settingsSidebar: SidebarSection[] = [
       {
         id: 'nitro',
         label: 'Nitro',
-        icon: 'solar:star-linear'
+        icon: 'vx:star'
       },
       {
         id: 'server-boost',
         label: 'Server Boost',
-        icon: 'solar:card-linear'
+        icon: 'vx:card'
       },
       {
         id: 'subscriptions',
         label: 'Subscriptions',
-        icon: 'solar:card-linear'
+        icon: 'vx:card'
       },
       {
         id: 'gift-inventory',
         label: 'Gift Inventory',
-        icon: 'solar:card-linear'
+        icon: 'vx:card'
       },
       {
         id: 'billing',
         label: 'Billing',
-        icon: 'solar:wallet-linear',
+        icon: 'vx:wallet',
         children: [
           {
             id: 'billing-payment-methods',
@@ -164,7 +164,7 @@ export const settingsSidebar: SidebarSection[] = [
       {
         id: 'appearance',
         label: 'Appearance',
-        icon: 'solar:palette-linear',
+        icon: 'vx:palette',
         children: [
           {
             id: 'appearance-theme',
@@ -191,7 +191,7 @@ export const settingsSidebar: SidebarSection[] = [
       {
         id: 'accessibility',
         label: 'Accessibility',
-        icon: 'solar:videocamera-linear',
+        icon: 'vx:videocamera',
         children: [
           {
             id: 'accessibility-colors',
@@ -222,7 +222,7 @@ export const settingsSidebar: SidebarSection[] = [
       {
         id: 'voice-video',
         label: 'Voice & Video',
-        icon: 'solar:videocamera-linear',
+        icon: 'vx:videocamera',
         children: [
           {
             id: 'voicevideo-camera',
@@ -249,7 +249,7 @@ export const settingsSidebar: SidebarSection[] = [
       {
         id: 'chat',
         label: 'Chat',
-        icon: 'solar:chat-round-dots-linear',
+        icon: 'vx:chat-round-dots',
         children: [
           {
             id: 'chat-media',
@@ -280,22 +280,22 @@ export const settingsSidebar: SidebarSection[] = [
       {
         id: 'keybinds',
         label: 'Keybinds',
-        icon: 'solar:settings-linear'
+        icon: 'vx:settings'
       },
       {
         id: 'language-time',
         label: 'Language & Time',
-        icon: 'solar:settings-linear'
+        icon: 'vx:settings'
       },
       {
         id: 'streamer-mode',
         label: 'Streamer Mode',
-        icon: 'solar:settings-linear'
+        icon: 'vx:settings'
       },
       {
         id: 'advanced',
         label: '... Advanced',
-        icon: 'solar:settings-linear'
+        icon: 'vx:settings'
       }
     ]
   },
@@ -306,7 +306,7 @@ export const settingsSidebar: SidebarSection[] = [
       {
         id: 'activity',
         label: 'Activity Privacy',
-        icon: 'solar:palette-linear',
+        icon: 'vx:palette',
         children: [
           {
             id: 'activity-sharing',
@@ -331,7 +331,7 @@ export const settingsSidebar: SidebarSection[] = [
       {
         id: 'logout',
         label: 'Log Out',
-        icon: 'solar:palette-linear'
+        icon: 'vx:palette'
       }
     ]
   }

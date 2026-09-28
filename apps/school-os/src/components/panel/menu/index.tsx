@@ -104,7 +104,7 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
           <span className="flex-1 text-sm font-medium">{item.title}</span>
           {hasSubmenu && (
             <AppIcon
-              icon={isExpanded ? 'lucide:chevron-down' : 'lucide:chevron-right'}
+              icon={isExpanded ? 'vx:chevron-down' : 'vx:chevron-right'}
               size={16}
               className="text-default-400 transition-transform duration-200"
               aria-hidden="true"

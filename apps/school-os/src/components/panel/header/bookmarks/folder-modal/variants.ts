@@ -1,7 +1,7 @@
 import { type FolderFormState } from './types'
 
 const DEFAULT_FOLDER_COLOR = '#007aff'
-const DEFAULT_FOLDER_ICON = 'solar:list-bold'
+const DEFAULT_FOLDER_ICON = 'vx:list-filled'
 const DEFAULT_FOLDER_EMOJI = '😀'
 
 const folderColors = [
@@ -20,30 +20,30 @@ const folderColors = [
 ]
 
 const folderIconOptions = [
-  'solar:list-bold',
-  'solar:bookmark-bold',
-  'solar:key-bold',
-  'solar:gift-bold',
-  'solar:cup-star-bold',
-  'solar:square-academic-cap-bold',
-  'solar:backpack-bold',
-  'solar:notebook-bookmark-bold',
-  'solar:document-bold',
-  'solar:book-bookmark-bold',
-  'solar:card-bold',
-  'solar:cart-large-bold',
-  'solar:home-bold',
-  'solar:buildings-3-bold',
-  'solar:banknote-bold',
-  'solar:gamepad-bold',
-  'solar:headphones-round-bold',
-  'solar:leaf-bold',
-  'solar:users-group-rounded-bold',
-  'solar:heart-bold',
-  'solar:star-bold',
-  'solar:moon-bold',
-  'solar:sun-2-bold',
-  'solar:flag-bold'
+  'vx:list-filled',
+  'vx:bookmark-filled',
+  'vx:key-filled',
+  'vx:gift-filled',
+  'vx:cup-star-filled',
+  'vx:academic-cap-filled',
+  'vx:backpack-filled',
+  'vx:notebook-bookmark-filled',
+  'vx:document-filled',
+  'vx:book-bookmark-filled',
+  'vx:card-filled',
+  'vx:cart-large-filled',
+  'vx:home-filled',
+  'vx:buildings-3-filled',
+  'vx:banknote-filled',
+  'vx:gamepad-filled',
+  'vx:headphones-round-filled',
+  'vx:leaf-filled',
+  'vx:users-filled',
+  'vx:heart-filled',
+  'vx:star-filled',
+  'vx:moon-filled',
+  'vx:sun-2-filled',
+  'vx:flag-filled'
 ]
 
 const emojiOptions = [

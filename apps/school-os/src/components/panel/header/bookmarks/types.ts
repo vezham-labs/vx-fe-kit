@@ -125,7 +125,7 @@ const useProps = (originalProps: Props) => {
   })
 
   const getEmptyIconProps = () => ({
-    icon: 'solar:star-linear' as const,
+    icon: 'vx:star' as const,
     width: 64,
     className: slots.empty_icon({ class: classNames?.empty_icon })
   })
@@ -155,9 +155,8 @@ const useProps = (originalProps: Props) => {
     className: slots.section_header({ class: classNames?.section_header })
   })
 
-  const getSectionIconProps = (icon: string, className?: string) => ({
-    icon,
-    width: 18,
+  const getSectionIconProps = (className?: string) => ({
+    size: 18,
     className: cn(
       slots.section_icon({ class: classNames?.section_icon }),
       className
@@ -214,7 +213,7 @@ const useProps = (originalProps: Props) => {
   })
 
   const getFavoriteAvatarIconProps = () => ({
-    icon: 'solar:star-bold' as const,
+    icon: 'vx:star-filled' as const,
     width: 14,
     className: slots.favorite_avatar_icon({
       class: classNames?.favorite_avatar_icon
@@ -272,7 +271,7 @@ const useProps = (originalProps: Props) => {
   })
 
   const getBookmarkArrowProps = () => ({
-    icon: 'solar:arrow-right-up-linear' as const,
+    icon: 'vx:external-link' as const,
     width: 16,
     className: slots.bookmark_arrow({ class: classNames?.bookmark_arrow })
   })
@@ -318,7 +317,7 @@ const useProps = (originalProps: Props) => {
   })
 
   const getFolderIconProps = () => ({
-    icon: 'solar:folder-bold' as const,
+    icon: 'vx:folder-filled' as const,
     width: 18,
     className: slots.folder_icon({ class: classNames?.folder_icon })
   })

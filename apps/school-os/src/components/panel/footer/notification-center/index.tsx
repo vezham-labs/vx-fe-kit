@@ -1,10 +1,10 @@
 import { useNavigate } from '@tanstack/react-router'
 import { forwardRef } from 'react'
 
+import { Bell as BellIcon } from '@vezham/icons-react'
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Chip, CloseButton, Drawer, ScrollShadow } from '@vezham/react-v3'
 
-import { AppIcon } from '@components/app-icon'
 import WidgetsGrid from '@pages/widgets'
 
 import { Props, useProps } from './types'
@@ -68,9 +68,9 @@ const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
                   <div {...getEmptyStateProps()}>
                     <EmptyState className="rounded-2xl">
                       <EmptyState.Media>
-                        <AppIcon
+                        <BellIcon
                           {...getEmptyStateIconProps()}
-                          size="1em"
+                          weight="outline"
                           aria-hidden="true"
                         />
                       </EmptyState.Media>

@@ -1,11 +1,23 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { forwardRef, useState } from 'react'
 
-import { AltArrowLeft as AltArrowLeftIcon } from '@vezham/icons-react'
+import {
+  Airbuds as AirbudsIcon,
+  AltArrowLeft as AltArrowLeftIcon,
+  Bluetooth as BluetoothIcon,
+  Copy as CopyIcon,
+  Moon as MoonIcon,
+  Play as PlayIcon,
+  Settings as SettingsIcon,
+  SkipNext as SkipNextIcon,
+  SkipPrevious as SkipPreviousIcon,
+  Sun as SunIcon,
+  VolumeLoud as VolumeLoudIcon,
+  WiFi as WiFiIcon,
+  Widget2 as Widget2Icon
+} from '@vezham/icons-react'
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Button, Chip, CloseButton, Drawer } from '@vezham/react-v3'
-
-import { AppIcon } from '@components/app-icon'
 
 import { Props, View, useProps } from './types'
 
@@ -96,9 +108,9 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
                 <div {...getEmptyStateProps()}>
                   <EmptyState className="rounded-2xl">
                     <EmptyState.Media>
-                      <AppIcon
+                      <SettingsIcon
                         {...getEmptyStateIconProps()}
-                        size="1em"
+                        weight="outline"
                         aria-hidden="true"
                       />
                     </EmptyState.Media>
@@ -121,9 +133,9 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
                               onClick: () => handleViewChange('wifi')
                             })}>
                             <div {...getTileIconWrapperProps()}>
-                              <AppIcon
-                                {...getTileIconProps('mdi:wifi')}
-                                size="1em"
+                              <WiFiIcon
+                                {...getTileIconProps()}
+                                weight="filled"
                                 aria-hidden="true"
                               />
                             </div>
@@ -135,9 +147,9 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
                           <div {...getTileProps({})}>
                             <div {...getTileIconWrapperProps()}>
-                              <AppIcon
-                                {...getTileIconProps('solar:bluetooth-bold')}
-                                size="1em"
+                              <BluetoothIcon
+                                {...getTileIconProps()}
+                                weight="filled"
                                 aria-hidden="true"
                               />
                             </div>
@@ -152,9 +164,9 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
                               onClick: () => handleViewChange('airdrop')
                             })}>
                             <div {...getTileIconWrapperProps()}>
-                              <AppIcon
-                                {...getTileIconProps('solar:airbuds-bold')}
-                                size="1em"
+                              <AirbudsIcon
+                                {...getTileIconProps()}
+                                weight="filled"
                                 aria-hidden="true"
                               />
                             </div>
@@ -168,23 +180,20 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
                         <div {...getMediaTileProps()}>
                           <div {...getMediaTileStatusProps()} />
                           <div {...getMediaTileControlsProps()}>
-                            <AppIcon
-                              {...getMediaTileIconProps(
-                                'mdi:skip-previous',
-                                22
-                              )}
-                              size="1em"
+                            <SkipPreviousIcon
+                              {...getMediaTileIconProps(22)}
+                              weight="filled"
                               aria-hidden="true"
                             />
 
-                            <AppIcon
-                              {...getMediaTileIconProps('solar:play-bold', 28)}
-                              size="1em"
+                            <PlayIcon
+                              {...getMediaTileIconProps(28)}
+                              weight="filled"
                               aria-hidden="true"
                             />
-                            <AppIcon
-                              {...getMediaTileIconProps('mdi:skip-next', 22)}
-                              size="1em"
+                            <SkipNextIcon
+                              {...getMediaTileIconProps(22)}
+                              weight="filled"
                               aria-hidden="true"
                             />
                           </div>
@@ -194,11 +203,9 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
                       <div className="flex gap-4">
                         <div {...getCircleActionProps({})}>
                           <div {...getCircleActionIconWrapperProps()}>
-                            <AppIcon
-                              {...getCircleActionIconProps(
-                                'solar:widget-2-bold'
-                              )}
-                              size="1em"
+                            <Widget2Icon
+                              {...getCircleActionIconProps()}
+                              weight="filled"
                               aria-hidden="true"
                             />
                           </div>
@@ -206,9 +213,9 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
                         <div {...getCircleActionProps({})}>
                           <div {...getCircleActionIconWrapperProps()}>
-                            <AppIcon
-                              {...getCircleActionIconProps('solar:copy-bold')}
-                              size="1em"
+                            <CopyIcon
+                              {...getCircleActionIconProps()}
+                              weight="filled"
                               aria-hidden="true"
                             />
                           </div>
@@ -216,9 +223,9 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
                         <div {...getCircleActionProps({ large: true })}>
                           <div {...getCircleActionIconWrapperProps()}>
-                            <AppIcon
-                              {...getCircleActionIconProps('solar:moon-bold')}
-                              size="1em"
+                            <MoonIcon
+                              {...getCircleActionIconProps()}
+                              weight="filled"
                               aria-hidden="true"
                             />
                           </div>
@@ -233,9 +240,9 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
                       <div {...getSliderProps()}>
                         <div {...getSliderHeaderProps()}>
-                          <AppIcon
-                            {...getSliderIconProps('solar:sun-bold')}
-                            size="1em"
+                          <SunIcon
+                            {...getSliderIconProps()}
+                            weight="filled"
                             aria-hidden="true"
                           />
                           <span {...getSliderLabelProps('Display')} />
@@ -247,9 +254,9 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
                       <div {...getSliderProps()}>
                         <div {...getSliderHeaderProps()}>
-                          <AppIcon
-                            {...getSliderIconProps('solar:volume-loud-bold')}
-                            size="1em"
+                          <VolumeLoudIcon
+                            {...getSliderIconProps()}
+                            weight="filled"
                             aria-hidden="true"
                           />
                           <span {...getSliderLabelProps('Sound')} />

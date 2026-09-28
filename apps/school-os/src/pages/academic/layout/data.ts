@@ -5,19 +5,19 @@ export const sidebarItems: AcademicMenuItem[] = [
     key: 'classes',
     title: 'Classes',
     href: '/academic/classes',
-    icon: 'lucide:book-open',
+    icon: 'vx:book-open',
     children: [
       {
         key: 'allclasses',
         title: 'All Classes',
         href: '/academic/classes/allclasses',
-        icon: 'lucide:list'
+        icon: 'vx:list'
       },
       {
         key: 'schedule',
         title: 'Schedule',
         href: '/academic/classes/schedule',
-        icon: 'lucide:calendar-clock'
+        icon: 'vx:calendar-clock'
       }
     ]
   },
@@ -25,79 +25,79 @@ export const sidebarItems: AcademicMenuItem[] = [
     key: 'classroom',
     title: 'Class Room',
     href: '/academic/classroom',
-    icon: 'lucide:layout-grid'
+    icon: 'vx:grid'
   },
   {
     key: 'classroutine',
     title: 'Class Routine',
     href: '/academic/class-routine',
-    icon: 'lucide:calendar-days'
+    icon: 'vx:calendar-days'
   },
   {
     key: 'section',
     title: 'Section',
     href: '/academic/section',
-    icon: 'lucide:split-square-horizontal'
+    icon: 'vx:sidebar'
   },
   {
     key: 'subject',
     title: 'Subject',
     href: '/academic/subject',
-    icon: 'lucide:book'
+    icon: 'vx:book'
   },
   {
     key: 'syllabus',
     title: 'Syllabus',
     href: '/academic/syllabus',
-    icon: 'lucide:file-text'
+    icon: 'vx:file-text'
   },
   {
     key: 'timetable',
     title: 'Time Table',
     href: '/academic/timetable',
-    icon: 'lucide:clock'
+    icon: 'vx:clock'
   },
   {
     key: 'homework',
     title: 'Home Work',
     href: '/academic/homework',
-    icon: 'lucide:clipboard-list'
+    icon: 'vx:clipboard-list'
   },
   {
     key: 'examinations',
     title: 'Examinations',
     href: '/academic/examinations',
-    icon: 'lucide:graduation-cap',
+    icon: 'vx:academic-cap',
     children: [
       {
         key: 'exam',
         title: 'Exam',
         href: '/academic/examinations/exam',
-        icon: 'lucide:file-pen'
+        icon: 'vx:document-edit'
       },
       {
         key: 'exam-schedule',
         title: 'Exam Schedule',
         href: '/academic/examinations/exam-schedule',
-        icon: 'lucide:calendar-check'
+        icon: 'vx:calendar-check'
       },
       {
         key: 'grades',
         title: 'Grades',
         href: '/academic/examinations/grades',
-        icon: 'lucide:badge-check'
+        icon: 'vx:verified'
       },
       {
         key: 'exam-attendance',
         title: 'Exam Attendance',
         href: '/academic/examinations/exam-attendance',
-        icon: 'lucide:user-check'
+        icon: 'vx:user-check'
       },
       {
         key: 'exam-results',
         title: 'Exam Results',
         href: '/academic/examinations/exam-results',
-        icon: 'lucide:chart-no-axes-column'
+        icon: 'vx:chart'
       }
     ]
   },
@@ -105,7 +105,7 @@ export const sidebarItems: AcademicMenuItem[] = [
     key: 'reasons',
     title: 'Reasons',
     href: '/academic/reasons',
-    icon: 'lucide:circle-help'
+    icon: 'vx:help'
   }
 ]
 
@@ -113,13 +113,13 @@ export const defaultLeftActions: ActionItem[] = [
   {
     key: 'back',
     label: 'Back',
-    icon: 'lucide:arrow-left',
+    icon: 'vx:arrow-left',
     onAction: () => window.history.back()
   },
   {
     key: 'forward',
     label: 'Forward',
-    icon: 'lucide:arrow-right',
+    icon: 'vx:arrow-right',
     onAction: () => window.history.forward()
   }
 ]
@@ -128,39 +128,39 @@ export const defaultRightActions: ActionItem[] = [
   {
     key: 'search',
     label: 'Search',
-    icon: 'lucide:search',
+    icon: 'vx:search',
     kind: 'search'
   },
   {
     key: 'import',
     label: 'Import',
-    icon: 'lucide:upload',
+    icon: 'vx:upload',
     kind: 'menu'
   },
   {
     key: 'print',
     label: 'Print',
-    icon: 'lucide:printer',
+    icon: 'vx:printer',
     kind: 'menu',
     onAction: () => window.print()
   },
   {
     key: 'export',
     label: 'Export',
-    icon: 'lucide:download',
+    icon: 'vx:download',
     kind: 'menu'
   },
   {
     key: 'refresh',
     label: 'Refresh',
-    icon: 'lucide:refresh-cw',
+    icon: 'vx:refresh',
     kind: 'refresh',
     onAction: () => window.location.reload()
   },
   {
     key: 'create',
     label: 'Create',
-    icon: 'lucide:plus',
+    icon: 'vx:plus',
     kind: 'primary'
   }
 ]

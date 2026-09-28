@@ -32,8 +32,8 @@ export function SortDropdown({
   const activeDirection = sortDirection ?? 'ascending'
   const activeSortIcon =
     activeDirection === 'ascending'
-      ? 'lucide:arrow-up-wide-narrow'
-      : 'lucide:arrow-down-wide-narrow'
+      ? 'vx:sort-ascending'
+      : 'vx:sort-descending'
   const selectedKeys = new Set([
     sortOptions.find(option => option.column === sortField)?.key ?? sortField,
     activeDirection

@@ -5,37 +5,37 @@ export const operationsSidebarItems: AcademicMenuItem[] = [
     key: 'fees',
     title: 'Fees Collections',
     href: '/operations/fees',
-    icon: 'lucide:calendar-check',
+    icon: 'vx:calendar-check',
     children: [
       {
         key: 'fees-group',
         title: 'Fees Group',
         href: '/operations/fees/fees-group',
-        icon: 'lucide:file-chart-column'
+        icon: 'vx:report'
       },
       {
         key: 'fees-type',
         title: 'Fees Type',
         href: '/operations/fees/fees-type',
-        icon: 'lucide:user-round-check'
+        icon: 'vx:user-round-check'
       },
       {
         key: 'fees-master',
         title: 'Fees Master',
         href: '/operations/fees/fees-master',
-        icon: 'lucide:calendar-days'
+        icon: 'vx:calendar-days'
       },
       {
         key: 'fees-assign',
         title: 'Fees Assign',
         href: '/operations/fees/fees-assign',
-        icon: 'lucide:user'
+        icon: 'vx:user'
       },
       {
         key: 'collect-fees',
         title: 'Collect Fees',
         href: '/operations/fees/collect-fees',
-        icon: 'lucide:graduation-cap'
+        icon: 'vx:academic-cap'
       }
     ]
   },
@@ -43,31 +43,31 @@ export const operationsSidebarItems: AcademicMenuItem[] = [
     key: 'library',
     title: 'Library',
     href: '/operations/library',
-    icon: 'lucide:school',
+    icon: 'vx:school',
     children: [
       {
         key: 'members',
         title: 'Library Members',
         href: '/operations/library/members',
-        icon: 'lucide:file-chart-column'
+        icon: 'vx:report'
       },
       {
         key: 'books',
         title: 'Books',
         href: '/operations/library/books',
-        icon: 'lucide:user-round-check'
+        icon: 'vx:user-round-check'
       },
       {
         key: 'issue-book',
         title: 'Issue Book',
         href: '/operations/library/issue-book',
-        icon: 'lucide:calendar-days'
+        icon: 'vx:calendar-days'
       },
       {
         key: 'return',
         title: 'Return',
         href: '/operations/library/return',
-        icon: 'lucide:user'
+        icon: 'vx:user'
       }
     ]
   },
@@ -75,37 +75,37 @@ export const operationsSidebarItems: AcademicMenuItem[] = [
     key: 'sports',
     title: 'Sports',
     href: '/operations/sports',
-    icon: 'lucide:users'
+    icon: 'vx:users'
   },
   {
     key: 'players',
     title: 'Players',
     href: '/operations/players',
-    icon: 'lucide:users'
+    icon: 'vx:users'
   },
   {
     key: 'hostel',
     title: 'Hostel',
     href: '/operations/hostel',
-    icon: 'lucide:badge-check',
+    icon: 'vx:verified',
     children: [
       {
         key: 'hostel-list',
         title: 'Hostel List',
         href: '/operations/hostel/hostel-list',
-        icon: 'lucide:file-chart-column'
+        icon: 'vx:report'
       },
       {
         key: 'hostel-room',
         title: 'Hostel Room',
         href: '/operations/hostel/hostel-room',
-        icon: 'lucide:user-round-check'
+        icon: 'vx:user-round-check'
       },
       {
         key: 'room-type',
         title: 'Room Type',
         href: '/operations/hostel/room-type',
-        icon: 'lucide:calendar-days'
+        icon: 'vx:calendar-days'
       }
     ]
   },
@@ -113,37 +113,37 @@ export const operationsSidebarItems: AcademicMenuItem[] = [
     key: 'transport',
     title: 'Transport',
     href: '/operations/transport',
-    icon: 'lucide:calendar-minus',
+    icon: 'vx:calendar-minus',
     children: [
       {
         key: 'routes',
         title: 'Routes',
         href: '/operations/transport/routes',
-        icon: 'lucide:file-chart-column'
+        icon: 'vx:report'
       },
       {
         key: 'pickup-points',
         title: 'Pickup points',
         href: '/operations/transport/pickup-points',
-        icon: 'lucide:user-round-check'
+        icon: 'vx:user-round-check'
       },
       {
         key: 'vehicle-drivers',
         title: 'Vehicle Drivers',
         href: '/operations/transport/vehicle-drivers',
-        icon: 'lucide:calendar-days'
+        icon: 'vx:calendar-days'
       },
       {
         key: 'vehicles',
         title: 'Vehicles',
         href: '/operations/transport/vehicles',
-        icon: 'lucide:user-round-check'
+        icon: 'vx:user-round-check'
       },
       {
         key: 'assign',
         title: 'Assign Vehicles',
         href: '/operations/transport/assign',
-        icon: 'lucide:calendar-days'
+        icon: 'vx:calendar-days'
       }
     ]
   }
@@ -153,13 +153,13 @@ export const defaultLeftActions: ActionItem[] = [
   {
     key: 'back',
     label: 'Back',
-    icon: 'lucide:arrow-left',
+    icon: 'vx:arrow-left',
     onAction: () => window.history.back()
   },
   {
     key: 'forward',
     label: 'Forward',
-    icon: 'lucide:arrow-right',
+    icon: 'vx:arrow-right',
     onAction: () => window.history.forward()
   }
 ]
@@ -168,32 +168,32 @@ export const defaultRightActions: ActionItem[] = [
   {
     key: 'search',
     label: 'Search',
-    icon: 'lucide:search',
+    icon: 'vx:search',
     kind: 'search'
   },
   {
     key: 'import',
     label: 'Import',
-    icon: 'lucide:upload',
+    icon: 'vx:upload',
     kind: 'menu'
   },
   {
     key: 'print',
     label: 'Print',
-    icon: 'lucide:printer',
+    icon: 'vx:printer',
     kind: 'menu',
     onAction: () => window.print()
   },
   {
     key: 'export',
     label: 'Export',
-    icon: 'lucide:download',
+    icon: 'vx:download',
     kind: 'menu'
   },
   {
     key: 'refresh',
     label: 'Refresh',
-    icon: 'lucide:refresh-cw',
+    icon: 'vx:refresh',
     kind: 'refresh',
     onAction: () => window.location.reload()
   }

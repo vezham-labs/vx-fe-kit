@@ -3,36 +3,36 @@ import { MenuItem } from './types'
 export const items: MenuItem[] = [
   {
     key: 'home',
-    icon: 'lucide:home',
-    iconActive: 'solar:home-bold',
+    icon: 'vx:home',
+    iconActive: 'vx:home-filled',
     href: '/',
     title: 'Home'
   },
   {
     key: 'channel',
-    icon: 'lucide:library',
-    iconActive: 'solar:library-bold',
+    icon: 'vx:library',
+    iconActive: 'vx:library-filled',
     href: '/channels',
     title: 'Channels'
   },
   {
     key: 'academic',
-    icon: 'lucide:library',
-    iconActive: 'solar:library-bold',
+    icon: 'vx:library',
+    iconActive: 'vx:library-filled',
     href: '/academic',
     title: 'Academic'
   },
   {
     key: 'operations',
-    icon: 'lucide:package',
-    iconActive: 'solar:box-bold',
+    icon: 'vx:box',
+    iconActive: 'vx:box-filled',
     href: '/operations',
     title: 'Operations'
   },
   {
     key: 'reports',
-    icon: 'lucide:bar-chart-2',
-    iconActive: 'solar:chart-bold',
+    icon: 'vx:chart',
+    iconActive: 'vx:chart-filled',
     href: '/reports',
     title: 'Reports'
   }

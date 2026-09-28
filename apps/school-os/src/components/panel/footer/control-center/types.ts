@@ -118,8 +118,7 @@ const useProps = (originalProps: Props) => {
   })
 
   const getEmptyStateIconProps = () => ({
-    icon: 'solar:settings-linear' as const,
-    width: 64,
+    size: 64,
     className: slots.empty_state_icon({
       class: classNames?.empty_state_icon
     })
@@ -146,9 +145,8 @@ const useProps = (originalProps: Props) => {
     className: slots.tile_icon_wrapper({ class: classNames?.tile_icon_wrapper })
   })
 
-  const getTileIconProps = (icon: string) => ({
-    icon,
-    width: 20,
+  const getTileIconProps = () => ({
+    size: 20,
     className: slots.tile_icon({ class: classNames?.tile_icon })
   })
 
@@ -179,9 +177,8 @@ const useProps = (originalProps: Props) => {
     })
   })
 
-  const getMediaTileIconProps = (icon: string, width: number) => ({
-    icon,
-    width,
+  const getMediaTileIconProps = (size: number) => ({
+    size,
     className: slots.media_tile_icon({ class: classNames?.media_tile_icon })
   })
 
@@ -198,9 +195,8 @@ const useProps = (originalProps: Props) => {
     })
   })
 
-  const getCircleActionIconProps = (icon: string) => ({
-    icon,
-    width: 20,
+  const getCircleActionIconProps = () => ({
+    size: 20,
     className: slots.circle_action_icon({
       class: classNames?.circle_action_icon
     })
@@ -228,9 +224,8 @@ const useProps = (originalProps: Props) => {
     className: slots.slider_header({ class: classNames?.slider_header })
   })
 
-  const getSliderIconProps = (icon: string) => ({
-    icon,
-    width: 16,
+  const getSliderIconProps = () => ({
+    size: 16,
     className: slots.slider_icon({ class: classNames?.slider_icon })
   })
 

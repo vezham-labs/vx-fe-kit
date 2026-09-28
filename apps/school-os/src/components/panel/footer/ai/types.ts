@@ -29,7 +29,7 @@ const useProps = (originalProps: Props) => {
     classNames,
     isOpen,
     onClose,
-    icon = 'solar:archive-linear',
+    icon = 'vx:archive',
 
     backdrop = 'transparent',
     placement = 'left',

@@ -41,7 +41,7 @@ type ActionCommand = {
   action: () => void
 }
 
-const DEFAULT_COMMAND_ICON = 'lucide:circle-dot'
+const DEFAULT_COMMAND_ICON = 'vx:status'
 
 const navigationCommands: NavigationCommand[] = [
   ...createNavigationCommands(mainMenuItems),
@@ -55,28 +55,28 @@ const actionCommands: ActionCommand[] = [
     id: 'go-back',
     label: 'Back',
     description: 'Go to the previous page',
-    icon: 'lucide:arrow-left',
+    icon: 'vx:arrow-left',
     action: () => window.history.back()
   },
   {
     id: 'go-forward',
     label: 'Forward',
     description: 'Go to the next page',
-    icon: 'lucide:arrow-right',
+    icon: 'vx:arrow-right',
     action: () => window.history.forward()
   },
   {
     id: 'print-page',
     label: 'Print',
     description: 'Print the current page',
-    icon: 'lucide:printer',
+    icon: 'vx:printer',
     action: () => window.print()
   },
   {
     id: 'refresh-page',
     label: 'Refresh',
     description: 'Reload the current page',
-    icon: 'lucide:refresh-cw',
+    icon: 'vx:refresh',
     action: () => window.location.reload()
   }
 ]

@@ -1,5 +1,10 @@
 import type { ChangeEvent } from 'react'
 
+import {
+  ArchiveUp as ArchiveUpIcon,
+  Document as DocumentIcon,
+  TrashBinTrash as TrashIcon
+} from '@vezham/icons-react'
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Button, Input, ScrollShadow, Typography } from '@vezham/react-v3'
 
@@ -126,9 +131,9 @@ function Trash(props: TrashProps) {
         <div {...getEmptyContainerProps()}>
           <EmptyState className="rounded-2xl">
             <EmptyState.Media>
-              <AppIcon
-                {...getEmptyIconProps('solar:trash-bin-trash-linear')}
-                size="1em"
+              <TrashIcon
+                {...getEmptyIconProps()}
+                weight="outline"
                 aria-hidden="true"
               />
             </EmptyState.Media>
@@ -166,9 +171,9 @@ function Trash(props: TrashProps) {
                     {item.favicon ? (
                       <img src={item.favicon} {...getItemFaviconProps()} />
                     ) : (
-                      <AppIcon
+                      <DocumentIcon
                         {...getItemFallbackIconProps()}
-                        size="1em"
+                        weight="outline"
                         aria-hidden="true"
                       />
                     )}
@@ -187,12 +192,9 @@ function Trash(props: TrashProps) {
                           e.stopPropagation()
                           handleRestore(item.id)
                         }}>
-                        <AppIcon
-                          {...getActionIconProps(
-                            'solar:archive-up-linear',
-                            'success'
-                          )}
-                          size="1em"
+                        <ArchiveUpIcon
+                          {...getActionIconProps('success')}
+                          weight="outline"
                           aria-hidden="true"
                         />
                       </Button>
@@ -204,12 +206,9 @@ function Trash(props: TrashProps) {
                           e.stopPropagation()
                           handleDeletePermanently(item.id)
                         }}>
-                        <AppIcon
-                          {...getActionIconProps(
-                            'solar:trash-bin-trash-linear',
-                            'danger'
-                          )}
-                          size="1em"
+                        <TrashIcon
+                          {...getActionIconProps('danger')}
+                          weight="outline"
                           aria-hidden="true"
                         />
                       </Button>

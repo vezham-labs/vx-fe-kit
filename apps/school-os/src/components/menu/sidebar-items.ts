@@ -3,36 +3,36 @@ import { SidebarItem } from './types'
 export const longMenuItems: SidebarItem[] = [
   {
     key: 'home',
-    icon: 'lucide:wallet',
-    iconActive: 'solar:wallet-bold',
+    icon: 'vx:wallet',
+    iconActive: 'vx:wallet-filled',
     href: '/',
     title: 'Home'
   },
   {
     key: 'channel',
-    icon: 'lucide:library',
-    iconActive: 'solar:library-bold',
+    icon: 'vx:library',
+    iconActive: 'vx:library-filled',
     href: '/channels',
     title: 'Channels'
   },
   {
     key: 'academic',
-    icon: 'lucide:settings',
-    iconActive: 'solar:settings-bold',
+    icon: 'vx:settings',
+    iconActive: 'vx:settings-filled',
     href: '/academic',
     title: 'Academic'
   },
   {
     key: 'operations',
-    icon: 'lucide:package',
-    iconActive: 'solar:box-bold',
+    icon: 'vx:box',
+    iconActive: 'vx:box-filled',
     href: '/operations',
     title: 'Operations'
   },
   {
     key: 'reports',
-    icon: 'lucide:bar-chart-2',
-    iconActive: 'solar:chart-bold',
+    icon: 'vx:chart',
+    iconActive: 'vx:chart-filled',
     href: '/reports',
     title: 'Reports'
   }

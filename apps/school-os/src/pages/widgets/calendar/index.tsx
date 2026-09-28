@@ -3,11 +3,13 @@ import React from 'react'
 
 import {
   AddCircle as AddCircleIcon,
-  Calendar as CalendarIcon
+  Bell as BellIcon,
+  Calendar as CalendarIcon,
+  Dumbbell as DumbbellIcon,
+  UsersGroupRounded as UsersIcon
 } from '@vezham/icons-react'
 import { Chip, ScrollShadow } from '@vezham/react-v3'
 
-import { AppIcon } from '@components/app-icon'
 import { AppView } from '@components/app-view'
 
 import { dates, events, today } from './data'
@@ -58,18 +60,22 @@ export const CalendarApp = ({ isOpen, onClose }: CalendarAppProps) => {
                 className="rounded-lg bg-white/5 p-3">
                 <div className="mb-2 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <AppIcon
-                      icon={
-                        event.type === 'meeting'
-                          ? 'lucide:users'
-                          : event.type === 'workout'
-                            ? 'lucide:dumbbell'
-                            : 'lucide:bell'
-                      }
-                      className={`h-4 w-4 ${eventIconColor[event.color]}`}
-                      size="1em"
-                      aria-hidden="true"
-                    />
+                    {event.type === 'meeting' ? (
+                      <UsersIcon
+                        className={`h-4 w-4 ${eventIconColor[event.color]}`}
+                        aria-hidden="true"
+                      />
+                    ) : event.type === 'workout' ? (
+                      <DumbbellIcon
+                        className={`h-4 w-4 ${eventIconColor[event.color]}`}
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <BellIcon
+                        className={`h-4 w-4 ${eventIconColor[event.color]}`}
+                        aria-hidden="true"
+                      />
+                    )}
                     <span className="text-sm font-medium">{event.title}</span>
                   </div>
                   <Chip size="sm" color={event.color} variant="soft">

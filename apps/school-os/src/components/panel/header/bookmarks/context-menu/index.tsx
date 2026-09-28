@@ -30,7 +30,7 @@ const FolderMenuItems = ({
       id="create-folder"
       textValue="Create Folder"
       onPress={() => onNewFolder(item?.id)}>
-      {renderContextMenuLabel('solar:folder-plus-linear', 'Create Folder')}
+      {renderContextMenuLabel('vx:folder-add', 'Create Folder')}
     </ContextMenu.Item>
     <ContextMenu.Separator />
     <ContextMenu.Item
@@ -38,21 +38,21 @@ const FolderMenuItems = ({
       textValue="Rename Folder"
       isDisabled={!item}
       onPress={() => item && onFolderEdit(item)}>
-      {renderContextMenuLabel('solar:pen-linear', 'Rename Folder')}
+      {renderContextMenuLabel('vx:pen', 'Rename Folder')}
     </ContextMenu.Item>
     <ContextMenu.Item
       id="change-color"
       textValue="Change Color"
       isDisabled={!item}
       onPress={() => item && onFolderEdit(item)}>
-      {renderContextMenuLabel('solar:palette-round-linear', 'Change Color')}
+      {renderContextMenuLabel('vx:palette-round', 'Change Color')}
     </ContextMenu.Item>
     <ContextMenu.Item
       id="change-icon"
       textValue="Change Emoji/Icon"
       isDisabled={!item}
       onPress={() => item && onFolderEdit(item)}>
-      {renderContextMenuLabel('solar:smile-circle-linear', 'Change Emoji/Icon')}
+      {renderContextMenuLabel('vx:smile-circle', 'Change Emoji/Icon')}
     </ContextMenu.Item>
     <ContextMenu.Separator />
     <ContextMenu.Item
@@ -61,7 +61,7 @@ const FolderMenuItems = ({
       variant="danger"
       isDisabled={!item}
       onPress={() => item && onFolderDelete(item.id)}>
-      {renderContextMenuLabel('solar:trash-bin-trash-linear', 'Delete Folder')}
+      {renderContextMenuLabel('vx:trash', 'Delete Folder')}
     </ContextMenu.Item>
   </>
 )
@@ -78,7 +78,7 @@ const BookmarkContextMenuItems = ({
   const renderMoveTargets = (itemId: string) => (
     <ContextMenu.SubmenuTrigger>
       <ContextMenu.Item id="move" textValue="Move">
-        {renderContextMenuLabel('solar:folder-with-files-linear', 'Move')}
+        {renderContextMenuLabel('vx:folder-with-files', 'Move')}
         <ContextMenu.SubmenuIndicator />
       </ContextMenu.Item>
       <ContextMenu.Popover>
@@ -125,7 +125,7 @@ const BookmarkContextMenuItems = ({
           id="create-folder"
           textValue="Create Folder"
           onPress={() => onNewFolder()}>
-          {renderContextMenuLabel('solar:folder-plus-linear', 'Create Folder')}
+          {renderContextMenuLabel('vx:folder-add', 'Create Folder')}
         </ContextMenu.Item>
         <ContextMenu.Separator />
         {renderMoveTargets(contextTarget.item.id)}
@@ -135,7 +135,7 @@ const BookmarkContextMenuItems = ({
           textValue="Delete"
           variant="danger"
           onPress={() => onBookmarkRemove(contextTarget.item.id)}>
-          {renderContextMenuLabel('solar:trash-bin-trash-linear', 'Delete')}
+          {renderContextMenuLabel('vx:trash', 'Delete')}
         </ContextMenu.Item>
       </>
     )

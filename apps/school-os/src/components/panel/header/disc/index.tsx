@@ -6,7 +6,6 @@ import {
 } from '@vezham/icons-react'
 import { Tabs, Tooltip } from '@vezham/react-v3'
 
-import { AppIcon } from '@components/app-icon'
 import { InfoPanelDefinition, useInfoPanel } from '@components/panel/info-panel'
 import { useDisc } from '@store/useDisc'
 
@@ -218,9 +217,9 @@ function DiscTrigger() {
     <Tooltip delay={0}>
       <Tooltip.Trigger>
         <span aria-label="Disc">
-          <AppIcon
+          <ArchiveIcon
             className={isActive ? 'text-muted' : ''}
-            icon={isActive ? 'solar:archive-bold' : 'solar:archive-linear'}
+            weight={isActive ? 'filled' : 'outline'}
             size={24}
             onClick={() => toggleInfoPanel('disc')}
             aria-hidden="true"

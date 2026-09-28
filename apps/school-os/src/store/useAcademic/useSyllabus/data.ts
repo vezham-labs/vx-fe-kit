@@ -138,13 +138,13 @@ export const sortOrderOptions = [
     key: 'ascending',
     label: 'Ascending',
     direction: 'ascending',
-    icon: 'lucide:arrow-up-wide-narrow'
+    icon: 'vx:sort-ascending'
   },
   {
     key: 'descending',
     label: 'Descending',
     direction: 'descending',
-    icon: 'lucide:arrow-down-wide-narrow'
+    icon: 'vx:sort-descending'
   }
 ] as const satisfies readonly SortOrderOption[]
 

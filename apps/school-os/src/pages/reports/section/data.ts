@@ -25,11 +25,11 @@ export const statusLegend: {
   label: string
   icon: string
 }[] = [
-  { status: 'Present', label: 'Present', icon: 'lucide:check' },
-  { status: 'Absent', label: 'Absent', icon: 'lucide:x' },
-  { status: 'Late', label: 'Late', icon: 'lucide:clock-3' },
-  { status: 'Halfday', label: 'Halfday', icon: 'lucide:calendar-days' },
-  { status: 'Holiday', label: 'Holiday', icon: 'lucide:badge-check' }
+  { status: 'Present', label: 'Present', icon: 'vx:check' },
+  { status: 'Absent', label: 'Absent', icon: 'vx:close' },
+  { status: 'Late', label: 'Late', icon: 'vx:clock-3' },
+  { status: 'Halfday', label: 'Halfday', icon: 'vx:calendar-days' },
+  { status: 'Holiday', label: 'Holiday', icon: 'vx:verified' }
 ]
 
 const studentPeople = [

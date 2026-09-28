@@ -188,7 +188,7 @@ export function ExamResultsTable({
                         aria-label={`Edit ${row.id}`}
                         variant="ghost"
                         onPress={() => onOpenDrawer('edit', row)}>
-                        <Icon icon="lucide:pencil" width={16} />
+                        <Icon icon="vx:pencil" width={16} />
                       </Button>
                       <Button
                         isIconOnly
@@ -197,7 +197,7 @@ export function ExamResultsTable({
                         onPress={() => onDelete(row.id)}>
                         <Icon
                           className={classNames.dangerIcon}
-                          icon="lucide:trash-2"
+                          icon="vx:trash"
                           width={16}
                         />
                       </Button>
@@ -207,7 +207,7 @@ export function ExamResultsTable({
                             isIconOnly
                             aria-label={`More actions for ${row.id}`}
                             variant="ghost">
-                            <Icon icon="lucide:more-horizontal" width={18} />
+                            <Icon icon="vx:menu-horizontal" width={18} />
                           </Button>
                         </Dropdown.Trigger>
                         <Dropdown.Popover>
@@ -218,7 +218,7 @@ export function ExamResultsTable({
                               textValue="View"
                               onPress={() => onOpenDrawer('view', row)}>
                               <span className={classNames.menuItemLabel}>
-                                <Icon icon="lucide:eye" width={16} />
+                                <Icon icon="vx:eye" width={16} />
                                 View
                               </span>
                             </Dropdown.Item>

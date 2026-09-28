@@ -9,9 +9,12 @@ import {
 
 import { useNavigate } from '@tanstack/react-router'
 
+import {
+  Bookmark as BookmarkIcon,
+  Star as StarIcon
+} from '@vezham/icons-react'
 import { ScrollShadow, Tooltip, Typography } from '@vezham/react-v3'
 
-import { AppIcon } from '@components/app-icon'
 import { InfoPanelDefinition, useInfoPanel } from '@components/panel/info-panel'
 import { getAppPath, getOpenUrl } from '@src/utils/url'
 import { useBookmarks } from '@store/useBookmarks'
@@ -301,15 +304,13 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const scrollFavorites = quickAccessFavorites.slice(0, 6)
   const hasMoreFavorites = quickAccessFavorites.length > 6
   const hasFavorites = filteredFavorites.length > 0
-  const getSectionIconPropsForIcon = getSectionIconProps as unknown as (
-    icon: string,
-    className?: string
-  ) => ComponentProps<typeof Icon>
   const getSectionTitlePropsForTitle = getSectionTitleProps as unknown as (
     title: string
   ) => HTMLAttributes<HTMLHeadingElement>
   const getFavoriteAvatarIconPropsForIcon =
-    getFavoriteAvatarIconProps as unknown as () => ComponentProps<typeof Icon>
+    getFavoriteAvatarIconProps as unknown as () => ComponentProps<
+      typeof StarIcon
+    >
 
   const handleViewAllFavorites = () => {
     setShowAllFavoritesMode(true)
@@ -515,12 +516,9 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
             )}
             <section {...getSectionProps()}>
               <div {...getSectionHeaderProps()}>
-                <AppIcon
-                  {...getSectionIconPropsForIcon(
-                    'solar:bookmark-bold',
-                    'text-primary'
-                  )}
-                  size="1em"
+                <BookmarkIcon
+                  {...getSectionIconProps('text-primary')}
+                  weight="filled"
                   aria-hidden="true"
                 />
                 <Typography.Heading
@@ -567,9 +565,9 @@ function BookmarksTrigger() {
     <Tooltip delay={0}>
       <Tooltip.Trigger>
         <span aria-label="Bookmarks">
-          <AppIcon
+          <StarIcon
             className={isActive ? 'text-muted' : ''}
-            icon={isActive ? 'solar:star-bold' : 'solar:star-linear'}
+            weight={isActive ? 'filled' : 'outline'}
             size={24}
             onClick={() => toggleInfoPanel('bookmarks')}
             aria-hidden="true"

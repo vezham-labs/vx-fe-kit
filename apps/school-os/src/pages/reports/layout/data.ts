@@ -5,55 +5,55 @@ export const reportsSidebarItems: AcademicMenuItem[] = [
     key: 'attendance',
     title: 'Attendance Reports',
     href: '/reports/attendance',
-    icon: 'lucide:calendar-check',
+    icon: 'vx:calendar-check',
     children: [
       {
         key: 'attendance-report',
         title: 'Attendance Report',
         href: '/reports/attendance/attendance-report',
-        icon: 'lucide:file-chart-column'
+        icon: 'vx:report'
       },
       {
         key: 'students-attendance-type',
         title: 'Students Attendance Type',
         href: '/reports/attendance/students-attendance-type',
-        icon: 'lucide:user-round-check'
+        icon: 'vx:user-round-check'
       },
       {
         key: 'daily-attendance',
         title: 'Daily Attendance',
         href: '/reports/attendance/daily-attendance',
-        icon: 'lucide:calendar-days'
+        icon: 'vx:calendar-days'
       },
       {
         key: 'student-day-wise',
         title: 'Student Day Wise',
         href: '/reports/attendance/student-day-wise',
-        icon: 'lucide:user'
+        icon: 'vx:user'
       },
       {
         key: 'teacher-day-wise',
         title: 'Teacher Day Wise',
         href: '/reports/attendance/teacher-day-wise',
-        icon: 'lucide:graduation-cap'
+        icon: 'vx:academic-cap'
       },
       {
         key: 'staff-day-wise',
         title: 'Staff Day Wise',
         href: '/reports/attendance/staff-day-wise',
-        icon: 'lucide:briefcase-business'
+        icon: 'vx:briefcase'
       },
       {
         key: 'teacher-report',
         title: 'Teacher Report',
         href: '/reports/attendance/teacher-report',
-        icon: 'lucide:clipboard-list'
+        icon: 'vx:clipboard-list'
       },
       {
         key: 'staff-report',
         title: 'Staff Report',
         href: '/reports/attendance/staff-report',
-        icon: 'lucide:clipboard-list'
+        icon: 'vx:clipboard-list'
       }
     ]
   },
@@ -61,31 +61,31 @@ export const reportsSidebarItems: AcademicMenuItem[] = [
     key: 'class',
     title: 'Class Reports',
     href: '/reports/class',
-    icon: 'lucide:school'
+    icon: 'vx:school'
   },
   {
     key: 'student',
     title: 'Student Reports',
     href: '/reports/student',
-    icon: 'lucide:users'
+    icon: 'vx:users'
   },
   {
     key: 'grade',
     title: 'Grade Reports',
     href: '/reports/grade',
-    icon: 'lucide:badge-check'
+    icon: 'vx:verified'
   },
   {
     key: 'leave',
     title: 'Leave Reports',
     href: '/reports/leave',
-    icon: 'lucide:calendar-minus'
+    icon: 'vx:calendar-minus'
   },
   {
     key: 'fees',
     title: 'Fees Reports',
     href: '/reports/fees',
-    icon: 'lucide:receipt'
+    icon: 'vx:receipt'
   }
 ]
 
@@ -93,13 +93,13 @@ export const defaultLeftActions: ActionItem[] = [
   {
     key: 'back',
     label: 'Back',
-    icon: 'lucide:arrow-left',
+    icon: 'vx:arrow-left',
     onAction: () => window.history.back()
   },
   {
     key: 'forward',
     label: 'Forward',
-    icon: 'lucide:arrow-right',
+    icon: 'vx:arrow-right',
     onAction: () => window.history.forward()
   }
 ]
@@ -108,32 +108,32 @@ export const defaultRightActions: ActionItem[] = [
   {
     key: 'search',
     label: 'Search',
-    icon: 'lucide:search',
+    icon: 'vx:search',
     kind: 'search'
   },
   {
     key: 'import',
     label: 'Import',
-    icon: 'lucide:upload',
+    icon: 'vx:upload',
     kind: 'menu'
   },
   {
     key: 'print',
     label: 'Print',
-    icon: 'lucide:printer',
+    icon: 'vx:printer',
     kind: 'menu',
     onAction: () => window.print()
   },
   {
     key: 'export',
     label: 'Export',
-    icon: 'lucide:download',
+    icon: 'vx:download',
     kind: 'menu'
   },
   {
     key: 'refresh',
     label: 'Refresh',
-    icon: 'lucide:refresh-cw',
+    icon: 'vx:refresh',
     kind: 'refresh',
     onAction: () => window.location.reload()
   }

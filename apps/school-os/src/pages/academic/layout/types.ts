@@ -489,7 +489,7 @@ const useProps = (originalProps: Props) => {
   })
 
   const getSidebarDisclosureIconProps = (isExpanded: boolean) => ({
-    icon: isExpanded ? 'lucide:chevron-down' : 'lucide:chevron-right',
+    icon: isExpanded ? 'vx:chevron-down' : 'vx:chevron-right',
     width: 16,
     className: slots.sidebar_disclosure_icon({
       class: classNames?.sidebar_disclosure_icon
@@ -520,8 +520,8 @@ const useProps = (originalProps: Props) => {
     renderChildrenInSidebar: layoutConfig.renderChildrenInSidebar,
     selectedKeys: new Set([activeSidebarKey]),
     toggleIcon: isSidebarCollapsed
-      ? 'lucide:chevron-right'
-      : 'lucide:chevron-left',
+      ? 'vx:chevron-right'
+      : 'vx:chevron-left',
     toggleButtonProps: {
       variant: 'ghost' as const,
       className: slots.sidebar_toggle({ class: classNames?.sidebar_toggle }),
@@ -562,8 +562,8 @@ const useProps = (originalProps: Props) => {
         key: 'sidebar-toggle',
         label: isSidebarCollapsed ? 'Show navigation' : 'Hide navigation',
         icon: isSidebarCollapsed
-          ? 'lucide:panel-left-open'
-          : 'lucide:panel-left-close',
+          ? 'vx:panel-left-open'
+          : 'vx:panel-left-close',
         onAction: onToggleSidebar
       },
       selectedTabKey,
@@ -587,7 +587,7 @@ const useProps = (originalProps: Props) => {
       closeAction: {
         key: 'close-sidebar',
         label: `Close ${layoutConfig.navigationLabel}`,
-        icon: 'lucide:x',
+        icon: 'vx:close',
         onAction: () => setIsSidebarOpen(false)
       },
       sidebar: drawerSidebarProps
@@ -642,7 +642,7 @@ function getPageRightActions(
       {
         key: 'create',
         label: 'Create',
-        icon: 'lucide:plus',
+        icon: 'vx:plus',
         kind: 'primary',
         isVisible: () => false
       }
@@ -656,7 +656,7 @@ function getPageRightActions(
         {
           key: 'create',
           label,
-          icon: 'lucide:plus',
+          icon: 'vx:plus',
           kind: 'primary',
           onAction: () => dispatchCreateAction(activePageKey, createEventPrefix)
         }

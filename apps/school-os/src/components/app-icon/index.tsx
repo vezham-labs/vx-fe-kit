@@ -106,208 +106,189 @@ import {
   Widget as WidgetIcon
 } from '@vezham/icons-react'
 
-// Keep stored bookmark and menu icon identifiers compatible with existing data.
 const icons = {
-  'lucide:arrow-down-wide-narrow': {
+  'vx:sort-descending': {
     component: SortFromTopToBottomIcon,
     weight: 'outline'
   },
-  'lucide:arrow-left': { component: ArrowLeftIcon, weight: 'outline' },
-  'lucide:arrow-right': { component: ArrowRightIcon, weight: 'outline' },
-  'lucide:arrow-up-wide-narrow': {
+  'vx:arrow-left': { component: ArrowLeftIcon, weight: 'outline' },
+  'vx:arrow-right': { component: ArrowRightIcon, weight: 'outline' },
+  'vx:sort-ascending': {
     component: SortFromBottomToTopIcon,
     weight: 'outline'
   },
-  'lucide:badge-check': { component: VerifiedCheckIcon, weight: 'outline' },
-  'lucide:bar-chart-2': { component: ChartIcon, weight: 'outline' },
-  'lucide:bell': { component: BellIcon, weight: 'outline' },
-  'lucide:book': { component: BookIcon, weight: 'outline' },
-  'lucide:book-open': { component: Book2Icon, weight: 'outline' },
-  'lucide:briefcase-business': { component: CaseIcon, weight: 'outline' },
-  'lucide:calendar-check': { component: CalendarMarkIcon, weight: 'outline' },
-  'lucide:calendar-clock': { component: CalendarDateIcon, weight: 'outline' },
-  'lucide:calendar-days': { component: CalendarDateIcon, weight: 'outline' },
-  'lucide:calendar-minus': { component: CalendarIcon, weight: 'outline' },
-  'lucide:chart-no-axes-column': { component: ChartIcon, weight: 'outline' },
-  'lucide:check': { component: CheckReadIcon, weight: 'outline' },
-  'lucide:chevron-down': { component: AltArrowDownIcon, weight: 'outline' },
-  'lucide:chevron-left': { component: AltArrowLeftIcon, weight: 'outline' },
-  'lucide:chevron-right': { component: AltArrowRightIcon, weight: 'outline' },
-  'lucide:chevron-up': { component: AltArrowUpIcon, weight: 'outline' },
-  'lucide:chevrons-up-down': { component: SortVerticalIcon, weight: 'outline' },
-  'lucide:circle-dot': { component: RecordCircleIcon, weight: 'outline' },
-  'lucide:circle-help': { component: QuestionCircleIcon, weight: 'outline' },
-  'lucide:clipboard-list': { component: ClipboardListIcon, weight: 'outline' },
-  'lucide:clock': { component: ClockCircleIcon, weight: 'outline' },
-  'lucide:clock-3': { component: ClockCircleIcon, weight: 'outline' },
-  'lucide:download': { component: DownloadIcon, weight: 'outline' },
-  'lucide:dumbbell': { component: DumbbellIcon, weight: 'outline' },
-  'lucide:eye': { component: EyeIcon, weight: 'outline' },
-  'lucide:file-chart-column': { component: ChartSquareIcon, weight: 'outline' },
-  'lucide:file-pen': { component: DocumentAddIcon, weight: 'outline' },
-  'lucide:file-spreadsheet': { component: DocumentTextIcon, weight: 'outline' },
-  'lucide:file-text': { component: FileTextIcon, weight: 'outline' },
-  'lucide:graduation-cap': {
+  'vx:verified': { component: VerifiedCheckIcon, weight: 'outline' },
+  'vx:chart': { component: ChartIcon, weight: 'outline' },
+  'vx:bell': { component: BellIcon, weight: 'outline' },
+  'vx:book': { component: BookIcon, weight: 'outline' },
+  'vx:book-open': { component: Book2Icon, weight: 'outline' },
+  'vx:briefcase': { component: CaseIcon, weight: 'outline' },
+  'vx:calendar-check': { component: CalendarMarkIcon, weight: 'outline' },
+  'vx:calendar-clock': { component: CalendarDateIcon, weight: 'outline' },
+  'vx:calendar-days': { component: CalendarDateIcon, weight: 'outline' },
+  'vx:calendar-minus': { component: CalendarIcon, weight: 'outline' },
+  'vx:check': { component: CheckReadIcon, weight: 'outline' },
+  'vx:chevron-down': { component: AltArrowDownIcon, weight: 'outline' },
+  'vx:chevron-left': { component: AltArrowLeftIcon, weight: 'outline' },
+  'vx:chevron-right': { component: AltArrowRightIcon, weight: 'outline' },
+  'vx:chevron-up': { component: AltArrowUpIcon, weight: 'outline' },
+  'vx:chevrons-up-down': { component: SortVerticalIcon, weight: 'outline' },
+  'vx:status': { component: RecordCircleIcon, weight: 'outline' },
+  'vx:help': { component: QuestionCircleIcon, weight: 'outline' },
+  'vx:clipboard-list': { component: ClipboardListIcon, weight: 'outline' },
+  'vx:clock': { component: ClockCircleIcon, weight: 'outline' },
+  'vx:clock-3': { component: ClockCircleIcon, weight: 'outline' },
+  'vx:download': { component: DownloadIcon, weight: 'outline' },
+  'vx:dumbbell': { component: DumbbellIcon, weight: 'outline' },
+  'vx:eye': { component: EyeIcon, weight: 'outline' },
+  'vx:report': { component: ChartSquareIcon, weight: 'outline' },
+  'vx:document-edit': { component: DocumentAddIcon, weight: 'outline' },
+  'vx:file-spreadsheet': { component: DocumentTextIcon, weight: 'outline' },
+  'vx:file-text': { component: FileTextIcon, weight: 'outline' },
+  'vx:academic-cap': {
     component: SquareAcademicCapIcon,
     weight: 'outline'
   },
-  'lucide:home': { component: HomeIcon, weight: 'outline' },
-  'lucide:layout-grid': { component: WidgetIcon, weight: 'outline' },
-  'lucide:library': { component: LibraryIcon, weight: 'outline' },
-  'lucide:list': { component: ListIcon, weight: 'outline' },
-  'lucide:more-horizontal': { component: MenuDotsIcon, weight: 'outline' },
-  'lucide:more-vertical': {
+  'vx:home': { component: HomeIcon, weight: 'outline' },
+  'vx:grid': { component: WidgetIcon, weight: 'outline' },
+  'vx:library': { component: LibraryIcon, weight: 'outline' },
+  'vx:list': { component: ListIcon, weight: 'outline' },
+  'vx:menu-horizontal': { component: MenuDotsIcon, weight: 'outline' },
+  'vx:menu-vertical': {
     component: MenuDotsIcon,
     weight: 'outline',
     rotate: 90
   },
-  'lucide:package': { component: BoxIcon, weight: 'outline' },
-  'lucide:panel-left-close': {
+  'vx:box': { component: BoxIcon, weight: 'outline' },
+  'vx:panel-left-close': {
     component: SidebarMinimalisticIcon,
     weight: 'outline'
   },
-  'lucide:panel-left-open': {
+  'vx:panel-left-open': {
     component: SidebarMinimalisticIcon,
     weight: 'outline'
   },
-  'lucide:pencil': { component: PenIcon, weight: 'outline' },
-  'lucide:phone-incoming': { component: IncomingCallIcon, weight: 'outline' },
-  'lucide:phone-missed': { component: CallDroppedIcon, weight: 'outline' },
-  'lucide:phone-outgoing': { component: OutgoingCallIcon, weight: 'outline' },
-  'lucide:plus': { component: AddIcon, weight: 'outline' },
-  'lucide:printer': { component: PrinterIcon, weight: 'outline' },
-  'lucide:receipt': { component: BillIcon, weight: 'outline' },
-  'lucide:refresh-cw': { component: RefreshIcon, weight: 'outline' },
-  'lucide:school': { component: BuildingsIcon, weight: 'outline' },
-  'lucide:search': { component: MagnifierIcon, weight: 'outline' },
-  'lucide:settings': { component: SettingsIcon, weight: 'outline' },
-  'lucide:split-square-horizontal': {
+  'vx:pencil': { component: PenIcon, weight: 'outline' },
+  'vx:phone-incoming': { component: IncomingCallIcon, weight: 'outline' },
+  'vx:phone-missed': { component: CallDroppedIcon, weight: 'outline' },
+  'vx:phone-outgoing': { component: OutgoingCallIcon, weight: 'outline' },
+  'vx:plus': { component: AddIcon, weight: 'outline' },
+  'vx:printer': { component: PrinterIcon, weight: 'outline' },
+  'vx:receipt': { component: BillIcon, weight: 'outline' },
+  'vx:refresh': { component: RefreshIcon, weight: 'outline' },
+  'vx:school': { component: BuildingsIcon, weight: 'outline' },
+  'vx:search': { component: MagnifierIcon, weight: 'outline' },
+  'vx:settings': { component: SettingsIcon, weight: 'outline' },
+  'vx:sidebar': {
     component: SidebarIcon,
     weight: 'outline'
   },
-  'lucide:trash-2': { component: TrashBinTrashIcon, weight: 'outline' },
-  'lucide:upload': { component: UploadIcon, weight: 'outline' },
-  'lucide:user': { component: UserIcon, weight: 'outline' },
-  'lucide:user-check': { component: UserCheckIcon, weight: 'outline' },
-  'lucide:user-round-check': {
+  'vx:trash': { component: TrashBinTrashIcon, weight: 'outline' },
+  'vx:upload': { component: UploadIcon, weight: 'outline' },
+  'vx:user': { component: UserIcon, weight: 'outline' },
+  'vx:user-check': { component: UserCheckIcon, weight: 'outline' },
+  'vx:user-round-check': {
     component: UserCheckRoundedIcon,
     weight: 'outline'
   },
-  'lucide:users': { component: UsersGroupRoundedIcon, weight: 'outline' },
-  'lucide:wallet': { component: WalletIcon, weight: 'outline' },
-  'lucide:x': { component: CloseIcon, weight: 'outline' },
-  'mdi:skip-next': { component: SkipNextIcon, weight: 'filled' },
-  'mdi:skip-previous': { component: SkipPreviousIcon, weight: 'filled' },
-  'mdi:wifi': { component: WiFiIcon, weight: 'filled' },
-  'solar:airbuds-bold': { component: AirbudsIcon, weight: 'filled' },
-  'solar:alt-arrow-down-linear': {
-    component: AltArrowDownIcon,
-    weight: 'outline'
-  },
-  'solar:alt-arrow-right-linear': {
-    component: AltArrowRightIcon,
-    weight: 'outline'
-  },
-  'solar:alt-arrow-up-linear': { component: AltArrowUpIcon, weight: 'outline' },
-  'solar:archive-bold': { component: ArchiveIcon, weight: 'filled' },
-  'solar:archive-linear': { component: ArchiveIcon, weight: 'outline' },
-  'solar:archive-up-linear': { component: ArchiveUpIcon, weight: 'outline' },
-  'solar:arrow-right-up-linear': {
+  'vx:users': { component: UsersGroupRoundedIcon, weight: 'outline' },
+  'vx:wallet': { component: WalletIcon, weight: 'outline' },
+  'vx:close': { component: CloseIcon, weight: 'outline' },
+  'vx:skip-next': { component: SkipNextIcon, weight: 'filled' },
+  'vx:skip-previous': { component: SkipPreviousIcon, weight: 'filled' },
+  'vx:wifi': { component: WiFiIcon, weight: 'filled' },
+  'vx:airbuds-filled': { component: AirbudsIcon, weight: 'filled' },
+  'vx:archive-filled': { component: ArchiveIcon, weight: 'filled' },
+  'vx:archive': { component: ArchiveIcon, weight: 'outline' },
+  'vx:archive-up': { component: ArchiveUpIcon, weight: 'outline' },
+  'vx:external-link': {
     component: ArrowRightUpIcon,
     weight: 'outline'
   },
-  'solar:backpack-bold': { component: BackpackIcon, weight: 'filled' },
-  'solar:banknote-bold': { component: BanknoteIcon, weight: 'filled' },
-  'solar:bell-linear': { component: BellIcon, weight: 'outline' },
-  'solar:bluetooth-bold': { component: BluetoothIcon, weight: 'filled' },
-  'solar:book-bookmark-bold': { component: BookBookmarkIcon, weight: 'filled' },
-  'solar:bookmark-bold': { component: BookmarkIcon, weight: 'filled' },
-  'solar:box-bold': { component: BoxIcon, weight: 'filled' },
-  'solar:buildings-3-bold': { component: Buildings3Icon, weight: 'filled' },
-  'solar:card-bold': { component: CardIcon, weight: 'filled' },
-  'solar:card-linear': { component: CardIcon, weight: 'outline' },
-  'solar:cart-large-bold': { component: CartLargeIcon, weight: 'filled' },
-  'solar:chart-bold': { component: ChartIcon, weight: 'filled' },
-  'solar:chat-round-dots-linear': {
+  'vx:backpack-filled': { component: BackpackIcon, weight: 'filled' },
+  'vx:banknote-filled': { component: BanknoteIcon, weight: 'filled' },
+  'vx:bluetooth-filled': { component: BluetoothIcon, weight: 'filled' },
+  'vx:book-bookmark-filled': { component: BookBookmarkIcon, weight: 'filled' },
+  'vx:bookmark-filled': { component: BookmarkIcon, weight: 'filled' },
+  'vx:box-filled': { component: BoxIcon, weight: 'filled' },
+  'vx:buildings-3-filled': { component: Buildings3Icon, weight: 'filled' },
+  'vx:card-filled': { component: CardIcon, weight: 'filled' },
+  'vx:card': { component: CardIcon, weight: 'outline' },
+  'vx:cart-large-filled': { component: CartLargeIcon, weight: 'filled' },
+  'vx:chart-filled': { component: ChartIcon, weight: 'filled' },
+  'vx:chat-round-dots': {
     component: ChatRoundDotsIcon,
     weight: 'outline'
   },
-  'solar:copy-bold': { component: CopyIcon, weight: 'filled' },
-  'solar:cup-star-bold': { component: CupStarIcon, weight: 'filled' },
-  'solar:devices-linear': { component: DevicesIcon, weight: 'outline' },
-  'solar:document-bold': { component: DocumentIcon, weight: 'filled' },
-  'solar:document-linear': { component: DocumentIcon, weight: 'outline' },
-  'solar:flag-bold': { component: FlagIcon, weight: 'filled' },
-  'solar:folder-bold': { component: FolderIcon, weight: 'filled' },
-  'solar:folder-plus-linear': { component: AddFolderIcon, weight: 'outline' },
-  'solar:folder-with-files-linear': {
+  'vx:copy-filled': { component: CopyIcon, weight: 'filled' },
+  'vx:cup-star-filled': { component: CupStarIcon, weight: 'filled' },
+  'vx:devices': { component: DevicesIcon, weight: 'outline' },
+  'vx:document-filled': { component: DocumentIcon, weight: 'filled' },
+  'vx:document': { component: DocumentIcon, weight: 'outline' },
+  'vx:flag-filled': { component: FlagIcon, weight: 'filled' },
+  'vx:folder-filled': { component: FolderIcon, weight: 'filled' },
+  'vx:folder-add': { component: AddFolderIcon, weight: 'outline' },
+  'vx:folder-with-files': {
     component: FolderWithFilesIcon,
     weight: 'outline'
   },
-  'solar:gallery-linear': { component: GalleryIcon, weight: 'outline' },
-  'solar:gamepad-bold': { component: GamepadIcon, weight: 'filled' },
-  'solar:gift-bold': { component: GiftIcon, weight: 'filled' },
-  'solar:headphones-round-bold': {
+  'vx:gallery': { component: GalleryIcon, weight: 'outline' },
+  'vx:gamepad-filled': { component: GamepadIcon, weight: 'filled' },
+  'vx:gift-filled': { component: GiftIcon, weight: 'filled' },
+  'vx:headphones-round-filled': {
     component: HeadphonesRoundIcon,
     weight: 'filled'
   },
-  'solar:heart-bold': { component: HeartIcon, weight: 'filled' },
-  'solar:home-bold': { component: HomeIcon, weight: 'filled' },
-  'solar:key-bold': { component: KeyIcon, weight: 'filled' },
-  'solar:leaf-bold': { component: LeafIcon, weight: 'filled' },
-  'solar:library-bold': { component: LibraryIcon, weight: 'filled' },
-  'solar:list-bold': { component: ListIcon, weight: 'filled' },
-  'solar:magnifer-linear': { component: MagnifierIcon, weight: 'outline' },
-  'solar:moon-bold': { component: MoonIcon, weight: 'filled' },
-  'solar:notebook-bookmark-bold': {
+  'vx:heart-filled': { component: HeartIcon, weight: 'filled' },
+  'vx:home-filled': { component: HomeIcon, weight: 'filled' },
+  'vx:key-filled': { component: KeyIcon, weight: 'filled' },
+  'vx:leaf-filled': { component: LeafIcon, weight: 'filled' },
+  'vx:library-filled': { component: LibraryIcon, weight: 'filled' },
+  'vx:list-filled': { component: ListIcon, weight: 'filled' },
+  'vx:moon-filled': { component: MoonIcon, weight: 'filled' },
+  'vx:notebook-bookmark-filled': {
     component: NotebookBookmarkIcon,
     weight: 'filled'
   },
-  'solar:palette-linear': { component: PaletteIcon, weight: 'outline' },
-  'solar:palette-round-linear': {
+  'vx:palette': { component: PaletteIcon, weight: 'outline' },
+  'vx:palette-round': {
     component: PaletteRoundIcon,
     weight: 'outline'
   },
-  'solar:pen-linear': { component: PenIcon, weight: 'outline' },
-  'solar:play-bold': { component: PlayIcon, weight: 'filled' },
-  'solar:settings-bold': { component: SettingsIcon, weight: 'filled' },
-  'solar:settings-linear': { component: SettingsIcon, weight: 'outline' },
-  'solar:share-linear': { component: ShareIcon, weight: 'outline' },
-  'solar:shield-check-linear': {
+  'vx:pen': { component: PenIcon, weight: 'outline' },
+  'vx:play-filled': { component: PlayIcon, weight: 'filled' },
+  'vx:settings-filled': { component: SettingsIcon, weight: 'filled' },
+  'vx:share': { component: ShareIcon, weight: 'outline' },
+  'vx:shield-check': {
     component: ShieldCheckIcon,
     weight: 'outline'
   },
-  'solar:smile-circle-linear': {
+  'vx:smile-circle': {
     component: SmileCircleIcon,
     weight: 'outline'
   },
-  'solar:square-academic-cap-bold': {
+  'vx:academic-cap-filled': {
     component: SquareAcademicCapIcon,
     weight: 'filled'
   },
-  'solar:star-bold': { component: StarIcon, weight: 'filled' },
-  'solar:star-linear': { component: StarIcon, weight: 'outline' },
-  'solar:sun-2-bold': { component: Sun2Icon, weight: 'filled' },
-  'solar:sun-bold': { component: SunIcon, weight: 'filled' },
-  'solar:trash-bin-trash-linear': {
-    component: TrashBinTrashIcon,
-    weight: 'outline'
-  },
-  'solar:user-linear': { component: UserIcon, weight: 'outline' },
-  'solar:users-group-rounded-bold': {
+  'vx:star-filled': { component: StarIcon, weight: 'filled' },
+  'vx:star': { component: StarIcon, weight: 'outline' },
+  'vx:sun-2-filled': { component: Sun2Icon, weight: 'filled' },
+  'vx:sun-filled': { component: SunIcon, weight: 'filled' },
+  'vx:users-filled': {
     component: UsersGroupRoundedIcon,
     weight: 'filled'
   },
-  'solar:videocamera-linear': { component: VideocameraIcon, weight: 'outline' },
-  'solar:volume-loud-bold': { component: VolumeLoudIcon, weight: 'filled' },
-  'solar:wallet-bold': { component: WalletIcon, weight: 'filled' },
-  'solar:wallet-linear': { component: WalletIcon, weight: 'outline' },
-  'solar:widget-2-bold': { component: Widget2Icon, weight: 'filled' }
+  'vx:videocamera': { component: VideocameraIcon, weight: 'outline' },
+  'vx:volume-loud-filled': { component: VolumeLoudIcon, weight: 'filled' },
+  'vx:wallet-filled': { component: WalletIcon, weight: 'filled' },
+  'vx:widget-2-filled': { component: Widget2Icon, weight: 'filled' }
 } satisfies Record<
   string,
   { component: IconComponent; weight: IconProps['weight']; rotate?: number }
 >
 
+type AppIconName = keyof typeof icons
 type Props = IconProps & { icon?: string }
 
 export const AppIcon = ({
@@ -318,8 +299,11 @@ export const AppIcon = ({
   style,
   ...props
 }: Props) => {
-  if (!icon || !Object.prototype.hasOwnProperty.call(icons, icon)) return null
-  const entry = icons[icon as keyof typeof icons]
+  if (!icon) return null
+
+  if (!Object.prototype.hasOwnProperty.call(icons, icon)) return null
+
+  const entry = icons[icon as AppIconName]
   const Component = entry.component
   return (
     <Component
@@ -327,7 +311,9 @@ export const AppIcon = ({
       height={height ?? width ?? size ?? '1em'}
       weight={entry.weight}
       style={{
-        ...('rotate' in entry ? { transform: 'rotate(90deg)' } : {}),
+        ...('rotate' in entry
+          ? { transform: `rotate(${entry.rotate}deg)` }
+          : {}),
         ...style
       }}
       aria-hidden="true"
@@ -335,3 +321,5 @@ export const AppIcon = ({
     />
   )
 }
+
+export type { AppIconName }

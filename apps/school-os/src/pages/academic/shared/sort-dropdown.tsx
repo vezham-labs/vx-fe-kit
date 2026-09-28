@@ -50,8 +50,8 @@ export function SortDropdown({
   const activeDirection = sortDirection ?? 'ascending'
   const activeSortIcon =
     activeDirection === 'ascending'
-      ? 'lucide:arrow-up-wide-narrow'
-      : 'lucide:arrow-down-wide-narrow'
+      ? 'vx:sort-ascending'
+      : 'vx:sort-descending'
   const selectedKeys = new Set([activeField.key, activeDirection])
   const recentSortKeys = new Set(['recentlyViewed', 'recentlyAdded'])
   const recentlyUsedOptions = sortOptions.filter(option =>

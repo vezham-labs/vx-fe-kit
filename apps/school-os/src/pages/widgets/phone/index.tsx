@@ -1,9 +1,13 @@
 import { motion } from 'framer-motion'
 
-import { Phone as PhoneIcon } from '@vezham/icons-react'
+import {
+  CallDropped as CallDroppedIcon,
+  IncomingCall as IncomingCallIcon,
+  OutgoingCall as OutgoingCallIcon,
+  Phone as PhoneIcon
+} from '@vezham/icons-react'
 import { Avatar, ScrollShadow } from '@vezham/react-v3'
 
-import { AppIcon } from '@components/app-icon'
 import { AppView } from '@components/app-view'
 
 import { recentCalls } from './data'
@@ -41,20 +45,17 @@ export function PhoneApp({ isOpen, onClose }: PhoneAppProps) {
               <p className="text-sm font-medium">{call.name}</p>
 
               <div className="flex items-center gap-1 text-xs text-gray-400">
-                <AppIcon
-                  icon={
-                    call.type === 'incoming'
-                      ? 'lucide:phone-incoming'
-                      : call.type === 'outgoing'
-                        ? 'lucide:phone-outgoing'
-                        : 'lucide:phone-missed'
-                  }
-                  className={
-                    call.type === 'missed' ? 'text-red-500' : 'text-gray-400'
-                  }
-                  size="1em"
-                  aria-hidden="true"
-                />
+                {call.type === 'incoming' ? (
+                  <IncomingCallIcon size="1em" aria-hidden="true" />
+                ) : call.type === 'outgoing' ? (
+                  <OutgoingCallIcon size="1em" aria-hidden="true" />
+                ) : (
+                  <CallDroppedIcon
+                    className="text-red-500"
+                    size="1em"
+                    aria-hidden="true"
+                  />
+                )}
                 <span>{call.time}</span>
               </div>
             </div>

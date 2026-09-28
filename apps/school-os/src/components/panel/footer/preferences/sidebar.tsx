@@ -124,8 +124,8 @@ export default function SettingsSidebar({ active, onSelect }: Props) {
             <AppIcon
               icon={
                 isOpen
-                  ? 'solar:alt-arrow-down-linear'
-                  : 'solar:alt-arrow-right-linear'
+                  ? 'vx:chevron-down'
+                  : 'vx:chevron-right'
               }
               size={16}
               aria-hidden="true"

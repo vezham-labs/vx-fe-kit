@@ -5,6 +5,7 @@ import {
   type ReactNode
 } from 'react'
 
+import { Star as StarIcon } from '@vezham/icons-react'
 import { Avatar } from '@vezham/react-v3'
 
 import { type FavoriteItem } from '@components/panel/header/bookmarks/types'
@@ -31,7 +32,7 @@ export interface QuickAccessProps {
   getFavoriteOverlayProps: () => HTMLAttributes<HTMLDivElement>
   getFavoriteAvatarContainerProps: () => HTMLAttributes<HTMLDivElement>
   getFavoriteAvatarProps: () => ComponentProps<typeof Avatar>
-  getFavoriteAvatarIconProps: () => ComponentProps<typeof Icon>
+  getFavoriteAvatarIconProps: () => ComponentProps<typeof StarIcon>
   getFavoriteAvatarFallbackProps: (
     name: string
   ) => ComponentProps<typeof Avatar.Fallback>

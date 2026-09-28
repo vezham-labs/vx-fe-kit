@@ -1,12 +1,12 @@
 export const trashActions = [
   {
     type: 'restore',
-    icon: 'solar:archive-up-linear',
+    icon: 'vx:archive-up',
     label: 'Restore All'
   },
   {
     type: 'clear',
-    icon: 'solar:trash-bin-trash-linear',
+    icon: 'vx:trash',
     label: 'Clear All'
   }
 ]

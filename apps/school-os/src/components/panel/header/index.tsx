@@ -103,7 +103,7 @@ export default function Header({
               <Separator className="my-2" />
               <MenuItem
                 ariaLabel="Open command palette"
-                icon="solar:magnifer-linear"
+                icon="vx:search"
                 shortcut="⌘ K"
                 onClick={handlePopoverSearch}
               />
@@ -125,7 +125,7 @@ export default function Header({
                   <MenuItem label="New" hasSub />
                   <Separator className="my-2" />
                   <MenuItem
-                    icon="solar:gallery-linear"
+                    icon="vx:gallery"
                     label="Place image..."
                     shortcut="⇧ ⌘ K"
                   />
@@ -242,7 +242,7 @@ export default function Header({
             <Separator className="my-2" />
             <MenuItem
               ariaLabel="Open command palette"
-              icon="solar:magnifer-linear"
+              icon="vx:search"
               shortcut="⌘ K"
               onClick={handlePopoverSearch}
             />
@@ -264,7 +264,7 @@ export default function Header({
                 <MenuItem label="New" hasSub />
                 <Separator className="my-2" />
                 <MenuItem
-                  icon="solar:gallery-linear"
+                  icon="vx:gallery"
                   label="Place image..."
                   shortcut="⇧ ⌘ K"
                 />

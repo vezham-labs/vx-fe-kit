@@ -1,13 +1,14 @@
 import React from 'react'
 
 import {
+  AltArrowDown as AltArrowDownIcon,
+  AltArrowUp as AltArrowUpIcon,
   ArrowLeft as ArrowLeftIcon,
   Eye as EyeIcon,
   Star as StarIcon
 } from '@vezham/icons-react'
 import { Avatar, Button, ScrollShadow, Typography } from '@vezham/react-v3'
 
-import { AppIcon } from '@components/app-icon'
 import ReorderableGridList from '@components/panel/header/bookmarks/favorites'
 
 import { type QuickAccessProps } from './types'
@@ -124,9 +125,9 @@ const QuickAccess = ({
                   <Avatar.Image src={item.avatar} alt={item.name} />
                 )}
                 <Avatar.Fallback {...getFavoriteAvatarFallbackProps(item.name)}>
-                  <AppIcon
+                  <StarIcon
                     {...getFavoriteAvatarIconProps()}
-                    size="1em"
+                    weight="filled"
                     aria-hidden="true"
                   />
                 </Avatar.Fallback>
@@ -178,7 +179,7 @@ const QuickAccess = ({
         <div {...getSectionHeaderProps()}>
           {/* <Icon
                     {...getSectionIconProps(
-                      'solar:star-bold',
+                      'vx:star-filled',
                       'text-warning'
                     )}
                   /> */}
@@ -195,7 +196,7 @@ const QuickAccess = ({
           <div className="flex flex-1 items-center gap-2">
             {/* <Icon
                       {...getSectionIconProps(
-                        'solar:star-bold',
+                        'vx:star-filled',
                         'text-warning'
                       )}
                     /> */}
@@ -208,15 +209,11 @@ const QuickAccess = ({
               variant="ghost"
               onClick={onToggleScrollFavorites}
               className="text-default-400">
-              <AppIcon
-                icon={
-                  isScrollFavoritesOpen
-                    ? 'solar:alt-arrow-up-linear'
-                    : 'solar:alt-arrow-down-linear'
-                }
-                size={18}
-                aria-hidden="true"
-              />
+              {isScrollFavoritesOpen ? (
+                <AltArrowUpIcon size={18} aria-hidden="true" />
+              ) : (
+                <AltArrowDownIcon size={18} aria-hidden="true" />
+              )}
             </Button>
           </div>
         </div>

@@ -297,10 +297,10 @@ function MoreActions({
             {...getIconButtonProps({
               key: 'more',
               label: 'More',
-              icon: 'lucide:more-vertical'
+              icon: 'vx:menu-vertical'
             })}>
             <AppIcon
-              {...getButtonIconProps('lucide:more-vertical')}
+              {...getButtonIconProps('vx:menu-vertical')}
               size="1em"
               aria-hidden="true"
             />
@@ -331,7 +331,7 @@ function MoreActions({
                       onPress={action.onAction}>
                       <Label {...getDropdownLabelProps()}>
                         <AppIcon
-                          {...getButtonIconProps('lucide:file-text', true)}
+                          {...getButtonIconProps('vx:file-text', true)}
                           size="1em"
                           aria-hidden="true"
                         />
@@ -345,7 +345,7 @@ function MoreActions({
                       <Label {...getDropdownLabelProps()}>
                         <AppIcon
                           {...getButtonIconProps(
-                            'lucide:file-spreadsheet',
+                            'vx:file-spreadsheet',
                             true
                           )}
                           size="1em"

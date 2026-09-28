@@ -128,9 +128,8 @@ const useProps = (originalProps: Props) => {
     className: slots.empty_container({ class: classNames?.empty_container })
   })
 
-  const getEmptyIconProps = (icon: string) => ({
-    icon,
-    width: 64,
+  const getEmptyIconProps = () => ({
+    size: 64,
     className: slots.empty_icon({ class: classNames?.empty_icon })
   })
 
@@ -181,8 +180,7 @@ const useProps = (originalProps: Props) => {
   })
 
   const getItemFallbackIconProps = () => ({
-    icon: 'solar:document-linear',
-    width: 16,
+    size: 16,
     className: slots.item_fallback_icon({
       class: classNames?.item_fallback_icon
     })
@@ -230,11 +228,9 @@ const useProps = (originalProps: Props) => {
   })
 
   const getActionIconProps = (
-    icon: string,
     color?: 'success' | 'danger' | 'default'
   ) => ({
-    icon,
-    width: 18,
+    size: 18,
     className:
       color === 'success'
         ? slots.action_icon_success({ class: classNames?.action_icon })

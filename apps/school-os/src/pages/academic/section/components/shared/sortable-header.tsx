@@ -8,10 +8,10 @@ export function SortableHeader({
 }: SortableHeaderProps) {
   const icon =
     sortDirection === 'ascending'
-      ? 'lucide:chevron-up'
+      ? 'vx:chevron-up'
       : sortDirection === 'descending'
-        ? 'lucide:chevron-down'
-        : 'lucide:chevrons-up-down'
+        ? 'vx:chevron-down'
+        : 'vx:chevrons-up-down'
 
   return (
     <span className={classNames.sortableHeader}>
