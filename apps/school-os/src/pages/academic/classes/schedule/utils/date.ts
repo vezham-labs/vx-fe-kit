@@ -1,4 +1,7 @@
-import type { DatePresetKey, DateRangeFilter } from '../types'
+import type {
+  DatePresetKey,
+  DateRangeFilter
+} from '@pages/academic/classes/schedule/types'
 
 export function getPresetDateRange(preset: Exclude<DatePresetKey, 'custom'>) {
   const today = startOfDay(new Date())

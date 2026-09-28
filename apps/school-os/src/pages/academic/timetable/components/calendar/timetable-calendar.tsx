@@ -1,8 +1,12 @@
 import { Agenda } from '@vezham/react-pro-v3'
 import { Surface } from '@vezham/react-v3'
 
-import type { TimetableAgendaEvent, TimetableCalendarProps } from '../../types'
-import { classNames } from '../../variants'
+import type {
+  TimetableAgendaEvent,
+  TimetableCalendarProps
+} from '@pages/academic/timetable/types'
+import { classNames } from '@pages/academic/timetable/variants'
+
 import {
   AgendaAllDayEventContent,
   AgendaEventContent,

@@ -2,7 +2,7 @@ import {
   type BookmarkItem,
   type BookmarkTreeItem,
   type useProps
-} from '../types'
+} from '@components/panel/header/bookmarks/types'
 
 export interface BookmarkFileTreeProps extends Pick<
   ReturnType<typeof useProps>,

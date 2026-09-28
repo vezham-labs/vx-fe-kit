@@ -12,4 +12,4 @@ export {
   sortOrderOptions,
   statusOptions,
   subjectOptions
-} from '../../../store/useAcademic/useHomework'
+} from '@store/useAcademic/useHomework'

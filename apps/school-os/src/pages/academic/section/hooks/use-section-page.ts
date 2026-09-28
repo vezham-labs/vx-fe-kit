@@ -4,12 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import {
-  emptyForm,
-  sectionColumnOptions,
-  sortOptions,
-  useSection
-} from '../../../../store/useAcademic/useSection'
 import type {
   ClassFormErrors,
   ClassFormState,
@@ -23,20 +17,26 @@ import type {
   OpenDrawerOptions,
   SectionColumnKey,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/section/types'
+import { useDisclosure } from '@pages/academic/section/types'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
+} from '@pages/academic/section/utils/date'
 import {
   createNextClassId,
   rowToForm,
   validateClassForm
-} from '../utils/section'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/section/utils/section'
+import { hiddenTextareaStyles } from '@pages/academic/section/variants'
+import {
+  emptyForm,
+  sectionColumnOptions,
+  sortOptions,
+  useSection
+} from '@store/useAcademic/useSection'
 
 const sectionRoutePath = '/academic/section'
 

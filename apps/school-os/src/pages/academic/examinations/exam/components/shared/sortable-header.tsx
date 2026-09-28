@@ -1,7 +1,6 @@
 import { AppIcon } from '@components/app-icon'
-
-import type { SortableHeaderProps } from '../../types'
-import { classNames } from '../../variants'
+import type { SortableHeaderProps } from '@pages/academic/examinations/exam/types'
+import { classNames } from '@pages/academic/examinations/exam/variants'
 
 export function SortableHeader({
   children,

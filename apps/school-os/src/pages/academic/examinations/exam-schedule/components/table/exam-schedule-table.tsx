@@ -12,12 +12,22 @@ import {
   Table
 } from '@vezham/react-v3'
 
-import { BulkActionBar } from '../../../../shared/bulk-action-bar'
-import { examScheduleColumnOptions, rowCountOptions } from '../../data'
-import type { ClassRow, DrawerMode, ScheduleColumnKey } from '../../types'
-import { getPaginationSummary } from '../../utils/exam-schedule'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+import { SortableHeader } from '@pages/academic/examinations/exam-schedule/components/shared/sortable-header'
+import {
+  examScheduleColumnOptions,
+  rowCountOptions
+} from '@pages/academic/examinations/exam-schedule/data'
+import type {
+  ClassRow,
+  DrawerMode,
+  ScheduleColumnKey
+} from '@pages/academic/examinations/exam-schedule/types'
+import { getPaginationSummary } from '@pages/academic/examinations/exam-schedule/utils/exam-schedule'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/examinations/exam-schedule/variants'
+import { BulkActionBar } from '@pages/academic/shared/bulk-action-bar'
 
 type ExamScheduleTableProps = {
   activeRowId: string | null

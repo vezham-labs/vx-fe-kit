@@ -1,8 +1,8 @@
-import Account from '../preferences/user-settings/account'
-import ContentSocial from '../preferences/user-settings/content-social'
-import Privacy from '../preferences/user-settings/data-privacy'
-import FamilyCenter from '../preferences/user-settings/family-center'
-import Profiles from '../preferences/user-settings/profiles'
+import Account from '@components/panel/footer/preferences/user-settings/account'
+import ContentSocial from '@components/panel/footer/preferences/user-settings/content-social'
+import Privacy from '@components/panel/footer/preferences/user-settings/data-privacy'
+import FamilyCenter from '@components/panel/footer/preferences/user-settings/family-center'
+import Profiles from '@components/panel/footer/preferences/user-settings/profiles'
 
 export type SidebarItem = {
   id: string

@@ -21,11 +21,21 @@ import {
   Tooltip
 } from '@vezham/react-v3'
 
-import { examColumnOptions, rowCountOptions } from '../../data'
-import type { ClassRow, DrawerMode, ExamColumnKey } from '../../types'
-import { getPaginationSummary } from '../../utils/exam'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+import { SortableHeader } from '@pages/academic/examinations/exam/components/shared/sortable-header'
+import {
+  examColumnOptions,
+  rowCountOptions
+} from '@pages/academic/examinations/exam/data'
+import type {
+  ClassRow,
+  DrawerMode,
+  ExamColumnKey
+} from '@pages/academic/examinations/exam/types'
+import { getPaginationSummary } from '@pages/academic/examinations/exam/utils/exam'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/examinations/exam/variants'
 
 type ExamTableProps = {
   activeRowId: string | null

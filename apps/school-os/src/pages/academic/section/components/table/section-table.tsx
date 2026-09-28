@@ -21,11 +21,21 @@ import {
   Tooltip
 } from '@vezham/react-v3'
 
-import { rowCountOptions, sectionColumnOptions } from '../../data'
-import type { ClassRow, DrawerMode, SectionColumnKey } from '../../types'
-import { getPaginationSummary } from '../../utils/section'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+import { SortableHeader } from '@pages/academic/section/components/shared/sortable-header'
+import {
+  rowCountOptions,
+  sectionColumnOptions
+} from '@pages/academic/section/data'
+import type {
+  ClassRow,
+  DrawerMode,
+  SectionColumnKey
+} from '@pages/academic/section/types'
+import { getPaginationSummary } from '@pages/academic/section/utils/section'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/section/variants'
 
 type SectionTableProps = {
   activeRowId: string | null

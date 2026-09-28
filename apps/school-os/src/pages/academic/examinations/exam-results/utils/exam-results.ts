@@ -1,4 +1,7 @@
-import type { ClassFormState, ClassRow } from '../types'
+import type {
+  ClassFormState,
+  ClassRow
+} from '@pages/academic/examinations/exam-results/types'
 
 export function getClassTags(row: ClassRow) {
   return [row.classes, row.section, row.examtype].filter(Boolean)

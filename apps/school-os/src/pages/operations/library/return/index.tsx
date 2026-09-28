@@ -1,8 +1,8 @@
+import OperationsTablePage from '@pages/operations/_shared'
 import {
   returnBooksConfig,
   useReturn
-} from '../../../../store/useOperations/useLibrary/useReturn'
-import OperationsTablePage from '../../_shared'
+} from '@store/useOperations/useLibrary/useReturn'
 
 export default function ReturnBooksOperationsPage() {
   const { data } = useReturn.list({})

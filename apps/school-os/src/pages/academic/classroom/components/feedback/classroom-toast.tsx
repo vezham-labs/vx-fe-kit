@@ -1,7 +1,7 @@
 import { Alert, CloseButton } from '@vezham/react-v3'
 
-import type { ToastState } from '../../types'
-import { classNames } from '../../variants'
+import type { ToastState } from '@pages/academic/classroom/types'
+import { classNames } from '@pages/academic/classroom/variants'
 
 type ClassroomToastProps = {
   toast: ToastState

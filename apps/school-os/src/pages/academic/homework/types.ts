@@ -4,7 +4,7 @@ import type {
   ClassFormState,
   ClassStatus,
   HomeworkItem
-} from '../../../store/useAcademic/useHomework'
+} from '@store/useAcademic/useHomework'
 
 export type {
   ClassFormState,
@@ -12,7 +12,7 @@ export type {
   DatePresetKey,
   HomeworkResponse,
   RQHomework
-} from '../../../store/useAcademic/useHomework'
+} from '@store/useAcademic/useHomework'
 
 export type DrawerMode = 'view' | 'edit' | 'create'
 

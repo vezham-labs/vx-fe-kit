@@ -4,7 +4,7 @@ import type {
   ClassFormState,
   ClassStatus,
   SyllabusItem
-} from '../../../store/useAcademic/useSyllabus'
+} from '@store/useAcademic/useSyllabus'
 
 export type {
   ClassFormState,
@@ -13,7 +13,7 @@ export type {
   SyllabusColumnKey,
   RQSyllabus,
   SyllabusResponse
-} from '../../../store/useAcademic/useSyllabus'
+} from '@store/useAcademic/useSyllabus'
 
 export type DrawerMode = 'view' | 'edit' | 'create'
 

@@ -4,13 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import {
-  emptyForm,
-  initialRows,
-  scheduleColumnOptions,
-  sortOptions
-} from '../../../../../store/useAcademic/useClassSchedule'
-import { sortRows } from '../../../shared/sort'
 import type {
   ClassFormErrors,
   ClassFormState,
@@ -24,20 +17,27 @@ import type {
   OpenDrawerOptions,
   ScheduleColumnKey,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/classes/schedule/types'
+import { useDisclosure } from '@pages/academic/classes/schedule/types'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
+} from '@pages/academic/classes/schedule/utils/date'
 import {
   createNextClassId,
   rowToForm,
   validateClassForm
-} from '../utils/schedule'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/classes/schedule/utils/schedule'
+import { hiddenTextareaStyles } from '@pages/academic/classes/schedule/variants'
+import { sortRows } from '@pages/academic/shared/sort'
+import {
+  emptyForm,
+  initialRows,
+  scheduleColumnOptions,
+  sortOptions
+} from '@store/useAcademic/useClassSchedule'
 
 const emptyFilters: FilterDraft = {
   type: null,

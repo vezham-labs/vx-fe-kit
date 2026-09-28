@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react'
 import { Button, ScrollShadow } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
+import { useUser } from '@store/users/useUserStore'
 
-import { useUser } from '../../../../store/users/useUserStore'
 import { SidebarItem, settingsSidebar } from './data'
 
 type Props = {

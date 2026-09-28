@@ -11,9 +11,9 @@ import {
   Surface
 } from '@vezham/react-v3'
 
-import { reasonOptions, roleOptions } from '../../data'
-import type { FilterDropdownProps } from '../../types'
-import { classNames } from '../../variants'
+import { reasonOptions, roleOptions } from '@pages/academic/reasons/data'
+import type { FilterDropdownProps } from '@pages/academic/reasons/types'
+import { classNames } from '@pages/academic/reasons/variants'
 
 export function FilterDropdown({
   draftFilters,

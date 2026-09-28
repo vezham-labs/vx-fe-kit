@@ -10,5 +10,5 @@ export type {
   OperationRow,
   OperationStatus,
   PersonValue
-} from '../../_shared/types'
-export { useDisclosure } from '../../_shared/types'
+} from '@pages/operations/_shared/types'
+export { useDisclosure } from '@pages/operations/_shared/types'

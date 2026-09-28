@@ -7,7 +7,8 @@ import {
 } from '@vezham/icons-react'
 import { Avatar, ScrollShadow } from '@vezham/react-v2'
 
-import { AppView } from '../../../components/app-view'
+import { AppView } from '@components/app-view'
+
 import { emails, listItemVariants } from './data'
 import type { MailAppProps } from './types'
 

@@ -16,9 +16,9 @@ import {
   dayOptions,
   sectionOptions,
   subjectOptions
-} from '../../data'
-import type { FilterDropdownProps } from '../../types'
-import { classNames } from '../../variants'
+} from '@pages/academic/homework/data'
+import type { FilterDropdownProps } from '@pages/academic/homework/types'
+import { classNames } from '@pages/academic/homework/variants'
 
 export function FilterDropdown({
   draftFilters,

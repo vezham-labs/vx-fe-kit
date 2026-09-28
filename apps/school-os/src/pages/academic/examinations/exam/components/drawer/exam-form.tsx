@@ -10,9 +10,12 @@ import {
   Select
 } from '@vezham/react-v3'
 
-import { endtimeOptions, starttimeOptions } from '../../data'
-import type { ClassFormProps } from '../../types'
-import { classNames } from '../../variants'
+import {
+  endtimeOptions,
+  starttimeOptions
+} from '@pages/academic/examinations/exam/data'
+import type { ClassFormProps } from '@pages/academic/examinations/exam/types'
+import { classNames } from '@pages/academic/examinations/exam/variants'
 
 export function ExamForm({ form, formErrors, onFormChange }: ClassFormProps) {
   return (

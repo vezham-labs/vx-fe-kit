@@ -1,5 +1,8 @@
-import { ClassFormState } from '../../../../../store/useAcademic/useAllClasses'
-import type { ClassFormErrors, ClassRow } from '../types'
+import type {
+  ClassFormErrors,
+  ClassRow
+} from '@pages/academic/classes/all-classes/types'
+import { ClassFormState } from '@store/useAcademic/useAllClasses'
 
 export function getClassTags(row: ClassRow) {
   return [`Grade ${row.className}`, `Section ${row.section}`, row.status]

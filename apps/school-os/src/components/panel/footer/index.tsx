@@ -20,7 +20,8 @@ import {
   Tooltip
 } from '@vezham/react-v3'
 
-import { useUser } from '../../../store/users/useUserStore'
+import { useUser } from '@store/users/useUserStore'
+
 import UserInfoModal from './preferences/modal'
 import { FooterActionsProps } from './types'
 

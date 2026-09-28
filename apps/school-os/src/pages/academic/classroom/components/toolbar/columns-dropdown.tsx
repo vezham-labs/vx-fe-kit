@@ -4,9 +4,12 @@ import {
 } from '@vezham/icons-react'
 import { Button, Dropdown } from '@vezham/react-v3'
 
-import { classroomColumnOptions } from '../../data'
-import type { ClassroomColumnKey, ColumnsDropdownProps } from '../../types'
-import { classNames } from '../../variants'
+import { classroomColumnOptions } from '@pages/academic/classroom/data'
+import type {
+  ClassroomColumnKey,
+  ColumnsDropdownProps
+} from '@pages/academic/classroom/types'
+import { classNames } from '@pages/academic/classroom/variants'
 
 export function ColumnsDropdown({
   visibleColumns,

@@ -11,14 +11,14 @@ import {
   Surface
 } from '@vezham/react-v3'
 
+import { FilterDropdownProps } from '@pages/academic/classes/all-classes/types'
+import { classNames } from '@pages/academic/classes/all-classes/variants'
 import {
   ClassStatus,
   classOptions,
   sectionOptions,
   statusOptions
-} from '../../../../../../store/useAcademic/useAllClasses'
-import { FilterDropdownProps } from '../../types'
-import { classNames } from '../../variants'
+} from '@store/useAcademic/useAllClasses'
 
 export function FilterDropdown({
   draftFilters,

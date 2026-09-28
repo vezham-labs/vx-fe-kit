@@ -1,6 +1,10 @@
 import type { SortDescriptor } from '@vezham/react-v3'
 
-import type { ClassFormErrors, ClassFormState, ClassRow } from '../types'
+import type {
+  ClassFormErrors,
+  ClassFormState,
+  ClassRow
+} from '@pages/academic/homework/types'
 
 export function getClassTags(row: ClassRow) {
   return [

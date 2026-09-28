@@ -1,4 +1,8 @@
-import type { ClassFormErrors, ClassFormState, ClassRow } from '../types'
+import type {
+  ClassFormErrors,
+  ClassFormState,
+  ClassRow
+} from '@pages/academic/examinations/grades/types'
 
 export function getClassTags(row: ClassRow) {
   return [

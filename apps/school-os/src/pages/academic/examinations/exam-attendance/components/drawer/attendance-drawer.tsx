@@ -9,10 +9,11 @@ import {
 } from '@vezham/icons-react'
 import { Button, Drawer, Tooltip } from '@vezham/react-v3'
 
-import { ShortcutTooltipLabel } from '../../../../../../components/shortcut-key'
-import type { AttendanceDrawerProps } from '../../types'
-import { getDrawerTitle } from '../../utils/exam-attendance'
-import { classNames } from '../../variants'
+import { ShortcutTooltipLabel } from '@components/shortcut-key'
+import type { AttendanceDrawerProps } from '@pages/academic/examinations/exam-attendance/types'
+import { getDrawerTitle } from '@pages/academic/examinations/exam-attendance/utils/exam-attendance'
+import { classNames } from '@pages/academic/examinations/exam-attendance/variants'
+
 import { AttendanceDetails } from './attendance-details'
 import { AttendanceForm } from './attendance-form'
 

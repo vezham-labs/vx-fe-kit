@@ -1,1 +1,1 @@
-export * from '../../../../store/useBookmarks/data'
+export * from '@store/useBookmarks/data'

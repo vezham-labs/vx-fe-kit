@@ -12,15 +12,22 @@ import {
   Table
 } from '@vezham/react-v3'
 
+import { SortableHeader } from '@pages/academic/classes/all-classes/components/shared/sortable-header'
+import type {
+  AllClassesColumnKey,
+  ClassRow,
+  DrawerMode
+} from '@pages/academic/classes/all-classes/types'
+import { getPaginationSummary } from '@pages/academic/classes/all-classes/utils/classes'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/classes/all-classes/variants'
+import { BulkActionBar } from '@pages/academic/shared/bulk-action-bar'
 import {
   allClassesColumnOptions,
   rowCountOptions
-} from '../../../../../../store/useAcademic/useAllClasses/data'
-import { BulkActionBar } from '../../../../shared/bulk-action-bar'
-import type { AllClassesColumnKey, ClassRow, DrawerMode } from '../../types'
-import { getPaginationSummary } from '../../utils/classes'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+} from '@store/useAcademic/useAllClasses/data'
 
 type ClassesTableProps = {
   activeRowId: string | null

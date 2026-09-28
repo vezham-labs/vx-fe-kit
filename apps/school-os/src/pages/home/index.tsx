@@ -1,4 +1,4 @@
-import ReorderableGridList from '../../components/panel/header/bookmarks/favorites'
+import ReorderableGridList from '@components/panel/header/bookmarks/favorites'
 
 const HomePage = () => {
   return (

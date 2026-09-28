@@ -13,8 +13,8 @@ import {
 import { Chip, CloseButton } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
+import WidgetsGrid from '@pages/widgets'
 
-import WidgetsGrid from '../../../../pages/widgets'
 import { Props, useProps } from './types'
 
 const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {

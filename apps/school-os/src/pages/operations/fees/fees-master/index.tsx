@@ -1,8 +1,8 @@
+import OperationsTablePage from '@pages/operations/_shared'
 import {
   feesMasterConfig,
   useFeesMaster
-} from '../../../../store/useOperations/useFees/useFeesMaster'
-import OperationsTablePage from '../../_shared'
+} from '@store/useOperations/useFees/useFeesMaster'
 
 export default function FeesMasterOperationsPage() {
   const { data } = useFeesMaster.list({})

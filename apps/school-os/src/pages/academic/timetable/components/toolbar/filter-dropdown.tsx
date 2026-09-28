@@ -10,9 +10,10 @@ import {
   sectionOptions,
   subjectOptions,
   teachers
-} from '../../data'
-import type { FilterDropdownProps } from '../../types'
-import { classNames } from '../../variants'
+} from '@pages/academic/timetable/data'
+import type { FilterDropdownProps } from '@pages/academic/timetable/types'
+import { classNames } from '@pages/academic/timetable/variants'
+
 import { FilterSelect } from './filter-select'
 
 export function FilterDropdown({

@@ -4,12 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import {
-  emptyForm,
-  sortOptions,
-  syllabusColumnOptions,
-  useSyllabus
-} from '../../../../store/useAcademic/useSyllabus'
 import type {
   ClassFormErrors,
   ClassFormState,
@@ -22,20 +16,26 @@ import type {
   FilterDraft,
   OpenDrawerOptions,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/syllabus/types'
+import { useDisclosure } from '@pages/academic/syllabus/types'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
+} from '@pages/academic/syllabus/utils/date'
 import {
   createNextClassId,
   rowToForm,
   validateClassForm
-} from '../utils/syllabus'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/syllabus/utils/syllabus'
+import { hiddenTextareaStyles } from '@pages/academic/syllabus/variants'
+import {
+  emptyForm,
+  sortOptions,
+  syllabusColumnOptions,
+  useSyllabus
+} from '@store/useAcademic/useSyllabus'
 
 const syllabusRoutePath = '/academic/syllabus'
 

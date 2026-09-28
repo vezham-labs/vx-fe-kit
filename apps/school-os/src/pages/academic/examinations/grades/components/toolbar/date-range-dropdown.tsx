@@ -13,9 +13,12 @@ import {
   Surface
 } from '@vezham/react-v3'
 
-import { dateOptions } from '../../data'
-import type { CustomDateRangeValue, DatePresetKey } from '../../types'
-import { classNames } from '../../variants'
+import { dateOptions } from '@pages/academic/examinations/grades/data'
+import type {
+  CustomDateRangeValue,
+  DatePresetKey
+} from '@pages/academic/examinations/grades/types'
+import { classNames } from '@pages/academic/examinations/grades/variants'
 
 type DateRangeDropdownProps = {
   activeDateLabel: string

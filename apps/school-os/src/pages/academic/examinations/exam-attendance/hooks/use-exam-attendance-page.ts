@@ -4,13 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import {
-  attendanceColumnOptions,
-  emptyForm,
-  sortOptions,
-  useExamAttendance
-} from '../../../../../store/useAcademic/useExamAttendance'
-import { sortRows } from '../../../shared/sort'
 import type {
   AttendanceColumnKey,
   AttendanceFormErrors,
@@ -24,20 +17,27 @@ import type {
   FilterDraft,
   OpenDrawerOptions,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/examinations/exam-attendance/types'
+import { useDisclosure } from '@pages/academic/examinations/exam-attendance/types'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
+} from '@pages/academic/examinations/exam-attendance/utils/date'
 import {
   createNextAttendanceId,
   rowToForm,
   validateAttendanceForm
-} from '../utils/exam-attendance'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/examinations/exam-attendance/utils/exam-attendance'
+import { hiddenTextareaStyles } from '@pages/academic/examinations/exam-attendance/variants'
+import { sortRows } from '@pages/academic/shared/sort'
+import {
+  attendanceColumnOptions,
+  emptyForm,
+  sortOptions,
+  useExamAttendance
+} from '@store/useAcademic/useExamAttendance'
 
 const moduleRoutePath = '/academic/examinations/exam-attendance'
 

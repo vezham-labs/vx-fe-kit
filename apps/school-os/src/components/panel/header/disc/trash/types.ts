@@ -1,6 +1,6 @@
 import { Dispatch, ReactNode, SetStateAction } from 'react'
 
-import type { useProps } from '../types'
+import type { useProps } from '@components/panel/header/disc/types'
 
 export interface TrashItem {
   id: string

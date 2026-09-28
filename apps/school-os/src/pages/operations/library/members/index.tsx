@@ -1,8 +1,8 @@
+import OperationsTablePage from '@pages/operations/_shared'
 import {
   libraryMembersConfig,
   useMembers
-} from '../../../../store/useOperations/useLibrary/useMembers'
-import OperationsTablePage from '../../_shared'
+} from '@store/useOperations/useLibrary/useMembers'
 
 export default function LibraryMembersOperationsPage() {
   const { data } = useMembers.list({})

@@ -4,12 +4,12 @@ import type {
   AttendanceDetailSummaryProps,
   AttendanceDetailsProps,
   DetailLineProps
-} from '../../types'
+} from '@pages/academic/examinations/exam-attendance/types'
 import {
   getAttendanceChipColor,
   getAttendanceTags
-} from '../../utils/exam-attendance'
-import { classNames } from '../../variants'
+} from '@pages/academic/examinations/exam-attendance/utils/exam-attendance'
+import { classNames } from '@pages/academic/examinations/exam-attendance/variants'
 
 export function AttendanceDetails({ row }: AttendanceDetailsProps) {
   if (!row) {

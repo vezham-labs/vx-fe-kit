@@ -5,7 +5,7 @@ import type {
   ClassStatus,
   ClassroomColumnKey,
   ClassroomItem
-} from '../../../store/useAcademic/useClassroom'
+} from '@store/useAcademic/useClassroom'
 
 export type {
   ClassFormState,
@@ -14,7 +14,7 @@ export type {
   ClassroomColumnKey,
   RQClassroom,
   ClassroomResponse
-} from '../../../store/useAcademic/useClassroom'
+} from '@store/useAcademic/useClassroom'
 
 export type DrawerMode = 'view' | 'edit' | 'create'
 

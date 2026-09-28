@@ -5,9 +5,9 @@ import {
   marksfromOptions,
   marksuptoOptions,
   pointOptions
-} from '../../data'
-import type { ClassFormProps } from '../../types'
-import { classNames } from '../../variants'
+} from '@pages/academic/examinations/grades/data'
+import type { ClassFormProps } from '@pages/academic/examinations/grades/types'
+import { classNames } from '@pages/academic/examinations/grades/variants'
 
 export function ClassForm({ form, formErrors, onFormChange }: ClassFormProps) {
   return (

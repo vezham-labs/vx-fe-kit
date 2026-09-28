@@ -14,9 +14,12 @@ import {
   sectionOptions,
   statusOptions,
   subjectOptions
-} from '../../data'
-import type { ClassFormProps, ClassStatus } from '../../types'
-import { classNames } from '../../variants'
+} from '@pages/academic/examinations/exam-schedule/data'
+import type {
+  ClassFormProps,
+  ClassStatus
+} from '@pages/academic/examinations/exam-schedule/types'
+import { classNames } from '@pages/academic/examinations/exam-schedule/variants'
 
 export function ScheduleForm({
   form,

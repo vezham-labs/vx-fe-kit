@@ -11,13 +11,19 @@ import {
   Table
 } from '@vezham/react-v3'
 
-import { BulkActionBar } from '../../../shared/bulk-action-bar'
-import { reasonsColumnOptions, rowCountOptions } from '../../data'
-import type { ClassRow, DrawerMode } from '../../types'
-import { formatDisplayDate } from '../../utils/date'
-import { getPaginationSummary } from '../../utils/reasons'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+import { SortableHeader } from '@pages/academic/reasons/components/shared/sortable-header'
+import {
+  reasonsColumnOptions,
+  rowCountOptions
+} from '@pages/academic/reasons/data'
+import type { ClassRow, DrawerMode } from '@pages/academic/reasons/types'
+import { formatDisplayDate } from '@pages/academic/reasons/utils/date'
+import { getPaginationSummary } from '@pages/academic/reasons/utils/reasons'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/reasons/variants'
+import { BulkActionBar } from '@pages/academic/shared/bulk-action-bar'
 
 type ReasonsTableProps = {
   activeRowId: string | null

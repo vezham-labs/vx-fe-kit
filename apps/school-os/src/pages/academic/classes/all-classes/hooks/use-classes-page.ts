@@ -4,14 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import {
-  ClassFormState,
-  allClassesColumnOptions,
-  emptyForm,
-  initialRows,
-  sortOptions
-} from '../../../../../store/useAcademic/useAllClasses'
-import { sortRows } from '../../../shared/sort'
 import type {
   AllClassesColumnKey,
   ClassFormErrors,
@@ -24,20 +16,28 @@ import type {
   FilterDraft,
   OpenDrawerOptions,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/classes/all-classes/types'
+import { useDisclosure } from '@pages/academic/classes/all-classes/types'
 import {
   createNextClassId,
   rowToForm,
   validateClassForm
-} from '../utils/classes'
+} from '@pages/academic/classes/all-classes/utils/classes'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/classes/all-classes/utils/date'
+import { hiddenTextareaStyles } from '@pages/academic/classes/all-classes/variants'
+import { sortRows } from '@pages/academic/shared/sort'
+import {
+  ClassFormState,
+  allClassesColumnOptions,
+  emptyForm,
+  initialRows,
+  sortOptions
+} from '@store/useAcademic/useAllClasses'
 
 const emptyFilters: FilterDraft = {
   className: null,

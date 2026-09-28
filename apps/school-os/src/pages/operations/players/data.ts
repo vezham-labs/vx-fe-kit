@@ -1,7 +1,8 @@
 import type { SortDescriptor } from '@vezham/react-v3'
 
-import { playersData } from '../../../store/useOperations/usePlayers'
-import type { PlayerItem } from '../../../store/useOperations/usePlayers'
+import { playersData } from '@store/useOperations/usePlayers'
+import type { PlayerItem } from '@store/useOperations/usePlayers'
+
 import type { OperationColumn, OperationPageConfig } from './types'
 
 const columns: OperationColumn[] = [

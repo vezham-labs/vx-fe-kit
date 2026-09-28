@@ -4,9 +4,9 @@ import type {
   ClassDetailSummaryProps,
   ClassDetailsProps,
   DetailLineProps
-} from '../../types'
-import { getScheduleTags } from '../../utils/exam-schedule'
-import { classNames } from '../../variants'
+} from '@pages/academic/examinations/exam-schedule/types'
+import { getScheduleTags } from '@pages/academic/examinations/exam-schedule/utils/exam-schedule'
+import { classNames } from '@pages/academic/examinations/exam-schedule/variants'
 
 export function ScheduleDetails({ row }: ClassDetailsProps) {
   if (!row) {

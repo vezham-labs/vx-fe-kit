@@ -4,9 +4,9 @@ import type {
   ClassDetailSummaryProps,
   ClassDetailsProps,
   DetailLineProps
-} from '../../types'
-import { getClassTags } from '../../utils/homework'
-import { classNames } from '../../variants'
+} from '@pages/academic/homework/types'
+import { getClassTags } from '@pages/academic/homework/utils/homework'
+import { classNames } from '@pages/academic/homework/variants'
 
 export function ClassDetails({ row }: ClassDetailsProps) {
   if (!row) {

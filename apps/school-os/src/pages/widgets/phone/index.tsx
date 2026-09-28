@@ -4,8 +4,8 @@ import { Phone as PhoneIcon } from '@vezham/icons-react'
 import { Avatar, ScrollShadow } from '@vezham/react-v2'
 
 import { AppIcon } from '@components/app-icon'
+import { AppView } from '@components/app-view'
 
-import { AppView } from '../../../components/app-view'
 import { recentCalls } from './data'
 import type { PhoneAppProps } from './types'
 

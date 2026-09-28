@@ -9,9 +9,9 @@ import type {
   TimetableFilter,
   TimetableFormErrors,
   TimetableFormState
-} from '../../../store/useAcademic/useTimetable/types'
+} from '@store/useAcademic/useTimetable/types'
 
-export { useDisclosure } from '../../../store/useAcademic/useTimetable/types'
+export { useDisclosure } from '@store/useAcademic/useTimetable/types'
 
 export type {
   DrawerState,
@@ -28,7 +28,7 @@ export type {
   TimetableFormState,
   TimetableResponse,
   TimetableView
-} from '../../../store/useAcademic/useTimetable/types'
+} from '@store/useAcademic/useTimetable/types'
 
 export type FilterDropdownProps = {
   draftFilters: TimetableFilter

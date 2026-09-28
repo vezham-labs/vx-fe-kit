@@ -1,7 +1,8 @@
 import { Surface } from '@vezham/react-v3'
 
-import type { TimetableToolbarProps } from '../../types'
-import { classNames } from '../../variants'
+import type { TimetableToolbarProps } from '@pages/academic/timetable/types'
+import { classNames } from '@pages/academic/timetable/variants'
+
 import { FilterDropdown } from './filter-dropdown'
 
 export function TimetableToolbar({

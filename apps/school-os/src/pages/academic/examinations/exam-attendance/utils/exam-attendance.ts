@@ -3,7 +3,7 @@ import type {
   AttendanceFormState,
   AttendanceRow,
   AttendanceStatus
-} from '../types'
+} from '@pages/academic/examinations/exam-attendance/types'
 
 export function getAttendanceChipColor(
   status: AttendanceStatus

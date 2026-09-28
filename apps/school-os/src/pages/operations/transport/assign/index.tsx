@@ -1,8 +1,8 @@
+import OperationsTablePage from '@pages/operations/_shared'
 import {
   assignVehicleConfig,
   useAssign
-} from '../../../../store/useOperations/useTransport/useAssign'
-import OperationsTablePage from '../../_shared'
+} from '@store/useOperations/useTransport/useAssign'
 
 export default function AssignVehicleOperationsPage() {
   const { data } = useAssign.list({})

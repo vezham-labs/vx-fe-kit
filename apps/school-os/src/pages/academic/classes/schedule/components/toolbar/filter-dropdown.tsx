@@ -11,12 +11,12 @@ import {
   Surface
 } from '@vezham/react-v3'
 
-import {
-  statusOptions,
-  typeOptions
-} from '../../../../../../store/useAcademic/useClassSchedule'
-import type { ClassStatus, FilterDropdownProps } from '../../types'
-import { classNames } from '../../variants'
+import type {
+  ClassStatus,
+  FilterDropdownProps
+} from '@pages/academic/classes/schedule/types'
+import { classNames } from '@pages/academic/classes/schedule/variants'
+import { statusOptions, typeOptions } from '@store/useAcademic/useClassSchedule'
 
 export function FilterDropdown({
   draftFilters,

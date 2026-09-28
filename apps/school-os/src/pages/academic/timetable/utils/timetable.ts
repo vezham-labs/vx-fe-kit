@@ -4,7 +4,7 @@ import type {
   TimetableEvent,
   TimetableFormErrors,
   TimetableFormState
-} from '../types'
+} from '@pages/academic/timetable/types'
 
 export function validateTimetableForm(form: TimetableFormState) {
   const errors: TimetableFormErrors = {}

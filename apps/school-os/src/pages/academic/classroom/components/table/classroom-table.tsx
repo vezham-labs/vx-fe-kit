@@ -21,11 +21,21 @@ import {
   Tooltip
 } from '@vezham/react-v3'
 
-import { classroomColumnOptions, rowCountOptions } from '../../data'
-import type { ClassRow, ClassroomColumnKey, DrawerMode } from '../../types'
-import { getPaginationSummary } from '../../utils/classroom'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+import { SortableHeader } from '@pages/academic/classroom/components/shared/sortable-header'
+import {
+  classroomColumnOptions,
+  rowCountOptions
+} from '@pages/academic/classroom/data'
+import type {
+  ClassRow,
+  ClassroomColumnKey,
+  DrawerMode
+} from '@pages/academic/classroom/types'
+import { getPaginationSummary } from '@pages/academic/classroom/utils/classroom'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/classroom/variants'
 
 type ClassroomTableProps = {
   activeRowId: string | null

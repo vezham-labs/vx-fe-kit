@@ -1,5 +1,6 @@
+import { Widget, WidgetContent } from '@src/ui/widget'
+
 import { CalendarApp } from '.'
-import { Widget, WidgetContent } from '../../../ui/widget'
 
 const CalendarAppWidget = () => {
   return (

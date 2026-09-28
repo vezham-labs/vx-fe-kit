@@ -4,6 +4,27 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAgenda } from '@vezham/react-pro-v3'
 import type { SortDescriptor } from '@vezham/react-v3'
 
+import type {
+  TimetableEvent,
+  TimetableFilter,
+  TimetableFormErrors,
+  TimetableFormState,
+  TimetableView
+} from '@pages/academic/timetable/types'
+import { useDisclosure } from '@pages/academic/timetable/types'
+import {
+  getAgendaDate,
+  getDateForDayName,
+  getDayName,
+  getTodayCalendarDate
+} from '@pages/academic/timetable/utils/date'
+import {
+  getFilledTimetableRows,
+  getSubjectColor,
+  isValidEvent,
+  parseTimeInput,
+  validateTimetableForm
+} from '@pages/academic/timetable/utils/timetable'
 import {
   dayOptions,
   emptyFilters,
@@ -11,28 +32,7 @@ import {
   sortOptions,
   toAgendaEvents,
   useTimetable
-} from '../../../../store/useAcademic/useTimetable'
-import type {
-  TimetableEvent,
-  TimetableFilter,
-  TimetableFormErrors,
-  TimetableFormState,
-  TimetableView
-} from '../types'
-import { useDisclosure } from '../types'
-import {
-  getAgendaDate,
-  getDateForDayName,
-  getDayName,
-  getTodayCalendarDate
-} from '../utils/date'
-import {
-  getFilledTimetableRows,
-  getSubjectColor,
-  isValidEvent,
-  parseTimeInput,
-  validateTimetableForm
-} from '../utils/timetable'
+} from '@store/useAcademic/useTimetable'
 
 export function useTimetablePage() {
   const { data: timetableEvents } = useTimetable.list({})

@@ -1,1 +1,1 @@
-export * from '../../../store/useAcademic/useTimetable/data'
+export * from '@store/useAcademic/useTimetable/data'

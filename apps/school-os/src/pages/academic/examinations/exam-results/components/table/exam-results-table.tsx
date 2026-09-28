@@ -13,12 +13,22 @@ import {
   Table
 } from '@vezham/react-v3'
 
-import { BulkActionBar } from '../../../../shared/bulk-action-bar'
-import { examResultsColumnOptions, rowCountOptions } from '../../data'
-import type { ClassRow, DrawerMode, ExamResultsColumnKey } from '../../types'
-import { getPaginationSummary } from '../../utils/exam-results'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+import { SortableHeader } from '@pages/academic/examinations/exam-results/components/shared/sortable-header'
+import {
+  examResultsColumnOptions,
+  rowCountOptions
+} from '@pages/academic/examinations/exam-results/data'
+import type {
+  ClassRow,
+  DrawerMode,
+  ExamResultsColumnKey
+} from '@pages/academic/examinations/exam-results/types'
+import { getPaginationSummary } from '@pages/academic/examinations/exam-results/utils/exam-results'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/examinations/exam-results/variants'
+import { BulkActionBar } from '@pages/academic/shared/bulk-action-bar'
 
 type ExamResultsTableProps = {
   activeRowId: string | null

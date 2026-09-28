@@ -1,1 +1,4 @@
-export { classNames, getTableRowClassName } from '../../_shared/variant'
+export {
+  classNames,
+  getTableRowClassName
+} from '@pages/operations/_shared/variant'

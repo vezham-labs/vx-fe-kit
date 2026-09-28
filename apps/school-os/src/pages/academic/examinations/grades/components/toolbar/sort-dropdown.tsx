@@ -1,7 +1,7 @@
 import { type SortDescriptor } from '@vezham/react-v3'
 
-import { SortDropdown as SharedSortDropdown } from '../../../../shared/sort-dropdown'
-import { sortOptions } from '../../data'
+import { sortOptions } from '@pages/academic/examinations/grades/data'
+import { SortDropdown as SharedSortDropdown } from '@pages/academic/shared/sort-dropdown'
 
 type SortDropdownProps = {
   activeSortLabel: string

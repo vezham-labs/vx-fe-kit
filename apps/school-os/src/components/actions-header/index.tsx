@@ -18,8 +18,7 @@ import {
 } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
-
-import { ShortcutKey } from '../shortcut-key'
+import { ShortcutKey } from '@components/shortcut-key'
 
 export interface ActionItem {
   key: string

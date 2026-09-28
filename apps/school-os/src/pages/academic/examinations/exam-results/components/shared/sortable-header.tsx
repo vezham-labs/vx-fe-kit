@@ -3,8 +3,8 @@ import {
   ArrowUp as ArrowUpIcon
 } from '@vezham/icons-react'
 
-import type { SortableHeaderProps } from '../../types'
-import { classNames } from '../../variants'
+import type { SortableHeaderProps } from '@pages/academic/examinations/exam-results/types'
+import { classNames } from '@pages/academic/examinations/exam-results/variants'
 
 export function SortableHeader({
   children,

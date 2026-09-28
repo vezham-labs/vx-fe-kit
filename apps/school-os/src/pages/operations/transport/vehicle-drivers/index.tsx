@@ -1,8 +1,8 @@
+import OperationsTablePage from '@pages/operations/_shared'
 import {
   useVehicleDrivers,
   vehicleDriversConfig
-} from '../../../../store/useOperations/useTransport/useVehicleDrivers'
-import OperationsTablePage from '../../_shared'
+} from '@store/useOperations/useTransport/useVehicleDrivers'
 
 export default function VehicleDriversOperationsPage() {
   const { data } = useVehicleDrivers.list({})

@@ -7,13 +7,12 @@ import {
 } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
-
+import { classNames } from '@pages/academic/classes/all-classes/variants'
 import {
   allClassesColumnOptions,
   sortOptions,
   sortOrderOptions
-} from '../../../../../../store/useAcademic/useAllClasses/data'
-import { classNames } from '../../variants'
+} from '@store/useAcademic/useAllClasses/data'
 
 type SortDropdownProps = {
   activeSortLabel: string

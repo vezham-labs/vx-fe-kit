@@ -1,9 +1,9 @@
 import { Agenda } from '@vezham/react-pro-v3'
 import { Avatar } from '@vezham/react-v3'
 
-import type { TimetableAgendaEvent } from '../../types'
-import { getInitials } from '../../utils/timetable'
-import { classNames } from '../../variants'
+import type { TimetableAgendaEvent } from '@pages/academic/timetable/types'
+import { getInitials } from '@pages/academic/timetable/utils/timetable'
+import { classNames } from '@pages/academic/timetable/variants'
 
 export function AgendaEventContent({ event }: { event: TimetableAgendaEvent }) {
   return (

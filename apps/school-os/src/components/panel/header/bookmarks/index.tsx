@@ -10,9 +10,9 @@ import {
 import { ScrollShadow, Tooltip, Typography } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
+import { InfoPanelDefinition, useInfoPanel } from '@components/panel/info-panel'
+import { useBookmarks } from '@store/useBookmarks'
 
-import { useBookmarks } from '../../../../store/useBookmarks'
-import { InfoPanelDefinition, useInfoPanel } from '../../info-panel'
 import BookmarkFileTree from './bookmark-file-tree'
 import {
   collectTreeItemIds,

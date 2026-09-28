@@ -1,8 +1,8 @@
+import OperationsTablePage from '@pages/operations/_shared'
 import {
   hostelRoomConfig,
   useHostelRoom
-} from '../../../../store/useOperations/useHostel/useHostelRoom'
-import OperationsTablePage from '../../_shared'
+} from '@store/useOperations/useHostel/useHostelRoom'
 
 export default function HostelRoomOperationsPage() {
   const { data } = useHostelRoom.list({})

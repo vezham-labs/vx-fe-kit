@@ -1,8 +1,8 @@
 import { Input, Label, ListBox, Select, Switch } from '@vezham/react-v3'
 
-import { roleOptions } from '../../data'
-import type { ClassFormProps } from '../../types'
-import { classNames } from '../../variants'
+import { roleOptions } from '@pages/academic/reasons/data'
+import type { ClassFormProps } from '@pages/academic/reasons/types'
+import { classNames } from '@pages/academic/reasons/variants'
 
 export function ClassForm({ form, formErrors, onFormChange }: ClassFormProps) {
   return (

@@ -1,1 +1,1 @@
-export * from '../../../../store/useAcademic/useExamAttendance'
+export * from '@store/useAcademic/useExamAttendance'

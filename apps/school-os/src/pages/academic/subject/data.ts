@@ -10,4 +10,4 @@ export {
   subjectColumnOptions,
   subjectData as initialRows,
   typeOptions
-} from '../../../store/useAcademic/useSubject'
+} from '@store/useAcademic/useSubject'

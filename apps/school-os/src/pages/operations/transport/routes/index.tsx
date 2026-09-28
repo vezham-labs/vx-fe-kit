@@ -1,8 +1,8 @@
+import OperationsTablePage from '@pages/operations/_shared'
 import {
   routesConfig,
   useRoutes
-} from '../../../../store/useOperations/useTransport/useRoutes'
-import OperationsTablePage from '../../_shared'
+} from '@store/useOperations/useTransport/useRoutes'
 
 export default function RoutesOperationsPage() {
   const { data } = useRoutes.list({})

@@ -1,5 +1,6 @@
+import { Widget, WidgetContent } from '@src/ui/widget'
+
 import { MailApp } from '.'
-import { Widget, WidgetContent } from '../../../ui/widget'
 
 const Mail = () => {
   return (

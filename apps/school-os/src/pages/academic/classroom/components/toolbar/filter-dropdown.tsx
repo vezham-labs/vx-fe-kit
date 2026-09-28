@@ -11,9 +11,9 @@ import {
   Surface
 } from '@vezham/react-v3'
 
-import { capacityOptions, roomnoOptions } from '../../data'
-import type { FilterDropdownProps } from '../../types'
-import { classNames } from '../../variants'
+import { capacityOptions, roomnoOptions } from '@pages/academic/classroom/data'
+import type { FilterDropdownProps } from '@pages/academic/classroom/types'
+import { classNames } from '@pages/academic/classroom/variants'
 
 export function FilterDropdown({
   draftFilters,

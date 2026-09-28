@@ -7,8 +7,8 @@ import {
   useState
 } from 'react'
 
-import { useCommand } from '../command'
-import { useInfoPanel } from '../panel/info-panel'
+import { useCommand } from '@components/command'
+import { useInfoPanel } from '@components/panel/info-panel'
 
 type WorkspaceNavigationContextValue = {
   isNavigationCollapsed: boolean

@@ -1,8 +1,8 @@
+import OperationsTablePage from '@pages/operations/_shared'
 import {
   feesTypeConfig,
   useFeesType
-} from '../../../../store/useOperations/useFees/useFeesType'
-import OperationsTablePage from '../../_shared'
+} from '@store/useOperations/useFees/useFeesType'
 
 export default function FeesTypeOperationsPage() {
   const { data } = useFeesType.list({})

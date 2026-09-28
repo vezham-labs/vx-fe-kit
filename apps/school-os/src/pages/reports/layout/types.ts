@@ -12,7 +12,8 @@ import {
 
 import { cn } from '@vezham/react-v3'
 
-import { useWorkspaceNavigation } from '../../../components/workspace-navigation'
+import { useWorkspaceNavigation } from '@components/workspace-navigation'
+
 import {
   createExcludedPageKeys,
   createLabelsByPageKey,
@@ -778,9 +779,9 @@ function findSidebarItem(items: AcademicMenuItem[], key: string) {
 
 export { useProps }
 export type {
-  ActionItem,
   AcademicMenuItem,
   AcademicTab,
+  ActionItem,
   HeaderActionsConfig,
   LayoutConfig,
   Props,

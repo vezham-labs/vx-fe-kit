@@ -5,7 +5,7 @@ import type {
   ClassStatus,
   SubjectItem,
   typeStatus
-} from '../../../store/useAcademic/useSubject'
+} from '@store/useAcademic/useSubject'
 
 export type {
   ClassFormState,
@@ -14,7 +14,7 @@ export type {
   RQSubject,
   SubjectResponse,
   typeStatus
-} from '../../../store/useAcademic/useSubject'
+} from '@store/useAcademic/useSubject'
 
 export type DrawerMode = 'view' | 'edit' | 'create'
 

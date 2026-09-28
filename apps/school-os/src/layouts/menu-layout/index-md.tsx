@@ -3,23 +3,21 @@ import { useEffect, useState } from 'react'
 
 import { Surface } from '@vezham/react-v3'
 
-import { useCommand } from '../../components/command'
-import Footer from '../../components/panel/footer'
-import { aiPanel } from '../../components/panel/footer/ai'
-import { ControlCenterDrawer } from '../../components/panel/footer/control-center'
-import { NotificationDrawer } from '../../components/panel/footer/notification-center'
-import UserInfoModal from '../../components/panel/footer/preferences/modal'
-import Header from '../../components/panel/header'
-import { bookmarksPanel } from '../../components/panel/header/bookmarks'
-import { discPanel } from '../../components/panel/header/disc'
-import {
-  InfoPanelContainer,
-  useInfoPanel
-} from '../../components/panel/info-panel'
-import { Menu } from '../../components/panel/menu'
-import { items } from '../../components/panel/menu/sidebar-items'
-import { useWorkspaceNavigation } from '../../components/workspace-navigation'
-import { useUser } from '../../store/users/useUserStore'
+import { useCommand } from '@components/command'
+import Footer from '@components/panel/footer'
+import { aiPanel } from '@components/panel/footer/ai'
+import { ControlCenterDrawer } from '@components/panel/footer/control-center'
+import { NotificationDrawer } from '@components/panel/footer/notification-center'
+import UserInfoModal from '@components/panel/footer/preferences/modal'
+import Header from '@components/panel/header'
+import { bookmarksPanel } from '@components/panel/header/bookmarks'
+import { discPanel } from '@components/panel/header/disc'
+import { InfoPanelContainer, useInfoPanel } from '@components/panel/info-panel'
+import { Menu } from '@components/panel/menu'
+import { items } from '@components/panel/menu/sidebar-items'
+import { useWorkspaceNavigation } from '@components/workspace-navigation'
+import { useUser } from '@store/users/useUserStore'
+
 import HomeNavigationBubble from './home-navigation-bubble'
 
 export default function MenuMD() {

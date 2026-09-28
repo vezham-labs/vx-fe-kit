@@ -1,4 +1,4 @@
-import { type BookmarkTreeItem } from '../types'
+import { type BookmarkTreeItem } from '@components/panel/header/bookmarks/types'
 
 const getUniqueTreeId = (baseId: string, counts: Map<string, number>) => {
   const count = counts.get(baseId) ?? 0

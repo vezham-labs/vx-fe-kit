@@ -1,5 +1,6 @@
+import { Widget, WidgetContent } from '@src/ui/widget'
+
 import { PhoneApp } from '.'
-import { Widget, WidgetContent } from '../../../ui/widget'
 
 const Phone = () => {
   return (

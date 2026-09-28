@@ -4,12 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import {
-  emptyForm,
-  sortOptions,
-  subjectColumnOptions,
-  useSubject
-} from '../../../../store/useAcademic/useSubject'
 import type {
   ClassFormErrors,
   ClassFormState,
@@ -22,20 +16,26 @@ import type {
   FilterDraft,
   OpenDrawerOptions,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/subject/types'
+import { useDisclosure } from '@pages/academic/subject/types'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
+} from '@pages/academic/subject/utils/date'
 import {
   createNextClassId,
   rowToForm,
   validateClassForm
-} from '../utils/subject'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/subject/utils/subject'
+import { hiddenTextareaStyles } from '@pages/academic/subject/variants'
+import {
+  emptyForm,
+  sortOptions,
+  subjectColumnOptions,
+  useSubject
+} from '@store/useAcademic/useSubject'
 
 const subjectRoutePath = '/academic/subject'
 

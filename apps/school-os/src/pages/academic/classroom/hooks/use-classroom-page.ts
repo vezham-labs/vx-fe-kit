@@ -4,12 +4,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import {
-  classroomColumnOptions,
-  emptyForm,
-  sortOptions,
-  useClassroom
-} from '../../../../store/useAcademic/useClassroom'
 import type {
   ClassFormErrors,
   ClassFormState,
@@ -23,20 +17,26 @@ import type {
   FilterDraft,
   OpenDrawerOptions,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/classroom/types'
+import { useDisclosure } from '@pages/academic/classroom/types'
 import {
   createNextClassId,
   rowToForm,
   validateClassForm
-} from '../utils/classroom'
+} from '@pages/academic/classroom/utils/classroom'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/classroom/utils/date'
+import { hiddenTextareaStyles } from '@pages/academic/classroom/variants'
+import {
+  classroomColumnOptions,
+  emptyForm,
+  sortOptions,
+  useClassroom
+} from '@store/useAcademic/useClassroom'
 
 const classroomRoutePath = '/academic/classroom'
 

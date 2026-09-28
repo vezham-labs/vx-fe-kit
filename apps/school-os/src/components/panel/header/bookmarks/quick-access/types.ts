@@ -7,7 +7,7 @@ import {
 
 import { Avatar } from '@vezham/react-v3'
 
-import { type FavoriteItem } from '../types'
+import { type FavoriteItem } from '@components/panel/header/bookmarks/types'
 
 export interface QuickAccessProps {
   mode: 'sections' | 'all'

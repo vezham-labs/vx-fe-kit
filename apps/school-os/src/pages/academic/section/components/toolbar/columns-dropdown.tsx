@@ -4,9 +4,12 @@ import {
 } from '@vezham/icons-react'
 import { Button, Dropdown } from '@vezham/react-v3'
 
-import { sectionColumnOptions } from '../../data'
-import type { ColumnsDropdownProps, SectionColumnKey } from '../../types'
-import { classNames } from '../../variants'
+import { sectionColumnOptions } from '@pages/academic/section/data'
+import type {
+  ColumnsDropdownProps,
+  SectionColumnKey
+} from '@pages/academic/section/types'
+import { classNames } from '@pages/academic/section/variants'
 
 export function ColumnsDropdown({
   visibleColumns,

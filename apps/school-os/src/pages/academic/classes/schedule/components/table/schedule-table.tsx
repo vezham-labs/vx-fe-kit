@@ -12,15 +12,22 @@ import {
   Table
 } from '@vezham/react-v3'
 
+import { SortableHeader } from '@pages/academic/classes/schedule/components/shared/sortable-header'
+import type {
+  ClassRow,
+  DrawerMode,
+  ScheduleColumnKey
+} from '@pages/academic/classes/schedule/types'
+import { getPaginationSummary } from '@pages/academic/classes/schedule/utils/schedule'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/classes/schedule/variants'
+import { BulkActionBar } from '@pages/academic/shared/bulk-action-bar'
 import {
   rowCountOptions,
   scheduleColumnOptions
-} from '../../../../../../store/useAcademic/useClassSchedule/data'
-import { BulkActionBar } from '../../../../shared/bulk-action-bar'
-import type { ClassRow, DrawerMode, ScheduleColumnKey } from '../../types'
-import { getPaginationSummary } from '../../utils/schedule'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+} from '@store/useAcademic/useClassSchedule/data'
 
 type ScheduleTableProps = {
   activeRowId: string | null

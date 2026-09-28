@@ -11,9 +11,13 @@ import {
   Surface
 } from '@vezham/react-v3'
 
-import { gradeOptions, percentageOptions, pointOptions } from '../../data'
-import type { FilterDropdownProps } from '../../types'
-import { classNames } from '../../variants'
+import {
+  gradeOptions,
+  percentageOptions,
+  pointOptions
+} from '@pages/academic/examinations/grades/data'
+import type { FilterDropdownProps } from '@pages/academic/examinations/grades/types'
+import { classNames } from '@pages/academic/examinations/grades/variants'
 
 export function FilterDropdown({
   draftFilters,

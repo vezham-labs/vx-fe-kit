@@ -16,8 +16,8 @@ import {
 } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
+import { ShortcutKey } from '@components/shortcut-key'
 
-import { ShortcutKey } from '../../../components/shortcut-key'
 import { Props, useProps } from './types'
 
 const ReportsLayoutPage = forwardRef<HTMLDivElement, Props>((props, ref) => {

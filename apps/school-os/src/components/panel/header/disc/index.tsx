@@ -7,9 +7,9 @@ import {
 import { Tabs, Tooltip } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
+import { InfoPanelDefinition, useInfoPanel } from '@components/panel/info-panel'
+import { useDisc } from '@store/useDisc'
 
-import { useDisc } from '../../../../store/useDisc'
-import { InfoPanelDefinition, useInfoPanel } from '../../info-panel'
 import { Archive } from './archive'
 import { Trash } from './trash'
 import { ArchiveItem, Props, TrashItem, useProps } from './types'

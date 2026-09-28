@@ -1,7 +1,7 @@
 import { Surface } from '@vezham/react-v3'
 
-import Header from '../../components/panel/header'
-import { type User } from '../../components/panel/header/types'
+import Header from '@components/panel/header'
+import { type User } from '@components/panel/header/types'
 
 export default function HomeNavigationBubble({
   onExpand,

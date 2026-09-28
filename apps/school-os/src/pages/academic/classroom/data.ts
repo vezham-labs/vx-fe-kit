@@ -9,4 +9,4 @@ export {
   sortOptions,
   sortOrderOptions,
   statusOptions
-} from '../../../store/useAcademic/useClassroom'
+} from '@store/useAcademic/useClassroom'

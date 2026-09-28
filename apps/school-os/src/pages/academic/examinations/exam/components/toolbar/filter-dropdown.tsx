@@ -11,9 +11,12 @@ import {
   Surface
 } from '@vezham/react-v3'
 
-import { examOptions, examdateOptions } from '../../data'
-import type { FilterDropdownProps } from '../../types'
-import { classNames } from '../../variants'
+import {
+  examOptions,
+  examdateOptions
+} from '@pages/academic/examinations/exam/data'
+import type { FilterDropdownProps } from '@pages/academic/examinations/exam/types'
+import { classNames } from '@pages/academic/examinations/exam/variants'
 
 export function FilterDropdown({
   draftFilters,

@@ -2,10 +2,10 @@ import React from 'react'
 
 import { Surface } from '@vezham/react-v3'
 
-import { CommandProvider } from '../../components/command'
-import { InfoPanelProvider } from '../../components/panel/info-panel'
-import { WorkspaceNavigationProvider } from '../../components/workspace-navigation'
-import MenuLayout from '../menu-layout'
+import { CommandProvider } from '@components/command'
+import { InfoPanelProvider } from '@components/panel/info-panel'
+import { WorkspaceNavigationProvider } from '@components/workspace-navigation'
+import MenuLayout from '@src/layouts/menu-layout'
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (

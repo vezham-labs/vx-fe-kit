@@ -1,8 +1,8 @@
+import OperationsTablePage from '@pages/operations/_shared'
 import {
   issueBookConfig,
   useIssueBooks
-} from '../../../../store/useOperations/useLibrary/useIssueBooks'
-import OperationsTablePage from '../../_shared'
+} from '@store/useOperations/useLibrary/useIssueBooks'
 
 export default function IssueBookOperationsPage() {
   const { data } = useIssueBooks.list({})

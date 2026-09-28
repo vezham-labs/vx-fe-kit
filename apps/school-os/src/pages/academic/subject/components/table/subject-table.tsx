@@ -12,12 +12,18 @@ import {
   Table
 } from '@vezham/react-v3'
 
-import { BulkActionBar } from '../../../shared/bulk-action-bar'
-import { rowCountOptions, subjectColumnOptions } from '../../data'
-import type { ClassRow, DrawerMode } from '../../types'
-import { getPaginationSummary } from '../../utils/subject'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+import { BulkActionBar } from '@pages/academic/shared/bulk-action-bar'
+import { SortableHeader } from '@pages/academic/subject/components/shared/sortable-header'
+import {
+  rowCountOptions,
+  subjectColumnOptions
+} from '@pages/academic/subject/data'
+import type { ClassRow, DrawerMode } from '@pages/academic/subject/types'
+import { getPaginationSummary } from '@pages/academic/subject/utils/subject'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/subject/variants'
 
 type SubjectTableProps = {
   activeRowId: string | null

@@ -4,7 +4,7 @@ import type {
   ClassFormState,
   ClassStatus,
   ReasonsItem
-} from '../../../store/useAcademic/useReasons'
+} from '@store/useAcademic/useReasons'
 
 export type {
   ClassFormState,
@@ -12,7 +12,7 @@ export type {
   DatePresetKey,
   RQReasons,
   ReasonsResponse
-} from '../../../store/useAcademic/useReasons'
+} from '@store/useAcademic/useReasons'
 
 export type DrawerMode = 'view' | 'edit' | 'create'
 

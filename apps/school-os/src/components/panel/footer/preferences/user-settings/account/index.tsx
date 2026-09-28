@@ -1,4 +1,4 @@
-import CustomTabs from '../../../tabs'
+import CustomTabs from '@components/panel/footer/tabs'
 
 const index = () => {
   const tabs = [

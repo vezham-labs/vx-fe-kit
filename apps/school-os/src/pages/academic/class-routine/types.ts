@@ -5,7 +5,7 @@ import type {
   ClassRoutineColumnKey,
   ClassRoutineItem as ClassRow,
   ClassStatus
-} from '../../../store/useAcademic/useClassRoutine'
+} from '@store/useAcademic/useClassRoutine'
 
 export type {
   ClassFormState,
@@ -13,7 +13,7 @@ export type {
   ClassRoutineItem as ClassRow,
   ClassStatus,
   DatePresetKey
-} from '../../../store/useAcademic/useClassRoutine'
+} from '@store/useAcademic/useClassRoutine'
 
 export type DrawerMode = 'view' | 'edit' | 'create'
 

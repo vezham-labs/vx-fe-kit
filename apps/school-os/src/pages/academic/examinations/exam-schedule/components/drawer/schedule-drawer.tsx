@@ -9,10 +9,11 @@ import {
 } from '@vezham/icons-react'
 import { Button, Drawer, Tooltip } from '@vezham/react-v3'
 
-import { ShortcutTooltipLabel } from '../../../../../../components/shortcut-key'
-import type { ClassDrawerProps } from '../../types'
-import { getDrawerTitle } from '../../utils/exam-schedule'
-import { classNames } from '../../variants'
+import { ShortcutTooltipLabel } from '@components/shortcut-key'
+import type { ClassDrawerProps } from '@pages/academic/examinations/exam-schedule/types'
+import { getDrawerTitle } from '@pages/academic/examinations/exam-schedule/utils/exam-schedule'
+import { classNames } from '@pages/academic/examinations/exam-schedule/variants'
+
 import { ScheduleDetails } from './schedule-details'
 import { ScheduleForm } from './schedule-form'
 

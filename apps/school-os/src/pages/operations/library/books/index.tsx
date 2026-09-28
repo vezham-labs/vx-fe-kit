@@ -1,8 +1,5 @@
-import {
-  booksConfig,
-  useBooks
-} from '../../../../store/useOperations/useLibrary/useBooks'
-import OperationsTablePage from '../../_shared'
+import OperationsTablePage from '@pages/operations/_shared'
+import { booksConfig, useBooks } from '@store/useOperations/useLibrary/useBooks'
 
 export default function BooksOperationsPage() {
   const { data } = useBooks.list({})

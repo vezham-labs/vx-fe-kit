@@ -8,8 +8,8 @@ import {
 import { Chip, ScrollShadow } from '@vezham/react-v2'
 
 import { AppIcon } from '@components/app-icon'
+import { AppView } from '@components/app-view'
 
-import { AppView } from '../../../components/app-view'
 import { dates, events, today } from './data'
 import type { CalendarAppProps } from './types'
 import { getDateKey, getShortWeekday } from './util'

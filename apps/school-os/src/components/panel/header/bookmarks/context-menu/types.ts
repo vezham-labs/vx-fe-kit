@@ -1,4 +1,4 @@
-import { type BookmarkTreeItem } from '../types'
+import { type BookmarkTreeItem } from '@components/panel/header/bookmarks/types'
 
 export type BookmarkContextTarget =
   | { type: 'folder'; item: BookmarkTreeItem }

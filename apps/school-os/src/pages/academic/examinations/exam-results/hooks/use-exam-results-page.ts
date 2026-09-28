@@ -4,13 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import {
-  emptyForm,
-  examResultsColumnOptions,
-  sortOptions,
-  useExamResults
-} from '../../../../../store/useAcademic/useExamResults'
-import { sortRows } from '../../../shared/sort'
 import type {
   ClassFormErrors,
   ClassFormState,
@@ -24,20 +17,27 @@ import type {
   FilterDraft,
   OpenDrawerOptions,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/examinations/exam-results/types'
+import { useDisclosure } from '@pages/academic/examinations/exam-results/types'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
+} from '@pages/academic/examinations/exam-results/utils/date'
 import {
   createNextClassId,
   rowToForm,
   validateClassForm
-} from '../utils/exam-results'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/examinations/exam-results/utils/exam-results'
+import { hiddenTextareaStyles } from '@pages/academic/examinations/exam-results/variants'
+import { sortRows } from '@pages/academic/shared/sort'
+import {
+  emptyForm,
+  examResultsColumnOptions,
+  sortOptions,
+  useExamResults
+} from '@store/useAcademic/useExamResults'
 
 const moduleRoutePath = '/academic/examinations/exam-results'
 

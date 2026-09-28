@@ -2,7 +2,8 @@ import { motion } from 'framer-motion'
 
 import { Avatar, ScrollShadow } from '@vezham/react-v2'
 
-import { AppView } from '../../../components/app-view'
+import { AppView } from '@components/app-view'
+
 import { listItemVariants, messages } from './data'
 import type { MessagesAppProps } from './types'
 

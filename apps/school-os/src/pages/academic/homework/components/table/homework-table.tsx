@@ -12,12 +12,18 @@ import {
   Table
 } from '@vezham/react-v3'
 
-import { BulkActionBar } from '../../../shared/bulk-action-bar'
-import { homeworkColumnOptions, rowCountOptions } from '../../data'
-import type { ClassRow, DrawerMode } from '../../types'
-import { getPaginationSummary } from '../../utils/homework'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+import { SortableHeader } from '@pages/academic/homework/components/shared/sortable-header'
+import {
+  homeworkColumnOptions,
+  rowCountOptions
+} from '@pages/academic/homework/data'
+import type { ClassRow, DrawerMode } from '@pages/academic/homework/types'
+import { getPaginationSummary } from '@pages/academic/homework/utils/homework'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/homework/variants'
+import { BulkActionBar } from '@pages/academic/shared/bulk-action-bar'
 
 type HomeworkTableProps = {
   activeRowId: string | null

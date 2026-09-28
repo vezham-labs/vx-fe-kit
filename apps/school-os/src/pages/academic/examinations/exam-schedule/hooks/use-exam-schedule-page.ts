@@ -4,13 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import {
-  emptyForm,
-  examScheduleColumnOptions,
-  sortOptions,
-  useExamSchedule
-} from '../../../../../store/useAcademic/useExamSchedule'
-import { sortRows } from '../../../shared/sort'
 import type {
   ClassFormErrors,
   ClassFormState,
@@ -24,16 +17,26 @@ import type {
   OpenDrawerOptions,
   ScheduleColumnKey,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/examinations/exam-schedule/types'
+import { useDisclosure } from '@pages/academic/examinations/exam-schedule/types'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
-import { rowToForm, validateScheduleForm } from '../utils/exam-schedule'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/examinations/exam-schedule/utils/date'
+import {
+  rowToForm,
+  validateScheduleForm
+} from '@pages/academic/examinations/exam-schedule/utils/exam-schedule'
+import { hiddenTextareaStyles } from '@pages/academic/examinations/exam-schedule/variants'
+import { sortRows } from '@pages/academic/shared/sort'
+import {
+  emptyForm,
+  examScheduleColumnOptions,
+  sortOptions,
+  useExamSchedule
+} from '@store/useAcademic/useExamSchedule'
 
 const moduleRoutePath = '/academic/examinations/exam-schedule'
 

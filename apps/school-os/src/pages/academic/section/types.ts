@@ -5,7 +5,7 @@ import type {
   ClassStatus,
   SectionColumnKey,
   SectionItem
-} from '../../../store/useAcademic/useSection'
+} from '@store/useAcademic/useSection'
 
 export type {
   ClassFormState,
@@ -14,7 +14,7 @@ export type {
   SectionColumnKey,
   RQSection,
   SectionResponse
-} from '../../../store/useAcademic/useSection'
+} from '@store/useAcademic/useSection'
 
 export type DrawerMode = 'view' | 'edit' | 'create'
 

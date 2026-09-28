@@ -1,1 +1,1 @@
-export * from '../../../../store/useDisc/data'
+export * from '@store/useDisc/data'

@@ -1,7 +1,8 @@
 import {
   type SortFieldOption,
   sortOrderOptions
-} from '../../../pages/academic/shared/sort'
+} from '@pages/academic/shared/sort'
+
 import type {
   ClassFormState,
   ClassRow,

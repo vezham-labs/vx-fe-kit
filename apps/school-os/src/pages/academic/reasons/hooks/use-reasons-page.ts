@@ -4,12 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import {
-  emptyForm,
-  reasonsColumnOptions,
-  sortOptions,
-  useReasons
-} from '../../../../store/useAcademic/useReasons'
 import type {
   ClassFormErrors,
   ClassFormState,
@@ -22,20 +16,26 @@ import type {
   FilterDraft,
   OpenDrawerOptions,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/reasons/types'
+import { useDisclosure } from '@pages/academic/reasons/types'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
+} from '@pages/academic/reasons/utils/date'
 import {
   createNextClassId,
   rowToForm,
   validateClassForm
-} from '../utils/reasons'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/reasons/utils/reasons'
+import { hiddenTextareaStyles } from '@pages/academic/reasons/variants'
+import {
+  emptyForm,
+  reasonsColumnOptions,
+  sortOptions,
+  useReasons
+} from '@store/useAcademic/useReasons'
 
 const reasonsRoutePath = '/academic/reasons'
 

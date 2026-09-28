@@ -1,7 +1,7 @@
 import type {
   OperationStatus,
   PersonValue
-} from '../../../../pages/operations/_shared/types'
+} from '@pages/operations/_shared/types'
 
 export type RQVehicleDrivers = Record<string, never>
 

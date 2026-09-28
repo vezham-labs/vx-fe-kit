@@ -9,4 +9,4 @@ export {
   statusOptions,
   syllabusColumnOptions,
   syllabusData as initialRows
-} from '../../../store/useAcademic/useSyllabus'
+} from '@store/useAcademic/useSyllabus'

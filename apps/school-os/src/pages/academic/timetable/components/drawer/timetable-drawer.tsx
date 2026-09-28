@@ -7,7 +7,7 @@ import {
 } from '@vezham/icons-react'
 import { Button, Drawer, Tabs, Tooltip } from '@vezham/react-v3'
 
-import { ShortcutKey } from '../../../../../components/shortcut-key'
+import { ShortcutKey } from '@components/shortcut-key'
 import {
   classOptions,
   durationOptions,
@@ -17,9 +17,13 @@ import {
   subjectOptions,
   teachers,
   timetableDayTabs
-} from '../../data'
-import type { TimetableDrawerProps, TimetableFormRow } from '../../types'
-import { classNames } from '../../variants'
+} from '@pages/academic/timetable/data'
+import type {
+  TimetableDrawerProps,
+  TimetableFormRow
+} from '@pages/academic/timetable/types'
+import { classNames } from '@pages/academic/timetable/variants'
+
 import { TimetableFormSelect } from './timetable-form-select'
 import { TimetableTimeField } from './timetable-time-field'
 

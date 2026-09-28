@@ -2,21 +2,18 @@ import React, { useState } from 'react'
 
 import { Surface } from '@vezham/react-v3'
 
-import { BottomNavbar } from '../../components/menu'
-import { longMenuItems } from '../../components/menu/sidebar-items'
-import Footer from '../../components/panel/footer'
-import { aiPanel } from '../../components/panel/footer/ai'
-import { ControlCenterDrawer } from '../../components/panel/footer/control-center'
-import { NotificationDrawer } from '../../components/panel/footer/notification-center'
-import UserInfoModal from '../../components/panel/footer/preferences/modal'
-import Header from '../../components/panel/header'
-import { bookmarksPanel } from '../../components/panel/header/bookmarks'
-import { discPanel } from '../../components/panel/header/disc'
-import {
-  InfoPanelContainer,
-  useInfoPanel
-} from '../../components/panel/info-panel'
-import { useUser } from '../../store/users/useUserStore'
+import { BottomNavbar } from '@components/menu'
+import { longMenuItems } from '@components/menu/sidebar-items'
+import Footer from '@components/panel/footer'
+import { aiPanel } from '@components/panel/footer/ai'
+import { ControlCenterDrawer } from '@components/panel/footer/control-center'
+import { NotificationDrawer } from '@components/panel/footer/notification-center'
+import UserInfoModal from '@components/panel/footer/preferences/modal'
+import Header from '@components/panel/header'
+import { bookmarksPanel } from '@components/panel/header/bookmarks'
+import { discPanel } from '@components/panel/header/disc'
+import { InfoPanelContainer, useInfoPanel } from '@components/panel/info-panel'
+import { useUser } from '@store/users/useUserStore'
 
 export default function MenuSM() {
   const [selectedKey, setSelectedKey] = React.useState(longMenuItems[0]?.key)

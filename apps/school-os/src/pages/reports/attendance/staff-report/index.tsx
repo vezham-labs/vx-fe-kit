@@ -43,7 +43,8 @@ import {
   Tooltip
 } from '@vezham/react-v3'
 
-import { ShortcutTooltipLabel } from '../../../../components/shortcut-key'
+import { ShortcutTooltipLabel } from '@components/shortcut-key'
+
 import {
   dateOptions,
   rowCountOptions,

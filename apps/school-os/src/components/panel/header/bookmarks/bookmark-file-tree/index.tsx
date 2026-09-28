@@ -12,26 +12,26 @@ import { ContextMenu, FileTree, useFileTreeDrag } from '@vezham/react-pro-v3'
 import { Avatar, Button, Typography } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
-
 import {
   BookmarkContextMenuItems,
   BrowserContextMenuItems
-} from '../context-menu'
+} from '@components/panel/header/bookmarks/context-menu'
 import {
   type BookmarkContextTarget,
   type FolderTarget
-} from '../context-menu/types'
-import { FolderVisualPreview } from '../folder-modal'
+} from '@components/panel/header/bookmarks/context-menu/types'
+import { FolderVisualPreview } from '@components/panel/header/bookmarks/folder-modal'
 import {
   DEFAULT_FOLDER_COLOR,
   DEFAULT_FOLDER_EMOJI,
   DEFAULT_FOLDER_ICON
-} from '../folder-modal/variants'
+} from '@components/panel/header/bookmarks/folder-modal/variants'
 import {
   type BookmarkItem,
   type BookmarkTreeItem,
   type TreeSelection
-} from '../types'
+} from '@components/panel/header/bookmarks/types'
+
 import { type BookmarkFileTreeProps } from './types'
 import { collectFolderTargets, moveBookmarkTreeItems } from './variants'
 

@@ -12,12 +12,21 @@ import {
   Table
 } from '@vezham/react-v3'
 
-import { BulkActionBar } from '../../../shared/bulk-action-bar'
-import { rowCountOptions, syllabusColumnOptions } from '../../data'
-import type { ClassRow, DrawerMode } from '../../types'
-import { formatDisplayDate, getPaginationSummary } from '../../utils/syllabus'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+import { BulkActionBar } from '@pages/academic/shared/bulk-action-bar'
+import { SortableHeader } from '@pages/academic/syllabus/components/shared/sortable-header'
+import {
+  rowCountOptions,
+  syllabusColumnOptions
+} from '@pages/academic/syllabus/data'
+import type { ClassRow, DrawerMode } from '@pages/academic/syllabus/types'
+import {
+  formatDisplayDate,
+  getPaginationSummary
+} from '@pages/academic/syllabus/utils/syllabus'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/syllabus/variants'
 
 type SyllabusTableProps = {
   activeRowId: string | null

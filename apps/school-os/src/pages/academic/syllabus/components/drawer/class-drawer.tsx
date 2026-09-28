@@ -9,10 +9,11 @@ import {
 } from '@vezham/icons-react'
 import { Button, Drawer, Tooltip } from '@vezham/react-v3'
 
-import { ShortcutTooltipLabel } from '../../../../../components/shortcut-key'
-import type { ClassDrawerProps } from '../../types'
-import { getDrawerTitle } from '../../utils/syllabus'
-import { classNames } from '../../variants'
+import { ShortcutTooltipLabel } from '@components/shortcut-key'
+import type { ClassDrawerProps } from '@pages/academic/syllabus/types'
+import { getDrawerTitle } from '@pages/academic/syllabus/utils/syllabus'
+import { classNames } from '@pages/academic/syllabus/variants'
+
 import { ClassDetails } from './class-details'
 import { ClassForm } from './class-form'
 

@@ -4,14 +4,14 @@ import type {
   AllClassesItem,
   ClassFormState,
   ClassStatus
-} from '../../../store/useAcademic/useAllClasses'
+} from '@store/useAcademic/useAllClasses'
 
 export type {
   AllClassesColumnKey,
   AllClassesResponse,
   DatePresetKey,
   RQAllClasses
-} from '../../../store/useAcademic/useAllClasses'
+} from '@store/useAcademic/useAllClasses'
 
 export type DrawerMode = 'view' | 'edit' | 'create'
 

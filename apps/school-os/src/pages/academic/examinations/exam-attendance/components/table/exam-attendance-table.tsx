@@ -12,21 +12,27 @@ import {
   Table
 } from '@vezham/react-v3'
 
-import { BulkActionBar } from '../../../../shared/bulk-action-bar'
-import { attendanceColumnOptions, rowCountOptions } from '../../data'
+import { SortableHeader } from '@pages/academic/examinations/exam-attendance/components/shared/sortable-header'
+import {
+  attendanceColumnOptions,
+  rowCountOptions
+} from '@pages/academic/examinations/exam-attendance/data'
 import type {
   AttendanceColumnKey,
   AttendanceRow,
   AttendanceStatus,
   DrawerMode
-} from '../../types'
+} from '@pages/academic/examinations/exam-attendance/types'
 import {
   getInitials,
   getPaginationSummary,
   getStudentSecondaryText
-} from '../../utils/exam-attendance'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+} from '@pages/academic/examinations/exam-attendance/utils/exam-attendance'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/examinations/exam-attendance/variants'
+import { BulkActionBar } from '@pages/academic/shared/bulk-action-bar'
 
 type ExamAttendanceTableProps = {
   activeRowId: string | null

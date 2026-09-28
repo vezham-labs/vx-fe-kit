@@ -1,12 +1,12 @@
 import { Input, Label, ListBox, Select } from '@vezham/react-v3'
 
-import { statusOptions } from '../../data'
+import { statusOptions } from '@pages/academic/examinations/exam-attendance/data'
 import type {
   AttendanceFormProps,
   AttendanceFormState,
   AttendanceStatus
-} from '../../types'
-import { classNames } from '../../variants'
+} from '@pages/academic/examinations/exam-attendance/types'
+import { classNames } from '@pages/academic/examinations/exam-attendance/variants'
 
 const attendanceSubjectFields: {
   key: keyof Pick<

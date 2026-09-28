@@ -5,8 +5,9 @@ import type {
   CustomDateRangeValue,
   DatePresetKey,
   FilterDraft
-} from '../../types'
-import { classNames } from '../../variants'
+} from '@pages/academic/classroom/types'
+import { classNames } from '@pages/academic/classroom/variants'
+
 import { ColumnsDropdown } from './columns-dropdown'
 import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'

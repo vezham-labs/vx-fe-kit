@@ -5,11 +5,10 @@ import { Command } from '@vezham/react-pro-v3'
 import { Typography } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
-
-import { sidebarItems as academicSidebarItems } from '../../pages/academic/layout/data'
-import { operationsSidebarItems } from '../../pages/operations/layout/data'
-import { reportsSidebarItems } from '../../pages/reports/layout/data'
-import { items as mainMenuItems } from '../panel/menu/sidebar-items'
+import { items as mainMenuItems } from '@components/panel/menu/sidebar-items'
+import { sidebarItems as academicSidebarItems } from '@pages/academic/layout/data'
+import { operationsSidebarItems } from '@pages/operations/layout/data'
+import { reportsSidebarItems } from '@pages/reports/layout/data'
 
 interface CommandDialogProps {
   isOpen: boolean

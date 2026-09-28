@@ -4,8 +4,8 @@ import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Drawer, DrawerBody, DrawerContent } from '@vezham/react-v2'
 
 import { AppIcon } from '@components/app-icon'
+import { InfoPanelDefinition } from '@components/panel/info-panel'
 
-import { InfoPanelDefinition } from '../../info-panel'
 import { Props, useProps } from './types'
 
 const AIContent = forwardRef<HTMLDivElement, Props>((props, ref) => {

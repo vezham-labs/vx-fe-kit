@@ -1,7 +1,7 @@
 import { Input, Label, Switch } from '@vezham/react-v3'
 
-import type { ClassFormProps } from '../../types'
-import { classNames } from '../../variants'
+import type { ClassFormProps } from '@pages/academic/classroom/types'
+import { classNames } from '@pages/academic/classroom/variants'
 
 export function ClassForm({ form, formErrors, onFormChange }: ClassFormProps) {
   return (

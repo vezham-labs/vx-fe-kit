@@ -1,4 +1,8 @@
-import type { ClassFormErrors, ClassFormState, ClassRow } from '../types'
+import type {
+  ClassFormErrors,
+  ClassFormState,
+  ClassRow
+} from '@pages/academic/examinations/exam-schedule/types'
 
 export function getScheduleTags(row: ClassRow) {
   return [

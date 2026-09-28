@@ -2,8 +2,11 @@ import type { ComponentProps } from 'react'
 
 import { Label, TimeField } from '@vezham/react-v3'
 
-import { formatTimeFieldValue, getTimeFieldValue } from '../../utils/timetable'
-import { classNames } from '../../variants'
+import {
+  formatTimeFieldValue,
+  getTimeFieldValue
+} from '@pages/academic/timetable/utils/timetable'
+import { classNames } from '@pages/academic/timetable/variants'
 
 type TimetableTimeFieldProps = {
   error?: string

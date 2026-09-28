@@ -1,6 +1,6 @@
 import { Label, ListBox, Select } from '@vezham/react-v3'
 
-import { classNames } from '../../variants'
+import { classNames } from '@pages/academic/timetable/variants'
 
 type TimetableFormSelectProps = {
   error?: string

@@ -12,12 +12,22 @@ import {
   Table
 } from '@vezham/react-v3'
 
-import { BulkActionBar } from '../../../../shared/bulk-action-bar'
-import { gradeColumnOptions, rowCountOptions } from '../../data'
-import type { ClassRow, DrawerMode, GradeColumnKey } from '../../types'
-import { getPaginationSummary } from '../../utils/grades'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+import { SortableHeader } from '@pages/academic/examinations/grades/components/shared/sortable-header'
+import {
+  gradeColumnOptions,
+  rowCountOptions
+} from '@pages/academic/examinations/grades/data'
+import type {
+  ClassRow,
+  DrawerMode,
+  GradeColumnKey
+} from '@pages/academic/examinations/grades/types'
+import { getPaginationSummary } from '@pages/academic/examinations/grades/utils/grades'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/examinations/grades/variants'
+import { BulkActionBar } from '@pages/academic/shared/bulk-action-bar'
 
 type GradesTableProps = {
   activeRowId: string | null

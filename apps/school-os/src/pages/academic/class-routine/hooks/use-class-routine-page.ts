@@ -4,12 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import { useClassRoutine } from '../../../../store/useAcademic/useClassRoutine'
-import {
-  classRoutineColumnOptions,
-  emptyForm,
-  sortOptions
-} from '../../../../store/useAcademic/useClassRoutine'
 import type {
   ClassFormErrors,
   ClassFormState,
@@ -23,20 +17,26 @@ import type {
   FilterDraft,
   OpenDrawerOptions,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/class-routine/types'
+import { useDisclosure } from '@pages/academic/class-routine/types'
 import {
   createNextClassId,
   rowToForm,
   validateClassForm
-} from '../utils/class-routine'
+} from '@pages/academic/class-routine/utils/class-routine'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/class-routine/utils/date'
+import { hiddenTextareaStyles } from '@pages/academic/class-routine/variants'
+import { useClassRoutine } from '@store/useAcademic/useClassRoutine'
+import {
+  classRoutineColumnOptions,
+  emptyForm,
+  sortOptions
+} from '@store/useAcademic/useClassRoutine'
 
 const classRoutineRoutePath = '/academic/class-routine'
 

@@ -4,13 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import {
-  emptyForm,
-  gradeColumnOptions,
-  sortOptions,
-  useGrades
-} from '../../../../../store/useAcademic/useGrades'
-import { sortRows } from '../../../shared/sort'
 import type {
   ClassFormErrors,
   ClassFormState,
@@ -24,21 +17,28 @@ import type {
   GradeColumnKey,
   OpenDrawerOptions,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/examinations/grades/types'
+import { useDisclosure } from '@pages/academic/examinations/grades/types'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
+} from '@pages/academic/examinations/grades/utils/date'
 import {
   createNextClassId,
   getPercentageRange,
   rowToForm,
   validateClassForm
-} from '../utils/grades'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/examinations/grades/utils/grades'
+import { hiddenTextareaStyles } from '@pages/academic/examinations/grades/variants'
+import { sortRows } from '@pages/academic/shared/sort'
+import {
+  emptyForm,
+  gradeColumnOptions,
+  sortOptions,
+  useGrades
+} from '@store/useAcademic/useGrades'
 
 const moduleRoutePath = '/academic/examinations/grades'
 

@@ -8,4 +8,4 @@ export {
   sortOptions,
   sortOrderOptions,
   statusOptions
-} from '../../../store/useAcademic/useSection'
+} from '@store/useAcademic/useSection'

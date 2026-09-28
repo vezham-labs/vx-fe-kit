@@ -21,14 +21,21 @@ import {
   Tooltip
 } from '@vezham/react-v3'
 
+import { SortableHeader } from '@pages/academic/class-routine/components/shared/sortable-header'
+import type {
+  ClassRoutineColumnKey,
+  ClassRow,
+  DrawerMode
+} from '@pages/academic/class-routine/types'
+import { getPaginationSummary } from '@pages/academic/class-routine/utils/class-routine'
+import {
+  classNames,
+  getTableRowClassName
+} from '@pages/academic/class-routine/variants'
 import {
   classRoutineColumnOptions,
   rowCountOptions
-} from '../../../../../store/useAcademic/useClassRoutine'
-import type { ClassRoutineColumnKey, ClassRow, DrawerMode } from '../../types'
-import { getPaginationSummary } from '../../utils/class-routine'
-import { classNames, getTableRowClassName } from '../../variants'
-import { SortableHeader } from '../shared/sortable-header'
+} from '@store/useAcademic/useClassRoutine'
 
 type ClassRoutineTableProps = {
   activeRowId: string | null

@@ -1,14 +1,15 @@
 import { SearchField, type SortDescriptor, Surface } from '@vezham/react-v3'
 
-import { ColumnsDropdown } from '../../../../shared/columns-dropdown'
-import { gradeColumnOptions } from '../../data'
+import { gradeColumnOptions } from '@pages/academic/examinations/grades/data'
 import type {
   CustomDateRangeValue,
   DatePresetKey,
   FilterDraft,
   GradeColumnKey
-} from '../../types'
-import { classNames } from '../../variants'
+} from '@pages/academic/examinations/grades/types'
+import { classNames } from '@pages/academic/examinations/grades/variants'
+import { ColumnsDropdown } from '@pages/academic/shared/columns-dropdown'
+
 import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
 import { SortDropdown } from './sort-dropdown'

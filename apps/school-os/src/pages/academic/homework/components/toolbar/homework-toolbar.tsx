@@ -1,13 +1,14 @@
 import { SearchField, type SortDescriptor, Surface } from '@vezham/react-v3'
 
-import { ColumnsDropdown } from '../../../shared/columns-dropdown'
-import { homeworkColumnOptions } from '../../data'
+import { homeworkColumnOptions } from '@pages/academic/homework/data'
 import type {
   CustomDateRangeValue,
   DatePresetKey,
   FilterDraft
-} from '../../types'
-import { classNames } from '../../variants'
+} from '@pages/academic/homework/types'
+import { classNames } from '@pages/academic/homework/variants'
+import { ColumnsDropdown } from '@pages/academic/shared/columns-dropdown'
+
 import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
 import { SortDropdown } from './sort-dropdown'

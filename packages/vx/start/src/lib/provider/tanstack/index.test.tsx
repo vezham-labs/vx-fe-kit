@@ -1,7 +1,7 @@
 import { Outlet } from '@tanstack/react-router'
 import { describe, expect, it } from 'vitest'
 
-import { createRootComponent, defineConfig, RootDocument } from './index'
+import { RootDocument, createRootComponent, defineConfig } from './index'
 
 describe('TanStack root component', () => {
   it('renders the router outlet by default', () => {

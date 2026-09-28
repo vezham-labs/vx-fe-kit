@@ -3,7 +3,8 @@ import type { SortDescriptor } from '@vezham/react-v3'
 import type {
   OperationColumn,
   OperationPageConfig
-} from '../../../pages/operations/_shared/types'
+} from '@pages/operations/_shared/types'
+
 import type { FeesMasterItem } from './types'
 
 const columns: OperationColumn[] = [

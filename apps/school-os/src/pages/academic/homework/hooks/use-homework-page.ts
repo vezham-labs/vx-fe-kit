@@ -4,12 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
-import {
-  emptyForm,
-  homeworkColumnOptions,
-  sortOptions,
-  useHomework
-} from '../../../../store/useAcademic/useHomework'
 import type {
   ClassFormErrors,
   ClassFormState,
@@ -22,21 +16,27 @@ import type {
   FilterDraft,
   OpenDrawerOptions,
   ToastState
-} from '../types'
-import { useDisclosure } from '../types'
+} from '@pages/academic/homework/types'
+import { useDisclosure } from '@pages/academic/homework/types'
 import {
   formatDateRangeLabel,
   getPresetDateRange,
   isISODateInRange,
   toISODate
-} from '../utils/date'
+} from '@pages/academic/homework/utils/date'
 import {
   createNextClassId,
   getSortableValue,
   rowToForm,
   validateClassForm
-} from '../utils/homework'
-import { hiddenTextareaStyles } from '../variants'
+} from '@pages/academic/homework/utils/homework'
+import { hiddenTextareaStyles } from '@pages/academic/homework/variants'
+import {
+  emptyForm,
+  homeworkColumnOptions,
+  sortOptions,
+  useHomework
+} from '@store/useAcademic/useHomework'
 
 const homeworkRoutePath = '/academic/homework'
 

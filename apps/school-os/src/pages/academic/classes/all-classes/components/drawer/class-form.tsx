@@ -1,8 +1,8 @@
 import { Input, Label, ListBox, Select, Switch } from '@vezham/react-v3'
 
-import { sectionOptions } from '../../../../../../store/useAcademic/useAllClasses'
-import type { ClassFormProps } from '../../types'
-import { classNames } from '../../variants'
+import type { ClassFormProps } from '@pages/academic/classes/all-classes/types'
+import { classNames } from '@pages/academic/classes/all-classes/variants'
+import { sectionOptions } from '@store/useAcademic/useAllClasses'
 
 export function ClassForm({ form, formErrors, onFormChange }: ClassFormProps) {
   return (

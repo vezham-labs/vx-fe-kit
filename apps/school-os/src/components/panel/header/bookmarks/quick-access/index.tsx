@@ -8,8 +8,8 @@ import {
 import { Avatar, Button, ScrollShadow, Typography } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
+import ReorderableGridList from '@components/panel/header/bookmarks/favorites'
 
-import ReorderableGridList from '../favorites'
 import { type QuickAccessProps } from './types'
 
 const QuickAccess = ({

@@ -2,9 +2,9 @@ import { ContextMenu } from '@vezham/react-pro-v3'
 import { Label } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
+import { type BookmarkTreeItem } from '@components/panel/header/bookmarks/types'
+import { ShortcutKey } from '@components/shortcut-key'
 
-import { ShortcutKey } from '../../../../shortcut-key'
-import { type BookmarkTreeItem } from '../types'
 import { type BookmarkContextMenuItemsProps } from './types'
 
 const renderContextMenuLabel = (icon: string, label: string) => (

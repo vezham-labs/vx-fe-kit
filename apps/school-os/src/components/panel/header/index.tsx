@@ -16,9 +16,9 @@ import {
 } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
+import { useCommand } from '@components/command'
+import { ShortcutKey } from '@components/shortcut-key'
 
-import { useCommand } from '../../command'
-import { ShortcutKey } from '../../shortcut-key'
 import { BookmarksTrigger } from './bookmarks'
 import { DiscTrigger } from './disc'
 import { HeaderActionsProps } from './types'

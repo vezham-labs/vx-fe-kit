@@ -5,8 +5,9 @@ import type {
   DatePresetKey,
   FilterDraft,
   SectionColumnKey
-} from '../../types'
-import { classNames } from '../../variants'
+} from '@pages/academic/section/types'
+import { classNames } from '@pages/academic/section/variants'
+
 import { ColumnsDropdown } from './columns-dropdown'
 import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'

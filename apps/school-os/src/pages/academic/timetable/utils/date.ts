@@ -1,7 +1,7 @@
 import { CalendarDate, type CalendarDateTime } from '@internationalized/date'
 
-import { dayOptions } from '../data'
-import type { TimetableView } from '../types'
+import { dayOptions } from '@pages/academic/timetable/data'
+import type { TimetableView } from '@pages/academic/timetable/types'
 
 export function getAgendaDate(date: CalendarDate, view: TimetableView) {
   if (view !== 'week') {

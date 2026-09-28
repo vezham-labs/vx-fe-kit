@@ -1,14 +1,14 @@
 import { Input, Label, ListBox, Select, Switch } from '@vezham/react-v3'
 
+import type { ClassFormProps } from '@pages/academic/class-routine/types'
+import { classNames } from '@pages/academic/class-routine/variants'
 import {
   classOptions,
   dayOptions,
   roomOptions,
   sectionOptions,
   teacherOptions
-} from '../../../../../store/useAcademic/useClassRoutine'
-import type { ClassFormProps } from '../../types'
-import { classNames } from '../../variants'
+} from '@store/useAcademic/useClassRoutine'
 
 export function ClassForm({ form, formErrors, onFormChange }: ClassFormProps) {
   return (

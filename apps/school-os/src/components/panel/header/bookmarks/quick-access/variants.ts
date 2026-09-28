@@ -1,4 +1,4 @@
-import { type FavoriteItem } from '../types'
+import { type FavoriteItem } from '@components/panel/header/bookmarks/types'
 
 const getFavoriteIds = (items: FavoriteItem[]) => items.map(item => item.id)
 
