@@ -12,7 +12,7 @@ import {
 
 import { cn } from '@vezham/react-v3'
 
-import { useWorkspaceNavigation } from '@components/workspace-navigation'
+import { useWorkspaceNavigation } from '@vx/react/workspace-navigation'
 
 import {
   createExcludedPageKeys,
@@ -519,9 +519,7 @@ const useProps = (originalProps: Props) => {
     navigationLabel: layoutConfig.navigationLabel,
     renderChildrenInSidebar: layoutConfig.renderChildrenInSidebar,
     selectedKeys: new Set([activeSidebarKey]),
-    toggleIcon: isSidebarCollapsed
-      ? 'vx:chevron-right'
-      : 'vx:chevron-left',
+    toggleIcon: isSidebarCollapsed ? 'vx:chevron-right' : 'vx:chevron-left',
     toggleButtonProps: {
       variant: 'ghost' as const,
       className: slots.sidebar_toggle({ class: classNames?.sidebar_toggle }),
@@ -561,9 +559,7 @@ const useProps = (originalProps: Props) => {
       sidebarToggle: {
         key: 'sidebar-toggle',
         label: isSidebarCollapsed ? 'Show navigation' : 'Hide navigation',
-        icon: isSidebarCollapsed
-          ? 'vx:panel-left-open'
-          : 'vx:panel-left-close',
+        icon: isSidebarCollapsed ? 'vx:panel-left-open' : 'vx:panel-left-close',
         onAction: onToggleSidebar
       },
       selectedTabKey,

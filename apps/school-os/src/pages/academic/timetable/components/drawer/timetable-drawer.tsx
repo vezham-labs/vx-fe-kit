@@ -7,7 +7,7 @@ import {
 } from '@vezham/icons-react'
 import { Button, Drawer, Tabs, Tooltip } from '@vezham/react-v3'
 
-import { ShortcutKey } from '@components/shortcut-key'
+import { ShortcutKey } from '@vx/react/shortcut-key'
 import {
   classOptions,
   durationOptions,

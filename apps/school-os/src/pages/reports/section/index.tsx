@@ -27,7 +27,7 @@ import {
   Table
 } from '@vezham/react-v3'
 
-import { AppIcon } from '@components/app-icon'
+import { AppIcon } from '@vx/react/app-icon'
 
 import {
   dateOptions,

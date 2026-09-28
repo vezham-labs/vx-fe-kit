@@ -1,4 +1,4 @@
-import { AppIcon } from '@components/app-icon'
+import { AppIcon } from '@vx/react/app-icon'
 import type { SortableHeaderProps } from '@pages/academic/class-routine/types'
 import { classNames } from '@pages/academic/class-routine/variants'
 

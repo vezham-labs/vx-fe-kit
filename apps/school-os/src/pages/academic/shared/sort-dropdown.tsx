@@ -6,7 +6,7 @@ import {
   type SortDescriptor
 } from '@vezham/react-v3'
 
-import { AppIcon } from '@components/app-icon'
+import { AppIcon } from '@vx/react/app-icon'
 import { classNames } from '@pages/academic/class-routine/variants'
 
 import { sortOrderOptions as defaultSortOrderOptions } from './sort'
@@ -49,9 +49,7 @@ export function SortDropdown({
     sortOptions.find(option => option.column === sortField) ?? sortOptions[0]
   const activeDirection = sortDirection ?? 'ascending'
   const activeSortIcon =
-    activeDirection === 'ascending'
-      ? 'vx:sort-ascending'
-      : 'vx:sort-descending'
+    activeDirection === 'ascending' ? 'vx:sort-ascending' : 'vx:sort-descending'
   const selectedKeys = new Set([activeField.key, activeDirection])
   const recentSortKeys = new Set(['recentlyViewed', 'recentlyAdded'])
   const recentlyUsedOptions = sortOptions.filter(option =>

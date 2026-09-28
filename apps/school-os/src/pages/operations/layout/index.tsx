@@ -15,8 +15,8 @@ import {
   Tooltip
 } from '@vezham/react-v3'
 
-import { AppIcon } from '@components/app-icon'
-import { ShortcutKey } from '@components/shortcut-key'
+import { AppIcon } from '@vx/react/app-icon'
+import { ShortcutKey } from '@vx/react/shortcut-key'
 
 import { Props, useProps } from './types'
 
@@ -344,10 +344,7 @@ function MoreActions({
                       onPress={action.onAction}>
                       <Label {...getDropdownLabelProps()}>
                         <AppIcon
-                          {...getButtonIconProps(
-                            'vx:file-spreadsheet',
-                            true
-                          )}
+                          {...getButtonIconProps('vx:file-spreadsheet', true)}
                           size="1em"
                           aria-hidden="true"
                         />

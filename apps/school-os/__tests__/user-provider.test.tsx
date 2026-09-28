@@ -2,8 +2,9 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import type { ComponentType, ReactNode } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
+import { useUser, UserProvider } from '@vx/react/user'
+
 import { Route } from '../src/routes/__root'
-import { useUser } from '../src/store/users/useUserStore'
 
 vi.mock('@vx/start/tanstack', () => ({
   createRootComponent:
@@ -17,17 +18,20 @@ vi.mock('@generated/vx', () => ({
   vxI18n: { defaultLanguage: 'en' }
 }))
 
-vi.mock('../src/layouts/app-layout', () => ({
-  AppLayout: ({ children }: { children: ReactNode }) => {
-    const { user } = useUser()
-    return (
-      <>
-        <nav aria-label="User menu">{user?.firstName ?? 'Signed out'}</nav>
-        {children}
-      </>
-    )
-  }
+vi.mock('@vx/react/layouts/app', () => ({
+  AppLayout: ({ children }: { children: ReactNode }) => (
+    <UserProvider>
+      <UserProbe />
+      {children}
+    </UserProvider>
+  )
 }))
+
+const UserProbe = () => {
+  const { user } = useUser()
+
+  return <nav aria-label="User menu">{user?.firstName ?? 'Signed out'}</nav>
+}
 
 vi.mock('@tanstack/react-router', async importOriginal => {
   const actual = await importOriginal<typeof import('@tanstack/react-router')>()

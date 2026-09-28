@@ -1,4 +1,4 @@
-import { AppIcon } from '@components/app-icon'
+import { AppIcon } from '@vx/react/app-icon'
 import type { SortableHeaderProps } from '@pages/academic/examinations/exam-attendance/types'
 import { classNames } from '@pages/academic/examinations/exam-attendance/variants'
 

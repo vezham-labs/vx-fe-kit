@@ -532,6 +532,9 @@ importers:
 
   apps/demo:
     dependencies:
+      '@vx/react':
+        specifier: workspace:*
+        version: link:../../packages/vx/react
       '@vx/template':
         specifier: workspace:*
         version: link:../../packages/vx/template
@@ -558,6 +561,9 @@ importers:
 
   apps/school-os:
     dependencies:
+      '@vx/react':
+        specifier: workspace:*
+        version: link:../../packages/vx/react
       '@vx/template':
         specifier: workspace:*
         version: link:../../packages/vx/template
@@ -753,6 +759,8 @@ importers:
   packages/vx/devtools: {}
 
   packages/vx/env: {}
+
+  packages/vx/react: {}
 
   packages/vx/start:
     dependencies:
