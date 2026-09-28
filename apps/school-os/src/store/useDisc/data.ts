@@ -11,7 +11,7 @@ export const sampleArchiveItems: ArchiveItem[] = [
   {
     id: 'a2',
     title: 'Home | Vezham School | School-OS | (HeroUI',
-    url: 'school.vezham.local:3001/#',
+    url: '/',
     archivedDate: '2026-04-09',
     favicon:
       'https://www.google.com/s2/favicons?domain=school.vezham.local&sz=32'
@@ -48,7 +48,7 @@ export const sampleArchiveItems: ArchiveItem[] = [
   {
     id: 'a7',
     title: 'Home | Vezham School',
-    url: 'school.vezham.local:3001/reports',
+    url: '/reports',
     archivedDate: '2026-04-07',
     favicon:
       'https://www.google.com/s2/favicons?domain=school.vezham.local&sz=32'

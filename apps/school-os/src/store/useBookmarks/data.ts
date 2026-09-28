@@ -46,7 +46,7 @@ export const sampleFavorites: FavoriteItem[] = [
   {
     id: '7',
     name: 'Vezham School',
-    url: 'http://school.vezham.local:3001',
+    url: '/',
     avatar:
       'https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/purple.jpg'
   },
@@ -95,7 +95,7 @@ export const sampleBookmarks: BookmarkItem[] = [
   {
     id: 'b5',
     name: 'Vezham School Portal',
-    url: 'http://school.vezham.local:3001',
+    url: '/',
     avatar:
       'https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/red.jpg',
     folder: 'Education'

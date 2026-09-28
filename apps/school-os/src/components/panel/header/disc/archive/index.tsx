@@ -1,9 +1,12 @@
 import type { ChangeEvent } from 'react'
 
+import { useNavigate } from '@tanstack/react-router'
+
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Button, Input, ScrollShadow, Typography } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
+import { getAppPath, getOpenUrl } from '@src/utils/url'
 
 import { ArchiveProps } from './types'
 import { archiveActions } from './variants'
@@ -12,6 +15,7 @@ const SearchInput = Input as any
 const ActionButton = Button as any
 
 function Archive(props: ArchiveProps) {
+  const navigate = useNavigate()
   const {
     archiveItems,
     archiveSearch,
@@ -113,7 +117,13 @@ function Archive(props: ArchiveProps) {
     if (onItemClick) {
       onItemClick(url)
     } else if (url && url !== '#') {
-      window.open(url.startsWith('http') ? url : `https://${url}`, '_blank')
+      const appPath = getAppPath(url, window.location.origin)
+
+      if (appPath) {
+        navigate({ to: appPath })
+      } else {
+        window.open(getOpenUrl(url), '_blank')
+      }
     }
   }
 

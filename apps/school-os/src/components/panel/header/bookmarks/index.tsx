@@ -7,10 +7,13 @@ import {
   useState
 } from 'react'
 
+import { useNavigate } from '@tanstack/react-router'
+
 import { ScrollShadow, Tooltip, Typography } from '@vezham/react-v3'
 
 import { AppIcon } from '@components/app-icon'
 import { InfoPanelDefinition, useInfoPanel } from '@components/panel/info-panel'
+import { getAppPath, getOpenUrl } from '@src/utils/url'
 import { useBookmarks } from '@store/useBookmarks'
 
 import BookmarkFileTree from './bookmark-file-tree'
@@ -171,6 +174,7 @@ const treeItemsToBookmarks = (items: BookmarkTreeItem[]) => {
 }
 
 const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
+  const navigate = useNavigate()
   const {
     Component,
     getScrollShadowProps,
@@ -322,7 +326,13 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
   const handleItemClick = (url: string) => {
     if (url && url !== '#') {
-      window.open(url.startsWith('http') ? url : `https://${url}`, '_blank')
+      const appPath = getAppPath(url, window.location.origin)
+
+      if (appPath) {
+        navigate({ to: appPath })
+      } else {
+        window.open(getOpenUrl(url), '_blank')
+      }
     }
   }
 

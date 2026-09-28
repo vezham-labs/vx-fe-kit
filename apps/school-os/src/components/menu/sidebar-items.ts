@@ -12,7 +12,7 @@ export const longMenuItems: SidebarItem[] = [
     key: 'channel',
     icon: 'lucide:library',
     iconActive: 'solar:library-bold',
-    href: '/channel',
+    href: '/channels',
     title: 'Channels'
   },
   {
