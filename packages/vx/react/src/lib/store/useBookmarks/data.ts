@@ -93,6 +93,14 @@ export const sampleBookmarks: BookmarkItem[] = [
     folder: 'Design'
   },
   {
+    id: 'b5-pro',
+    name: 'Pro | Application home',
+    url: '/pro',
+    avatar:
+      'https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/red.jpg',
+    folder: 'Workspace'
+  },
+  {
     id: 'b5',
     name: 'Application home',
     url: '/',

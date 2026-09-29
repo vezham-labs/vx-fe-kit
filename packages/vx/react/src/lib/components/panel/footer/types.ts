@@ -5,6 +5,26 @@ export interface UserInfo {
   isOnline?: boolean
 }
 
+export type UserStatus = 'active' | 'away' | 'idle' | 'busy' | 'dnd'
+
+export interface UserStatusOption {
+  id: UserStatus
+  label: string
+  icon: string
+  color?: string
+}
+
+export interface SuggestedStatusOption {
+  id: string
+  label: string
+  emoji: string
+}
+
+export interface StatusTimingOption {
+  id: string
+  label: string
+}
+
 export interface FooterActionsProps {
   user: UserInfo
 

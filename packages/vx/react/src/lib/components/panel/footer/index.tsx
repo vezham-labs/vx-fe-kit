@@ -2,12 +2,12 @@ import type { ReactNode } from 'react'
 
 import {
   Bell as BellIcon,
-  Logout2 as LogoutIcon,
+  MenuDots as MenuDotsIcon,
   QuestionCircle as QuestionIcon,
   Settings as SettingsIcon
 } from '@vezham/icons-react'
 import {
-  Avatar,
+  Badge,
   Button,
   Dropdown,
   Separator,
@@ -17,6 +17,7 @@ import {
 
 import { useUser } from '../../../store/users/useUserStore'
 import type { FooterActionsProps } from './types'
+import { UserMenu } from './user-menu'
 
 type Props = {
   label: string
@@ -42,6 +43,55 @@ const FooterAction = ({ children, label, onPress }: Props) => {
   )
 }
 
+const CompactActions = ({
+  showAI,
+  showControlCenter,
+  showNotifications,
+  notificationCount,
+  onAI,
+  onControlCenterClick,
+  onNotificationsClick
+}: Omit<FooterActionsProps, 'user' | 'showUserInfo' | 'onUserClick'>) => {
+  return (
+    <Dropdown>
+      <Dropdown.Trigger>
+        <Button aria-label="Open footer actions" isIconOnly variant="ghost">
+          <MenuDotsIcon size={24} aria-hidden="true" />
+        </Button>
+      </Dropdown.Trigger>
+      <Dropdown.Popover>
+        <Dropdown.Menu aria-label="Footer actions">
+          {showControlCenter ? (
+            <Dropdown.Item onPress={onControlCenterClick}>
+              <SettingsIcon size={20} aria-hidden="true" />
+              Control Center
+            </Dropdown.Item>
+          ) : null}
+          {showNotifications ? (
+            <Dropdown.Item onPress={onNotificationsClick}>
+              <BellIcon size={20} aria-hidden="true" />
+              <span className="flex-1">Notifications</span>
+              {notificationCount && notificationCount > 0 ? (
+                <Badge
+                  content={String(notificationCount)}
+                  color="danger"
+                  size="sm"
+                />
+              ) : null}
+            </Dropdown.Item>
+          ) : null}
+          {showAI ? (
+            <Dropdown.Item onPress={onAI}>
+              <QuestionIcon size={20} aria-hidden="true" />
+              AI
+            </Dropdown.Item>
+          ) : null}
+        </Dropdown.Menu>
+      </Dropdown.Popover>
+    </Dropdown>
+  )
+}
+
 const Footer = ({
   user,
   showAI = false,
@@ -63,62 +113,53 @@ const Footer = ({
       <Surface
         variant="transparent"
         className={`flex items-center justify-center gap-3 md:flex-col md:gap-6 ${className ?? ''}`}>
-        {showAI ? (
-          <FooterAction label="AI" onPress={onAI}>
-            <QuestionIcon size={24} aria-hidden="true" />
-          </FooterAction>
-        ) : null}
-
-        {showControlCenter ? (
-          <FooterAction label="Control Center" onPress={onControlCenterClick}>
-            <SettingsIcon size={24} aria-hidden="true" />
-          </FooterAction>
-        ) : null}
-
-        {showNotifications ? (
-          <div className="relative">
-            <FooterAction label="Notifications" onPress={onNotificationsClick}>
-              <BellIcon size={24} aria-hidden="true" />
+        <div className="hidden min-[500px]:contents">
+          {showAI ? (
+            <FooterAction label="AI" onPress={onAI}>
+              <QuestionIcon size={24} aria-hidden="true" />
             </FooterAction>
-            {notificationCount > 0 ? (
-              <span className="bg-danger text-danger-foreground pointer-events-none absolute -top-1 -right-1 min-w-4 rounded-full px-1 text-center text-[10px] leading-4">
-                {notificationCount}
-              </span>
-            ) : null}
-          </div>
-        ) : null}
+          ) : null}
+
+          {showControlCenter ? (
+            <FooterAction label="Control Center" onPress={onControlCenterClick}>
+              <SettingsIcon size={24} aria-hidden="true" />
+            </FooterAction>
+          ) : null}
+
+          {showNotifications ? (
+            <div className="relative">
+              <FooterAction
+                label="Notifications"
+                onPress={onNotificationsClick}>
+                <BellIcon size={24} aria-hidden="true" />
+              </FooterAction>
+              {notificationCount > 0 ? (
+                <span className="bg-danger text-danger-foreground pointer-events-none absolute -top-1 -right-1 min-w-4 rounded-full px-1 text-center text-[10px] leading-4">
+                  {notificationCount}
+                </span>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+
+        <div className="min-[500px]:hidden">
+          <CompactActions
+            showAI={showAI}
+            showControlCenter={showControlCenter}
+            showNotifications={showNotifications}
+            notificationCount={notificationCount}
+            onAI={onAI}
+            onControlCenterClick={onControlCenterClick}
+            onNotificationsClick={onNotificationsClick}
+          />
+        </div>
 
         {showUserInfo ? (
-          <Dropdown>
-            <Dropdown.Trigger
-              aria-label={`Open ${user.name || 'user'} menu`}
-              className="button button--ghost relative flex h-10 w-10 items-center justify-center rounded-xl">
-              <Avatar size="sm" className="rounded-xl">
-                {user.avatar ? (
-                  <Avatar.Image src={user.avatar} alt={user.name} />
-                ) : null}
-                <Avatar.Fallback>{user.name?.[0]}</Avatar.Fallback>
-              </Avatar>
-              <span
-                aria-hidden="true"
-                className={`border-background absolute right-0 bottom-0 h-2.5 w-2.5 rounded-full border-2 ${
-                  user.isOnline ? 'bg-success' : 'bg-muted'
-                }`}
-              />
-            </Dropdown.Trigger>
-            <Dropdown.Popover placement="right bottom">
-              <Dropdown.Menu aria-label="User actions">
-                <Dropdown.Item onPress={() => onUserClick?.(user)}>
-                  <SettingsIcon size={18} aria-hidden="true" />
-                  Preferences
-                </Dropdown.Item>
-                <Dropdown.Item onPress={clearUser} className="text-danger">
-                  <LogoutIcon size={18} aria-hidden="true" />
-                  Logout
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown.Popover>
-          </Dropdown>
+          <UserMenu
+            user={user}
+            onPreferences={() => onUserClick?.(user)}
+            onLogout={clearUser}
+          />
         ) : null}
       </Surface>
     </>
