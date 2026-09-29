@@ -25,6 +25,8 @@ export interface StatusTimingOption {
   label: string
 }
 
+export type UserSettingsEntryPoint = 'account' | 'profiles'
+
 export interface FooterActionsProps {
   user: UserInfo
 
@@ -38,7 +40,10 @@ export interface FooterActionsProps {
   onAI?: () => void
   onControlCenterClick?: () => void
   onNotificationsClick?: () => void
-  onUserClick?: (user: UserInfo) => void
+  onUserClick?: (
+    user: UserInfo,
+    entryPoint?: UserSettingsEntryPoint
+  ) => void
 
   className?: string
 }

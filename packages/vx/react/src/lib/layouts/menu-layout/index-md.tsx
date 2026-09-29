@@ -24,6 +24,7 @@ import { HomeNavigationBubble } from './home-navigation-bubble'
 
 const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
   const [openSettings, setOpenSettings] = useState(false)
+  const [settingsEntryPoint, setSettingsEntryPoint] = useState('account')
   const location = useLocation()
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [controlsOpen, setControlsOpen] = useState(false)
@@ -94,7 +95,10 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
               onAI={() => openInfoPanel('ai')}
               onControlCenterClick={() => setControlsOpen(true)}
               onNotificationsClick={() => setNotificationsOpen(true)}
-              onUserClick={() => setOpenSettings(true)}
+              onUserClick={(_user, entryPoint = 'account') => {
+                setSettingsEntryPoint(entryPoint)
+                setOpenSettings(true)
+              }}
             />
           </>
         )}
@@ -115,6 +119,7 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
       <UserInfoModal
         open={openSettings && !isNavigationCollapsed}
         onClose={() => setOpenSettings(false)}
+        defaultActiveTab={settingsEntryPoint}
       />
       <ControlCenterDrawer
         isOpen={controlsOpen && !isNavigationCollapsed}

@@ -21,6 +21,7 @@ import { useUser } from '../../store/users/useUserStore'
 const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
   const [selectedKey, setSelectedKey] = React.useState(items[0]?.key ?? '')
   const [openSettings, setOpenSettings] = useState(false)
+  const [settingsEntryPoint, setSettingsEntryPoint] = useState('account')
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [controlsOpen, setControlsOpen] = useState(false)
   const { openInfoPanel } = useInfoPanel()
@@ -70,13 +71,17 @@ const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
             onAI={() => openInfoPanel('ai')}
             onControlCenterClick={() => setControlsOpen(true)}
             onNotificationsClick={() => setNotificationsOpen(true)}
-            onUserClick={() => setOpenSettings(true)}
+            onUserClick={(_user, entryPoint = 'account') => {
+              setSettingsEntryPoint(entryPoint)
+              setOpenSettings(true)
+            }}
           />
         </div>
 
         <UserInfoModal
           open={openSettings}
           onClose={() => setOpenSettings(false)}
+          defaultActiveTab={settingsEntryPoint}
         />
         <ControlCenterDrawer
           isOpen={controlsOpen}

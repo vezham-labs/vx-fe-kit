@@ -33,6 +33,7 @@ import type {
 type Props = {
   user: UserInfo
   onLogout: () => void
+  onProfile?: () => void
   onPreferences?: () => void
 }
 
@@ -44,7 +45,7 @@ const StatusVisual = ({ status }: { status: UserStatusOption }) => {
   return <span className="text-xs">{status.icon}</span>
 }
 
-const UserMenu = ({ user, onLogout, onPreferences }: Props) => {
+const UserMenu = ({ user, onLogout, onProfile, onPreferences }: Props) => {
   const [userStatus, setUserStatus] = useState<UserStatus>('active')
   const [selectedStatus, setSelectedStatus] =
     useState<SuggestedStatusOption>()
@@ -91,7 +92,7 @@ const UserMenu = ({ user, onLogout, onPreferences }: Props) => {
         <button
           type="button"
           className="hover:bg-default-100 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left"
-          onClick={onPreferences}>
+          onClick={onProfile}>
           <Avatar size="sm">
             {user.avatar ? (
               <Avatar.Image src={user.avatar} alt={user.name} />

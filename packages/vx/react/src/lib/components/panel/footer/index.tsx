@@ -157,7 +157,8 @@ const Footer = ({
         {showUserInfo ? (
           <UserMenu
             user={user}
-            onPreferences={() => onUserClick?.(user)}
+            onProfile={() => onUserClick?.(user, 'profiles')}
+            onPreferences={() => onUserClick?.(user, 'account')}
             onLogout={clearUser}
           />
         ) : null}

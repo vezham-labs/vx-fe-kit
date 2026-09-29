@@ -5,20 +5,15 @@ import type {
   UserStatusOption
 } from './types'
 
-const DEFAULT_STATUS_OPTION: UserStatusOption = {
-  id: 'active',
-  label: 'Available',
-  icon: '🟢',
-  color: 'bg-success'
-}
-
-const STATUS_OPTIONS: readonly UserStatusOption[] = [
-  DEFAULT_STATUS_OPTION,
+const STATUS_OPTIONS = [
+  { id: 'active', label: 'Available', icon: '🟢', color: 'bg-success' },
   { id: 'away', label: 'Away', icon: '🌙', color: 'bg-warning' },
   { id: 'idle', label: 'Idle', icon: '💤', color: 'bg-primary' },
   { id: 'busy', label: 'Busy', icon: '🔴', color: 'bg-danger' },
   { id: 'dnd', label: 'Do not disturb', icon: '⛔', color: 'bg-muted' }
-]
+] as const satisfies readonly UserStatusOption[]
+
+const DEFAULT_STATUS_OPTION = STATUS_OPTIONS[0]
 
 const SUGGESTED_STATUS_OPTIONS: readonly SuggestedStatusOption[] = [
   { id: 'meeting', label: 'In a meeting', emoji: '🗓️' },
