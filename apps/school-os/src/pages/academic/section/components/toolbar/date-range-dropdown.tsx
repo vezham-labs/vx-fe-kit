@@ -31,7 +31,7 @@ type DateRangeDropdownProps = {
   onDatePresetChange: (key: DatePresetKey) => void
 }
 
-export function DateRangeDropdown({
+export const DateRangeDropdown = ({
   activeDateLabel,
   datePreset,
   isCustomDateRangeOpen,
@@ -40,7 +40,7 @@ export function DateRangeDropdown({
   onCustomDateRangeOpenChange,
   onDateDropdownOpenChange,
   onDatePresetChange
-}: DateRangeDropdownProps) {
+}: DateRangeDropdownProps) => {
   return (
     <Dropdown
       isOpen={isDateDropdownOpen}
@@ -90,9 +90,7 @@ type CustomDateRangePanelProps = {
 
 function CustomDateRangePanel({ onBack, onChange }: CustomDateRangePanelProps) {
   return (
-    <div
-      className={classNames.customDatePanel}
-      onClick={event => event.stopPropagation()}>
+    <div className={classNames.customDatePanel}>
       <Button variant="ghost" onPress={onBack}>
         <AltArrowLeftIcon size={16} aria-hidden="true" />
         Date presets

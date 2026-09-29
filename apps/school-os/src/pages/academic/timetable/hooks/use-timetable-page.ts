@@ -34,9 +34,9 @@ import {
   useTimetable
 } from '@store/useAcademic/useTimetable'
 
-export function useTimetablePage() {
+export const useTimetablePage = () => {
   const { data: timetableEvents } = useTimetable.list({})
-  const [events, setEvents] = useState<TimetableEvent[]>([])
+  const [events, setEvents] = useState<TimetableEvent[]>(timetableEvents)
   const [searchQuery] = useState('')
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: 'start',
@@ -51,12 +51,6 @@ export function useTimetablePage() {
   const [form, setForm] = useState<TimetableFormState>(emptyTimetableForm)
   const [formErrors, setFormErrors] = useState<TimetableFormErrors>({})
   const drawer = useDisclosure()
-
-  useEffect(() => {
-    if (timetableEvents) {
-      setEvents(timetableEvents)
-    }
-  }, [timetableEvents])
 
   const filteredEvents = useMemo(() => {
     const query = searchQuery.trim().toLowerCase()

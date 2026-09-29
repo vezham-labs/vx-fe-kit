@@ -15,12 +15,12 @@ import { reasonOptions, roleOptions } from '@pages/academic/reasons/data'
 import type { FilterDropdownProps } from '@pages/academic/reasons/types'
 import { classNames } from '@pages/academic/reasons/variants'
 
-export function FilterDropdown({
+export const FilterDropdown = ({
   draftFilters,
   setDraftFilters,
   onApply,
   onReset
-}: FilterDropdownProps) {
+}: FilterDropdownProps) => {
   return (
     <Dropdown>
       <Dropdown.Trigger>

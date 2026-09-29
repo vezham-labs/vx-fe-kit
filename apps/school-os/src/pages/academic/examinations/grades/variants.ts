@@ -62,6 +62,6 @@ export const hiddenTextareaStyles = {
   opacity: '0'
 } as const
 
-export function getTableRowClassName(isActive: boolean) {
+export const getTableRowClassName = (isActive: boolean) => {
   return `${classNames.tableRow} ${isActive ? classNames.tableRowActive : ''}`
 }

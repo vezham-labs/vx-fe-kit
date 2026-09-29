@@ -14,7 +14,7 @@ import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
 import { SortDropdown } from './sort-dropdown'
 
-type ScheduleToolbarProps = {
+type Props = {
   activeDateLabel: string
   activeSortLabel: string
   datePreset: DatePresetKey
@@ -38,7 +38,7 @@ type ScheduleToolbarProps = {
   onSortDirectionChange: (direction: SortDescriptor['direction']) => void
 }
 
-export function ScheduleToolbar({
+export const ScheduleToolbar = ({
   activeDateLabel,
   activeSortLabel,
   datePreset,
@@ -60,7 +60,7 @@ export function ScheduleToolbar({
   sortDirection,
   onSortFieldChange,
   onSortDirectionChange
-}: ScheduleToolbarProps) {
+}: Props) => {
   return (
     <Surface className={classNames.toolbar}>
       <div className={classNames.headerRow}>

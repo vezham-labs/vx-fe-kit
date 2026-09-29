@@ -28,11 +28,11 @@ export const sortOrderOptions = [
   }
 ] as const satisfies readonly SortOrderOption[]
 
-export function getActiveSortLabel(
+export const getActiveSortLabel = (
   sortOptions: readonly SortFieldOption[],
   sortDescriptor: SortDescriptor,
   fallbackLabel?: string
-) {
+) => {
   return (
     sortOptions.find(option => option.column === sortDescriptor.column)
       ?.label ??
@@ -42,10 +42,10 @@ export function getActiveSortLabel(
   )
 }
 
-export function sortRows<T extends Record<string, unknown>>(
+export const sortRows = <T extends Record<string, unknown>>(
   rows: T[],
   sortDescriptor: SortDescriptor
-) {
+) => {
   return [...rows].sort((firstRow, secondRow) => {
     const first = firstRow[sortDescriptor.column as keyof T]
     const second = secondRow[sortDescriptor.column as keyof T]

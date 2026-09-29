@@ -33,17 +33,17 @@ const timetableWeek = {
   wednesday: { day: 20, month: 5, year: 2026 }
 } as const
 
-function dateTime(
+const dateTime = (
   dayKey: keyof typeof timetableWeek,
   hour: number,
   minute = 0
-) {
+) => {
   const day = timetableWeek[dayKey]
 
   return new CalendarDateTime(day.year, day.month, day.day, hour, minute)
 }
 
-function lesson(
+const lesson = (
   id: string,
   title: string,
   teacher: string,
@@ -54,7 +54,7 @@ function lesson(
   room: string,
   color: TimetableColor,
   options: Partial<TimetableEvent> = {}
-): TimetableEvent {
+): TimetableEvent => {
   return {
     id,
     title,
@@ -647,9 +647,9 @@ export const timetableEvents: TimetableEvent[] = [
   )
 ]
 
-export function toAgendaEvents(
+export const toAgendaEvents = (
   events: TimetableEvent[]
-): TimetableAgendaEvent[] {
+): TimetableAgendaEvent[] => {
   return events.map(event => ({
     ...event,
     color: agendaColorMap[event.color],

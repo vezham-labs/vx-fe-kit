@@ -4,7 +4,11 @@ import { classOptions, sectionOptions } from '@pages/academic/syllabus/data'
 import type { ClassFormProps } from '@pages/academic/syllabus/types'
 import { classNames } from '@pages/academic/syllabus/variants'
 
-export function ClassForm({ form, formErrors, onFormChange }: ClassFormProps) {
+export const ClassForm = ({
+  form,
+  formErrors,
+  onFormChange
+}: ClassFormProps) => {
   return (
     <div className={classNames.form}>
       <Select

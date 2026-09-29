@@ -14,7 +14,7 @@ import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
 import { SortDropdown } from './sort-dropdown'
 
-type ExamResultsToolbarProps = {
+type Props = {
   activeDateLabel: string
   activeSortLabel: string
   datePreset: DatePresetKey
@@ -38,7 +38,7 @@ type ExamResultsToolbarProps = {
   onVisibleColumnsChange: (columns: Set<ExamResultsColumnKey>) => void
 }
 
-export function ExamResultsToolbar({
+export const ExamResultsToolbar = ({
   activeDateLabel,
   activeSortLabel,
   datePreset,
@@ -60,7 +60,7 @@ export function ExamResultsToolbar({
   onSortDirectionChange,
   onSortFieldChange,
   onVisibleColumnsChange
-}: ExamResultsToolbarProps) {
+}: Props) => {
   return (
     <Surface className={classNames.toolbar}>
       <div className={classNames.headerRow}>

@@ -18,7 +18,7 @@ import { classNames } from '@pages/academic/section/variants'
 import { ClassDetails } from './class-details'
 import { ClassForm } from './class-form'
 
-export function ClassDrawer({
+export const ClassDrawer = ({
   canGoNext,
   canGoPrevious,
   drawerState,
@@ -36,7 +36,7 @@ export function ClassDrawer({
   onGoPrevious,
   onOpenPage,
   onSave
-}: ClassDrawerProps) {
+}: ClassDrawerProps) => {
   const isFormMode = mode === 'create' || mode === 'edit'
   const showNavigation = mode !== 'create'
   const drawerTitle =

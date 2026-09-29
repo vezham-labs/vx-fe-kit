@@ -14,7 +14,7 @@ import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
 import { SortDropdown } from './sort-dropdown'
 
-type GradesToolbarProps = {
+type Props = {
   activeDateLabel: string
   activeSortLabel: string
   datePreset: DatePresetKey
@@ -38,7 +38,7 @@ type GradesToolbarProps = {
   onVisibleColumnsChange: (columns: Set<GradeColumnKey>) => void
 }
 
-export function GradesToolbar({
+export const GradesToolbar = ({
   activeDateLabel,
   activeSortLabel,
   datePreset,
@@ -60,7 +60,7 @@ export function GradesToolbar({
   onSortDirectionChange,
   onSortFieldChange,
   onVisibleColumnsChange
-}: GradesToolbarProps) {
+}: Props) => {
   return (
     <Surface className={classNames.toolbar}>
       <div className={classNames.headerRow}>

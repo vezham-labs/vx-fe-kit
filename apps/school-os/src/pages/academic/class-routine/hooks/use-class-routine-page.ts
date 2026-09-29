@@ -62,6 +62,21 @@ const getRowIdFromPath = (pathname: string) => {
   return id ? decodeURIComponent(id) : null
 }
 
+const getClassUrl = (
+  row: ClassRow,
+  nextMode: Exclude<DrawerMode, 'create'> = 'view'
+) => {
+  const url = new URL(window.location.href)
+  const basePath = getClassRoutineBasePath(url.pathname)
+
+  url.searchParams.set('mode', nextMode)
+  url.searchParams.delete('id')
+  url.pathname = `${basePath}/${encodeURIComponent(row.id)}`
+  url.hash = ''
+
+  return url.toString()
+}
+
 const emptyFilters: FilterDraft = {
   classes: null,
   section: null,
@@ -82,10 +97,10 @@ const getSortLabel = (column: SortDescriptor['column']) => {
   )
 }
 
-export function useClassRoutinePage() {
+export const useClassRoutinePage = () => {
   const routeParams = useParams({ strict: false }) as { id?: string }
   const classRoutineQuery = useClassRoutine.list({})
-  const [data, setData] = useState<ClassRow[]>([])
+  const [data, setData] = useState<ClassRow[]>(classRoutineQuery.data)
   const [searchQuery, setSearchQuery] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState('5')
   const [page, setPage] = useState(1)
@@ -114,14 +129,6 @@ export function useClassRoutinePage() {
   const [toast, setToast] = useState<ToastState | null>(null)
   const drawer = useDisclosure()
   const drawerWasOpenRef = useRef(drawer.isOpen)
-
-  useEffect(() => {
-    if (!classRoutineQuery.data?.length || data.length) {
-      return
-    }
-
-    setData(classRoutineQuery.data)
-  }, [classRoutineQuery.data, data.length])
 
   const activeDateRange = useMemo(() => {
     if (datePreset === 'custom') {
@@ -457,7 +464,7 @@ export function useClassRoutinePage() {
     window.addEventListener('popstate', syncDrawerFromUrl)
 
     return () => window.removeEventListener('popstate', syncDrawerFromUrl)
-  }, [data, routeParams.id])
+  }, [data, drawer, routeParams.id])
 
   useEffect(() => {
     if (drawerWasOpenRef.current && !drawer.isOpen) {
@@ -467,14 +474,6 @@ export function useClassRoutinePage() {
 
     drawerWasOpenRef.current = drawer.isOpen
   }, [drawer.isOpen])
-
-  useEffect(() => {
-    if (drawer.isOpen || !activeRowId) {
-      return
-    }
-
-    setActiveRowId(null)
-  }, [activeRowId, drawer.isOpen])
 
   useEffect(() => {
     if (!activeRowId) {
@@ -489,12 +488,12 @@ export function useClassRoutinePage() {
 
     const nextPage = Math.floor(rowIndex / pageSize) + 1
 
-    if (nextPage !== currentPage) {
-      setPage(nextPage)
-      return
-    }
-
     window.requestAnimationFrame(() => {
+      if (nextPage !== currentPage) {
+        setPage(nextPage)
+        return
+      }
+
       document
         .querySelector(`[data-class-row-id="${activeRowId}"]`)
         ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
@@ -770,21 +769,6 @@ export function useClassRoutinePage() {
     }
 
     showToast('Item deleted')
-  }
-
-  const getClassUrl = (
-    row: ClassRow,
-    nextMode: Exclude<DrawerMode, 'create'> = 'view'
-  ) => {
-    const url = new URL(window.location.href)
-    const basePath = getClassRoutineBasePath(url.pathname)
-
-    url.searchParams.set('mode', nextMode)
-    url.searchParams.delete('id')
-    url.pathname = `${basePath}/${encodeURIComponent(row.id)}`
-    url.hash = ''
-
-    return url.toString()
   }
 
   const copyClassLink = (row: ClassRow) => {

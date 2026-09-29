@@ -16,12 +16,12 @@ import { classNames } from '@pages/academic/timetable/variants'
 
 import { FilterSelect } from './filter-select'
 
-export function FilterDropdown({
+export const FilterDropdown = ({
   draftFilters,
   setDraftFilters,
   onApply,
   onReset
-}: FilterDropdownProps) {
+}: FilterDropdownProps) => {
   return (
     <Dropdown>
       <Dropdown.Trigger>

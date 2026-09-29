@@ -15,12 +15,12 @@ import { codeOptions, nameOptions } from '@pages/academic/subject/data'
 import type { FilterDropdownProps } from '@pages/academic/subject/types'
 import { classNames } from '@pages/academic/subject/variants'
 
-export function FilterDropdown({
+export const FilterDropdown = ({
   draftFilters,
   setDraftFilters,
   onApply,
   onReset
-}: FilterDropdownProps) {
+}: FilterDropdownProps) => {
   return (
     <Dropdown>
       <Dropdown.Trigger>

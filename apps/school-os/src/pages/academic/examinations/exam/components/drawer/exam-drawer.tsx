@@ -18,7 +18,7 @@ import { classNames } from '@pages/academic/examinations/exam/variants'
 import { ExamDetails } from './exam-details'
 import { ExamForm } from './exam-form'
 
-export function ExamDrawer({
+export const ExamDrawer = ({
   canGoNext,
   canGoPrevious,
   drawerState,
@@ -36,7 +36,7 @@ export function ExamDrawer({
   onGoPrevious,
   onOpenPage,
   onSave
-}: ClassDrawerProps) {
+}: ClassDrawerProps) => {
   const isFormMode = mode === 'create' || mode === 'edit'
   const showNavigation = mode !== 'create'
   const drawerTitle =

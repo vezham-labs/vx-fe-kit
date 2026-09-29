@@ -8,7 +8,11 @@ import {
   typeOptions
 } from '@store/useAcademic/useClassSchedule'
 
-export function ClassForm({ form, formErrors, onFormChange }: ClassFormProps) {
+export const ClassForm = ({
+  form,
+  formErrors,
+  onFormChange
+}: ClassFormProps) => {
   return (
     <div className={classNames.form}>
       <div className={classNames.formFields}>

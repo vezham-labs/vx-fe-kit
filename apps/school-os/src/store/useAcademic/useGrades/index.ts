@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { Grades } from './action'
+import { initialRows as gradesData } from './data'
 import type { RQGrades } from './types'
 
 export * from './data'
@@ -8,10 +9,11 @@ export * from './types'
 
 export const CK_GRADES = 'grades'
 
-export const useGrades = {
-  list: (rq: RQGrades = {}) =>
-    useQuery({
-      queryKey: [CK_GRADES, rq],
-      queryFn: () => Grades.list(rq)
-    })
-}
+const useList = (rq: RQGrades = {}) =>
+  useQuery({
+    queryKey: [CK_GRADES, rq],
+    queryFn: () => Grades.list(rq),
+    initialData: gradesData
+  })
+
+export const useGrades = { list: useList }

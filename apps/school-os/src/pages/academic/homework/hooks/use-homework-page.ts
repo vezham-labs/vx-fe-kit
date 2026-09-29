@@ -70,10 +70,10 @@ const getSortLabel = (column: SortDescriptor['column']) => {
   )
 }
 
-export function useHomeworkPage() {
+export const useHomeworkPage = () => {
   const routeParams = useParams({ strict: false }) as { id?: string }
   const homeworkQuery = useHomework.list({})
-  const [data, setData] = useState<ClassRow[]>([])
+  const [data, setData] = useState<ClassRow[]>(homeworkQuery.data)
   const [searchQuery, setSearchQuery] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState('5')
   const [page, setPage] = useState(1)
@@ -109,14 +109,6 @@ export function useHomeworkPage() {
   const [toast, setToast] = useState<ToastState | null>(null)
   const drawer = useDisclosure()
   const wasDrawerOpenRef = useRef(drawer.isOpen)
-
-  useEffect(() => {
-    if (!homeworkQuery.data?.length || data.length) {
-      return
-    }
-
-    setData(homeworkQuery.data)
-  }, [data.length, homeworkQuery.data])
 
   const activeDateRange = useMemo(() => {
     if (datePreset === 'custom') {
@@ -436,7 +428,7 @@ export function useHomeworkPage() {
     window.addEventListener('popstate', syncDrawerFromUrl)
 
     return () => window.removeEventListener('popstate', syncDrawerFromUrl)
-  }, [data, routeParams.id])
+  }, [data, drawer, routeParams.id])
 
   useEffect(() => {
     if (wasDrawerOpenRef.current && !drawer.isOpen) {
@@ -460,12 +452,12 @@ export function useHomeworkPage() {
 
     const nextPage = Math.floor(rowIndex / pageSize) + 1
 
-    if (nextPage !== currentPage) {
-      setPage(nextPage)
-      return
-    }
-
     window.requestAnimationFrame(() => {
+      if (nextPage !== currentPage) {
+        setPage(nextPage)
+        return
+      }
+
       document
         .querySelector(`[data-class-row-id="${activeRowId}"]`)
         ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })

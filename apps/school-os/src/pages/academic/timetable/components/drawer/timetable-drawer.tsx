@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useId, useRef, useState } from 'react'
 
 import {
   AddCircle as AddCircleIcon,
@@ -28,7 +28,7 @@ import { classNames } from '@pages/academic/timetable/variants'
 import { TimetableFormSelect } from './timetable-form-select'
 import { TimetableTimeField } from './timetable-time-field'
 
-export function TimetableDrawer({
+export const TimetableDrawer = ({
   drawerState,
   form,
   formErrors,
@@ -36,11 +36,13 @@ export function TimetableDrawer({
   onClose,
   onFormChange,
   onSave
-}: TimetableDrawerProps) {
+}: TimetableDrawerProps) => {
   const timetableRows = form.timetableRows.length
     ? form.timetableRows
     : emptyTimetableForm.timetableRows
   const [activeDay, setActiveDay] = useState(timetableDayTabs[0])
+  const rowIdPrefix = useId()
+  const nextRowId = useRef(0)
 
   const updateTimetableRow = <K extends keyof TimetableFormRow>(
     rowId: string,
@@ -58,10 +60,12 @@ export function TimetableDrawer({
   }
 
   const addTimetableRow = (day: string) => {
+    nextRowId.current += 1
+
     onFormChange('timetableRows', [
       ...timetableRows,
       {
-        id: `timetable-row-${Date.now()}`,
+        id: `${rowIdPrefix}-${nextRowId.current}`,
         day,
         endTime: '',
         startTime: '',

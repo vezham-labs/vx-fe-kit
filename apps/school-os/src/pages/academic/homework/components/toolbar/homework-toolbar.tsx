@@ -13,7 +13,7 @@ import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
 import { SortDropdown } from './sort-dropdown'
 
-type HomeworkToolbarProps = {
+type Props = {
   activeDateLabel: string
   activeSortLabel: string
   datePreset: DatePresetKey
@@ -37,7 +37,7 @@ type HomeworkToolbarProps = {
   onSortDirectionChange: (direction: SortDescriptor['direction']) => void
 }
 
-export function HomeworkToolbar({
+export const HomeworkToolbar = ({
   activeDateLabel,
   activeSortLabel,
   datePreset,
@@ -59,7 +59,7 @@ export function HomeworkToolbar({
   onVisibleColumnsChange,
   onSortDirectionChange,
   onSortFieldChange
-}: HomeworkToolbarProps) {
+}: Props) => {
   return (
     <Surface className={classNames.toolbar}>
       <div className={classNames.headerRow}>
@@ -85,6 +85,7 @@ export function HomeworkToolbar({
             onReset={onResetFilters}
           />
           <ColumnsDropdown
+            ariaLabel="Show or hide homework columns"
             columns={homeworkColumnOptions}
             visibleColumns={visibleColumns}
             onVisibleColumnsChange={onVisibleColumnsChange}

@@ -86,10 +86,10 @@ const getSortLabel = (column: SortDescriptor['column']) => {
   )
 }
 
-export function useExamAttendancePage() {
+export const useExamAttendancePage = () => {
   const routeParams = useParams({ strict: false }) as { id?: string }
   const examAttendanceQuery = useExamAttendance.list({})
-  const [data, setData] = useState<AttendanceRow[]>([])
+  const [data, setData] = useState<AttendanceRow[]>(examAttendanceQuery.data)
   const [searchQuery, setSearchQuery] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState('5')
   const [page, setPage] = useState(1)
@@ -117,14 +117,6 @@ export function useExamAttendancePage() {
   const [toast, setToast] = useState<ToastState | null>(null)
   const drawer = useDisclosure()
   const wasDrawerOpenRef = useRef(drawer.isOpen)
-
-  useEffect(() => {
-    if (!examAttendanceQuery.data?.length || data.length) {
-      return
-    }
-
-    setData(examAttendanceQuery.data)
-  }, [data.length, examAttendanceQuery.data])
 
   const activeDateRange = useMemo(() => {
     if (datePreset === 'custom') {
@@ -539,7 +531,7 @@ export function useExamAttendancePage() {
     window.addEventListener('popstate', syncDrawerFromUrl)
 
     return () => window.removeEventListener('popstate', syncDrawerFromUrl)
-  }, [data, routeParams.id])
+  }, [data, drawer, routeParams.id])
 
   useEffect(() => {
     if (wasDrawerOpenRef.current && !drawer.isOpen) {
@@ -548,14 +540,6 @@ export function useExamAttendancePage() {
 
     wasDrawerOpenRef.current = drawer.isOpen
   }, [drawer.isOpen])
-
-  useEffect(() => {
-    if (drawer.isOpen || !activeRowId) {
-      return
-    }
-
-    setActiveRowId(null)
-  }, [activeRowId, drawer.isOpen])
 
   useEffect(() => {
     if (!activeRowId) {
@@ -570,12 +554,12 @@ export function useExamAttendancePage() {
 
     const nextPage = Math.floor(rowIndex / pageSize) + 1
 
-    if (nextPage !== currentPage) {
-      setPage(nextPage)
-      return
-    }
-
     window.requestAnimationFrame(() => {
+      if (nextPage !== currentPage) {
+        setPage(nextPage)
+        return
+      }
+
       document
         .querySelector(`[data-attendance-row-id="${activeRowId}"]`)
         ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })

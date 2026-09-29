@@ -4,8 +4,10 @@ import {
   usePickupPoints
 } from '@store/useOperations/useTransport/usePickupPoints'
 
-export default function PickupPointsOperationsPage() {
+const PickupPointsOperationsPage = () => {
   const { data } = usePickupPoints.list({})
 
   return <OperationsTablePage config={{ ...pickupPointsConfig, rows: data }} />
 }
+
+export default PickupPointsOperationsPage

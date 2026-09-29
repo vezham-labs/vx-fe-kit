@@ -3,15 +3,15 @@ import type {
   ClassRow
 } from '@pages/academic/examinations/exam-results/types'
 
-export function getClassTags(row: ClassRow) {
+export const getClassTags = (row: ClassRow) => {
   return [row.classes, row.section, row.examtype].filter(Boolean)
 }
 
-export function getDrawerTitle(row: ClassRow) {
+export const getDrawerTitle = (row: ClassRow) => {
   return row.name
 }
 
-export function rowToForm(row: ClassRow): ClassFormState {
+export const rowToForm = (row: ClassRow): ClassFormState => {
   return {
     name: row.name,
     english: row.english,
@@ -28,7 +28,7 @@ export function rowToForm(row: ClassRow): ClassFormState {
   }
 }
 
-export function validateClassForm(form: ClassFormState) {
+export const validateClassForm = (form: ClassFormState) => {
   const errors: Partial<Record<keyof ClassFormState, string>> = {}
 
   if (!form.name.trim()) {
@@ -38,18 +38,18 @@ export function validateClassForm(form: ClassFormState) {
   return errors
 }
 
-export function createNextClassId(rows: ClassRow[]) {
+export const createNextClassId = (rows: ClassRow[]) => {
   const nextNumber =
     Math.max(...rows.map(row => Number(row.id.replace(/\D/g, '')) || 0)) + 1
 
   return `AD${nextNumber}`
 }
 
-export function getPaginationSummary(
+export const getPaginationSummary = (
   page: number,
   pageSize: number,
   total: number
-) {
+) => {
   if (!total) {
     return '0 of 0'
   }

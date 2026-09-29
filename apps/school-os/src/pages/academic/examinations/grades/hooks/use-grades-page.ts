@@ -79,10 +79,10 @@ const getSortLabel = (column: SortDescriptor['column']) => {
   )
 }
 
-export function useGradesPage() {
+export const useGradesPage = () => {
   const routeParams = useParams({ strict: false }) as { id?: string }
   const gradesQuery = useGrades.list({})
-  const [data, setData] = useState<ClassRow[]>([])
+  const [data, setData] = useState<ClassRow[]>(gradesQuery.data)
   const [searchQuery, setSearchQuery] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState('5')
   const [page, setPage] = useState(1)
@@ -110,14 +110,6 @@ export function useGradesPage() {
   const [toast, setToast] = useState<ToastState | null>(null)
   const drawer = useDisclosure()
   const wasDrawerOpenRef = useRef(drawer.isOpen)
-
-  useEffect(() => {
-    if (!gradesQuery.data?.length || data.length) {
-      return
-    }
-
-    setData(gradesQuery.data)
-  }, [data.length, gradesQuery.data])
 
   const activeDateRange = useMemo(() => {
     if (datePreset === 'custom') {
@@ -502,7 +494,7 @@ export function useGradesPage() {
     window.addEventListener('popstate', syncDrawerFromUrl)
 
     return () => window.removeEventListener('popstate', syncDrawerFromUrl)
-  }, [data, routeParams.id])
+  }, [data, drawer, routeParams.id])
 
   useEffect(() => {
     if (wasDrawerOpenRef.current && !drawer.isOpen) {
@@ -511,14 +503,6 @@ export function useGradesPage() {
 
     wasDrawerOpenRef.current = drawer.isOpen
   }, [drawer.isOpen])
-
-  useEffect(() => {
-    if (drawer.isOpen || !activeRowId) {
-      return
-    }
-
-    setActiveRowId(null)
-  }, [activeRowId, drawer.isOpen])
 
   useEffect(() => {
     if (!activeRowId) {
@@ -533,12 +517,12 @@ export function useGradesPage() {
 
     const nextPage = Math.floor(rowIndex / pageSize) + 1
 
-    if (nextPage !== currentPage) {
-      setPage(nextPage)
-      return
-    }
-
     window.requestAnimationFrame(() => {
+      if (nextPage !== currentPage) {
+        setPage(nextPage)
+        return
+      }
+
       document
         .querySelector(`[data-class-row-id="${activeRowId}"]`)
         ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })

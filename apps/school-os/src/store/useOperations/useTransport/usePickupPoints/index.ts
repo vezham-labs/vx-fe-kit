@@ -9,13 +9,13 @@ export * from './types'
 
 export const CK_PICKUP_POINTS = 'pickup-points'
 
-export const usePickupPoints = {
-  list: (rq: RQPickupPoints = {}) =>
-    useQuery({
-      queryKey: [CK_PICKUP_POINTS, rq],
-      queryFn: () => PickupPoints.list(rq),
-      initialData: pickupPointsData
-    })
-}
+const useList = (rq: RQPickupPoints = {}) =>
+  useQuery({
+    queryKey: [CK_PICKUP_POINTS, rq],
+    queryFn: () => PickupPoints.list(rq),
+    initialData: pickupPointsData
+  })
+
+export const usePickupPoints = { list: useList }
 
 export { pickupPointsConfig }

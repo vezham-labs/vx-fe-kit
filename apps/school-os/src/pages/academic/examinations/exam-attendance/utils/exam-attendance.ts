@@ -5,9 +5,9 @@ import type {
   AttendanceStatus
 } from '@pages/academic/examinations/exam-attendance/types'
 
-export function getAttendanceChipColor(
+export const getAttendanceChipColor = (
   status: AttendanceStatus
-): 'success' | 'danger' | 'accent' {
+): 'success' | 'danger' | 'accent' => {
   if (status === 'Present') {
     return 'success'
   }
@@ -19,7 +19,7 @@ export function getAttendanceChipColor(
   return 'accent'
 }
 
-export function getAttendanceTags(row: AttendanceRow) {
+export const getAttendanceTags = (row: AttendanceRow) => {
   return [
     row.classes ? `Class ${row.classes}` : null,
     row.section ? `Section ${row.section}` : null,
@@ -28,7 +28,7 @@ export function getAttendanceTags(row: AttendanceRow) {
   ].filter((tag): tag is string => Boolean(tag))
 }
 
-export function getStudentSecondaryText(row: AttendanceRow) {
+export const getStudentSecondaryText = (row: AttendanceRow) => {
   if (row.rollNo) {
     return `Roll No : ${row.rollNo}`
   }
@@ -40,7 +40,7 @@ export function getStudentSecondaryText(row: AttendanceRow) {
   return [row.classes, row.section].filter(Boolean).join(' - ')
 }
 
-export function getInitials(name: string) {
+export const getInitials = (name: string) => {
   return name
     .split(' ')
     .filter(Boolean)
@@ -49,7 +49,7 @@ export function getInitials(name: string) {
     .join('')
 }
 
-export function getDrawerTitle(row: AttendanceRow) {
+export const getDrawerTitle = (row: AttendanceRow) => {
   const values = row as Record<string, unknown>
   const idValue =
     getDrawerText(values.displayId) ||
@@ -73,7 +73,7 @@ export function getDrawerTitle(row: AttendanceRow) {
   return nameValue || '-'
 }
 
-export function rowToForm(row: AttendanceRow): AttendanceFormState {
+export const rowToForm = (row: AttendanceRow): AttendanceFormState => {
   return {
     name: row.name,
     english: row.english,
@@ -87,7 +87,7 @@ export function rowToForm(row: AttendanceRow): AttendanceFormState {
   }
 }
 
-export function validateAttendanceForm(form: AttendanceFormState) {
+export const validateAttendanceForm = (form: AttendanceFormState) => {
   const errors: AttendanceFormErrors = {}
 
   if (!form.status) {
@@ -97,18 +97,18 @@ export function validateAttendanceForm(form: AttendanceFormState) {
   return errors
 }
 
-export function createNextAttendanceId(rows: AttendanceRow[]) {
+export const createNextAttendanceId = (rows: AttendanceRow[]) => {
   const nextNumber =
     Math.max(0, ...rows.map(row => Number(row.id.replace(/\D/g, '')) || 0)) + 1
 
   return `EA${String(nextNumber).padStart(6, '0')}`
 }
 
-export function getPaginationSummary(
+export const getPaginationSummary = (
   page: number,
   pageSize: number,
   total: number
-) {
+) => {
   if (!total) {
     return '0 of 0'
   }

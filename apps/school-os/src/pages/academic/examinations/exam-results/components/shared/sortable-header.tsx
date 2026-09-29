@@ -6,10 +6,10 @@ import {
 import type { SortableHeaderProps } from '@pages/academic/examinations/exam-results/types'
 import { classNames } from '@pages/academic/examinations/exam-results/variants'
 
-export function SortableHeader({
+export const SortableHeader = ({
   children,
   sortDirection
-}: SortableHeaderProps) {
+}: SortableHeaderProps) => {
   return (
     <span className={classNames.sortableHeader}>
       {children}

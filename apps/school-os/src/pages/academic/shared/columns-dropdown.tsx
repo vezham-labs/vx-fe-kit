@@ -9,7 +9,7 @@ type ColumnOption<Key extends string> = {
   label: string
 }
 
-type ColumnsDropdownProps<Key extends string> = {
+type Props<Key extends string> = {
   ariaLabel: string
   buttonLabel?: string
   options?: readonly ColumnOption<Key>[]
@@ -18,14 +18,14 @@ type ColumnsDropdownProps<Key extends string> = {
   onVisibleColumnsChange: (columns: Set<Key>) => void
 }
 
-export function ColumnsDropdown<Key extends string>({
+export const ColumnsDropdown = <Key extends string>({
   ariaLabel,
   buttonLabel = 'Columns',
   options,
   columns,
   visibleColumns,
   onVisibleColumnsChange
-}: ColumnsDropdownProps<Key>) {
+}: Props<Key>) => {
   const resolvedOptions = options ?? columns ?? []
 
   return (

@@ -9,6 +9,7 @@ import {
   ListBox,
   Select
 } from '@vezham/react-v3'
+import type { DateValue } from '@vezham/react-v3'
 
 import {
   endtimeOptions,
@@ -17,7 +18,11 @@ import {
 import type { ClassFormProps } from '@pages/academic/examinations/exam/types'
 import { classNames } from '@pages/academic/examinations/exam/variants'
 
-export function ExamForm({ form, formErrors, onFormChange }: ClassFormProps) {
+export const ExamForm = ({
+  form,
+  formErrors,
+  onFormChange
+}: ClassFormProps) => {
   return (
     <div className={classNames.form}>
       <div className={classNames.formFields}>
@@ -150,7 +155,7 @@ export function ExamForm({ form, formErrors, onFormChange }: ClassFormProps) {
   )
 }
 
-function toCalendarDate(value: string | null): any {
+function toCalendarDate(value: string | null): DateValue | null {
   if (!value) {
     return null
   }
@@ -161,5 +166,5 @@ function toCalendarDate(value: string | null): any {
     return null
   }
 
-  return new CalendarDate(year, month, day)
+  return new CalendarDate(year, month, day) as unknown as DateValue
 }

@@ -8,7 +8,7 @@ import {
 } from '@pages/academic/timetable/utils/timetable'
 import { classNames } from '@pages/academic/timetable/variants'
 
-type TimetableTimeFieldProps = {
+type Props = {
   error?: string
   label: string
   value: string
@@ -17,12 +17,12 @@ type TimetableTimeFieldProps = {
 
 type TimeFieldValue = ComponentProps<typeof TimeField>['value']
 
-export function TimetableTimeField({
+export const TimetableTimeField = ({
   error,
   label,
   value,
   onChange
-}: TimetableTimeFieldProps) {
+}: Props) => {
   return (
     <div className={classNames.field}>
       <TimeField

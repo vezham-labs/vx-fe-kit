@@ -21,12 +21,12 @@ import {
   teacherOptions
 } from '@store/useAcademic/useClassRoutine'
 
-export function FilterDropdown({
+export const FilterDropdown = ({
   draftFilters,
   setDraftFilters,
   onApply,
   onReset
-}: FilterDropdownProps) {
+}: FilterDropdownProps) => {
   return (
     <Dropdown>
       <Dropdown.Trigger>

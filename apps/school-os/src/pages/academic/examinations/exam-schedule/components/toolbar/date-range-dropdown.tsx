@@ -20,7 +20,7 @@ import type {
 } from '@pages/academic/examinations/exam-schedule/types'
 import { classNames } from '@pages/academic/examinations/exam-schedule/variants'
 
-type DateRangeDropdownProps = {
+type Props = {
   activeDateLabel: string
   datePreset: DatePresetKey
   isCustomDateRangeOpen: boolean
@@ -31,7 +31,7 @@ type DateRangeDropdownProps = {
   onDatePresetChange: (key: DatePresetKey) => void
 }
 
-export function DateRangeDropdown({
+export const DateRangeDropdown = ({
   activeDateLabel,
   datePreset,
   isCustomDateRangeOpen,
@@ -40,7 +40,7 @@ export function DateRangeDropdown({
   onCustomDateRangeOpenChange,
   onDateDropdownOpenChange,
   onDatePresetChange
-}: DateRangeDropdownProps) {
+}: Props) => {
   return (
     <Dropdown
       isOpen={isDateDropdownOpen}
@@ -55,9 +55,7 @@ export function DateRangeDropdown({
       <Dropdown.Popover>
         <Surface className={classNames.datePopover}>
           {isCustomDateRangeOpen ? (
-            <div
-              className={classNames.customDatePanel}
-              onClick={event => event.stopPropagation()}>
+            <div className={classNames.customDatePanel}>
               <Button
                 variant="ghost"
                 onPress={() => onCustomDateRangeOpenChange(false)}>

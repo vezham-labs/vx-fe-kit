@@ -3,7 +3,7 @@ import { CalendarDate, type CalendarDateTime } from '@internationalized/date'
 import { dayOptions } from '@pages/academic/timetable/data'
 import type { TimetableView } from '@pages/academic/timetable/types'
 
-export function getAgendaDate(date: CalendarDate, view: TimetableView) {
+export const getAgendaDate = (date: CalendarDate, view: TimetableView) => {
   if (view !== 'week') {
     return date
   }
@@ -11,7 +11,7 @@ export function getAgendaDate(date: CalendarDate, view: TimetableView) {
   return date.subtract({ days: getMondayOffset(date) }).add({ days: 3 })
 }
 
-export function getDateForDayName(date: CalendarDate, dayName: string) {
+export const getDateForDayName = (date: CalendarDate, dayName: string) => {
   const focusedDate = getAgendaDate(date, 'week')
   const nativeDate = new Date(
     focusedDate.year,
@@ -24,13 +24,13 @@ export function getDateForDayName(date: CalendarDate, dayName: string) {
   return startOfWeek.add({ days: Math.max(dayIndex, 0) })
 }
 
-export function getDayName(date: CalendarDateTime) {
+export const getDayName = (date: CalendarDateTime) => {
   return new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(
     new Date(date.year, date.month - 1, date.day)
   )
 }
 
-export function getTodayCalendarDate() {
+export const getTodayCalendarDate = () => {
   return dateToCalendarDate(new Date())
 }
 

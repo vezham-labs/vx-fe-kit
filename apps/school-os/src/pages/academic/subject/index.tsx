@@ -5,7 +5,7 @@ import { SubjectToolbar } from './components/toolbar/subject-toolbar'
 import { useSubjectPage } from './hooks/use-subject-page'
 import { classNames } from './variants'
 
-export default function AllClassesPage() {
+const AllClassesPage = () => {
   const page = useSubjectPage()
 
   return (
@@ -19,3 +19,5 @@ export default function AllClassesPage() {
     </section>
   )
 }
+
+export default AllClassesPage

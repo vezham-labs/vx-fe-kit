@@ -4,10 +4,12 @@ import {
   vehicleDriversConfig
 } from '@store/useOperations/useTransport/useVehicleDrivers'
 
-export default function VehicleDriversOperationsPage() {
+const VehicleDriversOperationsPage = () => {
   const { data } = useVehicleDrivers.list({})
 
   return (
     <OperationsTablePage config={{ ...vehicleDriversConfig, rows: data }} />
   )
 }
+
+export default VehicleDriversOperationsPage

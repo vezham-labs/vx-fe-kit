@@ -5,15 +5,12 @@ import { classNames } from '@pages/academic/timetable/variants'
 
 import { FilterDropdown } from './filter-dropdown'
 
-export function TimetableToolbar({
-  activeSortLabel,
+export const TimetableToolbar = ({
   draftFilters,
   onApplyFilters,
   onResetFilters,
-  onSortChange,
-  setDraftFilters,
-  sortDescriptor
-}: TimetableToolbarProps) {
+  setDraftFilters
+}: TimetableToolbarProps) => {
   return (
     <Surface className={classNames.toolbar}>
       <div className={classNames.headerRow}>

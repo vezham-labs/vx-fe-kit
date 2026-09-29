@@ -4,8 +4,10 @@ import {
   useCollectFees
 } from '@store/useOperations/useFees/useCollectFees'
 
-export default function CollectFeesOperationsPage() {
+const CollectFeesOperationsPage = () => {
   const { data } = useCollectFees.list({})
 
   return <OperationsTablePage config={{ ...collectFeesConfig, rows: data }} />
 }
+
+export default CollectFeesOperationsPage

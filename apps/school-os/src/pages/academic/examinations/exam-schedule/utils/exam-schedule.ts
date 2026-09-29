@@ -4,7 +4,7 @@ import type {
   ClassRow
 } from '@pages/academic/examinations/exam-schedule/types'
 
-export function getScheduleTags(row: ClassRow) {
+export const getScheduleTags = (row: ClassRow) => {
   return [
     `Grade ${row.classes}`,
     `Section ${row.section}`,
@@ -15,7 +15,7 @@ export function getScheduleTags(row: ClassRow) {
   ]
 }
 
-export function getDrawerTitle(row: ClassRow) {
+export const getDrawerTitle = (row: ClassRow) => {
   const values = row as Record<string, unknown>
   const idValue =
     getDrawerText(values.displayId) ||
@@ -39,7 +39,7 @@ export function getDrawerTitle(row: ClassRow) {
   return nameValue || '-'
 }
 
-export function rowToForm(row: ClassRow): ClassFormState {
+export const rowToForm = (row: ClassRow): ClassFormState => {
   return {
     classes: row.classes,
     section: row.section,
@@ -66,7 +66,7 @@ export function rowToForm(row: ClassRow): ClassFormState {
   }
 }
 
-export function validateScheduleForm(form: ClassFormState) {
+export const validateScheduleForm = (form: ClassFormState) => {
   const errors: ClassFormErrors = {}
 
   if (!form.classes.trim()) {
@@ -122,11 +122,11 @@ export function validateScheduleForm(form: ClassFormState) {
   return errors
 }
 
-export function getPaginationSummary(
+export const getPaginationSummary = (
   page: number,
   pageSize: number,
   total: number
-) {
+) => {
   if (!total) {
     return '0 of 0'
   }

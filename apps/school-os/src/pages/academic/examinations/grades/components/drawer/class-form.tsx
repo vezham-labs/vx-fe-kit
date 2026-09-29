@@ -9,7 +9,11 @@ import {
 import type { ClassFormProps } from '@pages/academic/examinations/grades/types'
 import { classNames } from '@pages/academic/examinations/grades/variants'
 
-export function ClassForm({ form, formErrors, onFormChange }: ClassFormProps) {
+export const ClassForm = ({
+  form,
+  formErrors,
+  onFormChange
+}: ClassFormProps) => {
   return (
     <div className={classNames.form}>
       <div className={classNames.formFields}>

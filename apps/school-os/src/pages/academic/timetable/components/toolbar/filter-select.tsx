@@ -1,6 +1,6 @@
 import { Label, ListBox, Select } from '@vezham/react-v3'
 
-type FilterSelectProps = {
+type Props = {
   label: string
   options: string[]
   placeholder: string
@@ -8,13 +8,13 @@ type FilterSelectProps = {
   onChange: (value: string | null) => void
 }
 
-export function FilterSelect({
+export const FilterSelect = ({
   label,
   options,
   placeholder,
   value,
   onChange
-}: FilterSelectProps) {
+}: Props) => {
   return (
     <Select
       fullWidth

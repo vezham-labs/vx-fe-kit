@@ -9,13 +9,13 @@ export * from './types'
 
 export const CK_MEMBERS = 'members'
 
-export const useMembers = {
-  list: (rq: RQMembers = {}) =>
-    useQuery({
-      queryKey: [CK_MEMBERS, rq],
-      queryFn: () => Members.list(rq),
-      initialData: membersData
-    })
-}
+const useList = (rq: RQMembers = {}) =>
+  useQuery({
+    queryKey: [CK_MEMBERS, rq],
+    queryFn: () => Members.list(rq),
+    initialData: membersData
+  })
+
+export const useMembers = { list: useList }
 
 export { libraryMembersConfig }

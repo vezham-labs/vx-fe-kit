@@ -4,8 +4,10 @@ import {
   useHostelRoom
 } from '@store/useOperations/useHostel/useHostelRoom'
 
-export default function HostelRoomOperationsPage() {
+const HostelRoomOperationsPage = () => {
   const { data } = useHostelRoom.list({})
 
   return <OperationsTablePage config={{ ...hostelRoomConfig, rows: data }} />
 }
+
+export default HostelRoomOperationsPage

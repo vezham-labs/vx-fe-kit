@@ -9,13 +9,13 @@ export * from './types'
 
 export const CK_ISSUE_BOOKS = 'issue-books'
 
-export const useIssueBooks = {
-  list: (rq: RQIssueBooks = {}) =>
-    useQuery({
-      queryKey: [CK_ISSUE_BOOKS, rq],
-      queryFn: () => IssueBooks.list(rq),
-      initialData: issueBooksData
-    })
-}
+const useList = (rq: RQIssueBooks = {}) =>
+  useQuery({
+    queryKey: [CK_ISSUE_BOOKS, rq],
+    queryFn: () => IssueBooks.list(rq),
+    initialData: issueBooksData
+  })
+
+export const useIssueBooks = { list: useList }
 
 export { issueBookConfig }

@@ -25,7 +25,7 @@ type SortOrderOption = {
   icon: string
 }
 
-type SortDropdownProps = {
+type Props = {
   activeSortLabel: string
   ariaLabel?: string
   sortField: SortDescriptor['column']
@@ -36,7 +36,7 @@ type SortDropdownProps = {
   onSortDirectionChange: (direction: SortDescriptor['direction']) => void
 }
 
-export function SortDropdown({
+export const SortDropdown = ({
   activeSortLabel,
   ariaLabel = 'Sort records',
   sortField,
@@ -45,7 +45,7 @@ export function SortDropdown({
   sortOrderOptions = defaultSortOrderOptions,
   onSortFieldChange,
   onSortDirectionChange
-}: SortDropdownProps) {
+}: Props) => {
   const activeField =
     sortOptions.find(option => option.column === sortField) ?? sortOptions[0]
   const activeDirection = sortDirection ?? 'ascending'

@@ -18,12 +18,12 @@ import type {
 } from '@pages/academic/section/types'
 import { classNames } from '@pages/academic/section/variants'
 
-export function FilterDropdown({
+export const FilterDropdown = ({
   draftFilters,
   setDraftFilters,
   onApply,
   onReset
-}: FilterDropdownProps) {
+}: FilterDropdownProps) => {
   return (
     <Dropdown>
       <Dropdown.Trigger>

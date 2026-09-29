@@ -21,11 +21,11 @@ import type {
 } from '@pages/academic/examinations/exam-schedule/types'
 import { classNames } from '@pages/academic/examinations/exam-schedule/variants'
 
-export function ScheduleForm({
+export const ScheduleForm = ({
   form,
   formErrors,
   onFormChange
-}: ClassFormProps) {
+}: ClassFormProps) => {
   const scheduleRows = form.scheduleRows.length
     ? form.scheduleRows
     : emptyForm.scheduleRows

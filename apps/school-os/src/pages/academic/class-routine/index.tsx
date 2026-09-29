@@ -5,7 +5,7 @@ import { ClassRoutineToolbar } from './components/toolbar/class-routine-toolbar'
 import { useClassRoutinePage } from './hooks/use-class-routine-page'
 import { classNames } from './variants'
 
-export default function AllClassesPage() {
+const AllClassesPage = () => {
   const page = useClassRoutinePage()
 
   return (
@@ -19,3 +19,5 @@ export default function AllClassesPage() {
     </section>
   )
 }
+
+export default AllClassesPage

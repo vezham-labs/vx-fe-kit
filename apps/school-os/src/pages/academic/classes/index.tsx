@@ -1,5 +1,7 @@
 import { AcademicSectionPage } from '@pages/academic/academic-section'
 
-export default function ClassesPage() {
+const ClassesPage = () => {
   return <AcademicSectionPage title="Classes" />
 }
+
+export default ClassesPage

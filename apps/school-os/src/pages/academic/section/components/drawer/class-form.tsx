@@ -3,7 +3,11 @@ import { Input, Label, Switch } from '@vezham/react-v3'
 import type { ClassFormProps } from '@pages/academic/section/types'
 import { classNames } from '@pages/academic/section/variants'
 
-export function ClassForm({ form, formErrors, onFormChange }: ClassFormProps) {
+export const ClassForm = ({
+  form,
+  formErrors,
+  onFormChange
+}: ClassFormProps) => {
   return (
     <div className={classNames.form}>
       <div className={classNames.formFields}>

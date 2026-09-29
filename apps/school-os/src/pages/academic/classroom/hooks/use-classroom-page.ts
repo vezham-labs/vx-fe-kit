@@ -62,6 +62,21 @@ const getRowIdFromPath = (pathname: string) => {
   return id ? decodeURIComponent(id) : null
 }
 
+const getClassUrl = (
+  row: ClassRow,
+  nextMode: Exclude<DrawerMode, 'create'> = 'view'
+) => {
+  const url = new URL(window.location.href)
+  const basePath = getClassroomBasePath(url.pathname)
+
+  url.searchParams.set('mode', nextMode)
+  url.searchParams.delete('id')
+  url.pathname = `${basePath}/${encodeURIComponent(row.id)}`
+  url.hash = ''
+
+  return url.toString()
+}
+
 const emptyFilters: FilterDraft = {
   roomno: null,
   capacity: null,
@@ -76,10 +91,10 @@ const getSortLabel = (column: SortDescriptor['column']) => {
   )
 }
 
-export function useClassroomPage() {
+export const useClassroomPage = () => {
   const routeParams = useParams({ strict: false }) as { id?: string }
   const classroomQuery = useClassroom.list({})
-  const [data, setData] = useState<ClassRow[]>([])
+  const [data, setData] = useState<ClassRow[]>(classroomQuery.data)
   const [searchQuery, setSearchQuery] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState('5')
   const [page, setPage] = useState(1)
@@ -105,14 +120,6 @@ export function useClassroomPage() {
   const [formErrors, setFormErrors] = useState<ClassFormErrors>({})
   const [toast, setToast] = useState<ToastState | null>(null)
   const drawer = useDisclosure()
-
-  useEffect(() => {
-    if (!classroomQuery.data?.length || data.length) {
-      return
-    }
-
-    setData(classroomQuery.data)
-  }, [classroomQuery.data, data.length])
 
   const activeDateRange = useMemo(() => {
     if (datePreset === 'custom') {
@@ -431,15 +438,7 @@ export function useClassroomPage() {
     window.addEventListener('popstate', syncDrawerFromUrl)
 
     return () => window.removeEventListener('popstate', syncDrawerFromUrl)
-  }, [data, routeParams.id])
-
-  useEffect(() => {
-    if (drawer.isOpen || !activeRowId) {
-      return
-    }
-
-    setActiveRowId(null)
-  }, [activeRowId, drawer.isOpen])
+  }, [data, drawer, routeParams.id])
 
   useEffect(() => {
     if (!activeRowId) {
@@ -454,12 +453,12 @@ export function useClassroomPage() {
 
     const nextPage = Math.floor(rowIndex / pageSize) + 1
 
-    if (nextPage !== currentPage) {
-      setPage(nextPage)
-      return
-    }
-
     window.requestAnimationFrame(() => {
+      if (nextPage !== currentPage) {
+        setPage(nextPage)
+        return
+      }
+
       document
         .querySelector(`[data-class-row-id="${activeRowId}"]`)
         ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
@@ -717,21 +716,6 @@ export function useClassroomPage() {
     }
 
     showToast('Item deleted')
-  }
-
-  const getClassUrl = (
-    row: ClassRow,
-    nextMode: Exclude<DrawerMode, 'create'> = 'view'
-  ) => {
-    const url = new URL(window.location.href)
-    const basePath = getClassroomBasePath(url.pathname)
-
-    url.searchParams.set('mode', nextMode)
-    url.searchParams.delete('id')
-    url.pathname = `${basePath}/${encodeURIComponent(row.id)}`
-    url.hash = ''
-
-    return url.toString()
   }
 
   const copyClassLink = (row: ClassRow) => {

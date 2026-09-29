@@ -5,7 +5,7 @@ import { SyllabusToolbar } from './components/toolbar/syllabus-toolbar'
 import { useSyllabusPage } from './hooks/use-syllabus-page'
 import { classNames } from './variants'
 
-export default function AllClassesPage() {
+const AllClassesPage = () => {
   const page = useSyllabusPage()
 
   return (
@@ -19,3 +19,5 @@ export default function AllClassesPage() {
     </section>
   )
 }
+
+export default AllClassesPage

@@ -5,7 +5,7 @@ import { SectionToolbar } from './components/toolbar/section-toolbar'
 import { useSectionPage } from './hooks/use-section-page'
 import { classNames } from './variants'
 
-export default function AllClassesPage() {
+const AllClassesPage = () => {
   const page = useSectionPage()
 
   return (
@@ -19,3 +19,5 @@ export default function AllClassesPage() {
     </section>
   )
 }
+
+export default AllClassesPage

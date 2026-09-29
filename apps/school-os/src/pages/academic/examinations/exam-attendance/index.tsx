@@ -5,7 +5,7 @@ import { ExamAttendanceToolbar } from './components/toolbar/exam-attendance-tool
 import { useExamAttendancePage } from './hooks/use-exam-attendance-page'
 import { classNames } from './variants'
 
-export default function ExamAttendancePage() {
+const ExamAttendancePage = () => {
   const page = useExamAttendancePage()
 
   return (
@@ -19,3 +19,5 @@ export default function ExamAttendancePage() {
     </section>
   )
 }
+
+export default ExamAttendancePage

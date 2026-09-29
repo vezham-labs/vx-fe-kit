@@ -1,4 +1,4 @@
-export default function AcademicDashboardPage() {
+const AcademicDashboardPage = () => {
   return (
     <section className="space-y-3">
       <p className="text-muted-foreground text-sm">Academic</p>
@@ -10,3 +10,5 @@ export default function AcademicDashboardPage() {
     </section>
   )
 }
+
+export default AcademicDashboardPage

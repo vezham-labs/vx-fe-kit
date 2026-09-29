@@ -9,13 +9,13 @@ export * from './types'
 
 export const CK_ROOM_TYPE = 'room-type'
 
-export const useRoomType = {
-  list: (rq: RQRoomType = {}) =>
-    useQuery({
-      queryKey: [CK_ROOM_TYPE, rq],
-      queryFn: () => RoomType.list(rq),
-      initialData: roomTypeData
-    })
-}
+const useList = (rq: RQRoomType = {}) =>
+  useQuery({
+    queryKey: [CK_ROOM_TYPE, rq],
+    queryFn: () => RoomType.list(rq),
+    initialData: roomTypeData
+  })
+
+export const useRoomType = { list: useList }
 
 export { roomTypeConfig }

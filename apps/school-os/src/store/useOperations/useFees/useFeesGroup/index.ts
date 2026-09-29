@@ -9,13 +9,13 @@ export * from './types'
 
 export const CK_FEES_GROUP = 'fees-group'
 
-export const useFeesGroup = {
-  list: (rq: RQFeesGroup = {}) =>
-    useQuery({
-      queryKey: [CK_FEES_GROUP, rq],
-      queryFn: () => FeesGroup.list(rq),
-      initialData: feesGroupData
-    })
-}
+const useList = (rq: RQFeesGroup = {}) =>
+  useQuery({
+    queryKey: [CK_FEES_GROUP, rq],
+    queryFn: () => FeesGroup.list(rq),
+    initialData: feesGroupData
+  })
+
+export const useFeesGroup = { list: useList }
 
 export { feesGroupConfig }

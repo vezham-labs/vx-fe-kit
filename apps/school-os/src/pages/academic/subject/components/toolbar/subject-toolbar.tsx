@@ -13,7 +13,7 @@ import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
 import { SortDropdown } from './sort-dropdown'
 
-type SubjectToolbarProps = {
+type Props = {
   activeDateLabel: string
   activeSortLabel: string
   datePreset: DatePresetKey
@@ -37,7 +37,7 @@ type SubjectToolbarProps = {
   onSortDirectionChange: (direction: SortDescriptor['direction']) => void
 }
 
-export function SubjectToolbar({
+export const SubjectToolbar = ({
   activeDateLabel,
   activeSortLabel,
   datePreset,
@@ -59,7 +59,7 @@ export function SubjectToolbar({
   onVisibleColumnsChange,
   onSortDirectionChange,
   onSortFieldChange
-}: SubjectToolbarProps) {
+}: Props) => {
   return (
     <Surface className={classNames.toolbar}>
       <div className={classNames.headerRow}>
@@ -87,6 +87,7 @@ export function SubjectToolbar({
             onReset={onResetFilters}
           />
           <ColumnsDropdown
+            ariaLabel="Show or hide subject columns"
             columns={subjectColumnOptions}
             visibleColumns={visibleColumns}
             onVisibleColumnsChange={onVisibleColumnsChange}

@@ -71,11 +71,7 @@ const dateOptions: { key: DatePresetKey; label: string }[] = [
   { key: 'custom', label: 'Custom Range' }
 ]
 
-export default function OperationsTablePage({
-  config
-}: {
-  config: OperationPageConfig
-}) {
+const OperationsTablePage = ({ config }: { config: OperationPageConfig }) => {
   const sectionTitle = getOperationSectionTitle(config)
   const pageSubtitle = getOperationPageSubtitle(config)
   const [data, setData] = useState<OperationRow[]>(config.rows)
@@ -368,12 +364,12 @@ export default function OperationsTablePage({
 
     const nextPage = Math.floor(rowIndex / pageSize) + 1
 
-    if (nextPage !== currentPage) {
-      setPage(nextPage)
-      return
-    }
-
     window.requestAnimationFrame(() => {
+      if (nextPage !== currentPage) {
+        setPage(nextPage)
+        return
+      }
+
       document
         .querySelector(`[data-operation-row-id="${activeRowId}"]`)
         ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
@@ -479,9 +475,7 @@ export default function OperationsTablePage({
               <Dropdown.Popover>
                 <Surface className={classNames.datePopover}>
                   {isCustomDateRangeOpen ? (
-                    <div
-                      className={classNames.customDatePanel}
-                      onClick={event => event.stopPropagation()}>
+                    <div className={classNames.customDatePanel}>
                       <Button
                         variant="ghost"
                         onPress={() => setIsCustomDateRangeOpen(false)}>
@@ -681,7 +675,7 @@ export default function OperationsTablePage({
                   id={row.id}
                   data-operation-row-id={row.id}
                   className={getTableRowClassName(activeRowId === row.id)}
-                  onClick={() => openDrawer('view', row)}>
+                  onAction={() => openDrawer('view', row)}>
                   <Table.Cell>
                     <Checkbox
                       aria-label={`Select ${row.id}`}
@@ -702,9 +696,7 @@ export default function OperationsTablePage({
                     </Table.Cell>
                   ))}
                   <Table.Cell>
-                    <div
-                      className={classNames.rowActions}
-                      onClick={event => event.stopPropagation()}>
+                    <div className={classNames.rowActions}>
                       <Button
                         isIconOnly
                         aria-label={`Edit ${row.id}`}
@@ -833,6 +825,8 @@ export default function OperationsTablePage({
     </section>
   )
 }
+
+export default OperationsTablePage
 
 function FilterDropdown({
   filters,

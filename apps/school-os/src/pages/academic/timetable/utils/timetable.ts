@@ -6,7 +6,7 @@ import type {
   TimetableFormState
 } from '@pages/academic/timetable/types'
 
-export function validateTimetableForm(form: TimetableFormState) {
+export const validateTimetableForm = (form: TimetableFormState) => {
   const errors: TimetableFormErrors = {}
   const filledRows = getFilledTimetableRows(form)
 
@@ -68,7 +68,7 @@ export function getFilledTimetableRows(form: TimetableFormState) {
   )
 }
 
-export function getTimeFieldValue(value: string) {
+export const getTimeFieldValue = (value: string) => {
   if (!value) {
     return null
   }
@@ -80,13 +80,16 @@ export function getTimeFieldValue(value: string) {
   }
 }
 
-export function formatTimeFieldValue(value: { hour: number; minute: number }) {
+export const formatTimeFieldValue = (value: {
+  hour: number
+  minute: number
+}) => {
   return `${String(value.hour).padStart(2, '0')}:${String(
     value.minute
   ).padStart(2, '0')}`
 }
 
-export function parseTimeInput(value: string) {
+export const parseTimeInput = (value: string) => {
   const [hour = '0', minute = '0'] = value.split(':')
 
   return {
@@ -95,7 +98,7 @@ export function parseTimeInput(value: string) {
   }
 }
 
-export function getSubjectColor(subject: string): TimetableEvent['color'] {
+export const getSubjectColor = (subject: string): TimetableEvent['color'] => {
   const colorMap: Record<string, TimetableEvent['color']> = {
     Assembly: 'slate',
     Biology: 'pink',
@@ -111,7 +114,7 @@ export function getSubjectColor(subject: string): TimetableEvent['color'] {
   return colorMap[subject] ?? 'blue'
 }
 
-export function getInitials(name: string) {
+export const getInitials = (name: string) => {
   return name
     .split(' ')
     .filter(Boolean)
@@ -121,9 +124,9 @@ export function getInitials(name: string) {
     .toUpperCase()
 }
 
-export function isValidEvent(
+export const isValidEvent = (
   event: TimetableEvent | undefined
-): event is TimetableEvent {
+): event is TimetableEvent => {
   return Boolean(
     event?.id &&
     event.title &&

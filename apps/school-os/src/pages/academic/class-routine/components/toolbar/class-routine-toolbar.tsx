@@ -13,7 +13,7 @@ import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
 import { SortDropdown } from './sort-dropdown'
 
-type ClassRoutineToolbarProps = {
+type Props = {
   activeDateLabel: string
   activeSortLabel: string
   datePreset: DatePresetKey
@@ -37,7 +37,7 @@ type ClassRoutineToolbarProps = {
   onSortDirectionChange: (direction: SortDescriptor['direction']) => void
 }
 
-export function ClassRoutineToolbar({
+export const ClassRoutineToolbar = ({
   activeDateLabel,
   activeSortLabel,
   datePreset,
@@ -59,7 +59,7 @@ export function ClassRoutineToolbar({
   onVisibleColumnsChange,
   onSortFieldChange,
   onSortDirectionChange
-}: ClassRoutineToolbarProps) {
+}: Props) => {
   return (
     <Surface className={classNames.toolbar}>
       <div className={classNames.headerRow}>

@@ -13,7 +13,7 @@ import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
 import { SortDropdown } from './sort-dropdown'
 
-type ReasonsToolbarProps = {
+type Props = {
   activeDateLabel: string
   activeSortLabel: string
   datePreset: DatePresetKey
@@ -37,7 +37,7 @@ type ReasonsToolbarProps = {
   onSortDirectionChange: (direction: SortDescriptor['direction']) => void
 }
 
-export function ReasonsToolbar({
+export const ReasonsToolbar = ({
   activeDateLabel,
   activeSortLabel,
   datePreset,
@@ -59,7 +59,7 @@ export function ReasonsToolbar({
   onVisibleColumnsChange,
   onSortDirectionChange,
   onSortFieldChange
-}: ReasonsToolbarProps) {
+}: Props) => {
   return (
     <Surface className={classNames.toolbar}>
       <div className={classNames.headerRow}>
@@ -85,6 +85,7 @@ export function ReasonsToolbar({
             onReset={onResetFilters}
           />
           <ColumnsDropdown
+            ariaLabel="Show or hide reason columns"
             columns={reasonsColumnOptions}
             visibleColumns={visibleColumns}
             onVisibleColumnsChange={onVisibleColumnsChange}

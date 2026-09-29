@@ -47,10 +47,8 @@ const StatusVisual = ({ status }: { status: UserStatusOption }) => {
 
 const UserMenu = ({ user, onLogout, onProfile, onPreferences }: Props) => {
   const [userStatus, setUserStatus] = useState<UserStatus>('active')
-  const [selectedStatus, setSelectedStatus] =
-    useState<SuggestedStatusOption>()
-  const [selectedTiming, setSelectedTiming] =
-    useState<StatusTimingOption>()
+  const [selectedStatus, setSelectedStatus] = useState<SuggestedStatusOption>()
+  const [selectedTiming, setSelectedTiming] = useState<StatusTimingOption>()
 
   const currentStatus =
     STATUS_OPTIONS.find(status => status.id === userStatus) ??

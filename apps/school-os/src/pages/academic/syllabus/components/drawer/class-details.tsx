@@ -8,7 +8,7 @@ import type {
 import { getClassTags } from '@pages/academic/syllabus/utils/syllabus'
 import { classNames } from '@pages/academic/syllabus/variants'
 
-export function ClassDetails({ row }: ClassDetailsProps) {
+export const ClassDetails = ({ row }: ClassDetailsProps) => {
   if (!row) {
     return null
   }

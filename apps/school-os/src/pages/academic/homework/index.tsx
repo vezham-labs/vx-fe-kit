@@ -5,7 +5,7 @@ import { HomeworkToolbar } from './components/toolbar/homework-toolbar'
 import { useHomeworkPage } from './hooks/use-homework-page'
 import { classNames } from './variants'
 
-export default function AllClassesPage() {
+const AllClassesPage = () => {
   const page = useHomeworkPage()
 
   return (
@@ -19,3 +19,5 @@ export default function AllClassesPage() {
     </section>
   )
 }
+
+export default AllClassesPage

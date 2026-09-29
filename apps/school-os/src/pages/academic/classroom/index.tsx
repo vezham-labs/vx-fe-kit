@@ -5,7 +5,7 @@ import { ClassroomToolbar } from './components/toolbar/classroom-toolbar'
 import { useClassroomPage } from './hooks/use-classroom-page'
 import { classNames } from './variants'
 
-export default function AllClassesPage() {
+const AllClassesPage = () => {
   const page = useClassroomPage()
 
   return (
@@ -19,3 +19,5 @@ export default function AllClassesPage() {
     </section>
   )
 }
+
+export default AllClassesPage

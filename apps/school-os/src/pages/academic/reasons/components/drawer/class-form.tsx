@@ -4,7 +4,11 @@ import { roleOptions } from '@pages/academic/reasons/data'
 import type { ClassFormProps } from '@pages/academic/reasons/types'
 import { classNames } from '@pages/academic/reasons/variants'
 
-export function ClassForm({ form, formErrors, onFormChange }: ClassFormProps) {
+export const ClassForm = ({
+  form,
+  formErrors,
+  onFormChange
+}: ClassFormProps) => {
   return (
     <div className={classNames.form}>
       <div className={classNames.formFields}>

@@ -4,8 +4,10 @@ import {
   useAssign
 } from '@store/useOperations/useTransport/useAssign'
 
-export default function AssignVehicleOperationsPage() {
+const AssignVehicleOperationsPage = () => {
   const { data } = useAssign.list({})
 
   return <OperationsTablePage config={{ ...assignVehicleConfig, rows: data }} />
 }
+
+export default AssignVehicleOperationsPage

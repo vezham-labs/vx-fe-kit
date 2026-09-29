@@ -30,11 +30,11 @@ const attendanceSubjectFields: {
   { key: 'envscience', label: 'Env Science' }
 ]
 
-export function AttendanceForm({
+export const AttendanceForm = ({
   form,
   formErrors,
   onFormChange
-}: AttendanceFormProps) {
+}: AttendanceFormProps) => {
   return (
     <div className={classNames.form}>
       <div className={classNames.formFields}>

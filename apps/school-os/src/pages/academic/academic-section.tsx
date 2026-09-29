@@ -2,17 +2,17 @@ import { useEffect } from 'react'
 
 import { Button, Drawer, Input, Label, useOverlayState } from '@vezham/react-v3'
 
-type AcademicSectionPageProps = {
+type Props = {
   title: string
   pageKey?: string
   eyebrow?: string
 }
 
-export function AcademicSectionPage({
+export const AcademicSectionPage = ({
   title,
   pageKey,
   eyebrow = 'Academic'
-}: AcademicSectionPageProps) {
+}: Props) => {
   const drawerState = useOverlayState()
   const createTitle = `Add ${title}`
 

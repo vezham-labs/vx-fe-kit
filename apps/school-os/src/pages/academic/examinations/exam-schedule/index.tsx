@@ -5,7 +5,7 @@ import { ExamScheduleToolbar } from './components/toolbar/exam-schedule-toolbar'
 import { useExamSchedulePage } from './hooks/use-exam-schedule-page'
 import { classNames } from './variants'
 
-export default function ExamSchedulePage() {
+const ExamSchedulePage = () => {
   const page = useExamSchedulePage()
 
   return (
@@ -19,3 +19,5 @@ export default function ExamSchedulePage() {
     </section>
   )
 }
+
+export default ExamSchedulePage

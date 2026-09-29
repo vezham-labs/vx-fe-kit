@@ -11,10 +11,10 @@ import type {
 import { classNames } from '@pages/academic/class-routine/variants'
 import { classRoutineColumnOptions } from '@store/useAcademic/useClassRoutine'
 
-export function ColumnsDropdown({
+export const ColumnsDropdown = ({
   visibleColumns,
   onVisibleColumnsChange
-}: ColumnsDropdownProps) {
+}: ColumnsDropdownProps) => {
   return (
     <Dropdown>
       <Dropdown.Trigger>

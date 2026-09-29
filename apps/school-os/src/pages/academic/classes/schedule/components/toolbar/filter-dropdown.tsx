@@ -18,12 +18,12 @@ import type {
 import { classNames } from '@pages/academic/classes/schedule/variants'
 import { statusOptions, typeOptions } from '@store/useAcademic/useClassSchedule'
 
-export function FilterDropdown({
+export const FilterDropdown = ({
   draftFilters,
   setDraftFilters,
   onApply,
   onReset
-}: FilterDropdownProps) {
+}: FilterDropdownProps) => {
   return (
     <Dropdown>
       <Dropdown.Trigger>

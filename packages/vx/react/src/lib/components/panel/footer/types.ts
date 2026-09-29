@@ -40,10 +40,7 @@ export interface FooterActionsProps {
   onAI?: () => void
   onControlCenterClick?: () => void
   onNotificationsClick?: () => void
-  onUserClick?: (
-    user: UserInfo,
-    entryPoint?: UserSettingsEntryPoint
-  ) => void
+  onUserClick?: (user: UserInfo, entryPoint?: UserSettingsEntryPoint) => void
 
   className?: string
 }

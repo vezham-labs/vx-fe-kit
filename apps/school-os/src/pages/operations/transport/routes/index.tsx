@@ -4,8 +4,10 @@ import {
   useRoutes
 } from '@store/useOperations/useTransport/useRoutes'
 
-export default function RoutesOperationsPage() {
+const RoutesOperationsPage = () => {
   const { data } = useRoutes.list({})
 
   return <OperationsTablePage config={{ ...routesConfig, rows: data }} />
 }
+
+export default RoutesOperationsPage

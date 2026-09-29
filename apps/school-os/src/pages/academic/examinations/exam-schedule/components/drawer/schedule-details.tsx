@@ -8,7 +8,7 @@ import type {
 import { getScheduleTags } from '@pages/academic/examinations/exam-schedule/utils/exam-schedule'
 import { classNames } from '@pages/academic/examinations/exam-schedule/variants'
 
-export function ScheduleDetails({ row }: ClassDetailsProps) {
+export const ScheduleDetails = ({ row }: ClassDetailsProps) => {
   if (!row) {
     return null
   }

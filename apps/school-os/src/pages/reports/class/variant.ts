@@ -69,6 +69,6 @@ export const classNames = {
   detailValue: 'text-base font-medium text-[#111827]'
 } as const
 
-export function getTableRowClassName(isActive: boolean) {
+export const getTableRowClassName = (isActive: boolean) => {
   return `${classNames.tableRow} ${isActive ? classNames.tableRowActive : ''}`
 }

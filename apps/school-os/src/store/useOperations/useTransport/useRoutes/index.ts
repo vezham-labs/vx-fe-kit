@@ -9,13 +9,13 @@ export * from './types'
 
 export const CK_ROUTES = 'routes'
 
-export const useRoutes = {
-  list: (rq: RQRoutes = {}) =>
-    useQuery({
-      queryKey: [CK_ROUTES, rq],
-      queryFn: () => Routes.list(rq),
-      initialData: routesData
-    })
-}
+const useList = (rq: RQRoutes = {}) =>
+  useQuery({
+    queryKey: [CK_ROUTES, rq],
+    queryFn: () => Routes.list(rq),
+    initialData: routesData
+  })
+
+export const useRoutes = { list: useList }
 
 export { routesConfig }

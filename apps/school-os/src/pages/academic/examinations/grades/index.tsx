@@ -5,7 +5,7 @@ import { GradesToolbar } from './components/toolbar/grades-toolbar'
 import { useGradesPage } from './hooks/use-grades-page'
 import { classNames } from './variants'
 
-export default function AllClassesPage() {
+const AllClassesPage = () => {
   const page = useGradesPage()
 
   return (
@@ -19,3 +19,5 @@ export default function AllClassesPage() {
     </section>
   )
 }
+
+export default AllClassesPage

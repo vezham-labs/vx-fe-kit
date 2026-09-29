@@ -9,13 +9,13 @@ export * from './types'
 
 export const CK_COLLECT_FEES = 'collect-fees'
 
-export const useCollectFees = {
-  list: (rq: RQCollectFees = {}) =>
-    useQuery({
-      queryKey: [CK_COLLECT_FEES, rq],
-      queryFn: () => CollectFees.list(rq),
-      initialData: collectFeesData
-    })
-}
+const useList = (rq: RQCollectFees = {}) =>
+  useQuery({
+    queryKey: [CK_COLLECT_FEES, rq],
+    queryFn: () => CollectFees.list(rq),
+    initialData: collectFeesData
+  })
+
+export const useCollectFees = { list: useList }
 
 export { collectFeesConfig }

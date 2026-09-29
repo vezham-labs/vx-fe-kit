@@ -8,7 +8,7 @@ import {
 import { ActionBar } from '@vezham/react-pro-v3/action-bar'
 import { Button, Chip, Separator, Tooltip } from '@vezham/react-v3'
 
-type BulkActionBarProps = {
+type Props = {
   ariaLabel: string
   selectedCount: number
   entityLabel?: string
@@ -26,7 +26,7 @@ type BulkActionBarProps = {
   onClearSelection: () => void
 }
 
-export function BulkActionBar({
+export const BulkActionBar = ({
   ariaLabel,
   entityLabel,
   entityPluralLabel,
@@ -42,7 +42,7 @@ export function BulkActionBar({
   onCopyLinks,
   onDelete,
   onClearSelection
-}: BulkActionBarProps) {
+}: Props) => {
   const resolvedEntityLabel = entityLabel ?? 'item'
   const resolvedEntityPluralLabel =
     entityPluralLabel ?? `${resolvedEntityLabel}s`

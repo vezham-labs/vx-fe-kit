@@ -15,12 +15,12 @@ import { capacityOptions, roomnoOptions } from '@pages/academic/classroom/data'
 import type { FilterDropdownProps } from '@pages/academic/classroom/types'
 import { classNames } from '@pages/academic/classroom/variants'
 
-export function FilterDropdown({
+export const FilterDropdown = ({
   draftFilters,
   setDraftFilters,
   onApply,
   onReset
-}: FilterDropdownProps) {
+}: FilterDropdownProps) => {
   return (
     <Dropdown>
       <Dropdown.Trigger>

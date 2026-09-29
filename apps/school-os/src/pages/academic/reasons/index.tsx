@@ -5,7 +5,7 @@ import { ReasonsToolbar } from './components/toolbar/reasons-toolbar'
 import { useReasonsPage } from './hooks/use-reasons-page'
 import { classNames } from './variants'
 
-export default function AllClassesPage() {
+const AllClassesPage = () => {
   const page = useReasonsPage()
 
   return (
@@ -19,3 +19,5 @@ export default function AllClassesPage() {
     </section>
   )
 }
+
+export default AllClassesPage

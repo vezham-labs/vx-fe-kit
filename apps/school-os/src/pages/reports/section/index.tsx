@@ -50,15 +50,17 @@ import type {
 } from './types'
 import { classNames } from './variant'
 
-type ReportsSectionPageProps = {
+type Props = {
   title: string
 }
 
-export default function ReportsSectionPage({ title }: ReportsSectionPageProps) {
+const ReportsSectionPage = ({ title }: Props) => {
   const report = reportsByTitle[title] ?? reportsByTitle['Attendance Report']
 
   return <AttendanceReportTable key={report.key} report={report} />
 }
+
+export default ReportsSectionPage
 
 function AttendanceReportTable({ report }: { report: AttendanceReportConfig }) {
   const [searchQuery, setSearchQuery] = useState('')
@@ -253,9 +255,7 @@ function AttendanceReportTable({ report }: { report: AttendanceReportConfig }) {
               <Dropdown.Popover>
                 <Surface className={classNames.datePopover}>
                   {isCustomDateRangeOpen ? (
-                    <div
-                      className={classNames.customDatePanel}
-                      onClick={event => event.stopPropagation()}>
+                    <div className={classNames.customDatePanel}>
                       <Button
                         variant="ghost"
                         onPress={() => setIsCustomDateRangeOpen(false)}>

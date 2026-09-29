@@ -71,7 +71,7 @@ export type OperationPageConfig = {
 export type FilterDraft = Record<string, string | null>
 export type DrawerMode = 'view' | 'edit' | 'create'
 
-export function useDisclosure() {
+export const useDisclosure = () => {
   const state = useOverlayState()
 
   return {

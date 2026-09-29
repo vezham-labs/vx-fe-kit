@@ -170,19 +170,23 @@ const useProps = (originalProps: Props) => {
   )
 
   useEffect(() => {
-    setExpandedSidebarKeys(currentKeys => {
-      const nextKeys = new Set(currentKeys)
-      let hasChanged = false
+    const frame = window.requestAnimationFrame(() => {
+      setExpandedSidebarKeys(currentKeys => {
+        const nextKeys = new Set(currentKeys)
+        let hasChanged = false
 
-      activeParentKeys.forEach(key => {
-        if (!nextKeys.has(key)) {
-          nextKeys.add(key)
-          hasChanged = true
-        }
+        activeParentKeys.forEach(key => {
+          if (!nextKeys.has(key)) {
+            nextKeys.add(key)
+            hasChanged = true
+          }
+        })
+
+        return hasChanged ? nextKeys : currentKeys
       })
-
-      return hasChanged ? nextKeys : currentKeys
     })
+
+    return () => window.cancelAnimationFrame(frame)
   }, [activeParentKeys])
 
   const onToggleSidebar = useCallback(() => {
@@ -191,13 +195,15 @@ const useProps = (originalProps: Props) => {
     } else {
       setIsSidebarOpen(true)
     }
-  }, [toggleNavigation])
+  }, [setIsSidebarOpen, toggleNavigation])
 
   useEffect(() => {
-    if (isNavigationCollapsed) {
-      setIsSidebarOpen(false)
-    }
-  }, [isNavigationCollapsed])
+    if (!isNavigationCollapsed) return
+
+    const frame = window.requestAnimationFrame(() => setIsSidebarOpen(false))
+
+    return () => window.cancelAnimationFrame(frame)
+  }, [isNavigationCollapsed, setIsSidebarOpen])
 
   const backAction = resolvedLeftActions.find(action => action.key === 'back')
   const forwardAction = resolvedLeftActions.find(

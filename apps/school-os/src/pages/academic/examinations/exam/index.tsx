@@ -5,7 +5,7 @@ import { ExamToolbar } from './components/toolbar/exam-toolbar'
 import { useExamPage } from './hooks/use-exam-page'
 import { classNames } from './variants'
 
-export default function AllClassesPage() {
+const AllClassesPage = () => {
   const page = useExamPage()
 
   return (
@@ -19,3 +19,5 @@ export default function AllClassesPage() {
     </section>
   )
 }
+
+export default AllClassesPage

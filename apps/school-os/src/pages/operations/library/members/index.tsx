@@ -4,10 +4,12 @@ import {
   useMembers
 } from '@store/useOperations/useLibrary/useMembers'
 
-export default function LibraryMembersOperationsPage() {
+const LibraryMembersOperationsPage = () => {
   const { data } = useMembers.list({})
 
   return (
     <OperationsTablePage config={{ ...libraryMembersConfig, rows: data }} />
   )
 }
+
+export default LibraryMembersOperationsPage

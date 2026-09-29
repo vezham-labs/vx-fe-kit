@@ -15,7 +15,7 @@ import {
   sortOrderOptions
 } from '@store/useAcademic/useClassRoutine'
 
-type SortDropdownProps = {
+type Props = {
   activeSortLabel: string
   sortField: SortDescriptor['column']
   sortDirection: SortDescriptor['direction']
@@ -23,13 +23,13 @@ type SortDropdownProps = {
   onSortDirectionChange: (direction: SortDescriptor['direction']) => void
 }
 
-export function SortDropdown({
+export const SortDropdown = ({
   activeSortLabel,
   sortField,
   sortDirection,
   onSortFieldChange,
   onSortDirectionChange
-}: SortDropdownProps) {
+}: Props) => {
   const activeDirection = sortDirection ?? 'ascending'
   const activeSortIcon =
     activeDirection === 'ascending' ? 'vx:sort-ascending' : 'vx:sort-descending'

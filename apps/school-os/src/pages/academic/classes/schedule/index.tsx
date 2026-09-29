@@ -5,7 +5,7 @@ import { ScheduleToolbar } from './components/toolbar/schedule-toolbar'
 import { useSchedulePage } from './hooks/use-schedule-page'
 import { classNames } from './variants'
 
-export default function AllClassesPage() {
+const AllClassesPage = () => {
   const page = useSchedulePage()
 
   return (
@@ -19,3 +19,5 @@ export default function AllClassesPage() {
     </section>
   )
 }
+
+export default AllClassesPage

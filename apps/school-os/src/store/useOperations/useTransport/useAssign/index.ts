@@ -9,13 +9,13 @@ export * from './types'
 
 export const CK_ASSIGN = 'assign'
 
-export const useAssign = {
-  list: (rq: RQAssign = {}) =>
-    useQuery({
-      queryKey: [CK_ASSIGN, rq],
-      queryFn: () => Assign.list(rq),
-      initialData: assignVehicleData
-    })
-}
+const useList = (rq: RQAssign = {}) =>
+  useQuery({
+    queryKey: [CK_ASSIGN, rq],
+    queryFn: () => Assign.list(rq),
+    initialData: assignVehicleData
+  })
+
+export const useAssign = { list: useList }
 
 export { assignVehicleConfig }

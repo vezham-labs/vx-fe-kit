@@ -1,9 +1,7 @@
 import { Inbox as InboxIcon } from '@vezham/icons-react'
 import {
   Avatar,
-  Button,
   Checkbox,
-  Dropdown,
   ListBox,
   Pagination,
   Select,
@@ -34,7 +32,7 @@ import {
 } from '@pages/academic/examinations/exam-attendance/variants'
 import { BulkActionBar } from '@pages/academic/shared/bulk-action-bar'
 
-type ExamAttendanceTableProps = {
+type Props = {
   activeRowId: string | null
   currentPage: number
   pageSize: number
@@ -59,7 +57,7 @@ type ExamAttendanceTableProps = {
   onSortChange: (descriptor: SortDescriptor) => void
 }
 
-export function ExamAttendanceTable({
+export const ExamAttendanceTable = ({
   activeRowId,
   currentPage,
   pageSize,
@@ -75,14 +73,13 @@ export function ExamAttendanceTable({
   onBulkCopyLinks,
   onBulkDelete,
   onClearSelection,
-  onDelete,
   onOpenDrawer,
   onPageChange,
   onSelectionChange,
   rowsPerPage,
   onRowsPerPageChange,
   onSortChange
-}: ExamAttendanceTableProps) {
+}: Props) => {
   const tableMinWidth =
     48 +
     132 +
@@ -137,7 +134,6 @@ export function ExamAttendanceTable({
                     )}
                   </Table.Column>
                 ))}
-              {/* <Table.Column width={132}>Actions</Table.Column> */}
             </Table.Header>
 
             <Table.Body renderEmptyState={() => <TableEmptyState />}>
@@ -178,55 +174,6 @@ export function ExamAttendanceTable({
                         )}
                       </Table.Cell>
                     ))}
-                  {/* <Table.Cell>
-                    <div
-                      className={classNames.rowActions}
-                      onClick={event => event.stopPropagation()}
-                      onPointerDown={event => event.stopPropagation()}>
-                      <Button
-                        isIconOnly
-                        aria-label={`Edit ${row.id}`}
-                        variant="ghost"
-                        onPress={() => onOpenDrawer('edit', row)}>
-                        <Icon icon="vx:pencil" width={16} />
-                      </Button>
-                      <Button
-                        isIconOnly
-                        aria-label={`Delete ${row.id}`}
-                        variant="outline"
-                        onPress={() => onDelete(row.id)}>
-                        <Icon
-                          className={classNames.dangerIcon}
-                          icon="vx:trash"
-                          width={16}
-                        />
-                      </Button>
-                      <Dropdown>
-                        <Dropdown.Trigger>
-                          <Button
-                            isIconOnly
-                            aria-label={`More actions for ${row.id}`}
-                            variant="ghost">
-                            <Icon icon="vx:menu-horizontal" width={18} />
-                          </Button>
-                        </Dropdown.Trigger>
-                        <Dropdown.Popover>
-                          <Dropdown.Menu
-                            aria-label={`More actions for ${row.id}`}>
-                            <Dropdown.Item
-                              id="view"
-                              textValue="View"
-                              onPress={() => onOpenDrawer('view', row)}>
-                              <span className={classNames.menuItemLabel}>
-                                <Icon icon="vx:eye" width={16} />
-                                View
-                              </span>
-                            </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown.Popover>
-                      </Dropdown>
-                    </div>
-                  </Table.Cell> */}
                 </Table.Row>
               ))}
             </Table.Body>

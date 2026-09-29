@@ -3,10 +3,10 @@ import { AppIcon } from '@vx/react/app-icon'
 import type { SortableHeaderProps } from '@pages/academic/examinations/exam-attendance/types'
 import { classNames } from '@pages/academic/examinations/exam-attendance/variants'
 
-export function SortableHeader({
+export const SortableHeader = ({
   children,
   sortDirection
-}: SortableHeaderProps) {
+}: SortableHeaderProps) => {
   const icon =
     sortDirection === 'ascending'
       ? 'vx:chevron-up'

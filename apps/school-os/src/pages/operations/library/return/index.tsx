@@ -4,8 +4,10 @@ import {
   useReturn
 } from '@store/useOperations/useLibrary/useReturn'
 
-export default function ReturnBooksOperationsPage() {
+const ReturnBooksOperationsPage = () => {
   const { data } = useReturn.list({})
 
   return <OperationsTablePage config={{ ...returnBooksConfig, rows: data }} />
 }
+
+export default ReturnBooksOperationsPage

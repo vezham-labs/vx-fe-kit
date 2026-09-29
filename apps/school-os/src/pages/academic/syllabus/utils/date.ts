@@ -3,7 +3,9 @@ import type {
   DateRangeFilter
 } from '@pages/academic/syllabus/types'
 
-export function getPresetDateRange(preset: Exclude<DatePresetKey, 'custom'>) {
+export const getPresetDateRange = (
+  preset: Exclude<DatePresetKey, 'custom'>
+) => {
   const today = startOfDay(new Date())
 
   if (preset === 'today') {
@@ -32,7 +34,7 @@ export function getPresetDateRange(preset: Exclude<DatePresetKey, 'custom'>) {
   return { start: `${nextYear}-01-01`, end: `${nextYear}-12-31` }
 }
 
-export function isISODateInRange(date: string, start: string, end: string) {
+export const isISODateInRange = (date: string, start: string, end: string) => {
   return date >= start && date <= end
 }
 
@@ -44,7 +46,7 @@ export function toISODate(date: Date) {
   return `${year}-${month}-${day}`
 }
 
-export function formatDateRangeLabel(range: DateRangeFilter) {
+export const formatDateRangeLabel = (range: DateRangeFilter) => {
   return `${formatNumericDate(range.start)} - ${formatNumericDate(range.end)}`
 }
 

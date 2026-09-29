@@ -22,12 +22,12 @@ import type {
 } from '@pages/academic/syllabus/types'
 import { classNames } from '@pages/academic/syllabus/variants'
 
-export function FilterDropdown({
+export const FilterDropdown = ({
   draftFilters,
   setDraftFilters,
   onApply,
   onReset
-}: FilterDropdownProps) {
+}: FilterDropdownProps) => {
   return (
     <Dropdown>
       <Dropdown.Trigger>

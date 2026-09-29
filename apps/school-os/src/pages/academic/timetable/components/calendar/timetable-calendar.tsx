@@ -13,10 +13,10 @@ import {
   AgendaMonthEventContent
 } from './agenda-event-content'
 
-export function TimetableCalendar({
+export const TimetableCalendar = ({
   agenda,
   agendaEvents
-}: TimetableCalendarProps) {
+}: TimetableCalendarProps) => {
   return (
     <Surface className={classNames.calendarShell}>
       {agendaEvents.length === 0 ? (

@@ -3,7 +3,7 @@ import { type SortDescriptor } from '@vezham/react-v3'
 import { sortOptions } from '@pages/academic/examinations/exam/data'
 import { SortDropdown as SharedSortDropdown } from '@pages/academic/shared/sort-dropdown'
 
-type SortDropdownProps = {
+type Props = {
   activeSortLabel: string
   sortDirection: SortDescriptor['direction']
   sortField: SortDescriptor['column']
@@ -11,13 +11,13 @@ type SortDropdownProps = {
   onSortFieldChange: (column: SortDescriptor['column']) => void
 }
 
-export function SortDropdown({
+export const SortDropdown = ({
   activeSortLabel,
   sortDirection,
   sortField,
   onSortDirectionChange,
   onSortFieldChange
-}: SortDropdownProps) {
+}: Props) => {
   return (
     <SharedSortDropdown
       ariaLabel="Sort exams"

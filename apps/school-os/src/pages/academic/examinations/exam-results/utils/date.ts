@@ -3,7 +3,9 @@ import type {
   DateRangeFilter
 } from '@pages/academic/examinations/exam-results/types'
 
-export function getPresetDateRange(preset: Exclude<DatePresetKey, 'custom'>) {
+export const getPresetDateRange = (
+  preset: Exclude<DatePresetKey, 'custom'>
+) => {
   const today = startOfDay(new Date())
 
   switch (preset) {
@@ -33,7 +35,7 @@ export function getPresetDateRange(preset: Exclude<DatePresetKey, 'custom'>) {
   }
 }
 
-export function isISODateInRange(date: string, start: string, end: string) {
+export const isISODateInRange = (date: string, start: string, end: string) => {
   return date >= start && date <= end
 }
 
@@ -56,7 +58,7 @@ export function toISODate(date: Date) {
   return `${year}-${month}-${day}`
 }
 
-export function formatDisplayDate(value: string) {
+export const formatDisplayDate = (value: string) => {
   return new Intl.DateTimeFormat('en', {
     day: '2-digit',
     month: 'short',
@@ -64,11 +66,11 @@ export function formatDisplayDate(value: string) {
   }).format(new Date(`${value}T00:00:00`))
 }
 
-export function formatDateRangeLabel(range: DateRangeFilter) {
+export const formatDateRangeLabel = (range: DateRangeFilter) => {
   return `${formatDisplayDate(range.start)} - ${formatDisplayDate(range.end)}`
 }
 
-export function formatNumericDate(value: string) {
+export const formatNumericDate = (value: string) => {
   if (!value) {
     return ''
   }
@@ -78,6 +80,6 @@ export function formatNumericDate(value: string) {
   return [day, month, year].filter(Boolean).join('/')
 }
 
-export function parseTimeOption(value: string) {
+export const parseTimeOption = (value: string) => {
   return value.replace('.', ':')
 }

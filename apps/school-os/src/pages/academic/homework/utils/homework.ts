@@ -6,7 +6,7 @@ import type {
   ClassRow
 } from '@pages/academic/homework/types'
 
-export function getClassTags(row: ClassRow) {
+export const getClassTags = (row: ClassRow) => {
   return [
     `Grade ${row.classes}`,
     `Grade ${row.section}`,
@@ -18,10 +18,10 @@ export function getClassTags(row: ClassRow) {
   ]
 }
 
-export function getSortableValue(
+export const getSortableValue = (
   row: ClassRow,
   column: SortDescriptor['column']
-) {
+) => {
   if (column === 'createdBy') {
     return row.createdBy.name
   }
@@ -29,7 +29,7 @@ export function getSortableValue(
   return row[column as keyof ClassRow] ?? ''
 }
 
-export function getDrawerTitle(row: ClassRow) {
+export const getDrawerTitle = (row: ClassRow) => {
   const values = row as Record<string, unknown>
   const idValue =
     getDrawerText(values.displayId) ||
@@ -53,7 +53,7 @@ export function getDrawerTitle(row: ClassRow) {
   return nameValue || '-'
 }
 
-export function rowToForm(row: ClassRow): ClassFormState {
+export const rowToForm = (row: ClassRow): ClassFormState => {
   return {
     classes: row.classes,
     section: row.section,
@@ -66,7 +66,7 @@ export function rowToForm(row: ClassRow): ClassFormState {
   }
 }
 
-export function validateClassForm(form: ClassFormState) {
+export const validateClassForm = (form: ClassFormState) => {
   const errors: ClassFormErrors = {}
 
   if (!form.classes.trim()) {
@@ -99,18 +99,18 @@ export function validateClassForm(form: ClassFormState) {
   return errors
 }
 
-export function createNextClassId(rows: ClassRow[]) {
+export const createNextClassId = (rows: ClassRow[]) => {
   const nextNumber =
     Math.max(0, ...rows.map(row => Number(row.id.replace(/\D/g, '')) || 0)) + 1
 
   return `C${String(nextNumber).padStart(6, '0')}`
 }
 
-export function getPaginationSummary(
+export const getPaginationSummary = (
   page: number,
   pageSize: number,
   total: number
-) {
+) => {
   if (!total) {
     return '0 of 0'
   }

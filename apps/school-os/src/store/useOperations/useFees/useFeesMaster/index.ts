@@ -9,13 +9,13 @@ export * from './types'
 
 export const CK_FEES_MASTER = 'fees-master'
 
-export const useFeesMaster = {
-  list: (rq: RQFeesMaster = {}) =>
-    useQuery({
-      queryKey: [CK_FEES_MASTER, rq],
-      queryFn: () => FeesMaster.list(rq),
-      initialData: feesMasterData
-    })
-}
+const useList = (rq: RQFeesMaster = {}) =>
+  useQuery({
+    queryKey: [CK_FEES_MASTER, rq],
+    queryFn: () => FeesMaster.list(rq),
+    initialData: feesMasterData
+  })
+
+export const useFeesMaster = { list: useList }
 
 export { feesMasterConfig }

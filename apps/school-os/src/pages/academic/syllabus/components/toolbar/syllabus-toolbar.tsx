@@ -13,7 +13,7 @@ import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
 import { SortDropdown } from './sort-dropdown'
 
-type SyllabusToolbarProps = {
+type Props = {
   activeDateLabel: string
   activeSortLabel: string
   datePreset: DatePresetKey
@@ -37,7 +37,7 @@ type SyllabusToolbarProps = {
   onSortDirectionChange: (direction: SortDescriptor['direction']) => void
 }
 
-export function SyllabusToolbar({
+export const SyllabusToolbar = ({
   activeDateLabel,
   activeSortLabel,
   datePreset,
@@ -59,7 +59,7 @@ export function SyllabusToolbar({
   onVisibleColumnsChange,
   onSortDirectionChange,
   onSortFieldChange
-}: SyllabusToolbarProps) {
+}: Props) => {
   return (
     <Surface className={classNames.toolbar}>
       <div className={classNames.headerRow}>
@@ -88,6 +88,7 @@ export function SyllabusToolbar({
           />
 
           <ColumnsDropdown
+            ariaLabel="Show or hide syllabus columns"
             columns={syllabusColumnOptions}
             visibleColumns={visibleColumns}
             onVisibleColumnsChange={onVisibleColumnsChange}

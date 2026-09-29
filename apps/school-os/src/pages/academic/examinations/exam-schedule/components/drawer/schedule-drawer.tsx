@@ -18,7 +18,7 @@ import { classNames } from '@pages/academic/examinations/exam-schedule/variants'
 import { ScheduleDetails } from './schedule-details'
 import { ScheduleForm } from './schedule-form'
 
-export function ScheduleDrawer({
+export const ScheduleDrawer = ({
   canGoNext,
   canGoPrevious,
   drawerState,
@@ -36,7 +36,7 @@ export function ScheduleDrawer({
   onGoPrevious,
   onOpenPage,
   onSave
-}: ClassDrawerProps) {
+}: ClassDrawerProps) => {
   const isFormMode = mode === 'create' || mode === 'edit'
   const showNavigation = mode !== 'create'
   const drawerTitle =

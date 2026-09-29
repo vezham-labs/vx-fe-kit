@@ -9,13 +9,13 @@ export * from './types'
 
 export const CK_HOSTEL_LIST = 'hostel-list'
 
-export const useHostelList = {
-  list: (rq: RQHostelList = {}) =>
-    useQuery({
-      queryKey: [CK_HOSTEL_LIST, rq],
-      queryFn: () => HostelList.list(rq),
-      initialData: hostelListData
-    })
-}
+const useList = (rq: RQHostelList = {}) =>
+  useQuery({
+    queryKey: [CK_HOSTEL_LIST, rq],
+    queryFn: () => HostelList.list(rq),
+    initialData: hostelListData
+  })
+
+export const useHostelList = { list: useList }
 
 export { hostelListConfig }

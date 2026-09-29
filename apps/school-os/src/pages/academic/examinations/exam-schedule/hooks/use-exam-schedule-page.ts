@@ -85,10 +85,10 @@ const getSortLabel = (column: SortDescriptor['column']) => {
   )
 }
 
-export function useExamSchedulePage() {
+export const useExamSchedulePage = () => {
   const routeParams = useParams({ strict: false }) as { id?: string }
   const examScheduleQuery = useExamSchedule.list({})
-  const [data, setData] = useState<ClassRow[]>([])
+  const [data, setData] = useState<ClassRow[]>(examScheduleQuery.data)
   const [searchQuery, setSearchQuery] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState('5')
   const [page, setPage] = useState(1)
@@ -116,14 +116,6 @@ export function useExamSchedulePage() {
   const [toast, setToast] = useState<ToastState | null>(null)
   const drawer = useDisclosure()
   const wasDrawerOpenRef = useRef(drawer.isOpen)
-
-  useEffect(() => {
-    if (!examScheduleQuery.data?.length || data.length) {
-      return
-    }
-
-    setData(examScheduleQuery.data)
-  }, [data.length, examScheduleQuery.data])
 
   const activeDateRange = useMemo(() => {
     if (datePreset === 'custom') {
@@ -531,7 +523,7 @@ export function useExamSchedulePage() {
     window.addEventListener('popstate', syncDrawerFromUrl)
 
     return () => window.removeEventListener('popstate', syncDrawerFromUrl)
-  }, [data, routeParams.id])
+  }, [data, drawer, routeParams.id])
 
   useEffect(() => {
     if (wasDrawerOpenRef.current && !drawer.isOpen) {
@@ -540,14 +532,6 @@ export function useExamSchedulePage() {
 
     wasDrawerOpenRef.current = drawer.isOpen
   }, [drawer.isOpen])
-
-  useEffect(() => {
-    if (drawer.isOpen || !activeRowId) {
-      return
-    }
-
-    setActiveRowId(null)
-  }, [activeRowId, drawer.isOpen])
 
   useEffect(() => {
     if (!activeRowId) {
@@ -562,12 +546,12 @@ export function useExamSchedulePage() {
 
     const nextPage = Math.floor(rowIndex / pageSize) + 1
 
-    if (nextPage !== currentPage) {
-      setPage(nextPage)
-      return
-    }
-
     window.requestAnimationFrame(() => {
+      if (nextPage !== currentPage) {
+        setPage(nextPage)
+        return
+      }
+
       document
         .querySelector(`[data-class-row-id="${activeRowId}"]`)
         ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })

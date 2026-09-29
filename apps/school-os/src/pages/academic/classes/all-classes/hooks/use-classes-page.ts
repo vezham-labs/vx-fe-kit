@@ -77,7 +77,7 @@ const getSortLabel = (column: SortDescriptor['column']) => {
   )
 }
 
-export function useClassesPage() {
+export const useClassesPage = () => {
   const routeParams = useParams({ strict: false }) as { id?: string }
   const [data, setData] = useState<ClassRow[]>(initialRows)
   const [searchQuery, setSearchQuery] = useState('')
@@ -408,7 +408,7 @@ export function useClassesPage() {
     window.addEventListener('popstate', syncDrawerFromUrl)
 
     return () => window.removeEventListener('popstate', syncDrawerFromUrl)
-  }, [data, routeParams.id])
+  }, [data, drawer, routeParams.id])
 
   useEffect(() => {
     if (drawerWasOpenRef.current && !drawer.isOpen) {
@@ -432,12 +432,12 @@ export function useClassesPage() {
 
     const nextPage = Math.floor(rowIndex / pageSize) + 1
 
-    if (nextPage !== currentPage) {
-      setPage(nextPage)
-      return
-    }
-
     window.requestAnimationFrame(() => {
+      if (nextPage !== currentPage) {
+        setPage(nextPage)
+        return
+      }
+
       document
         .querySelector(`[data-class-row-id="${activeRowId}"]`)
         ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })

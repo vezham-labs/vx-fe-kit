@@ -4,7 +4,7 @@ import type {
   ClassRow
 } from '@pages/academic/examinations/grades/types'
 
-export function getClassTags(row: ClassRow) {
+export const getClassTags = (row: ClassRow) => {
   return [
     `Grade ${row.grade}`,
     `Percentage ${row.percentage}`,
@@ -13,11 +13,11 @@ export function getClassTags(row: ClassRow) {
   ]
 }
 
-export function getDrawerTitle(row: ClassRow) {
+export const getDrawerTitle = (row: ClassRow) => {
   return row.id.startsWith('#') ? row.id : `#${row.id}`
 }
 
-export function rowToForm(row: ClassRow): ClassFormState {
+export const rowToForm = (row: ClassRow): ClassFormState => {
   return {
     grade: row.grade,
     marksfrom: getMarksFrom(row.percentage),
@@ -29,7 +29,7 @@ export function rowToForm(row: ClassRow): ClassFormState {
   }
 }
 
-export function validateClassForm(form: ClassFormState) {
+export const validateClassForm = (form: ClassFormState) => {
   const errors: ClassFormErrors = {}
 
   if (!form.grade.trim()) {
@@ -66,18 +66,18 @@ export function validateClassForm(form: ClassFormState) {
   return errors
 }
 
-export function createNextClassId(rows: ClassRow[]) {
+export const createNextClassId = (rows: ClassRow[]) => {
   const nextNumber =
     Math.max(0, ...rows.map(row => Number(row.id.replace(/\D/g, '')) || 0)) + 1
 
   return `G${String(nextNumber).padStart(6, '0')}`
 }
 
-export function getPaginationSummary(
+export const getPaginationSummary = (
   page: number,
   pageSize: number,
   total: number
-) {
+) => {
   if (!total) {
     return '0 of 0'
   }
@@ -88,7 +88,7 @@ export function getPaginationSummary(
   return `${start}-${end} of ${total}`
 }
 
-export function getPercentageRange(form: ClassFormState) {
+export const getPercentageRange = (form: ClassFormState) => {
   if (form.percentage.trim()) {
     return form.percentage.trim()
   }

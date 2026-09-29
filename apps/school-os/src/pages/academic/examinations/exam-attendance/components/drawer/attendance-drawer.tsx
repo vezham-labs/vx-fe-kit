@@ -18,7 +18,7 @@ import { classNames } from '@pages/academic/examinations/exam-attendance/variant
 import { AttendanceDetails } from './attendance-details'
 import { AttendanceForm } from './attendance-form'
 
-export function AttendanceDrawer({
+export const AttendanceDrawer = ({
   canGoNext,
   canGoPrevious,
   drawerState,
@@ -36,7 +36,7 @@ export function AttendanceDrawer({
   onGoPrevious,
   onOpenPage,
   onSave
-}: AttendanceDrawerProps) {
+}: AttendanceDrawerProps) => {
   const isFormMode = mode === 'create' || mode === 'edit'
   const showNavigation = mode !== 'create'
   const drawerTitle =

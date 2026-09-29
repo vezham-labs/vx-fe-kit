@@ -2,7 +2,7 @@ import { Label, ListBox, Select } from '@vezham/react-v3'
 
 import { classNames } from '@pages/academic/timetable/variants'
 
-type TimetableFormSelectProps = {
+type Props = {
   error?: string
   label: string
   options: string[]
@@ -11,14 +11,14 @@ type TimetableFormSelectProps = {
   onChange: (value: string) => void
 }
 
-export function TimetableFormSelect({
+export const TimetableFormSelect = ({
   error,
   label,
   options,
   placeholder,
   value,
   onChange
-}: TimetableFormSelectProps) {
+}: Props) => {
   return (
     <div className={classNames.field}>
       <Select

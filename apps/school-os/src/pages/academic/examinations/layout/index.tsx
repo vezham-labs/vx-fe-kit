@@ -1,5 +1,7 @@
 import { Outlet } from '@tanstack/react-router'
 
-export default function ExaminationsLayoutPage() {
+const ExaminationsLayoutPage = () => {
   return <Outlet />
 }
+
+export default ExaminationsLayoutPage

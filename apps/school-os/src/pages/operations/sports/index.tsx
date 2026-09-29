@@ -3,8 +3,10 @@ import { useSports } from '@store/useOperations/useSports'
 
 import { sportsConfig } from './data'
 
-export default function SportsOperationsPage() {
+const SportsOperationsPage = () => {
   const { data } = useSports.list({})
 
   return <OperationsTablePage config={{ ...sportsConfig, rows: data }} />
 }
+
+export default SportsOperationsPage

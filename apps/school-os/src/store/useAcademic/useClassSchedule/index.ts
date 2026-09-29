@@ -8,10 +8,10 @@ export * from './types'
 
 export const CK_CLASS_SCHEDULE = 'class-schedule'
 
-export const useClassSchedule = {
-  list: (rq: RQClassSchedule = {}) =>
-    useQuery({
-      queryKey: [CK_CLASS_SCHEDULE, rq],
-      queryFn: () => ClassSchedule.list(rq)
-    })
-}
+const useList = (rq: RQClassSchedule = {}) =>
+  useQuery({
+    queryKey: [CK_CLASS_SCHEDULE, rq],
+    queryFn: () => ClassSchedule.list(rq)
+  })
+
+export const useClassSchedule = { list: useList }

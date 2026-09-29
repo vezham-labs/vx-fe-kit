@@ -4,8 +4,10 @@ import {
   useFeesMaster
 } from '@store/useOperations/useFees/useFeesMaster'
 
-export default function FeesMasterOperationsPage() {
+const FeesMasterOperationsPage = () => {
   const { data } = useFeesMaster.list({})
 
   return <OperationsTablePage config={{ ...feesMasterConfig, rows: data }} />
 }
+
+export default FeesMasterOperationsPage

@@ -174,7 +174,7 @@ export const staffDayWiseColumns: ReportColumn[] = [
   }
 ]
 
-export function makeAttendanceConfig(config: {
+export const makeAttendanceConfig = (config: {
   key: string
   title: string
   ariaLabel: string
@@ -184,7 +184,7 @@ export function makeAttendanceConfig(config: {
   initialColumn: string
   tableMinWidth: number
   showStatusLegend?: boolean
-}): AttendancePageConfig {
+}): AttendancePageConfig => {
   const initialSort = {
     column: config.initialColumn,
     direction: 'ascending'
@@ -223,7 +223,7 @@ export function makeAttendanceConfig(config: {
   }
 }
 
-export function makeStudentsAttendanceTypeRows(): ReportRow[] {
+export const makeStudentsAttendanceTypeRows = (): ReportRow[] => {
   const admissionDates = [
     '25 Mar 2024',
     '18 Mar 2024',
@@ -278,7 +278,7 @@ export function makeStudentsAttendanceTypeRows(): ReportRow[] {
   }))
 }
 
-export function makeDailyAttendanceRows(): ReportRow[] {
+export const makeDailyAttendanceRows = (): ReportRow[] => {
   return [
     ['III', 'A', 69, 2, '98%', '2%'],
     ['IV', 'A', 45, 7, '78%', '22%'],
@@ -315,7 +315,7 @@ export function makeDailyAttendanceRows(): ReportRow[] {
   )
 }
 
-export function makeStudentDayWiseRows(): ReportRow[] {
+export const makeStudentDayWiseRows = (): ReportRow[] => {
   const statuses: AttendanceStatus[] = [
     'Present',
     'Present',
@@ -340,7 +340,7 @@ export function makeStudentDayWiseRows(): ReportRow[] {
   }))
 }
 
-export function makeTeacherDayWiseRows(): ReportRow[] {
+export const makeTeacherDayWiseRows = (): ReportRow[] => {
   const subjects = [
     'Physics',
     'Computer',
@@ -377,7 +377,7 @@ export function makeTeacherDayWiseRows(): ReportRow[] {
   }))
 }
 
-export function makeStaffDayWiseRows(): ReportRow[] {
+export const makeStaffDayWiseRows = (): ReportRow[] => {
   const departments = [
     'Management',
     'Finance',
@@ -427,7 +427,7 @@ export function makeStaffDayWiseRows(): ReportRow[] {
   }))
 }
 
-export function makeSummaryRows(people: PersonValue[]): ReportRow[] {
+export const makeSummaryRows = (people: PersonValue[]): ReportRow[] => {
   const percents = [100, 87, 95, 94, 45, 100, 95, 99, 98, 32]
   const totals = [
     [24, 0, 0, 6, 0],
@@ -501,7 +501,7 @@ export function makeSummaryRows(people: PersonValue[]): ReportRow[] {
   })
 }
 
-export function option(key: string, label: string, values: string[]) {
+export const option = (key: string, label: string, values: string[]) => {
   return { key, label, values }
 }
 

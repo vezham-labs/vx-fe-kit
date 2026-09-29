@@ -11,7 +11,7 @@ import {
 } from '@pages/academic/examinations/exam-attendance/utils/exam-attendance'
 import { classNames } from '@pages/academic/examinations/exam-attendance/variants'
 
-export function AttendanceDetails({ row }: AttendanceDetailsProps) {
+export const AttendanceDetails = ({ row }: AttendanceDetailsProps) => {
   if (!row) {
     return null
   }

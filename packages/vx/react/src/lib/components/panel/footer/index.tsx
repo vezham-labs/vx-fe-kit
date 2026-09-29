@@ -54,10 +54,10 @@ const CompactActions = ({
 }: Omit<FooterActionsProps, 'user' | 'showUserInfo' | 'onUserClick'>) => {
   return (
     <Dropdown>
-      <Dropdown.Trigger>
-        <Button aria-label="Open footer actions" isIconOnly variant="ghost">
-          <MenuDotsIcon size={24} aria-hidden="true" />
-        </Button>
+      <Dropdown.Trigger
+        aria-label="Open footer actions"
+        className="button button--ghost flex h-10 w-10 items-center justify-center rounded-lg">
+        <MenuDotsIcon size={24} aria-hidden="true" />
       </Dropdown.Trigger>
       <Dropdown.Popover>
         <Dropdown.Menu aria-label="Footer actions">

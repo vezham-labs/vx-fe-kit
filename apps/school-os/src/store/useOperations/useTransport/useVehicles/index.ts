@@ -9,13 +9,13 @@ export * from './types'
 
 export const CK_VEHICLES = 'vehicles'
 
-export const useVehicles = {
-  list: (rq: RQVehicles = {}) =>
-    useQuery({
-      queryKey: [CK_VEHICLES, rq],
-      queryFn: () => Vehicles.list(rq),
-      initialData: vehiclesData
-    })
-}
+const useList = (rq: RQVehicles = {}) =>
+  useQuery({
+    queryKey: [CK_VEHICLES, rq],
+    queryFn: () => Vehicles.list(rq),
+    initialData: vehiclesData
+  })
+
+export const useVehicles = { list: useList }
 
 export { vehiclesConfig }

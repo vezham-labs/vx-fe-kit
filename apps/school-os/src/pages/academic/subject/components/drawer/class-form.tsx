@@ -4,7 +4,11 @@ import { codeOptions, typeOptions } from '@pages/academic/subject/data'
 import type { ClassFormProps } from '@pages/academic/subject/types'
 import { classNames } from '@pages/academic/subject/variants'
 
-export function ClassForm({ form, formErrors, onFormChange }: ClassFormProps) {
+export const ClassForm = ({
+  form,
+  formErrors,
+  onFormChange
+}: ClassFormProps) => {
   return (
     <div className={classNames.form}>
       <div className={classNames.formFields}>

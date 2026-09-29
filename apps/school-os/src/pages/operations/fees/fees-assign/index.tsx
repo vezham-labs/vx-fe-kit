@@ -4,8 +4,10 @@ import {
   useFeesAssign
 } from '@store/useOperations/useFees/useFeesAssign'
 
-export default function FeesAssignOperationsPage() {
+const FeesAssignOperationsPage = () => {
   const { data } = useFeesAssign.list({})
 
   return <OperationsTablePage config={{ ...feesAssignConfig, rows: data }} />
 }
+
+export default FeesAssignOperationsPage

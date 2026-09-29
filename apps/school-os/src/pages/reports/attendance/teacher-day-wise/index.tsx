@@ -74,9 +74,11 @@ type Props = {
   config: AttendancePageConfig
 }
 
-export default function TeacherDayWisePage() {
+const TeacherDayWisePage = () => {
   return <AttendanceTablePage config={teacherDayWiseConfig} />
 }
+
+export default TeacherDayWisePage
 
 function AttendanceTablePage({ config }: Props) {
   const [data, setData] = useState<ReportRow[]>(config.rows)
@@ -340,7 +342,7 @@ function AttendanceTablePage({ config }: Props) {
     window.addEventListener('popstate', syncDrawerFromUrl)
 
     return () => window.removeEventListener('popstate', syncDrawerFromUrl)
-  }, [data])
+  }, [data, drawer, openDrawer])
 
   useEffect(() => {
     if (!toast) {
@@ -365,12 +367,12 @@ function AttendanceTablePage({ config }: Props) {
 
     const nextPage = Math.floor(rowIndex / pageSize) + 1
 
-    if (nextPage !== currentPage) {
-      setPage(nextPage)
-      return
-    }
-
     window.requestAnimationFrame(() => {
+      if (nextPage !== currentPage) {
+        setPage(nextPage)
+        return
+      }
+
       document
         .querySelector(`[data-report-row-id="${activeRowId}"]`)
         ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
@@ -524,9 +526,7 @@ function AttendanceTablePage({ config }: Props) {
               <Dropdown.Popover>
                 <Surface className={classNames.datePopover}>
                   {isCustomDateRangeOpen ? (
-                    <div
-                      className={classNames.customDatePanel}
-                      onClick={event => event.stopPropagation()}>
+                    <div className={classNames.customDatePanel}>
                       <Button
                         variant="ghost"
                         onPress={() => setIsCustomDateRangeOpen(false)}>
@@ -715,7 +715,7 @@ function AttendanceTablePage({ config }: Props) {
                   id={row.id}
                   data-report-row-id={row.id}
                   className={getTableRowClassName(activeRowId === row.id)}
-                  onClick={() => openDrawer('view', row)}>
+                  onAction={() => openDrawer('view', row)}>
                   <Table.Cell>
                     <Checkbox
                       aria-label={`Select ${row.id}`}
@@ -732,9 +732,7 @@ function AttendanceTablePage({ config }: Props) {
                     </Table.Cell>
                   ))}
                   <Table.Cell>
-                    <div
-                      className={classNames.rowActions}
-                      onClick={event => event.stopPropagation()}>
+                    <div className={classNames.rowActions}>
                       <Button
                         isIconOnly
                         aria-label={`Edit ${row.id}`}

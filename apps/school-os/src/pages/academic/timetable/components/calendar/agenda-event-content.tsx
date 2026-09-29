@@ -5,7 +5,11 @@ import type { TimetableAgendaEvent } from '@pages/academic/timetable/types'
 import { getInitials } from '@pages/academic/timetable/utils/timetable'
 import { classNames } from '@pages/academic/timetable/variants'
 
-export function AgendaEventContent({ event }: { event: TimetableAgendaEvent }) {
+export const AgendaEventContent = ({
+  event
+}: {
+  event: TimetableAgendaEvent
+}) => {
   return (
     <div className={classNames.eventContent}>
       <Agenda.EventTime className={classNames.eventMeta} event={event} />
@@ -17,11 +21,11 @@ export function AgendaEventContent({ event }: { event: TimetableAgendaEvent }) {
   )
 }
 
-export function AgendaAllDayEventContent({
+export const AgendaAllDayEventContent = ({
   event
 }: {
   event: TimetableAgendaEvent
-}) {
+}) => {
   return (
     <div className="flex min-w-0 items-center gap-1.5 truncate">
       <TeacherAvatar event={event} className="size-4" />
@@ -32,11 +36,11 @@ export function AgendaAllDayEventContent({
   )
 }
 
-export function AgendaMonthEventContent({
+export const AgendaMonthEventContent = ({
   event
 }: {
   event: TimetableAgendaEvent
-}) {
+}) => {
   return (
     <div className="flex min-w-0 flex-col gap-1 leading-tight">
       <span className="line-clamp-2 text-[11px] font-semibold">

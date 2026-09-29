@@ -5,7 +5,7 @@ import { ExamResultsToolbar } from './components/toolbar/exam-results-toolbar'
 import { useExamResultsPage } from './hooks/use-exam-results-page'
 import { classNames } from './variants'
 
-export default function ExamResultsPage() {
+const ExamResultsPage = () => {
   const page = useExamResultsPage()
 
   return (
@@ -19,3 +19,5 @@ export default function ExamResultsPage() {
     </section>
   )
 }
+
+export default ExamResultsPage

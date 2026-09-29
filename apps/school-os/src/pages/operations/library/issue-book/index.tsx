@@ -4,8 +4,10 @@ import {
   useIssueBooks
 } from '@store/useOperations/useLibrary/useIssueBooks'
 
-export default function IssueBookOperationsPage() {
+const IssueBookOperationsPage = () => {
   const { data } = useIssueBooks.list({})
 
   return <OperationsTablePage config={{ ...issueBookConfig, rows: data }} />
 }
+
+export default IssueBookOperationsPage

@@ -9,13 +9,13 @@ export * from './types'
 
 export const CK_FEES_ASSIGN = 'fees-assign'
 
-export const useFeesAssign = {
-  list: (rq: RQFeesAssign = {}) =>
-    useQuery({
-      queryKey: [CK_FEES_ASSIGN, rq],
-      queryFn: () => FeesAssign.list(rq),
-      initialData: feesAssignData
-    })
-}
+const useList = (rq: RQFeesAssign = {}) =>
+  useQuery({
+    queryKey: [CK_FEES_ASSIGN, rq],
+    queryFn: () => FeesAssign.list(rq),
+    initialData: feesAssignData
+  })
+
+export const useFeesAssign = { list: useList }
 
 export { feesAssignConfig }

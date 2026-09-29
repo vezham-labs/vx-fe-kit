@@ -11,10 +11,10 @@ import type {
 } from '@pages/academic/section/types'
 import { classNames } from '@pages/academic/section/variants'
 
-export function ColumnsDropdown({
+export const ColumnsDropdown = ({
   visibleColumns,
   onVisibleColumnsChange
-}: ColumnsDropdownProps) {
+}: ColumnsDropdownProps) => {
   return (
     <Dropdown>
       <Dropdown.Trigger>

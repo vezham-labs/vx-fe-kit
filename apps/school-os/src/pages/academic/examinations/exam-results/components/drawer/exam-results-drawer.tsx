@@ -18,7 +18,7 @@ import { classNames } from '@pages/academic/examinations/exam-results/variants'
 import { ExamResultsDetails } from './exam-results-details'
 import { ExamResultsForm } from './exam-results-form'
 
-export function ExamResultsDrawer({
+export const ExamResultsDrawer = ({
   canGoNext,
   canGoPrevious,
   drawerState,
@@ -36,7 +36,7 @@ export function ExamResultsDrawer({
   onGoPrevious,
   onOpenPage,
   onSave
-}: ClassDrawerProps) {
+}: ClassDrawerProps) => {
   const isFormMode = mode === 'create' || mode === 'edit'
   const showNavigation = mode !== 'create'
   const drawerTitle =

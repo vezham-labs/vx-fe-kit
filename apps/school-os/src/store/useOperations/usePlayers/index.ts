@@ -9,11 +9,11 @@ export * from './types'
 
 export const CK_PLAYERS = 'players'
 
-export const usePlayers = {
-  list: (rq: RQPlayers = {}) =>
-    useQuery({
-      queryKey: [CK_PLAYERS, rq],
-      queryFn: () => Players.list(rq),
-      initialData: playersData
-    })
-}
+const useList = (rq: RQPlayers = {}) =>
+  useQuery({
+    queryKey: [CK_PLAYERS, rq],
+    queryFn: () => Players.list(rq),
+    initialData: playersData
+  })
+
+export const usePlayers = { list: useList }

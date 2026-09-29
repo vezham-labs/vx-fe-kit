@@ -4,11 +4,11 @@ import type {
   ClassRow
 } from '@pages/academic/section/types'
 
-export function getClassTags(row: ClassRow) {
+export const getClassTags = (row: ClassRow) => {
   return [`Grade ${row.section}`, row.status]
 }
 
-export function getDrawerTitle(row: ClassRow) {
+export const getDrawerTitle = (row: ClassRow) => {
   const values = row as Record<string, unknown>
   const idValue =
     getDrawerText(values.displayId) ||
@@ -32,14 +32,14 @@ export function getDrawerTitle(row: ClassRow) {
   return nameValue || '-'
 }
 
-export function rowToForm(row: ClassRow): ClassFormState {
+export const rowToForm = (row: ClassRow): ClassFormState => {
   return {
     section: row.section,
     status: row.status
   }
 }
 
-export function validateClassForm(form: ClassFormState) {
+export const validateClassForm = (form: ClassFormState) => {
   const errors: ClassFormErrors = {}
 
   if (!form.section.trim()) {
@@ -53,18 +53,18 @@ export function validateClassForm(form: ClassFormState) {
   return errors
 }
 
-export function createNextClassId(rows: ClassRow[]) {
+export const createNextClassId = (rows: ClassRow[]) => {
   const nextNumber =
     Math.max(0, ...rows.map(row => Number(row.id.replace(/\D/g, '')) || 0)) + 1
 
   return `C${String(nextNumber).padStart(6, '0')}`
 }
 
-export function getPaginationSummary(
+export const getPaginationSummary = (
   page: number,
   pageSize: number,
   total: number
-) {
+) => {
   if (!total) {
     return '0 of 0'
   }

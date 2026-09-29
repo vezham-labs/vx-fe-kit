@@ -3,12 +3,12 @@ import { Alert, CloseButton } from '@vezham/react-v3'
 import type { ToastState } from '@pages/academic/homework/types'
 import { classNames } from '@pages/academic/homework/variants'
 
-type HomeworkToastProps = {
+type Props = {
   toast: ToastState
   onClose: () => void
 }
 
-export function HomeworkToast({ toast, onClose }: HomeworkToastProps) {
+export const HomeworkToast = ({ toast, onClose }: Props) => {
   return (
     <div className={classNames.toast}>
       <Alert status={toast.status}>
