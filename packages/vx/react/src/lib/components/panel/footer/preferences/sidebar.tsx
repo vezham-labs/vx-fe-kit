@@ -1,12 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Button, ScrollShadow } from '@vezham/react-v3'
 
-import { AppIcon } from '../../../app-icon'
 import { useUser } from '../../../../store/users/useUserStore'
-
+import { AppIcon } from '../../../app-icon'
 import { SidebarItem, settingsSidebar } from './data'
 
 type Props = {
@@ -14,7 +13,7 @@ type Props = {
   onSelect: (id: string) => void
 }
 
-export default function SettingsSidebar({ active, onSelect }: Props) {
+const SettingsSidebar = ({ active, onSelect }: Props) => {
   const [openGroups, setOpenGroups] = useState<string[]>([])
   const { user } = useUser()
 
@@ -27,21 +26,11 @@ export default function SettingsSidebar({ active, onSelect }: Props) {
     )
   }
 
-  useEffect(() => {
-    for (const section of settingsSidebar) {
-      for (const item of section.items) {
-        if (item.children?.some(c => c.id === active)) {
-          setOpenGroups(prev =>
-            prev.includes(item.id) ? prev : [...prev, item.id]
-          )
-        }
-      }
-    }
-  }, [active])
-
   const renderItem = (item: SidebarItem, level = 0) => {
     const hasChildren = item.children?.length
-    const isOpen = openGroups.includes(item.id)
+    const isOpen =
+      openGroups.includes(item.id) ||
+      Boolean(item.children?.some(child => child.id === active))
 
     const isChildActive =
       item.children?.some(c => c.id === active) || active.startsWith(item.id)
@@ -56,13 +45,15 @@ export default function SettingsSidebar({ active, onSelect }: Props) {
 
       return (
         <div key={item.id} className="px-2">
-          <div
+          <button
+            type="button"
             onClick={() => onSelect(item.id)}
             className={`flex w-full items-center gap-4 rounded-xl p-2 px-2 ${
               active === item.id ? 'bg-default-100' : 'hover:bg-default-50'
             }`}>
             {avatar ? (
               <img
+                alt={names}
                 src={avatar}
                 className="h-10 w-10 rounded-full object-cover"
               />
@@ -76,7 +67,7 @@ export default function SettingsSidebar({ active, onSelect }: Props) {
               <span className="text-sm font-medium">{names}</span>
               <span className="text-default-500 text-xs">Edit Profile</span>
             </div>
-          </div>
+          </button>
         </div>
       )
     }
@@ -85,7 +76,7 @@ export default function SettingsSidebar({ active, onSelect }: Props) {
       <div key={item.id}>
         <Button
           variant="ghost"
-          onClick={() => {
+          onPress={() => {
             if (hasChildren) {
               toggleGroup(item.id)
             }
@@ -131,7 +122,7 @@ export default function SettingsSidebar({ active, onSelect }: Props) {
 
         {hasChildren && isOpen && (
           <div className="mt-1 space-y-1">
-            {item.children!.map(child => renderItem(child, level + 1))}
+            {item.children?.map(child => renderItem(child, level + 1))}
           </div>
         )}
       </div>
@@ -159,7 +150,7 @@ export default function SettingsSidebar({ active, onSelect }: Props) {
   )
 }
 
-export function findItemById(id: string) {
+const findItemById = (id: string) => {
   for (const section of settingsSidebar) {
     for (const item of section.items) {
       if (item.id === id) return item
@@ -172,3 +163,5 @@ export function findItemById(id: string) {
 
   return undefined
 }
+
+export { SettingsSidebar, findItemById }

@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useState } from 'react'
 
 import {
   Archive as ArchiveIcon,
@@ -6,9 +6,8 @@ import {
 } from '@vezham/icons-react'
 import { Tabs, Tooltip } from '@vezham/react-v3'
 
-import { InfoPanelDefinition, useInfoPanel } from '../../info-panel'
 import { useDisc } from '../../../../store/useDisc'
-
+import { InfoPanelDefinition, useInfoPanel } from '../../info-panel'
 import { Archive } from './archive'
 import { Trash } from './trash'
 import { ArchiveItem, Props, TrashItem, useProps } from './types'
@@ -76,22 +75,6 @@ const DiskContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const [internalTrashItems, setInternalTrashItems] = useState<TrashItem[]>(
     () => discQuery.data?.trashItems ?? []
   )
-
-  useEffect(() => {
-    if (!discQuery.data?.archiveItems?.length || internalArchiveItems.length) {
-      return
-    }
-
-    setInternalArchiveItems(discQuery.data.archiveItems)
-  }, [discQuery.data?.archiveItems, internalArchiveItems.length])
-
-  useEffect(() => {
-    if (!discQuery.data?.trashItems?.length || internalTrashItems.length) {
-      return
-    }
-
-    setInternalTrashItems(discQuery.data.trashItems)
-  }, [discQuery.data?.trashItems, internalTrashItems.length])
 
   const archiveItems = externalArchiveItems || internalArchiveItems
   const trashItems = externalTrashItems || internalTrashItems
@@ -209,7 +192,7 @@ const DiskContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
 DiskContent.displayName = 'DiskContent'
 
-function DiscTrigger() {
+const DiscTrigger = () => {
   const { activeInfoPanel, toggleInfoPanel } = useInfoPanel()
   const isActive = activeInfoPanel === 'disc'
 
@@ -231,7 +214,7 @@ function DiscTrigger() {
   )
 }
 
-function DiscPanelContent() {
+const DiscPanelContent = () => {
   return <DiskContent />
 }
 

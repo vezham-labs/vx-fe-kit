@@ -8,11 +8,10 @@ import {
 import { Avatar, ScrollShadow } from '@vezham/react-v3'
 
 import { AppView } from '../../../components/app-view'
-
 import { emails } from './data'
 import type { MailAppProps } from './types'
 
-export function MailApp({ isOpen, onClose }: MailAppProps) {
+const MailApp = ({ isOpen, onClose }: MailAppProps) => {
   const [selectedEmail, setSelectedEmail] = React.useState<number | null>(null)
 
   const handleEmailClick = (id: number) => {
@@ -154,3 +153,5 @@ export function MailApp({ isOpen, onClose }: MailAppProps) {
     </AppView>
   )
 }
+
+export { MailApp }

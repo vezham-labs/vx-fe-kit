@@ -3,11 +3,10 @@ import { motion } from 'framer-motion'
 import { Avatar, ScrollShadow } from '@vezham/react-v3'
 
 import { AppView } from '../../../components/app-view'
-
 import { messages } from './data'
 import type { MessagesAppProps } from './types'
 
-export function MessagesApp({ isOpen, onClose }: MessagesAppProps) {
+const MessagesApp = ({ isOpen, onClose }: MessagesAppProps) => {
   return (
     <AppView isOpen={isOpen} onClose={onClose} title="Messages">
       <ScrollShadow className="h-full">
@@ -51,3 +50,5 @@ export function MessagesApp({ isOpen, onClose }: MessagesAppProps) {
     </AppView>
   )
 }
+
+export { MessagesApp }

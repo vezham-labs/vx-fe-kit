@@ -5,8 +5,7 @@ import { Bell as BellIcon } from '@vezham/icons-react'
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Chip, CloseButton, Drawer, ScrollShadow } from '@vezham/react-v3'
 
-import WidgetsGrid from '../../../../pages/widgets'
-
+import { WidgetsGrid } from '../../../../pages/widgets'
 import { Props, useProps } from './types'
 
 const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {

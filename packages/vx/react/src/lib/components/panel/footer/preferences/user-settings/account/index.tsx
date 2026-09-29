@@ -1,6 +1,6 @@
-import CustomTabs from '../../../tabs'
+import { CustomTabs } from '../../../tabs'
 
-const index = () => {
+const AccountSettings = () => {
   const tabs = [
     {
       id: 'security',
@@ -20,4 +20,4 @@ const index = () => {
   )
 }
 
-export default index
+export { AccountSettings }

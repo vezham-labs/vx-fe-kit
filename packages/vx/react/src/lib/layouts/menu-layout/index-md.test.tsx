@@ -2,11 +2,10 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { type ComponentProps, type ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { AppNavigationItem } from '../../navigation'
-import Header from '../../components/panel/header'
+import { Header } from '../../components/panel/header'
 import { type HeaderActionsProps } from '../../components/panel/header/types'
-
-import MenuMD from './index-md'
+import type { AppNavigationItem } from '../../navigation'
+import { MenuMD } from './index-md'
 
 const items: AppNavigationItem[] = [
   { key: 'home', title: 'Home', href: '/', icon: 'vx:home' },
@@ -40,7 +39,7 @@ vi.mock('../../store/users/useUserStore', () => ({
   useUser: () => ({ user: null })
 }))
 vi.mock('../../components/panel/header', () => ({
-  default: vi.fn(
+  Header: vi.fn(
     ({
       compact,
       onOpenNavigation,
@@ -66,7 +65,7 @@ vi.mock('../../components/panel/header', () => ({
   )
 }))
 vi.mock('../../components/panel/menu', () => ({ Menu: () => null }))
-vi.mock('../../components/panel/footer', () => ({ default: () => null }))
+vi.mock('../../components/panel/footer', () => ({ Footer: () => null }))
 vi.mock('../../components/panel/footer/ai', () => ({ aiPanel: {} }))
 vi.mock('../../components/panel/header/bookmarks', () => ({
   bookmarksPanel: {}
@@ -79,7 +78,7 @@ vi.mock('../../components/panel/footer/notification-center', () => ({
   NotificationDrawer: () => null
 }))
 vi.mock('../../components/panel/footer/preferences/modal', () => ({
-  default: () => null
+  UserInfoModal: () => null
 }))
 vi.mock('@vezham/react-v3', () => ({
   Surface: ({

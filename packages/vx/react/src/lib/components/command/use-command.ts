@@ -9,7 +9,7 @@ export interface CommandContextValue {
 
 export const CommandContext = createContext<CommandContextValue | null>(null)
 
-export function useCommand() {
+export const useCommand = () => {
   const context = useContext(CommandContext)
 
   if (!context) {

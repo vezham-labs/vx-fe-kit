@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import Header from './index'
+import { Header } from './index'
 
 const actions = vi.hoisted(() => ({ openCommand: vi.fn(), expand: vi.fn() }))
 

@@ -1,5 +1,5 @@
-const index = () => {
+const DevicesSettings = () => {
   return <div>Devices</div>
 }
 
-export default index
+export { DevicesSettings }

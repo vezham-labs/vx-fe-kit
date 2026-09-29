@@ -15,7 +15,7 @@ const shortcutGroupClassName =
 const keycapClassName =
   'inline-flex min-h-7 min-w-7 items-center justify-center rounded-lg bg-surface-tertiary px-2 text-sm leading-none text-muted hover:text-foreground'
 
-export function ShortcutKey({ className, shortcut }: ShortcutKeyProps) {
+const ShortcutKey = ({ className, shortcut }: ShortcutKeyProps) => {
   const keys = shortcut.split(/\s+/).filter(Boolean)
 
   return (
@@ -31,11 +31,11 @@ export function ShortcutKey({ className, shortcut }: ShortcutKeyProps) {
   )
 }
 
-export function ShortcutTooltipLabel({
+const ShortcutTooltipLabel = ({
   className,
   label,
   shortcut
-}: ShortcutTooltipLabelProps) {
+}: ShortcutTooltipLabelProps) => {
   return (
     <span
       className={cn('flex items-center gap-2 whitespace-nowrap', className)}>
@@ -44,3 +44,5 @@ export function ShortcutTooltipLabel({
     </span>
   )
 }
+
+export { ShortcutKey, ShortcutTooltipLabel }

@@ -1,7 +1,3 @@
-export {
-  InfoPanelContainer,
-  InfoPanelContent,
-  InfoPanelHeader
-} from './container'
-export { InfoPanelProvider, useInfoPanel } from './provider'
-export type { ActiveInfoPanel, InfoPanelDefinition } from './types'
+export * from './container'
+export * from './provider'
+export * from './types'

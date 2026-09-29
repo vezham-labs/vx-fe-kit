@@ -1,26 +1,28 @@
 import { useLocation } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Surface } from '@vezham/react-v3'
 
-import type { AppNavigationItem } from '../../navigation'
 import { useCommand } from '../../components/command'
-import Footer from '../../components/panel/footer'
+import { Footer } from '../../components/panel/footer'
 import { aiPanel } from '../../components/panel/footer/ai'
 import { ControlCenterDrawer } from '../../components/panel/footer/control-center'
 import { NotificationDrawer } from '../../components/panel/footer/notification-center'
-import UserInfoModal from '../../components/panel/footer/preferences/modal'
-import Header from '../../components/panel/header'
+import { UserInfoModal } from '../../components/panel/footer/preferences/modal'
+import { Header } from '../../components/panel/header'
 import { bookmarksPanel } from '../../components/panel/header/bookmarks'
 import { discPanel } from '../../components/panel/header/disc'
-import { InfoPanelContainer, useInfoPanel } from '../../components/panel/info-panel'
+import {
+  InfoPanelContainer,
+  useInfoPanel
+} from '../../components/panel/info-panel'
 import { Menu } from '../../components/panel/menu'
 import { useWorkspaceNavigation } from '../../components/workspace-navigation'
+import type { AppNavigationItem } from '../../navigation'
 import { useUser } from '../../store/users/useUserStore'
+import { HomeNavigationBubble } from './home-navigation-bubble'
 
-import HomeNavigationBubble from './home-navigation-bubble'
-
-export default function MenuMD({ items }: { items: AppNavigationItem[] }) {
+const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
   const [openSettings, setOpenSettings] = useState(false)
   const location = useLocation()
   const [notificationsOpen, setNotificationsOpen] = useState(false)
@@ -29,11 +31,11 @@ export default function MenuMD({ items }: { items: AppNavigationItem[] }) {
   const { closeCommand } = useCommand()
   const { expandNavigation, isNavigationCollapsed: isWorkspaceCollapsed } =
     useWorkspaceNavigation()
-  // Home has its own preference; toggling it must not change module sidebars.
+  // vx-bot/NOTE: Home collapse state is independent from module sidebars.
   const [isHomeCollapsed, setIsHomeCollapsed] = useState(false)
   const isHome = location.pathname === (items[0]?.href ?? '/')
   const isNavigationCollapsed = isHome ? isHomeCollapsed : isWorkspaceCollapsed
-  // Keep Home's content gutter stable even when only the floating bubble is visible.
+  // vx-bot/NOTE: Preserve the Home gutter while its floating bubble is visible.
   const navigationWidth = isHome || !isNavigationCollapsed ? 'w-[106px]' : 'w-0'
 
   const collapseHomeNavigation = () => {
@@ -55,16 +57,6 @@ export default function MenuMD({ items }: { items: AppNavigationItem[] }) {
   }
 
   const { user } = useUser()
-
-  useEffect(() => {
-    if (!isNavigationCollapsed) {
-      return
-    }
-
-    setOpenSettings(false)
-    setNotificationsOpen(false)
-    setControlsOpen(false)
-  }, [isNavigationCollapsed])
 
   return (
     <>
@@ -143,7 +135,7 @@ export default function MenuMD({ items }: { items: AppNavigationItem[] }) {
   )
 }
 
-function getSelectedMenuKey(pathname: string, items: AppNavigationItem[]) {
+const getSelectedMenuKey = (pathname: string, items: AppNavigationItem[]) => {
   const activeItem = items
     .flatMap(item => [item, ...(item.submenu ?? [])])
     .filter(
@@ -161,3 +153,5 @@ function getSelectedMenuKey(pathname: string, items: AppNavigationItem[]) {
 
   return parentItem?.key ?? items[0]?.key
 }
+
+export { MenuMD }

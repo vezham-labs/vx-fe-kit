@@ -1,9 +1,9 @@
-import CalendarAppWidget from './calendar/calendar'
-import Mail from './mail/mail'
-import Messages from './messages/messages'
-import Phone from './phone/phone'
+import { CalendarAppWidget } from './calendar/calendar'
+import { Mail } from './mail/mail'
+import { Messages } from './messages/messages'
+import { Phone } from './phone/phone'
 
-export default function WidgetsGrid() {
+const WidgetsGrid = () => {
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 py-4">
       <Phone />
@@ -13,3 +13,5 @@ export default function WidgetsGrid() {
     </div>
   )
 }
+
+export { WidgetsGrid }

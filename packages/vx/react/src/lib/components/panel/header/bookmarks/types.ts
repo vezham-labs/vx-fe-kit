@@ -185,7 +185,7 @@ const useProps = (originalProps: Props) => {
   })
   const getFavoriteBackgroundImageProps = (src: string, alt: string) => ({
     src,
-    alt,
+    'aria-label': alt,
     className: slots.favorite_background_image({
       class: classNames?.favorite_background_image
     })

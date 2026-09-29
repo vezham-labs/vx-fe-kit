@@ -1,5 +1,5 @@
-const index = () => {
+const ConnectionsSettings = () => {
   return <div>Connections</div>
 }
 
-export default index
+export { ConnectionsSettings }

@@ -6,8 +6,8 @@ import { CommandProvider } from '../../components/command'
 import { InfoPanelProvider } from '../../components/panel/info-panel'
 import { WorkspaceNavigationProvider } from '../../components/workspace-navigation'
 import type { AppNavigationItem } from '../../navigation'
-import { UserProvider, type User } from '../../store/users/useUserStore'
-import MenuLayout from '../menu-layout'
+import { type User, UserProvider } from '../../store/users/useUserStore'
+import { MenuLayout } from '../menu-layout'
 
 type AppFrameProps = {
   children: ReactNode

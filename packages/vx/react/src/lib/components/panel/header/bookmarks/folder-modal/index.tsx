@@ -13,7 +13,6 @@ import {
 } from '@vezham/react-v3'
 
 import { AppIcon } from '../../../../app-icon'
-
 import {
   type FolderModalProps,
   type FolderVisualPreviewProps,
@@ -86,7 +85,6 @@ const FolderModal = ({
                   Name:
                 </Label>
                 <Input
-                  autoFocus
                   value={form.name}
                   className="border-default-200 focus:border-primary focus:ring-primary/25 h-12 w-full rounded-xl border bg-white px-4 text-base outline-none focus:ring-4"
                   onChange={event => updateForm({ name: event.target.value })}
@@ -272,4 +270,4 @@ const FolderModal = ({
 }
 
 export { FolderVisualPreview }
-export default FolderModal
+export { FolderModal }

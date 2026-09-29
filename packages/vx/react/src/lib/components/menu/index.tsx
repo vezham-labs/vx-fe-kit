@@ -10,8 +10,7 @@ import {
 import { Button, useOverlayState } from '@vezham/react-v3'
 
 import { AppIcon } from '../app-icon'
-
-import MenuDrawer from './drawer'
+import { MenuDrawer } from './drawer'
 import { BottomNavbarProps, SidebarItem, SidebarItemType } from './types'
 import {
   getNavbarButtonClasses,
@@ -122,7 +121,8 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
             const iconName = isActive ? item.iconActive || item.icon : item.icon
 
             return (
-              <div
+              <button
+                type="button"
                 key={item.key}
                 onClick={() => handleItemSelect(item)}
                 className={getNavbarButtonClasses({
@@ -143,12 +143,13 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
                 )}
 
                 {item.title}
-              </div>
+              </button>
             )
           })}
 
           {showMoreButton && (
-            <div
+            <button
+              type="button"
               onClick={onOpen}
               className={getNavbarButtonClasses({
                 isDarkMode,
@@ -160,12 +161,13 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
                 aria-hidden="true"
               />
               More
-            </div>
+            </button>
           )}
         </div>
 
         {hasMoreAction && (
           <Button
+            aria-label="Search"
             className={getSearchButtonClasses({ isDarkMode })}
             variant="ghost">
             <MagnifierIcon

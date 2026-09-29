@@ -1,6 +1,6 @@
-import CustomTabs from '../../../tabs'
+import { CustomTabs } from '../../../tabs'
 
-const index = () => {
+const FamilyCenterSettings = () => {
   const tabs = [
     {
       id: 'activity',
@@ -26,4 +26,4 @@ const index = () => {
   )
 }
 
-export default index
+export { FamilyCenterSettings }

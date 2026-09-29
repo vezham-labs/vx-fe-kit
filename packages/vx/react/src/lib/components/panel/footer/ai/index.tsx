@@ -5,7 +5,6 @@ import { Drawer } from '@vezham/react-v3'
 
 import { AppIcon } from '../../../app-icon'
 import { InfoPanelDefinition } from '../../info-panel'
-
 import { Props, useProps } from './types'
 
 const AIContent = forwardRef<HTMLDivElement, Props>((props, ref) => {

@@ -52,7 +52,7 @@ const readStoredInfoPanelState = (): StoredInfoPanelState => {
   }
 }
 
-export function InfoPanelProvider({ children }: { children: React.ReactNode }) {
+const InfoPanelProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, setState] = useState<StoredInfoPanelState>(
     readStoredInfoPanelState
   )
@@ -116,7 +116,9 @@ export function InfoPanelProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-export function useInfoPanel() {
+export { InfoPanelProvider }
+
+export const useInfoPanel = () => {
   const context = useContext(InfoPanelContext)
 
   if (!context) {

@@ -61,12 +61,13 @@ WidgetHeader.displayName = 'WidgetHeader'
 const WidgetTitle = React.forwardRef<
   HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
+>(({ children, className, ...props }, ref) => (
   <h5
     ref={ref}
     className={cn('leading-none font-semibold tracking-tight', className)}
-    {...props}
-  />
+    {...props}>
+    {children}
+  </h5>
 ))
 
 WidgetTitle.displayName = 'WidgetTitle'

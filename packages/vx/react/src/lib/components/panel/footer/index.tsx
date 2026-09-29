@@ -16,16 +16,15 @@ import {
 } from '@vezham/react-v3'
 
 import { useUser } from '../../../store/users/useUserStore'
-
 import type { FooterActionsProps } from './types'
 
-type ActionProps = {
+type Props = {
   label: string
   onPress?: () => void
   children: ReactNode
 }
 
-const FooterAction = ({ children, label, onPress }: ActionProps) => {
+const FooterAction = ({ children, label, onPress }: Props) => {
   return (
     <Tooltip delay={0}>
       <Tooltip.Trigger>
@@ -126,4 +125,4 @@ const Footer = ({
   )
 }
 
-export default Footer
+export { Footer }

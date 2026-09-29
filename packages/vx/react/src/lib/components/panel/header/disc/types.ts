@@ -1,16 +1,16 @@
 import { type ComponentPropsWithRef, type ElementType, ReactNode } from 'react'
 
+import { cn } from '@vezham/react-v3'
+
 import { ArchiveItem, ArchiveItemRendererProps } from './archive/types'
 import { TrashItem, TrashItemRendererProps } from './trash/types'
 import { tvProps, tvSlots, tva } from './variant'
 
-// Props for custom renderers
 export interface ItemRendererProps<T> {
   item: T
   onAction?: (action: string, item: T) => void
 }
 
-// Main Component Props
 interface Props extends tvProps, ComponentPropsWithRef<'div'> {
   as?: ElementType
   classNames?: Partial<Record<tvSlots, string>>
@@ -33,7 +33,6 @@ const useProps = (originalProps: Props) => {
     variant,
     size,
     as,
-    id,
     ref,
     children,
     classNames,
@@ -57,7 +56,6 @@ const useProps = (originalProps: Props) => {
   const slots = tva({ variant, size })
   void otherProps
 
-  // Tabs getters
   const getTabsProps = () => ({
     className: slots.tabs({ class: classNames?.tabs })
   })
@@ -87,24 +85,19 @@ const useProps = (originalProps: Props) => {
     className: slots.tab_indicator({ class: classNames?.tab_indicator })
   })
 
-  // Container getters
   const getContainerProps = () => ({
     className: slots.container({ class: classNames?.container })
   })
 
-  // Search input getters
   const getSearchInputProps = (isArchive: boolean) => ({
-    className: slots.search_input({ class: classNames?.search_input }),
+    className: cn(
+      slots.search_input({ class: classNames?.search_input }),
+      slots.search_input_wrapper({ class: classNames?.search_input_wrapper })
+    ),
     placeholder: isArchive ? 'Search' : 'Search',
-    variant: 'bordered' as const,
-    classNames: {
-      inputWrapper: slots.search_input_wrapper({
-        class: classNames?.search_input_wrapper
-      })
-    }
+    variant: 'secondary' as const
   })
 
-  // Actions bar getters
   const getActionsBarProps = (hasRestore: boolean) => ({
     className: hasRestore
       ? slots.actions_bar_with_gap({ class: classNames?.actions_bar })
@@ -113,17 +106,15 @@ const useProps = (originalProps: Props) => {
 
   const getClearAllButtonProps = () => ({
     size: 'sm' as const,
-    variant: 'light' as const,
-    color: 'danger' as const
+    variant: 'danger-soft' as const
   })
 
   const getRestoreAllButtonProps = () => ({
     size: 'sm' as const,
-    variant: 'light' as const,
-    color: 'success' as const
+    variant: 'secondary' as const,
+    className: 'text-success'
   })
 
-  // Empty state getters
   const getEmptyContainerProps = () => ({
     className: slots.empty_container({ class: classNames?.empty_container })
   })
@@ -141,7 +132,6 @@ const useProps = (originalProps: Props) => {
     className: slots.empty_description({ class: classNames?.empty_description })
   })
 
-  // Items container getters
   const getItemsContainerProps = () => ({
     className: slots.items_container({ class: classNames?.items_container })
   })
@@ -166,14 +156,12 @@ const useProps = (originalProps: Props) => {
     className: slots.items_list({ class: classNames?.items_list })
   })
 
-  // Item getters
   const getItemProps = () => ({
     className: slots.item({ class: classNames?.item })
   })
 
   const getItemFaviconProps = () => ({
     className: slots.item_favicon({ class: classNames?.item_favicon }),
-    alt: '',
     onError: (e: React.SyntheticEvent<HTMLImageElement>) => {
       e.currentTarget.style.display = 'none'
     }
@@ -204,7 +192,6 @@ const useProps = (originalProps: Props) => {
     className: slots.item_actions({ class: classNames?.item_actions })
   })
 
-  // Action button getters
   const getUnarchiveButtonProps = () => ({
     className: slots.unarchive_button({ class: classNames?.unarchive_button }),
     'aria-label': 'Unarchive'

@@ -9,11 +9,10 @@ import {
 import { Avatar, ScrollShadow } from '@vezham/react-v3'
 
 import { AppView } from '../../../components/app-view'
-
 import { recentCalls } from './data'
 import type { PhoneAppProps } from './types'
 
-export function PhoneApp({ isOpen, onClose }: PhoneAppProps) {
+const PhoneApp = ({ isOpen, onClose }: PhoneAppProps) => {
   return (
     <AppView isOpen={isOpen} onClose={onClose} title="Phone">
       <ScrollShadow className="h-full py-2">
@@ -59,3 +58,5 @@ export function PhoneApp({ isOpen, onClose }: PhoneAppProps) {
     </AppView>
   )
 }
+
+export { PhoneApp }

@@ -9,11 +9,13 @@ export * from './types'
 
 export const CK_DISC = 'disc'
 
+const useDiscList = (rq: RQDisc = {}) =>
+  useQuery({
+    queryKey: [CK_DISC, rq],
+    queryFn: () => Disc.list(rq),
+    initialData: discData
+  })
+
 export const useDisc = {
-  list: (rq: RQDisc = {}) =>
-    useQuery({
-      queryKey: [CK_DISC, rq],
-      queryFn: () => Disc.list(rq),
-      initialData: discData
-    })
+  list: useDiscList
 }

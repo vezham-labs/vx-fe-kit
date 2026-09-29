@@ -7,12 +7,12 @@ import { sampleFavorites } from './data'
 import { type FavoriteGridListProps } from './types'
 import { tva } from './variant'
 
-export default function FavoriteGridList({
+const FavoriteGridList = ({
   items = sampleFavorites,
   dragAndDropHooks,
   classNames,
   ...variantProps
-}: FavoriteGridListProps) {
+}: FavoriteGridListProps) => {
   const slots = tva(variantProps)
 
   return (
@@ -110,3 +110,5 @@ export default function FavoriteGridList({
     </GridList>
   )
 }
+
+export { FavoriteGridList }

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Collection } from 'react-aria-components/Collection'
 import { useTreeData } from 'react-aria-components/useTreeData'
 
@@ -31,7 +31,6 @@ import {
   type BookmarkTreeItem,
   type TreeSelection
 } from '../types'
-
 import { type BookmarkFileTreeProps } from './types'
 import { collectFolderTargets, moveBookmarkTreeItems } from './variants'
 
@@ -62,16 +61,6 @@ const BookmarkFileTree = ({
   const [contextTarget, setContextTarget] = useState<BookmarkContextTarget>({
     type: 'area'
   })
-
-  useEffect(() => {
-    setExpandedKeys(currentKeys => {
-      const nextKeys = new Set(currentKeys)
-
-      defaultExpandedKeys.forEach(key => nextKeys.add(key))
-
-      return nextKeys.size === currentKeys.size ? currentKeys : nextKeys
-    })
-  }, [defaultExpandedKeys])
 
   const bookmarkById = useMemo(() => {
     return items.reduce((acc, item) => {
@@ -212,8 +201,7 @@ const BookmarkFileTree = ({
         aria-label={`Remove ${item.value.title}`}
         variant="tertiary"
         className="text-danger text-danger absolute top-1/2 right-0 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100"
-        onClick={event => {
-          event.stopPropagation()
+        onPress={() => {
           if (item.value.kind === 'folder') {
             onFolderDelete(String(item.key))
             return
@@ -262,7 +250,6 @@ const BookmarkFileTree = ({
               <div {...getBookmarkTreeEmptyStateProps()}>No bookmarks</div>
             )}
             selectedKeys={selectedKeys}
-            // selectionMode="single"
             showGuideLines="hover"
             onAction={(key: React.Key) => {
               const bookmark = bookmarkById.get(String(key))
@@ -292,11 +279,6 @@ const BookmarkFileTree = ({
           />
         </ContextMenu.Menu>
       </ContextMenu.Popover>
-      {/* <ContextMenu.Trigger>
-        <div className="border-border text-muted flex h-48 w-80 items-center justify-center rounded-xl border border-dashed text-sm select-none">
-          Right-click here
-        </div>
-      </ContextMenu.Trigger> */}
       <ContextMenu.Popover>
         <ContextMenu.Menu>
           <BrowserContextMenuItems />
@@ -306,4 +288,4 @@ const BookmarkFileTree = ({
   )
 }
 
-export default BookmarkFileTree
+export { BookmarkFileTree }

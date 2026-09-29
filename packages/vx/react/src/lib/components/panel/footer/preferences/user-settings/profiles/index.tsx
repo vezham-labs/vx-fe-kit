@@ -1,40 +1,33 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Button, Input, Tabs } from '@vezham/react-v3'
 
 import { useUser } from '../../../../../../store/users/useUserStore'
 
-const Index = () => {
+const ProfileSettings = () => {
   const { user, updateUser, clearUser } = useUser()
 
-  const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: ''
-  })
+  const [changes, setChanges] = useState<
+    Partial<Record<'firstName' | 'lastName' | 'email', string>>
+  >({})
+  const form = {
+    firstName: changes.firstName ?? user?.firstName ?? '',
+    lastName: changes.lastName ?? user?.lastName ?? '',
+    email: changes.email ?? user?.email ?? ''
+  }
 
   const isChanged =
     form.firstName !== user?.firstName ||
     form.lastName !== user?.lastName ||
     form.email !== user?.email
 
-  useEffect(() => {
-    if (user) {
-      setForm({
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        email: user.email || ''
-      })
-    }
-  }, [user])
-
   const handleChange = (
     key: 'firstName' | 'lastName' | 'email',
     value: string
   ) => {
-    setForm(prev => ({
+    setChanges(prev => ({
       ...prev,
       [key]: value
     }))
@@ -42,6 +35,7 @@ const Index = () => {
 
   const handleSave = () => {
     updateUser(form)
+    setChanges({})
   }
 
   const handleDelete = () => {
@@ -117,4 +111,4 @@ const Index = () => {
   )
 }
 
-export default Index
+export { ProfileSettings }

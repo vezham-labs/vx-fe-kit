@@ -1,2 +1,2 @@
-export { CommandProvider } from './command-provider'
-export { useCommand } from './use-command'
+export * from './command-provider'
+export * from './use-command'

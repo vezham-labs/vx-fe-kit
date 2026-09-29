@@ -1,5 +1,5 @@
-const index = () => {
+const NotificationSettings = () => {
   return <div>Notifications</div>
 }
 
-export default index
+export { NotificationSettings }

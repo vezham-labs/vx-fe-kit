@@ -29,7 +29,7 @@ const items = [
   }
 ]
 
-export default function Privacy() {
+const PrivacySettings = () => {
   return (
     <div id="privacy" className="space-y-10">
       <div id="privacy-data" className="space-y-6">
@@ -58,7 +58,6 @@ export default function Privacy() {
 
       <div className="border-default-100 border-t" />
 
-      {/* SECTION 2 */}
       <div id="privacy-request" className="space-y-6">
         <h1 className="text-2xl font-semibold">Request Your Data</h1>
 
@@ -82,3 +81,5 @@ export default function Privacy() {
     </div>
   )
 }
+
+export { PrivacySettings }

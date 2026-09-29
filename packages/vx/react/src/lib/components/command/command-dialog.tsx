@@ -4,10 +4,10 @@ import { Magnifier as MagnifierIcon } from '@vezham/icons-react'
 import { Command } from '@vezham/react-pro-v3'
 import { Typography } from '@vezham/react-v3'
 
-import { AppIcon } from '../app-icon'
 import type { AppNavigationItem } from '../../navigation'
+import { AppIcon } from '../app-icon'
 
-interface CommandDialogProps {
+interface Props {
   isOpen: boolean
   items: AppNavigationItem[]
   onOpenChange: (isOpen: boolean) => void
@@ -63,12 +63,12 @@ const actionCommands: ActionCommand[] = [
   }
 ]
 
-export function CommandPaletteDialog({
+const CommandPaletteDialog = ({
   isOpen,
   items,
   onOpenChange,
   onAction
-}: CommandDialogProps) {
+}: Props) => {
   const navigate = useNavigate()
   const navigationCommands = createNavigationCommands(items)
 
@@ -140,10 +140,10 @@ export function CommandPaletteDialog({
   )
 }
 
-function createNavigationCommands(
+const createNavigationCommands = (
   items: AppNavigationItem[],
   section?: string
-): NavigationCommand[] {
+): NavigationCommand[] => {
   return items.flatMap(item => {
     const children = item.submenu ?? item.children
     const command = item.href
@@ -165,7 +165,7 @@ function createNavigationCommands(
   })
 }
 
-function CommandItemContent({
+const CommandItemContent = ({
   label,
   description,
   icon
@@ -173,7 +173,7 @@ function CommandItemContent({
   label: string
   description: string
   icon: string
-}) {
+}) => {
   return (
     <div className="flex min-w-0 items-center gap-3">
       <div className="bg-default-100 text-default-600 flex h-8 w-8 shrink-0 items-center justify-center rounded-md">
@@ -190,3 +190,5 @@ function CommandItemContent({
     </div>
   )
 }
+
+export { CommandPaletteDialog }

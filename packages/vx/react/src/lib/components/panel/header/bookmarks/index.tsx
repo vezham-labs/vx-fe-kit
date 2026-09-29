@@ -1,20 +1,13 @@
 import { useNavigate } from '@tanstack/react-router'
-import {
-  type ComponentProps,
-  forwardRef,
-  useEffect,
-  useMemo,
-  useState
-} from 'react'
+import { type ComponentProps, forwardRef, useMemo, useState } from 'react'
 
 import { Bookmark as BookmarkIcon, Star as StarIcon } from '@vezham/icons-react'
 import { ScrollShadow, Tooltip, Typography } from '@vezham/react-v3'
 
-import { InfoPanelDefinition, useInfoPanel } from '../../info-panel'
-import { getAppPath, getOpenUrl } from '../../../../utils/url'
 import { useBookmarks } from '../../../../store/useBookmarks'
-
-import BookmarkFileTree from './bookmark-file-tree'
+import { getAppPath, getOpenUrl } from '../../../../utils/url'
+import { InfoPanelDefinition, useInfoPanel } from '../../info-panel'
+import { BookmarkFileTree } from './bookmark-file-tree'
 import {
   collectTreeItemIds,
   createTreeItemId,
@@ -27,7 +20,7 @@ import {
   removeTreeItem,
   updateTreeItem
 } from './bookmark-file-tree/variants'
-import FolderModal from './folder-modal'
+import { FolderModal } from './folder-modal'
 import { type FolderFormState } from './folder-modal/types'
 import {
   DEFAULT_FOLDER_COLOR,
@@ -35,13 +28,8 @@ import {
   DEFAULT_FOLDER_ICON,
   createDefaultFolderForm
 } from './folder-modal/variants'
-import QuickAccess from './quick-access'
-import {
-  areIdsEqual,
-  getFavoriteIds,
-  orderFavorites,
-  reconcileFavoriteOrder
-} from './quick-access/variants'
+import { QuickAccess } from './quick-access'
+import { getFavoriteIds, orderFavorites } from './quick-access/variants'
 import {
   type BookmarkItem,
   type BookmarkTreeItem,
@@ -207,17 +195,11 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
   const bookmarksQuery = useBookmarks.list({})
   const searchQuery = ''
-  const [internalFavorites, setInternalFavorites] = useState<FavoriteItem[]>(
-    () => bookmarksQuery.data?.favorites ?? []
-  )
   const [internalBookmarks, setInternalBookmarks] = useState<BookmarkItem[]>(
     () => bookmarksQuery.data?.bookmarks ?? []
   )
   const [showAllFavoritesMode, setShowAllFavoritesMode] = useState(false)
   const [isScrollFavoritesOpen, setIsScrollFavoritesOpen] = useState(true)
-  const [quickAccessOrderIds, setQuickAccessOrderIds] = useState<string[]>(() =>
-    getFavoriteIds(bookmarksQuery.data?.favorites ?? [])
-  )
   const [bookmarkTreeItems, setBookmarkTreeItems] = useState<
     BookmarkTreeItem[]
   >(() => bookmarksToTreeItems(bookmarksQuery.data?.bookmarks ?? []))
@@ -230,26 +212,8 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
     createDefaultFolderForm()
   )
 
-  useEffect(() => {
-    if (!bookmarksQuery.data?.favorites?.length || internalFavorites.length) {
-      return
-    }
-
-    setInternalFavorites(bookmarksQuery.data.favorites)
-    setQuickAccessOrderIds(getFavoriteIds(bookmarksQuery.data.favorites))
-  }, [bookmarksQuery.data?.favorites, internalFavorites.length])
-
-  useEffect(() => {
-    if (!bookmarksQuery.data?.bookmarks?.length || internalBookmarks.length) {
-      return
-    }
-
-    setInternalBookmarks(bookmarksQuery.data.bookmarks)
-    setBookmarkTreeItems(bookmarksToTreeItems(bookmarksQuery.data.bookmarks))
-  }, [bookmarksQuery.data?.bookmarks, internalBookmarks.length])
-
-  const favorites = externalFavorites || internalFavorites
-  const bookmarks = externalBookmarks || internalBookmarks
+  const favorites = externalFavorites ?? bookmarksQuery.data.favorites
+  const bookmarks = externalBookmarks ?? internalBookmarks
 
   const filteredFavorites = useMemo(
     () =>
@@ -267,31 +231,26 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
     [bookmarks, searchQuery]
   )
 
-  useEffect(() => {
-    setQuickAccessOrderIds(currentIds => {
-      const nextIds = reconcileFavoriteOrder(currentIds, favorites)
-
-      return areIdsEqual(currentIds, nextIds) ? currentIds : nextIds
-    })
-  }, [favorites])
-
-  useEffect(() => {
-    if (externalBookmarks) {
-      setBookmarkTreeItems(bookmarksToTreeItems(filteredBookmarks))
-    }
-  }, [externalBookmarks, filteredBookmarks])
+  const activeBookmarkTreeItems = useMemo(
+    () =>
+      externalBookmarks
+        ? bookmarksToTreeItems(filteredBookmarks)
+        : bookmarkTreeItems,
+    [bookmarkTreeItems, externalBookmarks, filteredBookmarks]
+  )
 
   const bookmarkTreeExpandedKeys = useMemo(
-    () => getExpandableBookmarkKeys(bookmarkTreeItems),
-    [bookmarkTreeItems]
+    () => getExpandableBookmarkKeys(activeBookmarkTreeItems),
+    [activeBookmarkTreeItems]
   )
 
   const bookmarkTreeKey = useMemo(
-    () => getBookmarkTreeSignature(bookmarkTreeItems),
-    [bookmarkTreeItems]
+    () => getBookmarkTreeSignature(activeBookmarkTreeItems),
+    [activeBookmarkTreeItems]
   )
 
-  // Keep the draggable Favorites grid independent from Quick Access order.
+  // vx-bot/NOTE: Keep the Favorites grid independent from Quick Access order.
+  const quickAccessOrderIds = getFavoriteIds(favorites)
   const quickAccessFavorites = orderFavorites(
     filteredFavorites,
     quickAccessOrderIds
@@ -312,7 +271,6 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
     setShowAllFavoritesMode(false)
   }
 
-  // Toggle scroll favorites section
   const toggleScrollFavorites = () => {
     setIsScrollFavoritesOpen(!isScrollFavoritesOpen)
   }
@@ -364,7 +322,7 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   }
 
   const handleBookmarkRemove = (id: string) => {
-    handleBookmarkTreeChange(removeTreeItem(bookmarkTreeItems, id))
+    handleBookmarkTreeChange(removeTreeItem(activeBookmarkTreeItems, id))
   }
 
   const openCreateFolderModal = (parentId?: string) => {
@@ -397,7 +355,7 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
     if (folderModalMode === 'edit' && folderForm.id) {
       handleBookmarkTreeChange(
-        updateTreeItem(bookmarkTreeItems, folderForm.id, item => ({
+        updateTreeItem(activeBookmarkTreeItems, folderForm.id, item => ({
           ...item,
           title: folderName,
           color: folderForm.color,
@@ -413,7 +371,7 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
     const folder: BookmarkTreeItem = {
       id: createTreeItemId(
         'folder:custom',
-        collectTreeItemIds(bookmarkTreeItems)
+        collectTreeItemIds(activeBookmarkTreeItems)
       ),
       title: folderName,
       kind: 'folder',
@@ -423,7 +381,11 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
       icon: folderForm.icon,
       children: []
     }
-    const result = insertFolderItem(bookmarkTreeItems, folder, folderParentId)
+    const result = insertFolderItem(
+      activeBookmarkTreeItems,
+      folder,
+      folderParentId
+    )
 
     if (result.inserted) {
       handleBookmarkTreeChange(result.items)
@@ -433,7 +395,11 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   }
 
   const handleBookmarkMove = (id: string, targetFolderId?: string) => {
-    const result = moveTreeItemToFolder(bookmarkTreeItems, id, targetFolderId)
+    const result = moveTreeItemToFolder(
+      activeBookmarkTreeItems,
+      id,
+      targetFolderId
+    )
 
     handleBookmarkTreeChange(result.items)
   }
@@ -513,13 +479,11 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
                   weight="filled"
                   aria-hidden="true"
                 />
-                <Typography.Heading
-                  {...getSectionTitleProps('Bookmarks')}
-                />
+                <Typography.Heading {...getSectionTitleProps('Bookmarks')} />
               </div>
               <BookmarkFileTree
                 key={bookmarkTreeKey}
-                items={bookmarkTreeItems}
+                items={activeBookmarkTreeItems}
                 defaultExpandedKeys={bookmarkTreeExpandedKeys}
                 getFileTreeProps={getFileTreeProps}
                 getBookmarkTreeEmptyStateProps={getBookmarkTreeEmptyStateProps}
@@ -549,7 +513,7 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
 BookmarksContent.displayName = 'BookmarksContent'
 
-function BookmarksTrigger() {
+const BookmarksTrigger = () => {
   const { activeInfoPanel, toggleInfoPanel } = useInfoPanel()
   const isActive = activeInfoPanel === 'bookmarks'
 
@@ -571,7 +535,7 @@ function BookmarksTrigger() {
   )
 }
 
-function BookmarksPanelContent() {
+const BookmarksPanelContent = () => {
   return <BookmarksContent />
 }
 

@@ -13,7 +13,7 @@ import { ActiveInfoPanel, InfoPanelDefinition } from './types'
 
 const INFO_PANEL_WIDTH = 328
 
-export function InfoPanelContainer({
+const InfoPanelContainer = ({
   panels,
   className,
   width = INFO_PANEL_WIDTH
@@ -21,7 +21,7 @@ export function InfoPanelContainer({
   panels: Record<Exclude<ActiveInfoPanel, null>, InfoPanelDefinition>
   className?: string
   width?: number
-}) {
+}) => {
   const { activeInfoPanel, closeInfoPanel, isOpen } = useInfoPanel()
   const panel = isOpen && activeInfoPanel ? panels[activeInfoPanel] : null
 
@@ -55,13 +55,13 @@ export function InfoPanelContainer({
   )
 }
 
-export function InfoPanelHeader({
+const InfoPanelHeader = ({
   title,
   onClose
 }: {
   title: string
   onClose?: () => void
-}) {
+}) => {
   return (
     <div className="flex shrink-0 items-center gap-3 px-4 py-4">
       <div className="min-w-0 flex-1">
@@ -75,12 +75,12 @@ export function InfoPanelHeader({
   )
 }
 
-export function InfoPanelContent({ children }: { children: ReactNode }) {
+const InfoPanelContent = ({ children }: { children: ReactNode }) => {
   return (
-    <>
-      <ScrollShadow className="min-h-0 flex-1 px-4 pb-4" hideScrollBar>
-        {children}
-      </ScrollShadow>
-    </>
+    <ScrollShadow className="min-h-0 flex-1 px-4 pb-4" hideScrollBar>
+      {children}
+    </ScrollShadow>
   )
 }
+
+export { InfoPanelContainer, InfoPanelContent, InfoPanelHeader }

@@ -46,7 +46,7 @@ export interface DynamicHeaderProps {
   leftActions?: ActionItem[]
 }
 
-export default function DynamicHeader({
+const DynamicHeader = ({
   tabs,
   activeTab,
 
@@ -54,7 +54,7 @@ export default function DynamicHeader({
   showSearch = true,
   onSearch,
   leftActions = []
-}: DynamicHeaderProps) {
+}: DynamicHeaderProps) => {
   const [search, setSearch] = useState('')
   const navigate = useNavigate()
   const handleSearch = (val: string) => {
@@ -124,7 +124,6 @@ export default function DynamicHeader({
                           aria-hidden="true"
                         />
                       )}
-                      {/* <span className="text-sm font-medium">{tab.title}</span> */}
                       <Typography.Heading>{tab.title}</Typography.Heading>
                     </Tabs.Tab>
                   )
@@ -158,7 +157,7 @@ export default function DynamicHeader({
           {otherActions.length > 0 && (
             <Dropdown>
               <Dropdown.Trigger>
-                <Button isIconOnly variant="ghost">
+                <Button aria-label="More actions" isIconOnly variant="ghost">
                   <MenuDotsIcon
                     size="1em"
                     style={{ transform: 'rotate(90deg)' }}
@@ -214,3 +213,5 @@ export default function DynamicHeader({
     </div>
   )
 }
+
+export { DynamicHeader }

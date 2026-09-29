@@ -2,27 +2,27 @@ import { VariantProps, tv } from '@vezham/react-v3'
 
 const tva = tv({
   slots: {
-    // Main Drawer slots
+    // vx-bot/INFO: Main Drawer slots
     drawer_base:
       'z-[50] max-w-[440px] rounded-none border-none bg-transparent shadow-none md:translate-x-[106px]',
     drawer_wrapper: 'z-[50]',
     drawer_content:
       'border border-white/20 bg-black/5 shadow-xl backdrop-blur-lg',
 
-    // Header slots
+    // vx-bot/INFO: Header slots
     drawer_header: 'flex shrink-0 items-start justify-between text-white/90',
     header_title: 'text-foreground text-lg font-semibold',
     close_button:
       'text-default-500 shrink-0 bg-transparent hover:bg-transparent data-[hovered=true]:bg-transparent',
 
-    // Body slots
+    // vx-bot/INFO: Body slots
     drawer_body: 'overflow-y-auto',
     scroll_shadow: '',
     empty_state:
       'flex min-h-[320px] flex-col items-center justify-center text-center',
     empty_state_icon: 'text-muted-foreground',
 
-    // Footer slots
+    // vx-bot/INFO: Footer slots
     drawer_footer: 'flex items-center justify-center',
     chip: 'cursor-pointer bg-white'
   },

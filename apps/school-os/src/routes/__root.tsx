@@ -1,7 +1,7 @@
 import { Outlet, createRootRoute } from '@tanstack/react-router'
 
-import { createRootComponent } from '@vx/start/tanstack'
 import { AppLayout } from '@vx/react/layouts/app'
+import { createRootComponent } from '@vx/start/tanstack'
 
 import { tanstackHead, vxI18n } from '@generated/vx'
 import { navigationItems } from '@src/navigation'

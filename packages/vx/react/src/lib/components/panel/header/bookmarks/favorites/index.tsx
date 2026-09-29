@@ -2,12 +2,12 @@ import { useDragAndDrop } from 'react-aria-components/useDragAndDrop'
 import { useListData } from 'react-aria-components/useListData'
 
 import { sampleFavorites } from './data'
-import FavoriteGridList from './grid-list'
+import { FavoriteGridList } from './grid-list'
 import { type FavoriteGridListProps, type FavoriteItem } from './types'
 
-type ReorderableGridListProps = Omit<FavoriteGridListProps, 'dragAndDropHooks'>
+type Props = Omit<FavoriteGridListProps, 'dragAndDropHooks'>
 
-export default function ReorderableGridList(props: ReorderableGridListProps) {
+const ReorderableGridList = (props: Props) => {
   const list = useListData<FavoriteItem>({
     initialItems: props.items ?? sampleFavorites
   })
@@ -39,3 +39,5 @@ export default function ReorderableGridList(props: ReorderableGridListProps) {
     />
   )
 }
+
+export { ReorderableGridList }

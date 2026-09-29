@@ -1,11 +1,10 @@
 import { useNavigate } from '@tanstack/react-router'
-import { type MouseEvent, forwardRef, useState } from 'react'
+import { type KeyboardEvent, forwardRef, useState } from 'react'
 
 import { Drawer, ScrollShadow, Tooltip, cn } from '@vezham/react-v3'
 
 import { AppIcon } from '../../app-icon'
-
-import { Props, useProps } from './types'
+import { type MenuItem, Props, useProps } from './types'
 
 const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const navigate = useNavigate()
@@ -31,35 +30,30 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
   })
 
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [currentSubmenu, setCurrentSubmenu] = useState<any[]>([])
+  const [currentSubmenu, setCurrentSubmenu] = useState<MenuItem[]>([])
   const [currentTitle, setCurrentTitle] = useState('')
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
 
-  const handleItemClick = (item: any) => {
+  const handleItemClick = (item: MenuItem) => {
     if (item.submenu && item.submenu.length > 0) {
-      // Open drawer with submenu
       setCurrentSubmenu(item.submenu)
       setCurrentTitle(item.title)
       setExpandedItems(new Set())
       setDrawerOpen(true)
     } else if (item.href) {
-      // Navigate directly
       onSelect?.(item.key)
       navigate({ to: item.href })
     }
   }
 
-  const handlePressItem = (item: any, event?: MouseEvent) => {
-    event?.stopPropagation()
+  const handlePressItem = (item: MenuItem) => {
     handleItemClick(item)
   }
 
-  const handleDrawerItemClick = (item: any) => {
+  const handleDrawerItemClick = (item: MenuItem) => {
     if (item.submenu && item.submenu.length > 0) {
-      // Toggle expand in drawer
       toggleExpandInDrawer(item.key)
     } else if (item.href) {
-      // Navigate and close drawer
       onSelect?.(item.key)
       navigate({ to: item.href })
       setDrawerOpen(false)
@@ -76,7 +70,17 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
     setExpandedItems(newExpanded)
   }
 
-  const renderSubMenuItem = (item: any, depth: number) => {
+  const handleKeyDown = (
+    event: KeyboardEvent<HTMLElement>,
+    action: () => void
+  ) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      action()
+    }
+  }
+
+  const renderSubMenuItem = (item: MenuItem, depth: number) => {
     const hasSubmenu = item.submenu && item.submenu.length > 0
     const isExpanded = expandedItems.has(item.key)
     const paddingLeft = 12 + depth * 16
@@ -84,7 +88,12 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
     return (
       <div key={item.key}>
         <div
+          role="button"
+          tabIndex={0}
           onClick={() => handleDrawerItemClick(item)}
+          onKeyDown={event =>
+            handleKeyDown(event, () => handleDrawerItemClick(item))
+          }
           className={cn(
             'flex cursor-pointer items-center gap-3 rounded-lg px-4 py-2.5 transition-all duration-200',
             'hover:bg-default-100',
@@ -114,7 +123,7 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
         {hasSubmenu && isExpanded && (
           <div className="mt-1 ml-4">
-            {item.submenu.map((subItem: any) =>
+            {item.submenu?.map(subItem =>
               renderSubMenuItem(subItem, depth + 1)
             )}
           </div>
@@ -144,8 +153,13 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
                     <Tooltip delay={0}>
                       <Tooltip.Trigger {...getTooltipTriggerProps()}>
                         <div
+                          role="button"
+                          tabIndex={0}
                           {...getIconWrapperProps()}
-                          onClick={event => handlePressItem(item, event)}>
+                          onClick={() => handlePressItem(item)}
+                          onKeyDown={event =>
+                            handleKeyDown(event, () => handlePressItem(item))
+                          }>
                           {iconName ? (
                             <AppIcon
                               icon={iconName}
@@ -167,8 +181,13 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
                     {!collapsed && (
                       <div
+                        role="button"
+                        tabIndex={0}
                         {...getLabelProps({ isActive })}
-                        onClick={event => handlePressItem(item, event)}>
+                        onClick={() => handlePressItem(item)}
+                        onKeyDown={event =>
+                          handleKeyDown(event, () => handlePressItem(item))
+                        }>
                         {item.title}
                       </div>
                     )}
@@ -180,7 +199,6 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
         </ScrollShadow>
       </Component>
 
-      {/* Drawer for Submenu */}
       <Drawer isOpen={drawerOpen} onOpenChange={setDrawerOpen}>
         <Drawer.Content placement="left">
           <Drawer.Dialog className="bg-black/5 backdrop-blur-sm md:translate-x-[106px]">

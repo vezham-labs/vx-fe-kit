@@ -1,6 +1,6 @@
-import CustomTabs from '../../../tabs'
+import { CustomTabs } from '../../../tabs'
 
-const index = () => {
+const ContentSocialSettings = () => {
   const tabs = [
     {
       id: 'discord',
@@ -21,4 +21,4 @@ const index = () => {
   )
 }
 
-export default index
+export { ContentSocialSettings }

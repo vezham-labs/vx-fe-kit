@@ -9,11 +9,13 @@ export * from './types'
 
 export const CK_BOOKMARKS = 'bookmarks'
 
+const useBookmarksList = (rq: RQBookmarks = {}) =>
+  useQuery({
+    queryKey: [CK_BOOKMARKS, rq],
+    queryFn: () => Bookmarks.list(rq),
+    initialData: bookmarksData
+  })
+
 export const useBookmarks = {
-  list: (rq: RQBookmarks = {}) =>
-    useQuery({
-      queryKey: [CK_BOOKMARKS, rq],
-      queryFn: () => Bookmarks.list(rq),
-      initialData: bookmarksData
-    })
+  list: useBookmarksList
 }

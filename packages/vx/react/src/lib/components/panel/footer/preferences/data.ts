@@ -1,8 +1,8 @@
-import Account from './user-settings/account'
-import ContentSocial from './user-settings/content-social'
-import Privacy from './user-settings/data-privacy'
-import FamilyCenter from './user-settings/family-center'
-import Profiles from './user-settings/profiles'
+import { AccountSettings } from './user-settings/account'
+import { ContentSocialSettings } from './user-settings/content-social'
+import { PrivacySettings } from './user-settings/data-privacy'
+import { FamilyCenterSettings } from './user-settings/family-center'
+import { ProfileSettings } from './user-settings/profiles'
 
 export type SidebarItem = {
   id: string
@@ -30,7 +30,7 @@ export const settingsSidebar: SidebarSection[] = [
       {
         id: 'profiles',
         label: 'Mia Chan',
-        component: Profiles
+        component: ProfileSettings
       }
     ]
   },
@@ -42,19 +42,19 @@ export const settingsSidebar: SidebarSection[] = [
         id: 'account',
         label: 'My Account',
         icon: 'vx:user',
-        component: Account
+        component: AccountSettings
       },
       {
         id: 'content-social',
         label: 'Content & Social',
         icon: 'vx:share',
-        component: ContentSocial
+        component: ContentSocialSettings
       },
       {
         id: 'privacy',
         label: 'Data & Privacy',
         icon: 'vx:shield-check',
-        component: Privacy,
+        component: PrivacySettings,
         children: [
           {
             id: 'privacy-data',
@@ -70,7 +70,7 @@ export const settingsSidebar: SidebarSection[] = [
         id: 'family-center',
         label: 'Family Center',
         icon: 'vx:devices',
-        component: FamilyCenter
+        component: FamilyCenterSettings
       },
       {
         id: 'authorized-apps',

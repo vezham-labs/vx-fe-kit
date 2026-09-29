@@ -6,7 +6,6 @@ import { tvProps, tvSlots, tva } from './variant'
 
 type View = 'main' | 'airdrop' | 'wifi'
 
-// Sub-component Props
 interface TileProps {
   icon: string
   label: string

@@ -22,12 +22,12 @@ const tva = tv({
     section_icon: '',
     section_title: 'text-default-500 text-sm tracking-wider uppercase',
 
-    // Grid 1: Flex wrap (multiple rows)
+    // vx-bot/INFO: Grid 1: Flex wrap (multiple rows)
     favorites_grid: 'flex flex-wrap gap-3',
     favorite_item:
       'group relative flex aspect-square w-[calc(30%-5px)] cursor-grab flex-col overflow-hidden rounded-2xl transition-transform hover:scale-[1.02] active:scale-[0.98] active:cursor-grabbing',
 
-    // Grid 2: Horizontal scroll (single row)
+    // vx-bot/INFO: Grid 2: Horizontal scroll (single row)
     favorites_grid2: 'flex flex-nowrap gap-3 overflow-x-auto pb-2',
     favorite_item2:
       'group relative flex aspect-square w-[120px] shrink-0 cursor-grab flex-col overflow-hidden rounded-2xl transition-transform hover:scale-[1.02] active:scale-[0.98] active:cursor-grabbing',

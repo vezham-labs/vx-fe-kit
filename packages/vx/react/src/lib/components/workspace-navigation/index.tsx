@@ -25,11 +25,7 @@ const WorkspaceNavigationContext =
  * this state in one provider means a collapse starts as one React update rather
  * than each sidebar reacting independently.
  */
-export function WorkspaceNavigationProvider({
-  children
-}: {
-  children: ReactNode
-}) {
+const WorkspaceNavigationProvider = ({ children }: { children: ReactNode }) => {
   const [isNavigationCollapsed, setIsNavigationCollapsed] = useState(false)
   const { closeInfoPanel } = useInfoPanel()
   const { closeCommand } = useCommand()
@@ -72,7 +68,9 @@ export function WorkspaceNavigationProvider({
   )
 }
 
-export function useWorkspaceNavigation() {
+export { WorkspaceNavigationProvider }
+
+export const useWorkspaceNavigation = () => {
   const context = useContext(WorkspaceNavigationContext)
 
   if (!context) {

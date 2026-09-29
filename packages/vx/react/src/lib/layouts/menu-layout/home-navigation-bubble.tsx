@@ -1,15 +1,15 @@
 import { Surface } from '@vezham/react-v3'
 
-import Header from '../../components/panel/header'
+import { Header } from '../../components/panel/header'
 import { type User } from '../../components/panel/header/types'
 
-export default function HomeNavigationBubble({
+const HomeNavigationBubble = ({
   onExpand,
   users
 }: {
   onExpand: () => void
   users: User
-}) {
+}) => {
   return (
     <Surface
       variant="transparent"
@@ -20,3 +20,5 @@ export default function HomeNavigationBubble({
     </Surface>
   )
 }
+
+export { HomeNavigationBubble }

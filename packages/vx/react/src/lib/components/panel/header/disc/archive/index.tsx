@@ -10,16 +10,15 @@ import {
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Button, Input, ScrollShadow, Typography } from '@vezham/react-v3'
 
-import { AppIcon } from '../../../../app-icon'
 import { getAppPath, getOpenUrl } from '../../../../../utils/url'
-
+import { AppIcon } from '../../../../app-icon'
 import { ArchiveProps } from './types'
 import { archiveActions } from './variants'
 
-const SearchInput = Input as any
-const ActionButton = Button as any
+const SearchInput = Input
+const ActionButton = Button
 
-function Archive(props: ArchiveProps) {
+const Archive = (props: ArchiveProps) => {
   const navigate = useNavigate()
   const {
     archiveItems,
@@ -174,32 +173,39 @@ function Archive(props: ArchiveProps) {
                 }
 
                 return (
-                  <div
-                    key={item.id}
-                    {...getItemProps()}
-                    onClick={() => handleItemClick(item.url)}>
-                    {item.favicon ? (
-                      <img src={item.favicon} {...getItemFaviconProps()} />
-                    ) : (
-                      <DocumentIcon
-                        {...getItemFallbackIconProps()}
-                        weight="outline"
-                        aria-hidden="true"
-                      />
-                    )}
+                  <div key={item.id} {...getItemProps()}>
+                    <button
+                      type="button"
+                      className="flex min-w-0 flex-1 items-center gap-3 text-left"
+                      onClick={() => handleItemClick(item.url)}>
+                      {item.favicon ? (
+                        <img
+                          src={item.favicon}
+                          alt=""
+                          {...getItemFaviconProps()}
+                        />
+                      ) : (
+                        <DocumentIcon
+                          {...getItemFallbackIconProps()}
+                          weight="outline"
+                          aria-hidden="true"
+                        />
+                      )}
 
-                    <div {...getItemContentProps()}>
-                      <Typography.Heading {...getItemTitleProps(item.title)} />
-                      <Typography.Paragraph {...getItemUrlProps(item.url)} />
-                    </div>
+                      <div {...getItemContentProps()}>
+                        <Typography.Heading
+                          {...getItemTitleProps(item.title)}
+                        />
+                        <Typography.Paragraph {...getItemUrlProps(item.url)} />
+                      </div>
+                    </button>
 
                     <div {...getItemActionsProps()}>
                       <Button
                         isIconOnly
                         variant="ghost"
                         {...getUnarchiveButtonProps()}
-                        onClick={e => {
-                          e.stopPropagation()
+                        onPress={() => {
                           handleUnarchive(item.id)
                         }}>
                         <ArchiveUpIcon
@@ -212,8 +218,7 @@ function Archive(props: ArchiveProps) {
                         isIconOnly
                         variant="ghost"
                         {...getDeleteButtonProps()}
-                        onClick={e => {
-                          e.stopPropagation()
+                        onPress={() => {
                           handleDeleteFromArchive(item.id)
                         }}>
                         <TrashIcon
@@ -256,10 +261,8 @@ function Archive(props: ArchiveProps) {
               <ActionButton
                 key={action.type}
                 {...action.props}
-                onPress={action.onPress}
-                startContent={
-                  <AppIcon icon={action.icon} size={16} aria-hidden="true" />
-                }>
+                onPress={action.onPress}>
+                <AppIcon icon={action.icon} size={16} aria-hidden="true" />
                 {action.label}
               </ActionButton>
             ))}

@@ -11,7 +11,6 @@ import {
 import { Chip, ScrollShadow } from '@vezham/react-v3'
 
 import { AppView } from '../../../components/app-view'
-
 import { dates, events, today } from './data'
 import type { CalendarAppProps } from './types'
 import { getDateKey, getShortWeekday } from './util'

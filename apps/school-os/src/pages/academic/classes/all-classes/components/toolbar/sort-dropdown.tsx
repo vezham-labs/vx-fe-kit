@@ -7,6 +7,7 @@ import {
 } from '@vezham/react-v3'
 
 import { AppIcon } from '@vx/react/app-icon'
+
 import { classNames } from '@pages/academic/classes/all-classes/variants'
 import {
   allClassesColumnOptions,

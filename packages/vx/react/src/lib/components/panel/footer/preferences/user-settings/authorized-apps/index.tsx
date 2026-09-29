@@ -1,5 +1,5 @@
-const index = () => {
+const AuthorizedAppsSettings = () => {
   return <div>Apps</div>
 }
 
-export default index
+export { AuthorizedAppsSettings }

@@ -1,17 +1,16 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 
 import type { AppNavigationItem } from '../../navigation'
-
 import { CommandPaletteDialog } from './command-dialog'
 import { CommandContext } from './use-command'
 
-export function CommandProvider({
+const CommandProvider = ({
   children,
   items
 }: {
   children: ReactNode
   items: AppNavigationItem[]
-}) {
+}) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const openCommand = useCallback(() => setIsOpen(true), [])
@@ -60,3 +59,5 @@ export function CommandProvider({
     </CommandContext.Provider>
   )
 }
+
+export { CommandProvider }

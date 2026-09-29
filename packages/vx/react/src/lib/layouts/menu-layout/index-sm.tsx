@@ -2,20 +2,23 @@ import React, { useState } from 'react'
 
 import { Surface } from '@vezham/react-v3'
 
-import type { AppNavigationItem } from '../../navigation'
 import { BottomNavbar } from '../../components/menu'
-import Footer from '../../components/panel/footer'
+import { Footer } from '../../components/panel/footer'
 import { aiPanel } from '../../components/panel/footer/ai'
 import { ControlCenterDrawer } from '../../components/panel/footer/control-center'
 import { NotificationDrawer } from '../../components/panel/footer/notification-center'
-import UserInfoModal from '../../components/panel/footer/preferences/modal'
-import Header from '../../components/panel/header'
+import { UserInfoModal } from '../../components/panel/footer/preferences/modal'
+import { Header } from '../../components/panel/header'
 import { bookmarksPanel } from '../../components/panel/header/bookmarks'
 import { discPanel } from '../../components/panel/header/disc'
-import { InfoPanelContainer, useInfoPanel } from '../../components/panel/info-panel'
+import {
+  InfoPanelContainer,
+  useInfoPanel
+} from '../../components/panel/info-panel'
+import type { AppNavigationItem } from '../../navigation'
 import { useUser } from '../../store/users/useUserStore'
 
-export default function MenuSM({ items }: { items: AppNavigationItem[] }) {
+const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
   const [selectedKey, setSelectedKey] = React.useState(items[0]?.key ?? '')
   const [openSettings, setOpenSettings] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(false)
@@ -103,3 +106,5 @@ export default function MenuSM({ items }: { items: AppNavigationItem[] }) {
     </Surface>
   )
 }
+
+export { MenuSM }

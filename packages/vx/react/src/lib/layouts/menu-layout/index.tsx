@@ -1,9 +1,8 @@
 import { useMediaQuery } from '@vezham/react-v3'
 
 import type { AppNavigationItem } from '../../navigation'
-
-import MenuMD from './index-md'
-import MenuSM from './index-sm'
+import { MenuMD } from './index-md'
+import { MenuSM } from './index-sm'
 
 const MenuLayout = ({ items }: { items: AppNavigationItem[] }) => {
   const isMobile = useMediaQuery('(max-width: 767px)')
@@ -15,4 +14,4 @@ const MenuLayout = ({ items }: { items: AppNavigationItem[] }) => {
   }
 }
 
-export default MenuLayout
+export { MenuLayout }

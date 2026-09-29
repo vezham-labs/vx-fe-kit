@@ -18,12 +18,11 @@ import {
 import { AppIcon } from '../../app-icon'
 import { useCommand } from '../../command'
 import { ShortcutKey } from '../../shortcut-key'
-
 import { BookmarksTrigger } from './bookmarks'
 import { DiscTrigger } from './disc'
 import { HeaderActionsProps } from './types'
 
-export default function Header({
+const Header = ({
   users,
   showSearch = false,
   showBookamarks = false,
@@ -36,7 +35,7 @@ export default function Header({
   className,
   compact = false,
   hideSeparator = false
-}: HeaderActionsProps) {
+}: HeaderActionsProps) => {
   const [submenu, setSubmenu] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
 
@@ -96,7 +95,7 @@ export default function Header({
               <Button
                 variant="ghost"
                 className="hover:bg-background w-full rounded-md px-3 py-2 text-left text-sm"
-                onClick={() => setOpen(false)}>
+                onPress={() => setOpen(false)}>
                 {' '}
                 Back to home
               </Button>
@@ -222,7 +221,7 @@ export default function Header({
               <Button
                 variant="ghost"
                 className="hover:bg-background w-full rounded-md px-3 py-2 text-left text-sm"
-                onClick={() => setOpen(false)}>
+                onPress={() => setOpen(false)}>
                 Back to home
               </Button>
               {onCollapseNavigation && (
@@ -322,7 +321,7 @@ export default function Header({
   )
 }
 
-interface MenuItemProps {
+interface Props {
   ariaLabel?: string
   icon?: string
   label?: string
@@ -331,14 +330,14 @@ interface MenuItemProps {
   onClick?: () => void
 }
 
-function MenuItem({
+const MenuItem = ({
   ariaLabel,
   icon,
   label,
   shortcut,
   hasSub,
   onClick
-}: MenuItemProps) {
+}: Props) => {
   return (
     <div
       aria-label={ariaLabel ?? label}
@@ -372,3 +371,5 @@ function MenuItem({
     </div>
   )
 }
+
+export { Header }

@@ -271,7 +271,11 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
                   {view === 'wifi' && (
                     <motion.div key="wifi" {...getSubViewProps()}>
                       <div {...getSubViewHeaderProps()}>
-                        <Button isIconOnly onClick={goBack} variant="ghost">
+                        <Button
+                          aria-label="Back to controls"
+                          isIconOnly
+                          onPress={goBack}
+                          variant="ghost">
                           <AltArrowLeftIcon size="1em" aria-hidden="true" />
                         </Button>
                         <div {...getSubViewTitleProps('Wi-Fi')} />
@@ -291,7 +295,11 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
                   {view === 'airdrop' && (
                     <motion.div key="airdrop" {...getSubViewProps()}>
                       <div {...getSubViewHeaderProps()}>
-                        <Button isIconOnly onClick={goBack} variant="ghost">
+                        <Button
+                          aria-label="Back to controls"
+                          isIconOnly
+                          onPress={goBack}
+                          variant="ghost">
                           <AltArrowLeftIcon size="1em" aria-hidden="true" />
                         </Button>
                         <div {...getSubViewTitleProps('AirDrop')} />

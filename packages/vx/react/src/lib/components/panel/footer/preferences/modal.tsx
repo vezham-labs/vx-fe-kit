@@ -3,28 +3,40 @@ import { useEffect, useRef, useState } from 'react'
 import { CloseCircle as CloseCircleIcon } from '@vezham/icons-react'
 import { Button, Surface } from '@vezham/react-v3'
 
-import SettingsSidebar, { findItemById } from './sidebar'
+import { SettingsSidebar, findItemById } from './sidebar'
 
-export default function UserInfoModal({
+type Props = {
+  open: boolean
+  onClose: () => void
+  defaultActiveTab?: string
+}
+
+const UserInfoModal = ({
   open,
   onClose,
-  user,
   defaultActiveTab = 'account'
-}: any) {
+}: Props) => {
+  if (!open) return null
+
+  return (
+    <UserInfoModalContent
+      defaultActiveTab={defaultActiveTab}
+      onClose={onClose}
+    />
+  )
+}
+
+const UserInfoModalContent = ({
+  defaultActiveTab,
+  onClose
+}: Required<Omit<Props, 'open'>>) => {
   const [active, setActive] = useState(defaultActiveTab)
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Set the active tab to profiles when modal opens
-    if (open && defaultActiveTab) {
-      setActive(defaultActiveTab)
-    }
-  }, [open, defaultActiveTab])
-
-  useEffect(() => {
     const container = contentRef.current
 
-    if (!container || !open) return
+    if (!container) return
 
     const sections = Array.from(container.querySelectorAll('[id]'))
 
@@ -49,21 +61,22 @@ export default function UserInfoModal({
     sections.forEach(section => observer.observe(section))
 
     return () => observer.disconnect()
-  }, [open])
-
-  if (!open) return null
+  }, [])
 
   const item = findItemById(active)
   const Component = item?.component
 
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
-      onClick={onClose}>
-      <Surface
-        className="relative flex h-[500px] w-[700px] rounded-2xl p-6"
-        onClick={e => e.stopPropagation()}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center">
+      <button
+        type="button"
+        aria-label="Close preferences"
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      <Surface className="relative z-10 flex h-[500px] w-[700px] rounded-2xl p-6">
         <Button
+          aria-label="Close preferences"
           isIconOnly
           variant="ghost"
           className="absolute top-4 right-4"
@@ -80,3 +93,5 @@ export default function UserInfoModal({
     </div>
   )
 }
+
+export { UserInfoModal }

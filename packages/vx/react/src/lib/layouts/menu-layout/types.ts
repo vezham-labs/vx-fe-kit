@@ -3,6 +3,5 @@ export type MenuItem = {
 }
 
 export type MenuLayoutProps = {
-  // children?: React.ReactNode
   menu: MenuItem[]
 }

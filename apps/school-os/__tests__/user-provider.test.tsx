@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import type { ComponentType, ReactNode } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
-import { useUser, UserProvider } from '@vx/react/user'
+import { UserProvider, useUser } from '@vx/react/user'
 
 import { Route } from '../src/routes/__root'
 

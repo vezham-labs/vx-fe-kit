@@ -8,11 +8,11 @@ interface TabItem {
   content: React.ReactNode
 }
 
-interface CustomTabsProps {
+interface Props {
   tabs: TabItem[]
 }
 
-const CustomTabs = ({ tabs }: CustomTabsProps) => {
+const CustomTabs = ({ tabs }: Props) => {
   return (
     <Tabs className="w-full" variant="secondary">
       <Tabs.ListContainer>
@@ -34,4 +34,4 @@ const CustomTabs = ({ tabs }: CustomTabsProps) => {
   )
 }
 
-export default CustomTabs
+export { CustomTabs }

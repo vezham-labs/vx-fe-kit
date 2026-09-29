@@ -4,7 +4,6 @@ import { Close as CloseIcon } from '@vezham/icons-react'
 import { Button, Drawer, Typography } from '@vezham/react-v3'
 
 import { AppIcon } from '../app-icon'
-
 import { MenuDrawerProps } from './types'
 import {
   getDrawerBodyClasses,
@@ -89,4 +88,4 @@ const MenuDrawer = ({
   )
 }
 
-export default MenuDrawer
+export { MenuDrawer }

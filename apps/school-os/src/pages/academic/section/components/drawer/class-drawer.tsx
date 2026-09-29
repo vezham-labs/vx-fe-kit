@@ -10,6 +10,7 @@ import {
 import { Button, Drawer, Tooltip } from '@vezham/react-v3'
 
 import { ShortcutTooltipLabel } from '@vx/react/shortcut-key'
+
 import type { ClassDrawerProps } from '@pages/academic/section/types'
 import { getDrawerTitle } from '@pages/academic/section/utils/section'
 import { classNames } from '@pages/academic/section/variants'

@@ -9,8 +9,7 @@ import {
 } from '@vezham/icons-react'
 import { Avatar, Button, ScrollShadow, Typography } from '@vezham/react-v3'
 
-import ReorderableGridList from '../favorites'
-
+import { ReorderableGridList } from '../favorites'
 import { type QuickAccessProps } from './types'
 
 const QuickAccess = ({
@@ -49,7 +48,7 @@ const QuickAccess = ({
               size="sm"
               variant="ghost"
               className="text-default-600 shrink-0"
-              onClick={onBackToNormalView}>
+              onPress={onBackToNormalView}>
               <ArrowLeftIcon size={16} aria-hidden="true" />
             </Button>
             <Typography.Heading className="text-xl font-semibold">
@@ -104,15 +103,24 @@ const QuickAccess = ({
       <div className="flex flex-nowrap gap-3 pb-2">
         {scrollFavorites.map(item => (
           <div
+            role="button"
+            tabIndex={0}
             key={item.id}
             {...getFavorite2ItemsProps()}
-            onClick={() => onFavoriteClick(item.url, item)}>
+            onClick={() => onFavoriteClick(item.url, item)}
+            onKeyDown={event => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault()
+                onFavoriteClick(item.url, item)
+              }
+            }}>
             {item.backgroundImage ? (
               <img
                 {...getFavoriteBackgroundImageProps(
                   item.backgroundImage,
                   item.name
                 )}
+                alt={item.name}
               />
             ) : (
               <div {...getFavoriteBackgroundGradientProps()} />
@@ -135,14 +143,11 @@ const QuickAccess = ({
             </div>
 
             <div {...getFavoriteContentProps()}>
-              <Typography.Paragraph
-                {...getFavoriteNameProps(item.name)}
-              />
+              <Typography.Paragraph {...getFavoriteNameProps(item.name)} />
             </div>
           </div>
         ))}
 
-        {/* View All Tile */}
         {hasMoreFavorites && (
           <button
             onClick={onViewAllFavorites}
@@ -175,39 +180,30 @@ const QuickAccess = ({
 
   return (
     <>
-      {/* Grid: Flex Wrap with Full 2D Drag Drop */}
       <section {...getSectionProps()}>
         <div {...getSectionHeaderProps()}>
-          {/* <Icon
-                    {...getSectionIconProps(
-                      'vx:star-filled',
-                      'text-warning'
-                    )}
-                  /> */}
           <Typography.Heading {...getSectionTitleProps('Favorites')} />
         </div>
 
         <ReorderableGridList />
       </section>
 
-      {/* Scroll: Horizontal Scroll with View All */}
       <section {...getSectionProps()}>
         <div {...getSectionHeaderProps()}>
           <div className="flex flex-1 items-center gap-2">
-            {/* <Icon
-                      {...getSectionIconProps(
-                        'vx:star-filled',
-                        'text-warning'
-                      )}
-                    /> */}
             <Typography.Heading {...getSectionTitleProps('Quick Access')} />
           </div>
           <div className="flex items-center gap-2">
             <Button
+              aria-label={
+                isScrollFavoritesOpen
+                  ? 'Collapse quick access'
+                  : 'Expand quick access'
+              }
               isIconOnly
               size="sm"
               variant="ghost"
-              onClick={onToggleScrollFavorites}
+              onPress={onToggleScrollFavorites}
               className="text-default-400">
               {isScrollFavoritesOpen ? (
                 <AltArrowUpIcon size={18} aria-hidden="true" />
@@ -231,4 +227,4 @@ const QuickAccess = ({
   )
 }
 
-export default QuickAccess
+export { QuickAccess }

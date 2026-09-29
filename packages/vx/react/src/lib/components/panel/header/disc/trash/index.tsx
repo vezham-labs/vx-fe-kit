@@ -9,14 +9,13 @@ import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Button, Input, ScrollShadow, Typography } from '@vezham/react-v3'
 
 import { AppIcon } from '../../../../app-icon'
-
 import { TrashProps } from './types'
 import { trashActions } from './variants'
 
-const SearchInput = Input as any
-const ActionButton = Button as any
+const SearchInput = Input
+const ActionButton = Button
 
-function Trash(props: TrashProps) {
+const Trash = (props: TrashProps) => {
   const {
     trashItems,
     trashSearch,
@@ -167,7 +166,11 @@ function Trash(props: TrashProps) {
                 return (
                   <div key={item.id} {...getItemProps()}>
                     {item.favicon ? (
-                      <img src={item.favicon} {...getItemFaviconProps()} />
+                      <img
+                        src={item.favicon}
+                        alt=""
+                        {...getItemFaviconProps()}
+                      />
                     ) : (
                       <DocumentIcon
                         {...getItemFallbackIconProps()}
@@ -186,8 +189,7 @@ function Trash(props: TrashProps) {
                         isIconOnly
                         variant="ghost"
                         {...getRestoreButtonProps()}
-                        onClick={e => {
-                          e.stopPropagation()
+                        onPress={() => {
                           handleRestore(item.id)
                         }}>
                         <ArchiveUpIcon
@@ -200,8 +202,7 @@ function Trash(props: TrashProps) {
                         isIconOnly
                         variant="ghost"
                         {...getDeletePermanentButtonProps()}
-                        onClick={e => {
-                          e.stopPropagation()
+                        onPress={() => {
                           handleDeletePermanently(item.id)
                         }}>
                         <TrashIcon
@@ -248,10 +249,8 @@ function Trash(props: TrashProps) {
               <ActionButton
                 key={action.type}
                 {...action.props}
-                onPress={action.onPress}
-                startContent={
-                  <AppIcon icon={action.icon} size={16} aria-hidden="true" />
-                }>
+                onPress={action.onPress}>
+                <AppIcon icon={action.icon} size={16} aria-hidden="true" />
                 {action.label}
               </ActionButton>
             ))}
