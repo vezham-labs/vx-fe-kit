@@ -286,24 +286,17 @@ const Header = ({
         {showSearch && (
           <Tooltip delay={0}>
             <Tooltip.Trigger className="mt-2 md:mt-0">
-              <span
+              <button
+                type="button"
                 aria-label="Open command palette"
-                className="inline-flex"
-                role="button"
-                tabIndex={0}
-                onClick={handleSearch}
-                onKeyDown={event => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault()
-                    handleSearch()
-                  }
-                }}>
+                className="inline-flex bg-transparent p-0"
+                onClick={handleSearch}>
                 <MagnifierIcon
                   className="text-muted cursor-pointer"
                   size={24}
                   aria-hidden="true"
                 />
-              </span>
+              </button>
             </Tooltip.Trigger>
 
             <Tooltip.Content placement="right">

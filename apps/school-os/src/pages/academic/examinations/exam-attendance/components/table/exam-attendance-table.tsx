@@ -1,16 +1,11 @@
 import { Inbox as InboxIcon } from '@vezham/icons-react'
 import {
-  Avatar,
   Checkbox,
-  ListBox,
-  Pagination,
-  Select,
   type Selection,
   type SortDescriptor,
   Table
 } from '@vezham/react-v3'
 
-import { SortableHeader } from '@pages/academic/examinations/exam-attendance/components/shared/sortable-header'
 import {
   attendanceColumnOptions,
   rowCountOptions
@@ -31,6 +26,9 @@ import {
   getTableRowClassName
 } from '@pages/academic/examinations/exam-attendance/variants'
 import { BulkActionBar } from '@pages/academic/shared/bulk-action-bar'
+import { StudentNameCell as SharedStudentNameCell } from '@pages/academic/shared/student-name-cell'
+import { AcademicTableHeader } from '@pages/academic/shared/table-header'
+import { TablePaginationFooter } from '@pages/academic/shared/table-pagination-footer'
 
 type Props = {
   activeRowId: string | null
@@ -103,38 +101,13 @@ export const ExamAttendanceTable = ({
             style={{ minWidth: `${tableMinWidth}px` }}
             onSelectionChange={onSelectionChange}
             onSortChange={onSortChange}>
-            <Table.Header>
-              <Table.Column className={classNames.selectionColumn} width={48}>
-                <Checkbox aria-label="Select all rows" slot="selection">
-                  <Checkbox.Control>
-                    <Checkbox.Indicator />
-                  </Checkbox.Control>
-                </Checkbox>
-              </Table.Column>
-              {attendanceColumnOptions
-                .filter(column => visibleColumns.has(column.key))
-                .map(column => (
-                  <Table.Column
-                    key={column.key}
-                    allowsSorting
-                    defaultWidth={column.defaultWidth}
-                    id={column.key}
-                    isRowHeader={column.key === 'id'}
-                    maxWidth={column.maxWidth}
-                    minWidth={column.minWidth}>
-                    {({ sortDirection }) => (
-                      <>
-                        <SortableHeader sortDirection={sortDirection}>
-                          {column.label}
-                        </SortableHeader>
-                        <Table.ColumnResizer
-                          aria-label={`Resize ${column.label.toLowerCase()} column`}
-                        />
-                      </>
-                    )}
-                  </Table.Column>
-                ))}
-            </Table.Header>
+            <AcademicTableHeader
+              columns={attendanceColumnOptions}
+              rowHeaderKey="id"
+              selectionColumnClassName={classNames.selectionColumn}
+              sortableHeaderClassName={classNames.sortableHeader}
+              visibleColumns={visibleColumns}
+            />
 
             <Table.Body renderEmptyState={() => <TableEmptyState />}>
               {rows.map(row => (
@@ -181,71 +154,16 @@ export const ExamAttendanceTable = ({
         </Table.ResizableContainer>
       </Table.ScrollContainer>
 
-      <Table.Footer>
-        <Pagination className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className={classNames.rowsControls}>
-            <Pagination.Summary>
-              {getPaginationSummary(currentPage, pageSize, totalRows)}
-            </Pagination.Summary>
-            <span aria-hidden="true" className="text-muted">
-              |
-            </span>
-            <Select
-              aria-label="Rows per page"
-              value={rowsPerPage}
-              onChange={onRowsPerPageChange}>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  {rowCountOptions.map(option => (
-                    <ListBox.Item key={option} id={option} textValue={option}>
-                      {option}
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
-            </Select>
-            <span aria-hidden="true" className="text-muted text-sm">
-              per page
-            </span>
-          </div>
-
-          <Pagination.Content>
-            <Pagination.Item>
-              <Pagination.Previous
-                isDisabled={currentPage <= 1}
-                onPress={() => onPageChange(value => Math.max(1, value - 1))}>
-                <Pagination.PreviousIcon />
-                <span>Prev</span>
-              </Pagination.Previous>
-            </Pagination.Item>
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-              item => (
-                <Pagination.Item key={item}>
-                  <Pagination.Link
-                    isActive={item === currentPage}
-                    onPress={() => onPageChange(item)}>
-                    {item}
-                  </Pagination.Link>
-                </Pagination.Item>
-              )
-            )}
-            <Pagination.Item>
-              <Pagination.Next
-                isDisabled={currentPage >= totalPages}
-                onPress={() =>
-                  onPageChange(value => Math.min(totalPages, value + 1))
-                }>
-                <span>Next</span>
-                <Pagination.NextIcon />
-              </Pagination.Next>
-            </Pagination.Item>
-          </Pagination.Content>
-        </Pagination>
-      </Table.Footer>
+      <TablePaginationFooter
+        currentPage={currentPage}
+        rowCountOptions={rowCountOptions}
+        rowsControlsClassName={classNames.rowsControls}
+        rowsPerPage={rowsPerPage}
+        summary={getPaginationSummary(currentPage, pageSize, totalRows)}
+        totalPages={totalPages}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onRowsPerPageChange}
+      />
 
       <BulkActionBar
         ariaLabel="Exam attendance bulk actions"
@@ -276,21 +194,14 @@ function TableEmptyState() {
 }
 
 function StudentNameCell({ row }: { row: AttendanceRow }) {
-  const secondaryText = getStudentSecondaryText(row)
-
   return (
-    <div className={classNames.studentNameCell}>
-      <Avatar className={classNames.studentNameAvatar} size="sm">
-        {row.avatar && <Avatar.Image src={row.avatar} alt={row.name} />}
-        <Avatar.Fallback>{getInitials(row.name)}</Avatar.Fallback>
-      </Avatar>
-      <div className={classNames.studentNameText}>
-        <div className={classNames.studentNamePrimary}>{row.name}</div>
-        {secondaryText && (
-          <div className={classNames.studentNameSecondary}>{secondaryText}</div>
-        )}
-      </div>
-    </div>
+    <SharedStudentNameCell
+      avatar={row.avatar}
+      classes={classNames}
+      initials={getInitials(row.name)}
+      name={row.name}
+      secondaryText={getStudentSecondaryText(row)}
+    />
   )
 }
 

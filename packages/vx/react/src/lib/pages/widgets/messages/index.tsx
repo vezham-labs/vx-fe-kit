@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 
 import { Avatar, ScrollShadow } from '@vezham/react-v3'
 
@@ -11,7 +11,7 @@ const MessagesApp = ({ isOpen, onClose }: MessagesAppProps) => {
     <AppView isOpen={isOpen} onClose={onClose} title="Messages">
       <ScrollShadow className="h-full">
         {messages.map((message, index) => (
-          <motion.div
+          <m.div
             key={message.id}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -24,7 +24,7 @@ const MessagesApp = ({ isOpen, onClose }: MessagesAppProps) => {
               </Avatar>
 
               {message.unread && (
-                <motion.div
+                <m.div
                   className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-blue-500"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -44,7 +44,7 @@ const MessagesApp = ({ isOpen, onClose }: MessagesAppProps) => {
                 {message.message}
               </p>
             </div>
-          </motion.div>
+          </m.div>
         ))}
       </ScrollShadow>
     </AppView>

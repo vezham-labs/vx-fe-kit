@@ -2,6 +2,7 @@ import type {
   DatePresetKey,
   DateRangeFilter
 } from '@pages/academic/examinations/exam-results/types'
+import { shortPaddedDateFormatter } from '@src/utils/intl'
 
 export const getPresetDateRange = (
   preset: Exclude<DatePresetKey, 'custom'>
@@ -59,11 +60,7 @@ export function toISODate(date: Date) {
 }
 
 export const formatDisplayDate = (value: string) => {
-  return new Intl.DateTimeFormat('en', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric'
-  }).format(new Date(`${value}T00:00:00`))
+  return shortPaddedDateFormatter.format(new Date(`${value}T00:00:00`))
 }
 
 export const formatDateRangeLabel = (range: DateRangeFilter) => {

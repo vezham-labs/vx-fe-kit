@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useEffectEvent } from 'react'
 
 import { Close as CloseIcon } from '@vezham/icons-react'
 import { Button, Drawer, Typography } from '@vezham/react-v3'
@@ -24,13 +24,15 @@ const MenuDrawer = ({
   isDarkMode = false,
   buttonTextColor
 }: MenuDrawerProps) => {
+  const closeOnResize = useEffectEvent(() => {
+    if (isOpen) onClose()
+  })
+
   useEffect(() => {
-    const handleResize = () => {
-      if (isOpen) onClose()
-    }
+    const handleResize = () => closeOnResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [isOpen, onClose])
+  }, [])
 
   return (
     <Drawer.Backdrop

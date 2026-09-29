@@ -17,9 +17,11 @@ import {
 } from '@pages/academic/examinations/exam-schedule/data'
 import type {
   ClassFormProps,
-  ClassStatus
+  ClassStatus,
+  ExamScheduleItem
 } from '@pages/academic/examinations/exam-schedule/types'
 import { classNames } from '@pages/academic/examinations/exam-schedule/variants'
+import { AcademicSelectField } from '@pages/academic/shared/select-field'
 
 export const ScheduleForm = ({
   form,
@@ -112,34 +114,17 @@ export const ScheduleForm = ({
             <p className={classNames.fieldError}>{formErrors.classes}</p>
           )}
 
-          <Select
-            fullWidth
-            aria-label="Section"
-            aria-invalid={Boolean(formErrors.section)}
+          <AcademicSelectField
+            ariaLabel="Section"
+            error={formErrors.section}
+            errorClassName={classNames.fieldError}
+            label="Section"
+            labelClassName={classNames.fieldLabel}
+            options={sectionOptions}
             placeholder="Select section"
-            value={form.section || null}
-            onChange={value =>
-              onFormChange('section', value ? String(value) : '')
-            }>
-            <Label className={classNames.fieldLabel}>Section</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {sectionOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-          {formErrors.section && (
-            <p className={classNames.fieldError}>{formErrors.section}</p>
-          )}
+            value={form.section}
+            onChange={value => onFormChange('section', value)}
+          />
 
           <Select
             fullWidth
@@ -230,142 +215,11 @@ export const ScheduleForm = ({
           )}
         </div>
 
-        <div className={classNames.scheduleRows}>
-          {scheduleRows.map((scheduleRow, index) => (
-            <div key={scheduleRow.id} className={classNames.scheduleRow}>
-              <Select
-                fullWidth
-                aria-label={`Exam date ${index + 1}`}
-                placeholder="Select"
-                value={scheduleRow.date || null}
-                onChange={value =>
-                  updateScheduleRow(
-                    scheduleRow.id,
-                    'date',
-                    value ? String(value) : ''
-                  )
-                }>
-                <Label className={classNames.fieldLabel}>Exam Date</Label>
-                <Select.Trigger>
-                  <Select.Value />
-                  <Select.Indicator />
-                </Select.Trigger>
-                <Select.Popover>
-                  <ListBox>
-                    {examdateOptions.map(option => (
-                      <ListBox.Item key={option} id={option} textValue={option}>
-                        {option}
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                    ))}
-                  </ListBox>
-                </Select.Popover>
-              </Select>
-
-              <Select
-                fullWidth
-                aria-label={`Subject ${index + 1}`}
-                placeholder="Select"
-                value={scheduleRow.subject || null}
-                onChange={value =>
-                  updateScheduleRow(
-                    scheduleRow.id,
-                    'subject',
-                    value ? String(value) : ''
-                  )
-                }>
-                <Label className={classNames.fieldLabel}>Subject</Label>
-                <Select.Trigger>
-                  <Select.Value />
-                  <Select.Indicator />
-                </Select.Trigger>
-                <Select.Popover>
-                  <ListBox>
-                    {subjectOptions.map(option => (
-                      <ListBox.Item key={option} id={option} textValue={option}>
-                        {option}
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                    ))}
-                  </ListBox>
-                </Select.Popover>
-              </Select>
-
-              <Select
-                fullWidth
-                aria-label={`Room number ${index + 1}`}
-                placeholder="Select"
-                value={scheduleRow.classroom || null}
-                onChange={value =>
-                  updateScheduleRow(
-                    scheduleRow.id,
-                    'classroom',
-                    value ? String(value) : ''
-                  )
-                }>
-                <Label className={classNames.fieldLabel}>Room No</Label>
-                <Select.Trigger>
-                  <Select.Value />
-                  <Select.Indicator />
-                </Select.Trigger>
-                <Select.Popover>
-                  <ListBox>
-                    {roomOptions.map(option => (
-                      <ListBox.Item key={option} id={option} textValue={option}>
-                        {option}
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                    ))}
-                  </ListBox>
-                </Select.Popover>
-              </Select>
-
-              <div className={classNames.field}>
-                <Label className={classNames.fieldLabel}>Max Marks</Label>
-                <Input
-                  fullWidth
-                  aria-label={`Max marks ${index + 1}`}
-                  placeholder="Select"
-                  value={scheduleRow.maximum}
-                  onChange={event =>
-                    updateScheduleRow(
-                      scheduleRow.id,
-                      'maximum',
-                      event.target.value
-                    )
-                  }
-                />
-              </div>
-
-              <div className={classNames.field}>
-                <Label className={classNames.fieldLabel}>Min Marks</Label>
-                <Input
-                  fullWidth
-                  aria-label={`Min marks ${index + 1}`}
-                  placeholder="Select"
-                  value={scheduleRow.minimum}
-                  onChange={event =>
-                    updateScheduleRow(
-                      scheduleRow.id,
-                      'minimum',
-                      event.target.value
-                    )
-                  }
-                />
-              </div>
-
-              <Button
-                isIconOnly
-                aria-label={`Delete schedule row ${index + 1}`}
-                className={classNames.scheduleDeleteButton}
-                isDisabled={scheduleRows.length === 1}
-                variant="secondary"
-                onPress={() => deleteScheduleRow(scheduleRow.id)}>
-                <TrashBinTrashIcon size={18} aria-hidden="true" />
-              </Button>
-            </div>
-          ))}
-        </div>
+        <ScheduleRows
+          rows={scheduleRows}
+          onDelete={deleteScheduleRow}
+          onUpdate={updateScheduleRow}
+        />
 
         {formErrors.scheduleRows && (
           <p className={classNames.fieldError}>{formErrors.scheduleRows}</p>
@@ -407,6 +261,155 @@ export const ScheduleForm = ({
       {formErrors.status && (
         <p className={classNames.selectError}>{formErrors.status}</p>
       )}
+    </div>
+  )
+}
+
+const ScheduleRows = ({
+  rows,
+  onDelete,
+  onUpdate
+}: {
+  rows: ExamScheduleItem[]
+  onDelete: (rowId: string) => void
+  onUpdate: (
+    rowId: string,
+    field: keyof ExamScheduleItem,
+    value: string
+  ) => void
+}) => {
+  const scheduleRows = rows
+  const deleteScheduleRow = onDelete
+  const updateScheduleRow = onUpdate
+
+  return (
+    <div className={classNames.scheduleRows}>
+      {scheduleRows.map((scheduleRow, index) => (
+        <div key={scheduleRow.id} className={classNames.scheduleRow}>
+          <Select
+            fullWidth
+            aria-label={`Exam date ${index + 1}`}
+            placeholder="Select"
+            value={scheduleRow.date || null}
+            onChange={value =>
+              updateScheduleRow(
+                scheduleRow.id,
+                'date',
+                value ? String(value) : ''
+              )
+            }>
+            <Label className={classNames.fieldLabel}>Exam Date</Label>
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                {examdateOptions.map(option => (
+                  <ListBox.Item key={option} id={option} textValue={option}>
+                    {option}
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Popover>
+          </Select>
+
+          <Select
+            fullWidth
+            aria-label={`Subject ${index + 1}`}
+            placeholder="Select"
+            value={scheduleRow.subject || null}
+            onChange={value =>
+              updateScheduleRow(
+                scheduleRow.id,
+                'subject',
+                value ? String(value) : ''
+              )
+            }>
+            <Label className={classNames.fieldLabel}>Subject</Label>
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                {subjectOptions.map(option => (
+                  <ListBox.Item key={option} id={option} textValue={option}>
+                    {option}
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Popover>
+          </Select>
+
+          <Select
+            fullWidth
+            aria-label={`Room number ${index + 1}`}
+            placeholder="Select"
+            value={scheduleRow.classroom || null}
+            onChange={value =>
+              updateScheduleRow(
+                scheduleRow.id,
+                'classroom',
+                value ? String(value) : ''
+              )
+            }>
+            <Label className={classNames.fieldLabel}>Room No</Label>
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                {roomOptions.map(option => (
+                  <ListBox.Item key={option} id={option} textValue={option}>
+                    {option}
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Popover>
+          </Select>
+
+          <div className={classNames.field}>
+            <Label className={classNames.fieldLabel}>Max Marks</Label>
+            <Input
+              fullWidth
+              aria-label={`Max marks ${index + 1}`}
+              placeholder="Select"
+              value={scheduleRow.maximum}
+              onChange={event =>
+                updateScheduleRow(scheduleRow.id, 'maximum', event.target.value)
+              }
+            />
+          </div>
+
+          <div className={classNames.field}>
+            <Label className={classNames.fieldLabel}>Min Marks</Label>
+            <Input
+              fullWidth
+              aria-label={`Min marks ${index + 1}`}
+              placeholder="Select"
+              value={scheduleRow.minimum}
+              onChange={event =>
+                updateScheduleRow(scheduleRow.id, 'minimum', event.target.value)
+              }
+            />
+          </div>
+
+          <Button
+            isIconOnly
+            aria-label={`Delete schedule row ${index + 1}`}
+            className={classNames.scheduleDeleteButton}
+            isDisabled={scheduleRows.length === 1}
+            variant="secondary"
+            onPress={() => deleteScheduleRow(scheduleRow.id)}>
+            <TrashBinTrashIcon size={18} aria-hidden="true" />
+          </Button>
+        </div>
+      ))}
     </div>
   )
 }

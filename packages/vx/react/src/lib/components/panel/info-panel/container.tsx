@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import { ReactNode } from 'react'
 
 import {
@@ -26,32 +26,32 @@ const InfoPanelContainer = ({
   const panel = isOpen && activeInfoPanel ? panels[activeInfoPanel] : null
 
   return (
-    <motion.aside
+    <aside
       aria-hidden={!panel}
-      animate={{ width: panel ? width : 0 }}
       className={`sticky top-0 z-40 shrink-0 overflow-hidden ${className ?? ''}`}
-      initial={false}
-      transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}>
-      <AnimatePresence mode="wait">
-        {panel && (
-          <motion.div
-            key={activeInfoPanel}
-            animate={{ opacity: 1, x: 0 }}
-            className="h-full"
-            exit={{ opacity: 0, x: -16 }}
-            initial={{ opacity: 0, x: -16 }}
-            transition={{ duration: 0.18, ease: 'easeOut' }}
-            style={{ width }}>
-            <Surface
-              data-vx="info-panel"
-              className="border-default-200 bg-background/95 flex h-full flex-col border-r shadow-[8px_0_24px_rgba(15,23,42,0.06)] backdrop-blur-xl">
-              <InfoPanelHeader title={panel.title} onClose={closeInfoPanel} />
-              <InfoPanelContent>{panel.content}</InfoPanelContent>
-            </Surface>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.aside>
+      style={{ width: panel ? width : 0 }}>
+      <LazyMotion features={domAnimation}>
+        <AnimatePresence mode="wait">
+          {panel && (
+            <m.div
+              key={activeInfoPanel}
+              animate={{ opacity: 1, x: 0 }}
+              className="h-full"
+              exit={{ opacity: 0, x: -16 }}
+              initial={{ opacity: 0, x: -16 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
+              style={{ width }}>
+              <Surface
+                data-vx="info-panel"
+                className="border-default-200 bg-background/95 flex h-full flex-col border-r shadow-[8px_0_24px_rgba(15,23,42,0.06)] backdrop-blur-xl">
+                <InfoPanelHeader title={panel.title} onClose={closeInfoPanel} />
+                <InfoPanelContent>{panel.content}</InfoPanelContent>
+              </Surface>
+            </m.div>
+          )}
+        </AnimatePresence>
+      </LazyMotion>
+    </aside>
   )
 }
 

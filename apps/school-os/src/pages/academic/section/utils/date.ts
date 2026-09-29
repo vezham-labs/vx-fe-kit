@@ -2,6 +2,7 @@ import type {
   DatePresetKey,
   DateRangeFilter
 } from '@pages/academic/section/types'
+import { numericDateFormatter } from '@src/utils/intl'
 
 export const getPresetDateRange = (
   preset: Exclude<DatePresetKey, 'custom'>
@@ -64,9 +65,5 @@ function formatNumericDate(value: string) {
   const [year, month, day] = value.split('-').map(Number)
   const date = new Date(year, month - 1, day)
 
-  return new Intl.DateTimeFormat('en-US', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  }).format(date)
+  return numericDateFormatter.format(date)
 }

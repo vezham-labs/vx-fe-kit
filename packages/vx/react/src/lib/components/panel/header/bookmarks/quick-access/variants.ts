@@ -5,9 +5,10 @@ const getFavoriteIds = (items: FavoriteItem[]) => items.map(item => item.id)
 const reconcileFavoriteOrder = (orderIds: string[], items: FavoriteItem[]) => {
   const itemIds = new Set(getFavoriteIds(items))
   const orderedIds = orderIds.filter(id => itemIds.has(id))
+  const orderedIdSet = new Set(orderedIds)
   const missingIds = items
     .map(item => item.id)
-    .filter(id => !orderedIds.includes(id))
+    .filter(id => !orderedIdSet.has(id))
 
   return [...orderedIds, ...missingIds]
 }

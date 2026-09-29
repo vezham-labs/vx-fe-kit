@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 
 import {
   CallDropped as CallDroppedIcon,
@@ -17,8 +17,8 @@ const PhoneApp = ({ isOpen, onClose }: PhoneAppProps) => {
     <AppView isOpen={isOpen} onClose={onClose} title="Phone">
       <ScrollShadow className="h-full py-2">
         {recentCalls.map((call, index) => (
-          <motion.div
-            key={`${call.name}-${index}`}
+          <m.div
+            key={`${call.name}-${call.time}`}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}
@@ -52,7 +52,7 @@ const PhoneApp = ({ isOpen, onClose }: PhoneAppProps) => {
               size="1em"
               aria-hidden="true"
             />
-          </motion.div>
+          </m.div>
         ))}
       </ScrollShadow>
     </AppView>

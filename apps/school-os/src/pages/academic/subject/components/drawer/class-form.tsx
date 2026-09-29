@@ -1,5 +1,7 @@
-import { Input, Label, ListBox, Select, Switch } from '@vezham/react-v3'
+import { Input, Label, ListBox, Select } from '@vezham/react-v3'
 
+import { AcademicSelectField } from '@pages/academic/shared/select-field'
+import { AcademicStatusSwitch } from '@pages/academic/shared/status-switch'
 import { codeOptions, typeOptions } from '@pages/academic/subject/data'
 import type { ClassFormProps } from '@pages/academic/subject/types'
 import { classNames } from '@pages/academic/subject/variants'
@@ -54,51 +56,25 @@ export const ClassForm = ({
         <p className={classNames.selectError}>{formErrors.code}</p>
       )}
 
-      <Select
-        fullWidth
-        aria-label="Type"
-        aria-invalid={Boolean(formErrors.type)}
+      <AcademicSelectField
+        ariaLabel="Type"
+        error={formErrors.type}
+        errorClassName={classNames.selectError}
+        label="Type"
+        labelClassName={classNames.fieldLabel}
+        options={typeOptions}
         placeholder="Select type"
-        value={form.type || null}
-        onChange={value => onFormChange('type', value ? String(value) : '')}>
-        <Label className={classNames.fieldLabel}>Type</Label>
-        <Select.Trigger>
-          <Select.Value />
-          <Select.Indicator />
-        </Select.Trigger>
-        <Select.Popover>
-          <ListBox>
-            {typeOptions.map(option => (
-              <ListBox.Item key={option} id={option} textValue={option}>
-                {option}
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-            ))}
-          </ListBox>
-        </Select.Popover>
-      </Select>
-      {formErrors.type && (
-        <p className={classNames.selectError}>{formErrors.type}</p>
-      )}
+        value={form.type}
+        onChange={value => onFormChange('type', value)}
+      />
 
-      <div className={classNames.statusRow}>
-        <div>
-          <div className={classNames.fieldLabel}>Status</div>
-          <div className={classNames.statusHelp}>
-            Change the Status by toggle
-          </div>
-        </div>
-        <Switch
-          aria-label="Class status"
-          isSelected={form.status === 'Active'}
-          onChange={isSelected =>
-            onFormChange('status', isSelected ? 'Active' : 'Inactive')
-          }>
-          <Switch.Control>
-            <Switch.Thumb />
-          </Switch.Control>
-        </Switch>
-      </div>
+      <AcademicStatusSwitch
+        ariaLabel="Class status"
+        classes={classNames}
+        selectedStatus="Active"
+        status={form.status}
+        onChange={status => onFormChange('status', status)}
+      />
     </div>
   )
 }

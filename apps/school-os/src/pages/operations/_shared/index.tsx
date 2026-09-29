@@ -1,5 +1,5 @@
 import { useHotkey } from '@tanstack/react-hotkeys'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 
 import {
   AltArrowDown as AltArrowDownIcon,
@@ -9,23 +9,14 @@ import {
   CalendarDate as CalendarDateIcon,
   CheckRead as CheckReadIcon,
   Copy as CopyIcon,
-  DoubleAltArrowRight as DoubleAltArrowRightIcon,
-  Eye as EyeIcon,
   Filter as FilterIcon,
   Inbox as InboxIcon,
   Link as LinkIcon,
-  MenuDots as MenuDotsIcon,
-  Pen as PenIcon,
-  SortVertical as SortVerticalIcon,
-  TrashBinTrash as TrashBinTrashIcon
+  SortVertical as SortVerticalIcon
 } from '@vezham/icons-react'
 import {
-  Alert,
   Avatar,
   Button,
-  Checkbox,
-  CloseButton,
-  DateField,
   DateRangePicker,
   Drawer,
   Dropdown,
@@ -44,6 +35,15 @@ import {
 } from '@vezham/react-v3'
 
 import { ShortcutTooltipLabel } from '@vx/react/shortcut-key'
+
+import { DateRangeFieldGroup } from '@pages/_shared/date-range-field-group'
+import { DrawerEditAction } from '@pages/_shared/drawer-edit-action'
+import { DrawerToggle } from '@pages/_shared/drawer-toggle'
+import { PageToast } from '@pages/_shared/page-toast'
+import { PaginationControls } from '@pages/_shared/pagination-controls'
+import { RecordTableBody } from '@pages/_shared/record-table-body'
+import { RowCountControl } from '@pages/_shared/row-count-control'
+import { reportDateFormatter } from '@src/utils/intl'
 
 import type {
   CustomDateRangeValue,
@@ -71,10 +71,17 @@ const dateOptions: { key: DatePresetKey; label: string }[] = [
   { key: 'custom', label: 'Custom Range' }
 ]
 
-const OperationsTablePage = ({ config }: { config: OperationPageConfig }) => {
+const useOperationsTableModel = (config: OperationPageConfig) => {
   const sectionTitle = getOperationSectionTitle(config)
   const pageSubtitle = getOperationPageSubtitle(config)
-  const [data, setData] = useState<OperationRow[]>(config.rows)
+  const [data, setData] = useReducer(
+    (
+      rows: OperationRow[],
+      nextRows:
+        OperationRow[] | ((currentRows: OperationRow[]) => OperationRow[])
+    ) => (typeof nextRows === 'function' ? nextRows(rows) : nextRows),
+    config.rows
+  )
   const [searchQuery, setSearchQuery] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState('10')
   const [page, setPage] = useState(1)
@@ -447,6 +454,125 @@ const OperationsTablePage = ({ config }: { config: OperationPageConfig }) => {
     window.open(getRowUrl(row), '_blank', 'noopener,noreferrer')
   }
 
+  return {
+    activeDateLabel,
+    activeRowId,
+    activeSortLabel,
+    closeDrawer,
+    copyRowId,
+    copyRowLink,
+    currentPage,
+    datePreset,
+    deleteRow,
+    draftFilters,
+    drawer,
+    editableColumns,
+    emptyFilters,
+    form,
+    goToNextRow,
+    goToPreviousRow,
+    isCustomDateRangeOpen,
+    isDateDropdownOpen,
+    mode,
+    openDrawer,
+    openRowPage,
+    pageSize,
+    pageSubtitle,
+    paginatedRows,
+    rowsPerPage,
+    saveRow,
+    searchQuery,
+    sectionTitle,
+    selectedRow,
+    selectedRowIndex,
+    setDraftFilters,
+    setFilters,
+    setForm,
+    setIsCustomDateRangeOpen,
+    setIsDateDropdownOpen,
+    setMode,
+    setPage,
+    setRowsPerPage,
+    setSearchQuery,
+    setSelectedRowKeys,
+    setSortDescriptor,
+    setToast,
+    sortDescriptor,
+    sortedRows,
+    sortOptions,
+    tableColumns,
+    tableSelectedKeys,
+    toast,
+    totalPages,
+    updateCustomDateRange,
+    updateDatePreset
+  }
+}
+
+type Props = {
+  config: OperationPageConfig
+} & ReturnType<typeof useOperationsTableModel>
+
+const OperationsTablePage = ({ config }: { config: OperationPageConfig }) => {
+  const model = useOperationsTableModel(config)
+
+  return renderOperationsTablePage({ config, ...model })
+}
+
+const renderOperationsTablePage = ({
+  config,
+  activeDateLabel,
+  activeRowId,
+  activeSortLabel,
+  closeDrawer,
+  copyRowId,
+  copyRowLink,
+  currentPage,
+  datePreset,
+  deleteRow,
+  draftFilters,
+  drawer,
+  editableColumns,
+  emptyFilters,
+  form,
+  goToNextRow,
+  goToPreviousRow,
+  isCustomDateRangeOpen,
+  isDateDropdownOpen,
+  mode,
+  openDrawer,
+  openRowPage,
+  pageSize,
+  pageSubtitle,
+  paginatedRows,
+  rowsPerPage,
+  saveRow,
+  searchQuery,
+  sectionTitle,
+  selectedRow,
+  selectedRowIndex,
+  setDraftFilters,
+  setFilters,
+  setForm,
+  setIsCustomDateRangeOpen,
+  setIsDateDropdownOpen,
+  setMode,
+  setPage,
+  setRowsPerPage,
+  setSearchQuery,
+  setSelectedRowKeys,
+  setSortDescriptor,
+  setToast,
+  sortDescriptor,
+  sortedRows,
+  sortOptions,
+  tableColumns,
+  tableSelectedKeys,
+  toast,
+  totalPages,
+  updateCustomDateRange,
+  updateDatePreset
+}: Props) => {
   return (
     <section className={classNames.page}>
       <Surface className={classNames.toolbar}>
@@ -489,20 +615,7 @@ const OperationsTablePage = ({ config }: { config: OperationPageConfig }) => {
                         endName="endDate"
                         startName="startDate"
                         onChange={updateCustomDateRange}>
-                        <DateField.Group fullWidth>
-                          <DateField.Input slot="start">
-                            {segment => <DateField.Segment segment={segment} />}
-                          </DateField.Input>
-                          <DateRangePicker.RangeSeparator />
-                          <DateField.Input slot="end">
-                            {segment => <DateField.Segment segment={segment} />}
-                          </DateField.Input>
-                          <DateField.Suffix>
-                            <DateRangePicker.Trigger>
-                              <DateRangePicker.TriggerIndicator />
-                            </DateRangePicker.Trigger>
-                          </DateField.Suffix>
-                        </DateField.Group>
+                        <DateRangeFieldGroup />
                         <DateRangePicker.Popover>
                           <RangeCalendar
                             aria-label={`${config.pageTitle} custom date range`}>
@@ -593,31 +706,15 @@ const OperationsTablePage = ({ config }: { config: OperationPageConfig }) => {
         </div>
 
         <div className={classNames.controlsRow}>
-          <div className={classNames.rowsControls}>
-            <Label>Row Per Page</Label>
-            <Select
-              aria-label="Rows per page"
-              value={rowsPerPage}
-              onChange={value => {
-                setRowsPerPage(value ? String(value) : '10')
-                setPage(1)
-              }}>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  {rowCountOptions.map(option => (
-                    <ListBox.Item key={option} id={option} textValue={option}>
-                      {option}
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
-            </Select>
-            <Label>Entries</Label>
-          </div>
+          <RowCountControl
+            className={classNames.rowsControls}
+            options={rowCountOptions}
+            value={rowsPerPage}
+            onChange={value => {
+              setRowsPerPage(value)
+              setPage(1)
+            }}
+          />
 
           <SearchField
             aria-label={`Search ${config.pageTitle}`}
@@ -668,81 +765,25 @@ const OperationsTablePage = ({ config }: { config: OperationPageConfig }) => {
               <Table.Column>Action</Table.Column>
             </Table.Header>
 
-            <Table.Body renderEmptyState={() => <TableEmptyState />}>
-              {paginatedRows.map(row => (
-                <Table.Row
-                  key={row.id}
-                  id={row.id}
-                  data-operation-row-id={row.id}
-                  className={getTableRowClassName(activeRowId === row.id)}
-                  onAction={() => openDrawer('view', row)}>
-                  <Table.Cell>
-                    <Checkbox
-                      aria-label={`Select ${row.id}`}
-                      slot="selection"
-                      onClick={event => event.stopPropagation()}>
-                      <Checkbox.Control>
-                        <Checkbox.Indicator />
-                      </Checkbox.Control>
-                    </Checkbox>
-                  </Table.Cell>
-                  {tableColumns.map(column => (
-                    <Table.Cell key={column.key}>
-                      <OperationCell
-                        column={column}
-                        row={row}
-                        onAction={() => openDrawer('view', row)}
-                      />
-                    </Table.Cell>
-                  ))}
-                  <Table.Cell>
-                    <div className={classNames.rowActions}>
-                      <Button
-                        isIconOnly
-                        aria-label={`Edit ${row.id}`}
-                        variant="ghost"
-                        onPress={() => openDrawer('edit', row)}>
-                        <PenIcon size={16} aria-hidden="true" />
-                      </Button>
-                      <Button
-                        isIconOnly
-                        aria-label={`Delete ${row.id}`}
-                        variant="outline"
-                        onPress={() => deleteRow(row.id)}>
-                        <TrashBinTrashIcon
-                          className={classNames.dangerIcon}
-                          size={16}
-                          aria-hidden="true"
-                        />
-                      </Button>
-                      <Dropdown>
-                        <Dropdown.Trigger>
-                          <Button
-                            isIconOnly
-                            aria-label={`More actions for ${row.id}`}
-                            variant="ghost">
-                            <MenuDotsIcon size={18} aria-hidden="true" />
-                          </Button>
-                        </Dropdown.Trigger>
-                        <Dropdown.Popover>
-                          <Dropdown.Menu aria-label={`Actions for ${row.id}`}>
-                            <Dropdown.Item
-                              id="view"
-                              textValue="View"
-                              onPress={() => openDrawer('view', row)}>
-                              <span className={classNames.menuItemLabel}>
-                                <EyeIcon size={16} aria-hidden="true" />
-                                View
-                              </span>
-                            </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown.Popover>
-                      </Dropdown>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
+            <RecordTableBody
+              activeRowId={activeRowId}
+              classes={classNames}
+              columns={tableColumns}
+              emptyState={<TableEmptyState />}
+              getRowClassName={getTableRowClassName}
+              rowDataAttribute="data-operation-row-id"
+              rows={paginatedRows}
+              renderCell={(row, column) => (
+                <OperationCell
+                  column={column}
+                  row={row}
+                  onAction={() => openDrawer('view', row)}
+                />
+              )}
+              onDelete={row => deleteRow(row.id)}
+              onEdit={row => openDrawer('edit', row)}
+              onView={row => openDrawer('view', row)}
+            />
           </Table.Content>
         </Table.ScrollContainer>
 
@@ -751,37 +792,11 @@ const OperationsTablePage = ({ config }: { config: OperationPageConfig }) => {
             <Pagination.Summary>
               {getPaginationSummary(currentPage, pageSize, sortedRows.length)}
             </Pagination.Summary>
-            <Pagination.Content>
-              <Pagination.Item>
-                <Pagination.Previous
-                  isDisabled={currentPage <= 1}
-                  onPress={() => setPage(value => Math.max(1, value - 1))}>
-                  <Pagination.PreviousIcon />
-                  <span>Prev</span>
-                </Pagination.Previous>
-              </Pagination.Item>
-              {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-                item => (
-                  <Pagination.Item key={item}>
-                    <Pagination.Link
-                      isActive={item === currentPage}
-                      onPress={() => setPage(item)}>
-                      {item}
-                    </Pagination.Link>
-                  </Pagination.Item>
-                )
-              )}
-              <Pagination.Item>
-                <Pagination.Next
-                  isDisabled={currentPage >= totalPages}
-                  onPress={() =>
-                    setPage(value => Math.min(totalPages, value + 1))
-                  }>
-                  <span>Next</span>
-                  <Pagination.NextIcon />
-                </Pagination.Next>
-              </Pagination.Item>
-            </Pagination.Content>
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setPage}
+            />
           </Pagination>
         </Table.Footer>
       </Table>
@@ -812,15 +827,12 @@ const OperationsTablePage = ({ config }: { config: OperationPageConfig }) => {
       />
 
       {toast && (
-        <div className={classNames.toast}>
-          <Alert status={toast.status}>
-            <Alert.Indicator />
-            <Alert.Content>
-              <Alert.Title>{toast.message}</Alert.Title>
-            </Alert.Content>
-            <CloseButton onClick={() => setToast(null)} />
-          </Alert>
-        </div>
+        <PageToast
+          className={classNames.toast}
+          message={toast.message}
+          status={toast.status}
+          onClose={() => setToast(null)}
+        />
       )}
     </section>
   )
@@ -1067,23 +1079,7 @@ function OperationsDrawer({
             <Drawer.Header className={classNames.drawerHeader}>
               <div className={classNames.drawerHeaderRow}>
                 <div className={classNames.drawerTitleGroup}>
-                  <Tooltip delay={0}>
-                    <Tooltip.Trigger>
-                      <Button
-                        isIconOnly
-                        aria-label="Toggle drawer"
-                        variant="ghost"
-                        onPress={onClose}>
-                        <DoubleAltArrowRightIcon size={24} aria-hidden="true" />
-                      </Button>
-                    </Tooltip.Trigger>
-                    <Tooltip.Content>
-                      <ShortcutTooltipLabel
-                        label="Toggle Drawer"
-                        shortcut="⌘ /"
-                      />
-                    </Tooltip.Content>
-                  </Tooltip>
+                  <DrawerToggle onPress={onClose} />
                   <span className={classNames.drawerTitle}>{drawerTitle}</span>
                   {row && mode !== 'create' ? (
                     <Tooltip delay={0}>
@@ -1115,20 +1111,10 @@ function OperationsDrawer({
                         </Tooltip.Trigger>
                         <Tooltip.Content>Copy clipboard</Tooltip.Content>
                       </Tooltip>
-                      <Tooltip delay={0}>
-                        <Tooltip.Trigger>
-                          <Button
-                            isIconOnly
-                            aria-label={`Edit ${drawerTitle}`}
-                            variant="secondary"
-                            onPress={onEdit}>
-                            <PenIcon size={16} aria-hidden="true" />
-                          </Button>
-                        </Tooltip.Trigger>
-                        <Tooltip.Content>
-                          <ShortcutTooltipLabel label="Edit" shortcut="⌘ E" />
-                        </Tooltip.Content>
-                      </Tooltip>
+                      <DrawerEditAction
+                        ariaLabel={`Edit ${drawerTitle}`}
+                        onPress={onEdit}
+                      />
                       <Tooltip delay={0}>
                         <Tooltip.Trigger>
                           <Button
@@ -1464,11 +1450,7 @@ function formatDateRangeLabel(range: DateRangeFilter) {
 function formatISODate(value: string) {
   const date = new Date(`${value}T00:00:00`)
 
-  return new Intl.DateTimeFormat('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric'
-  }).format(date)
+  return reportDateFormatter.format(date)
 }
 
 function isISODateInRange(value: string, start?: string, end?: string) {

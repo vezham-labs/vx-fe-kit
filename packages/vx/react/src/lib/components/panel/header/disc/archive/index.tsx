@@ -124,7 +124,7 @@ const Archive = (props: ArchiveProps) => {
       if (appPath) {
         navigate({ to: appPath })
       } else {
-        window.open(getOpenUrl(url), '_blank')
+        window.open(getOpenUrl(url), '_blank', 'noopener,noreferrer')
       }
     }
   }

@@ -3,6 +3,7 @@ import type {
   ClassFormState,
   ClassRow
 } from '@pages/academic/syllabus/types'
+import { shortDateFormatter } from '@src/utils/intl'
 
 export const getClassTags = (row: ClassRow) => {
   return [
@@ -71,11 +72,7 @@ export const formatDisplayDate = (value: string) => {
   const [year, month, day] = value.split('-').map(Number)
   const date = new Date(year, month - 1, day)
 
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  }).format(date)
+  return shortDateFormatter.format(date)
 }
 
 export const getPaginationSummary = (

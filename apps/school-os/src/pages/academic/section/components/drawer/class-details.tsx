@@ -1,12 +1,7 @@
-import { Chip } from '@vezham/react-v3'
-
-import type {
-  ClassDetailSummaryProps,
-  ClassDetailsProps,
-  DetailLineProps
-} from '@pages/academic/section/types'
+import type { ClassDetailsProps } from '@pages/academic/section/types'
 import { getClassTags } from '@pages/academic/section/utils/section'
 import { classNames } from '@pages/academic/section/variants'
+import { EntityDetailsSummary } from '@pages/academic/shared/entity-details-summary'
 
 export const ClassDetails = ({ row }: ClassDetailsProps) => {
   if (!row) {
@@ -15,43 +10,13 @@ export const ClassDetails = ({ row }: ClassDetailsProps) => {
 
   return (
     <div className={classNames.details}>
-      <ClassDetailSummary row={row} />
-    </div>
-  )
-}
-
-function ClassDetailSummary({ row }: ClassDetailSummaryProps) {
-  return (
-    <div className={classNames.detailSummary}>
-      <DetailLine label="Section Name" value={row.section} />
-
-      <div className={classNames.detailChipRow}>
-        <span className={classNames.detailHeading}>Status:</span>
-        <Chip
-          color={row.status === 'Active' ? 'success' : 'danger'}
-          variant="soft">
-          <span aria-hidden="true">●</span>
-          <Chip.Label>{row.status}</Chip.Label>
-        </Chip>
-      </div>
-
-      <div className={classNames.detailTagsRow}>
-        <span className={classNames.detailHeading}>Tags:</span>
-        {getClassTags(row).map(tag => (
-          <Chip key={tag} variant="soft">
-            <Chip.Label>{tag}</Chip.Label>
-          </Chip>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function DetailLine({ label, value }: DetailLineProps) {
-  return (
-    <div className={classNames.detailLine}>
-      <span className={classNames.fieldLabel}>{label}:</span>
-      <span className={classNames.detailValue}>{value}</span>
+      <EntityDetailsSummary
+        classes={classNames}
+        label="Section Name"
+        status={row.status}
+        tags={getClassTags(row)}
+        value={row.section}
+      />
     </div>
   )
 }

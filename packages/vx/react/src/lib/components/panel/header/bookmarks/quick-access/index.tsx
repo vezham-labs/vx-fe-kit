@@ -151,7 +151,7 @@ const QuickAccess = ({
         {hasMoreFavorites && (
           <button
             onClick={onViewAllFavorites}
-            className="group bg-default-100 hover:bg-default-200 relative flex aspect-square w-[120px] shrink-0 cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98]">
+            className="group bg-default-100 hover:bg-default-200 relative flex aspect-square w-[120px] shrink-0 cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl transition-[transform,background-color] hover:scale-[1.02] active:scale-[0.98]">
             <div className="flex flex-col items-center gap-2 p-4">
               <EyeIcon
                 size={32}

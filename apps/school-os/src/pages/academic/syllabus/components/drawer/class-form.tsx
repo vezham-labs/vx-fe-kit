@@ -1,5 +1,6 @@
 import { Input, Label, ListBox, Select } from '@vezham/react-v3'
 
+import { AcademicSelectField } from '@pages/academic/shared/select-field'
 import { classOptions, sectionOptions } from '@pages/academic/syllabus/data'
 import type { ClassFormProps } from '@pages/academic/syllabus/types'
 import { classNames } from '@pages/academic/syllabus/variants'
@@ -38,32 +39,17 @@ export const ClassForm = ({
         <p className={classNames.selectError}>{formErrors.classes}</p>
       )}
 
-      <Select
-        fullWidth
-        aria-label="Section"
-        aria-invalid={Boolean(formErrors.section)}
+      <AcademicSelectField
+        ariaLabel="Section"
+        error={formErrors.section}
+        errorClassName={classNames.selectError}
+        label="Section"
+        labelClassName={classNames.fieldLabel}
+        options={sectionOptions}
         placeholder="Select section"
-        value={form.section || null}
-        onChange={value => onFormChange('section', value ? String(value) : '')}>
-        <Label className={classNames.fieldLabel}>Section</Label>
-        <Select.Trigger>
-          <Select.Value />
-          <Select.Indicator />
-        </Select.Trigger>
-        <Select.Popover>
-          <ListBox>
-            {sectionOptions.map(option => (
-              <ListBox.Item key={option} id={option} textValue={option}>
-                {option}
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-            ))}
-          </ListBox>
-        </Select.Popover>
-      </Select>
-      {formErrors.section && (
-        <p className={classNames.selectError}>{formErrors.section}</p>
-      )}
+        value={form.section}
+        onChange={value => onFormChange('section', value)}
+      />
 
       <div className={classNames.formFields}>
         <div className={classNames.field}>

@@ -1,4 +1,4 @@
-import { SearchField, type SortDescriptor, Surface } from '@vezham/react-v3'
+import { type SortDescriptor, Surface } from '@vezham/react-v3'
 
 import type {
   AllClassesColumnKey,
@@ -8,6 +8,7 @@ import type {
 } from '@pages/academic/classes/all-classes/types'
 import { classNames } from '@pages/academic/classes/all-classes/variants'
 import { ColumnsDropdown } from '@pages/academic/shared/columns-dropdown'
+import { AcademicToolbarSearch } from '@pages/academic/shared/toolbar-layout'
 import { allClassesColumnOptions } from '@store/useAcademic/useAllClasses/data'
 
 import { DateRangeDropdown } from './date-range-dropdown'
@@ -108,19 +109,12 @@ export const ClassesToolbar = ({
           />
         </div>
       </div>
-
-      <div className={classNames.headerRow}>
-        <SearchField
-          aria-label="Search classes"
-          value={searchQuery}
-          onChange={onSearchChange}>
-          <SearchField.Group>
-            <SearchField.SearchIcon />
-            <SearchField.Input placeholder="Search" />
-            <SearchField.ClearButton />
-          </SearchField.Group>
-        </SearchField>
-      </div>
+      <AcademicToolbarSearch
+        ariaLabel="Search classes"
+        className={classNames.headerRow}
+        value={searchQuery}
+        onChange={onSearchChange}
+      />
     </Surface>
   )
 }

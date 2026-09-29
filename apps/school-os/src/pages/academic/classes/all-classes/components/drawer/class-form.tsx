@@ -1,7 +1,9 @@
-import { Input, Label, ListBox, Select, Switch } from '@vezham/react-v3'
+import { Input, Label } from '@vezham/react-v3'
 
 import type { ClassFormProps } from '@pages/academic/classes/all-classes/types'
 import { classNames } from '@pages/academic/classes/all-classes/variants'
+import { AcademicSelectField } from '@pages/academic/shared/select-field'
+import { AcademicStatusSwitch } from '@pages/academic/shared/status-switch'
 import { sectionOptions } from '@store/useAcademic/useAllClasses'
 
 export const ClassForm = ({
@@ -26,34 +28,17 @@ export const ClassForm = ({
           )}
         </div>
 
-        <Select
-          fullWidth
-          aria-label="Section"
-          aria-invalid={Boolean(formErrors.section)}
+        <AcademicSelectField
+          ariaLabel="Section"
+          error={formErrors.section}
+          errorClassName={classNames.selectError}
+          label="Section"
+          labelClassName={classNames.fieldLabel}
+          options={sectionOptions}
           placeholder="Select section"
-          value={form.section || null}
-          onChange={value =>
-            onFormChange('section', value ? String(value) : '')
-          }>
-          <Label className={classNames.fieldLabel}>Section</Label>
-          <Select.Trigger>
-            <Select.Value />
-            <Select.Indicator />
-          </Select.Trigger>
-          <Select.Popover>
-            <ListBox>
-              {sectionOptions.map(option => (
-                <ListBox.Item key={option} id={option} textValue={option}>
-                  {option}
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </Select.Popover>
-        </Select>
-        {formErrors.section && (
-          <p className={classNames.selectError}>{formErrors.section}</p>
-        )}
+          value={form.section}
+          onChange={value => onFormChange('section', value)}
+        />
 
         <div className={classNames.field}>
           <Label className={classNames.fieldLabel}>No of Students</Label>
@@ -88,24 +73,13 @@ export const ClassForm = ({
         </div>
       </div>
 
-      <div className={classNames.statusRow}>
-        <div>
-          <div className={classNames.fieldLabel}>Status</div>
-          <div className={classNames.statusHelp}>
-            Change the Status by toggle
-          </div>
-        </div>
-        <Switch
-          aria-label="Class status"
-          isSelected={form.status === 'Inactive'}
-          onChange={isSelected =>
-            onFormChange('status', isSelected ? 'Inactive' : 'Active')
-          }>
-          <Switch.Control>
-            <Switch.Thumb />
-          </Switch.Control>
-        </Switch>
-      </div>
+      <AcademicStatusSwitch
+        ariaLabel="Class status"
+        classes={classNames}
+        selectedStatus="Inactive"
+        status={form.status}
+        onChange={status => onFormChange('status', status)}
+      />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { SearchField, type SortDescriptor, Surface } from '@vezham/react-v3'
+import { type SortDescriptor, Surface } from '@vezham/react-v3'
 
 import { examColumnOptions } from '@pages/academic/examinations/exam/data'
 import type {
@@ -9,6 +9,7 @@ import type {
 } from '@pages/academic/examinations/exam/types'
 import { classNames } from '@pages/academic/examinations/exam/variants'
 import { ColumnsDropdown } from '@pages/academic/shared/columns-dropdown'
+import { AcademicToolbarSearch } from '@pages/academic/shared/toolbar-layout'
 
 import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
@@ -104,21 +105,13 @@ export const ExamToolbar = ({
           />
         </div>
       </div>
-
-      <div className={classNames.headerRow}>
-        <div className="ml-auto">
-          <SearchField
-            aria-label="Search schedules"
-            value={searchQuery}
-            onChange={onSearchChange}>
-            <SearchField.Group>
-              <SearchField.SearchIcon />
-              <SearchField.Input placeholder="Search" />
-              <SearchField.ClearButton />
-            </SearchField.Group>
-          </SearchField>
-        </div>
-      </div>
+      <AcademicToolbarSearch
+        ariaLabel="Search schedules"
+        className={classNames.headerRow}
+        value={searchQuery}
+        alignEnd
+        onChange={onSearchChange}
+      />
     </Surface>
   )
 }

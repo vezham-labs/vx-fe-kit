@@ -46,14 +46,16 @@ export interface DynamicHeaderProps {
   leftActions?: ActionItem[]
 }
 
+const EMPTY_ACTIONS: ActionItem[] = []
+
 const DynamicHeader = ({
   tabs,
   activeTab,
 
-  rightActions = [],
+  rightActions = EMPTY_ACTIONS,
   showSearch = true,
   onSearch,
-  leftActions = []
+  leftActions = EMPTY_ACTIONS
 }: DynamicHeaderProps) => {
   const [search, setSearch] = useState('')
   const navigate = useNavigate()

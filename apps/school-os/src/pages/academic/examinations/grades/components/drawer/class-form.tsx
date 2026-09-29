@@ -1,4 +1,4 @@
-import { Input, Label, ListBox, Select, Switch } from '@vezham/react-v3'
+import { Input, Label, ListBox, Select } from '@vezham/react-v3'
 
 import {
   gradeOptions,
@@ -8,6 +8,7 @@ import {
 } from '@pages/academic/examinations/grades/data'
 import type { ClassFormProps } from '@pages/academic/examinations/grades/types'
 import { classNames } from '@pages/academic/examinations/grades/variants'
+import { AcademicStatusSwitch } from '@pages/academic/shared/status-switch'
 
 export const ClassForm = ({
   form,
@@ -156,27 +157,14 @@ export const ClassForm = ({
         </div>
       </div>
 
-      <div className={classNames.statusRow}>
-        <div>
-          <div className={classNames.fieldLabel}>Status</div>
-          <div className={classNames.statusHelp}>
-            Change the Status by toggle
-          </div>
-        </div>
-        <Switch
-          aria-label="Grade status"
-          isSelected={form.status === 'Inactive'}
-          onChange={isSelected =>
-            onFormChange('status', isSelected ? 'Inactive' : 'Active')
-          }>
-          <Switch.Control>
-            <Switch.Thumb />
-          </Switch.Control>
-        </Switch>
-      </div>
-      {formErrors.status && (
-        <p className={classNames.selectError}>{formErrors.status}</p>
-      )}
+      <AcademicStatusSwitch
+        ariaLabel="Grade status"
+        classes={classNames}
+        error={formErrors.status}
+        selectedStatus="Inactive"
+        status={form.status}
+        onChange={status => onFormChange('status', status)}
+      />
     </div>
   )
 }

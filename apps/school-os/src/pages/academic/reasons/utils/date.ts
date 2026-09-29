@@ -2,6 +2,7 @@ import type {
   DatePresetKey,
   DateRangeFilter
 } from '@pages/academic/reasons/types'
+import { numericDateFormatter, shortDateFormatter } from '@src/utils/intl'
 
 export const getPresetDateRange = (
   preset: Exclude<DatePresetKey, 'custom'>
@@ -50,11 +51,7 @@ export const formatDisplayDate = (value: string) => {
   const [year, month, day] = value.split('-').map(Number)
   const date = new Date(year, month - 1, day)
 
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  }).format(date)
+  return shortDateFormatter.format(date)
 }
 
 export const formatDateRangeLabel = (range: DateRangeFilter) => {
@@ -75,9 +72,5 @@ function formatNumericDate(value: string) {
   const [year, month, day] = value.split('-').map(Number)
   const date = new Date(year, month - 1, day)
 
-  return new Intl.DateTimeFormat('en-US', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  }).format(date)
+  return numericDateFormatter.format(date)
 }

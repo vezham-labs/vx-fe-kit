@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import React from 'react'
 
 import {
@@ -38,13 +38,14 @@ const MailApp = ({ isOpen, onClose }: MailAppProps) => {
         {!selectedEmail ? (
           <div className="py-2">
             {emails.map((email, index) => (
-              <motion.div
+              <m.button
+                type="button"
                 key={email.id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
                 onClick={() => handleEmailClick(email.id)}
-                className={`mx-2 mb-2 cursor-pointer rounded-xl p-3 ${
+                className={`mx-2 mb-2 w-[calc(100%-1rem)] cursor-pointer rounded-xl p-3 text-left ${
                   email.unread ? 'bg-white/10' : 'hover:bg-white/5'
                 }`}>
                 <div className="flex items-start gap-3">
@@ -92,11 +93,11 @@ const MailApp = ({ isOpen, onClose }: MailAppProps) => {
                     )}
                   </div>
                 </div>
-              </motion.div>
+              </m.button>
             ))}
           </div>
         ) : (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="p-4">
@@ -131,7 +132,7 @@ const MailApp = ({ isOpen, onClose }: MailAppProps) => {
             </p>
 
             {selectedEmailData?.hasAttachment && (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -145,9 +146,9 @@ const MailApp = ({ isOpen, onClose }: MailAppProps) => {
                   <p className="text-sm">Document.pdf</p>
                   <p className="text-muted text-xs">2.4 MB</p>
                 </div>
-              </motion.div>
+              </m.div>
             )}
-          </motion.div>
+          </m.div>
         )}
       </ScrollShadow>
     </AppView>

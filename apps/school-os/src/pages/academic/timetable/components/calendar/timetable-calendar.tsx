@@ -74,12 +74,12 @@ export const TimetableCalendar = ({
                 </>
               ) : (
                 <Agenda.MonthGrid>
-                  {agenda.visibleWeeks.map((week, index) => {
+                  {agenda.visibleWeeks.map(week => {
                     const rowLayout = agenda.getMonthRowLayout(week)
 
                     return (
                       <Agenda.MonthRow
-                        key={index}
+                        key={week.map(day => day.toString()).join(':')}
                         spanningRowCount={rowLayout.rowCount}>
                         {rowLayout.items.map(item => (
                           <Agenda.MonthSpanningEvent

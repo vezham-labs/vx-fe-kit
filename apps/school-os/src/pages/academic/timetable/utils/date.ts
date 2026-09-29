@@ -2,6 +2,7 @@ import { CalendarDate, type CalendarDateTime } from '@internationalized/date'
 
 import { dayOptions } from '@pages/academic/timetable/data'
 import type { TimetableView } from '@pages/academic/timetable/types'
+import { weekdayFormatter } from '@src/utils/intl'
 
 export const getAgendaDate = (date: CalendarDate, view: TimetableView) => {
   if (view !== 'week') {
@@ -25,9 +26,7 @@ export const getDateForDayName = (date: CalendarDate, dayName: string) => {
 }
 
 export const getDayName = (date: CalendarDateTime) => {
-  return new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(
-    new Date(date.year, date.month - 1, date.day)
-  )
+  return weekdayFormatter.format(new Date(date.year, date.month - 1, date.day))
 }
 
 export const getTodayCalendarDate = () => {

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import React from 'react'
 
 import {
@@ -30,7 +30,8 @@ export const CalendarApp = ({ isOpen, onClose }: CalendarAppProps) => {
         <div className="flex flex-col gap-4 p-4">
           <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-2">
             {dates.map((date, index) => (
-              <motion.button
+              <m.button
+                type="button"
                 key={getDateKey(date)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -45,13 +46,13 @@ export const CalendarApp = ({ isOpen, onClose }: CalendarAppProps) => {
                   {getShortWeekday(date)}
                 </span>
                 <span className="text-lg font-bold">{date.getDate()}</span>
-              </motion.button>
+              </m.button>
             ))}
           </div>
 
           <div className="space-y-3">
             {events.map((event, index) => (
-              <motion.div
+              <m.div
                 key={event.id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -81,7 +82,7 @@ export const CalendarApp = ({ isOpen, onClose }: CalendarAppProps) => {
                     {event.time}
                   </Chip>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
 

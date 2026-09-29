@@ -1,4 +1,4 @@
-import { SearchField, type SortDescriptor, Surface } from '@vezham/react-v3'
+import { type SortDescriptor, Surface } from '@vezham/react-v3'
 
 import type {
   ClassroomColumnKey,
@@ -7,6 +7,10 @@ import type {
   FilterDraft
 } from '@pages/academic/classroom/types'
 import { classNames } from '@pages/academic/classroom/variants'
+import {
+  AcademicToolbarHeader,
+  AcademicToolbarSearch
+} from '@pages/academic/shared/toolbar-layout'
 
 import { ColumnsDropdown } from './columns-dropdown'
 import { DateRangeDropdown } from './date-range-dropdown'
@@ -62,58 +66,54 @@ export const ClassroomToolbar = ({
 }: Props) => {
   return (
     <Surface className={classNames.toolbar}>
-      <div className={classNames.headerRow}>
-        <div>
-          <p className={classNames.mutedText}>Academic</p>
-          <h1 className={classNames.title}>Class Room</h1>
-        </div>
+      <AcademicToolbarHeader
+        actionsClassName={classNames.toolbarActions}
+        eyebrow="Academic"
+        headerClassName={classNames.headerRow}
+        mutedTextClassName={classNames.mutedText}
+        title="Class Room"
+        titleClassName={classNames.title}
+        actions={
+          <>
+            <DateRangeDropdown
+              activeDateLabel={activeDateLabel}
+              datePreset={datePreset}
+              isCustomDateRangeOpen={isCustomDateRangeOpen}
+              isDateDropdownOpen={isDateDropdownOpen}
+              onCustomDateRangeChange={onCustomDateRangeChange}
+              onCustomDateRangeOpenChange={onCustomDateRangeOpenChange}
+              onDateDropdownOpenChange={onDateDropdownOpenChange}
+              onDatePresetChange={onDatePresetChange}
+            />
 
-        <div className={classNames.toolbarActions}>
-          <DateRangeDropdown
-            activeDateLabel={activeDateLabel}
-            datePreset={datePreset}
-            isCustomDateRangeOpen={isCustomDateRangeOpen}
-            isDateDropdownOpen={isDateDropdownOpen}
-            onCustomDateRangeChange={onCustomDateRangeChange}
-            onCustomDateRangeOpenChange={onCustomDateRangeOpenChange}
-            onDateDropdownOpenChange={onDateDropdownOpenChange}
-            onDatePresetChange={onDatePresetChange}
-          />
+            <FilterDropdown
+              draftFilters={draftFilters}
+              setDraftFilters={setDraftFilters}
+              onApply={onApplyFilters}
+              onReset={onResetFilters}
+            />
 
-          <FilterDropdown
-            draftFilters={draftFilters}
-            setDraftFilters={setDraftFilters}
-            onApply={onApplyFilters}
-            onReset={onResetFilters}
-          />
+            <ColumnsDropdown
+              visibleColumns={visibleColumns}
+              onVisibleColumnsChange={onVisibleColumnsChange}
+            />
 
-          <ColumnsDropdown
-            visibleColumns={visibleColumns}
-            onVisibleColumnsChange={onVisibleColumnsChange}
-          />
-
-          <SortDropdown
-            activeSortLabel={activeSortLabel}
-            sortField={sortField}
-            sortDirection={sortDirection}
-            onSortFieldChange={onSortFieldChange}
-            onSortDirectionChange={onSortDirectionChange}
-          />
-        </div>
-      </div>
-
-      <div className={classNames.headerRow}>
-        <SearchField
-          aria-label="Search schedules"
-          value={searchQuery}
-          onChange={onSearchChange}>
-          <SearchField.Group>
-            <SearchField.SearchIcon />
-            <SearchField.Input placeholder="Search" />
-            <SearchField.ClearButton />
-          </SearchField.Group>
-        </SearchField>
-      </div>
+            <SortDropdown
+              activeSortLabel={activeSortLabel}
+              sortField={sortField}
+              sortDirection={sortDirection}
+              onSortFieldChange={onSortFieldChange}
+              onSortDirectionChange={onSortDirectionChange}
+            />
+          </>
+        }
+      />
+      <AcademicToolbarSearch
+        ariaLabel="Search schedules"
+        className={classNames.headerRow}
+        value={searchQuery}
+        onChange={onSearchChange}
+      />
     </Surface>
   )
 }

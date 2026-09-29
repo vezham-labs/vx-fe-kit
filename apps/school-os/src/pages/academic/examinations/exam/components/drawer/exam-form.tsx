@@ -1,14 +1,6 @@
 import { CalendarDate } from '@internationalized/date'
 
-import {
-  Calendar,
-  DateField,
-  DatePicker,
-  Input,
-  Label,
-  ListBox,
-  Select
-} from '@vezham/react-v3'
+import { Calendar, DateField, DatePicker, Input, Label } from '@vezham/react-v3'
 import type { DateValue } from '@vezham/react-v3'
 
 import {
@@ -17,6 +9,7 @@ import {
 } from '@pages/academic/examinations/exam/data'
 import type { ClassFormProps } from '@pages/academic/examinations/exam/types'
 import { classNames } from '@pages/academic/examinations/exam/variants'
+import { AcademicSelectField } from '@pages/academic/shared/select-field'
 
 export const ExamForm = ({
   form,
@@ -93,63 +86,29 @@ export const ExamForm = ({
           <p className={classNames.selectError}>{formErrors.date}</p>
         )}
 
-        <Select
-          fullWidth
-          aria-label="Start time"
-          aria-invalid={Boolean(formErrors.starttime)}
+        <AcademicSelectField
+          ariaLabel="Start time"
+          error={formErrors.starttime}
+          errorClassName={classNames.selectError}
+          label="Start Time"
+          labelClassName={classNames.fieldLabel}
+          options={starttimeOptions}
           placeholder="Select start time"
-          value={form.starttime || null}
-          onChange={value =>
-            onFormChange('starttime', value ? String(value) : '')
-          }>
-          <Label className={classNames.fieldLabel}>Start Time</Label>
-          <Select.Trigger>
-            <Select.Value />
-            <Select.Indicator />
-          </Select.Trigger>
-          <Select.Popover>
-            <ListBox>
-              {starttimeOptions.map(option => (
-                <ListBox.Item key={option} id={option} textValue={option}>
-                  {option}
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </Select.Popover>
-        </Select>
-        {formErrors.starttime && (
-          <p className={classNames.selectError}>{formErrors.starttime}</p>
-        )}
+          value={form.starttime}
+          onChange={value => onFormChange('starttime', value)}
+        />
 
-        <Select
-          fullWidth
-          aria-label="End time"
-          aria-invalid={Boolean(formErrors.endtime)}
+        <AcademicSelectField
+          ariaLabel="End time"
+          error={formErrors.endtime}
+          errorClassName={classNames.selectError}
+          label="End Time"
+          labelClassName={classNames.fieldLabel}
+          options={endtimeOptions}
           placeholder="Select end time"
-          value={form.endtime || null}
-          onChange={value =>
-            onFormChange('endtime', value ? String(value) : '')
-          }>
-          <Label className={classNames.fieldLabel}>End Time</Label>
-          <Select.Trigger>
-            <Select.Value />
-            <Select.Indicator />
-          </Select.Trigger>
-          <Select.Popover>
-            <ListBox>
-              {endtimeOptions.map(option => (
-                <ListBox.Item key={option} id={option} textValue={option}>
-                  {option}
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </Select.Popover>
-        </Select>
-        {formErrors.endtime && (
-          <p className={classNames.selectError}>{formErrors.endtime}</p>
-        )}
+          value={form.endtime}
+          onChange={value => onFormChange('endtime', value)}
+        />
       </div>
     </div>
   )

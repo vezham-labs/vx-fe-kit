@@ -35,8 +35,10 @@ const PrivacySettings = () => {
       <div id="privacy-data" className="space-y-6">
         <h1 className="text-2xl font-semibold">How Discord Uses Your Data</h1>
 
-        {items.map((item, i) => (
-          <div key={i} className="flex items-start justify-between gap-6">
+        {items.map(item => (
+          <div
+            key={item.title}
+            className="flex items-start justify-between gap-6">
             <div>
               <h3 className="font-medium">{item.title}</h3>
               <p className="text-default-500 mt-1 text-sm">

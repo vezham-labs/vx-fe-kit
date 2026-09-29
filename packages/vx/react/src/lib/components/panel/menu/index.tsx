@@ -1,5 +1,5 @@
 import { useNavigate } from '@tanstack/react-router'
-import { type KeyboardEvent, forwardRef, useState } from 'react'
+import { forwardRef, useState } from 'react'
 
 import { Drawer, ScrollShadow, Tooltip, cn } from '@vezham/react-v3'
 
@@ -70,16 +70,6 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
     setExpandedItems(newExpanded)
   }
 
-  const handleKeyDown = (
-    event: KeyboardEvent<HTMLElement>,
-    action: () => void
-  ) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault()
-      action()
-    }
-  }
-
   const renderSubMenuItem = (item: MenuItem, depth: number) => {
     const hasSubmenu = item.submenu && item.submenu.length > 0
     const isExpanded = expandedItems.has(item.key)
@@ -87,15 +77,11 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
     return (
       <div key={item.key}>
-        <div
-          role="button"
-          tabIndex={0}
+        <button
+          type="button"
           onClick={() => handleDrawerItemClick(item)}
-          onKeyDown={event =>
-            handleKeyDown(event, () => handleDrawerItemClick(item))
-          }
           className={cn(
-            'flex cursor-pointer items-center gap-3 rounded-lg px-4 py-2.5 transition-all duration-200',
+            'flex w-full cursor-pointer items-center gap-3 rounded-lg border-0 bg-transparent px-4 py-2.5 text-left transition-all duration-200',
             'hover:bg-default-100',
             !hasSubmenu &&
               selectedKey === item.key &&
@@ -119,7 +105,7 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
               aria-hidden="true"
             />
           )}
-        </div>
+        </button>
 
         {hasSubmenu && isExpanded && (
           <div className="mt-1 ml-4">
@@ -152,14 +138,10 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
                   <div {...getAlignProps()}>
                     <Tooltip delay={0}>
                       <Tooltip.Trigger {...getTooltipTriggerProps()}>
-                        <div
-                          role="button"
-                          tabIndex={0}
+                        <button
+                          type="button"
                           {...getIconWrapperProps()}
-                          onClick={() => handlePressItem(item)}
-                          onKeyDown={event =>
-                            handleKeyDown(event, () => handlePressItem(item))
-                          }>
+                          onClick={() => handlePressItem(item)}>
                           {iconName ? (
                             <AppIcon
                               icon={iconName}
@@ -169,7 +151,7 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
                               aria-hidden="true"
                             />
                           ) : null}
-                        </div>
+                        </button>
                       </Tooltip.Trigger>
 
                       {collapsed && (
@@ -180,16 +162,12 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
                     </Tooltip>
 
                     {!collapsed && (
-                      <div
-                        role="button"
-                        tabIndex={0}
+                      <button
+                        type="button"
                         {...getLabelProps({ isActive })}
-                        onClick={() => handlePressItem(item)}
-                        onKeyDown={event =>
-                          handleKeyDown(event, () => handlePressItem(item))
-                        }>
+                        onClick={() => handlePressItem(item)}>
                         {item.title}
-                      </div>
+                      </button>
                     )}
                   </div>
                 </div>

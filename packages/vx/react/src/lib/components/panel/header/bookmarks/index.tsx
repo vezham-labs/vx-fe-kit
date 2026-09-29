@@ -159,8 +159,79 @@ const treeItemsToBookmarks = (items: BookmarkTreeItem[]) => {
   return items.map(item => convert(item))
 }
 
-const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
+const useBookmarkItemNavigation = (
+  onFavoriteClick: Props['onFavoriteClick'],
+  onBookmarkClick: Props['onBookmarkClick']
+) => {
   const navigate = useNavigate()
+
+  const openItem = (url: string) => {
+    if (!url || url === '#') {
+      return
+    }
+
+    const appPath = getAppPath(url, window.location.origin)
+
+    if (appPath) {
+      navigate({ to: appPath })
+      return
+    }
+
+    window.open(getOpenUrl(url), '_blank', 'noopener,noreferrer')
+  }
+
+  return {
+    openBookmark: (url: string, item: BookmarkItem) =>
+      onBookmarkClick ? onBookmarkClick(url, item) : openItem(url),
+    openFavorite: (url: string, item: FavoriteItem) =>
+      onFavoriteClick ? onFavoriteClick(url, item) : openItem(url)
+  }
+}
+
+const getSavedFolderItems = ({
+  items,
+  form,
+  mode,
+  parentId
+}: {
+  items: BookmarkTreeItem[]
+  form: FolderFormState
+  mode: 'create' | 'edit'
+  parentId?: string
+}): BookmarkTreeItem[] | null | undefined => {
+  const folderName = form.name.trim()
+
+  if (!folderName) {
+    return null
+  }
+
+  if (mode === 'edit' && form.id) {
+    return updateTreeItem(items, form.id, item => ({
+      ...item,
+      title: folderName,
+      color: form.color,
+      visualType: form.visualType,
+      emoji: form.emoji,
+      icon: form.icon
+    }))
+  }
+
+  const folder: BookmarkTreeItem = {
+    id: createTreeItemId('folder:custom', collectTreeItemIds(items)),
+    title: folderName,
+    kind: 'folder',
+    color: form.color,
+    visualType: form.visualType,
+    emoji: form.emoji,
+    icon: form.icon,
+    children: []
+  }
+  const result = insertFolderItem(items, folder, parentId)
+
+  return result.inserted ? result.items : undefined
+}
+
+const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const {
     Component,
     getScrollShadowProps,
@@ -192,6 +263,10 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
     ...props,
     ref
   })
+  const { openBookmark, openFavorite } = useBookmarkItemNavigation(
+    onFavoriteClick,
+    onBookmarkClick
+  )
 
   const bookmarksQuery = useBookmarks.list({})
   const searchQuery = ''
@@ -275,36 +350,8 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
     setIsScrollFavoritesOpen(!isScrollFavoritesOpen)
   }
 
-  const handleItemClick = (url: string) => {
-    if (url && url !== '#') {
-      const appPath = getAppPath(url, window.location.origin)
-
-      if (appPath) {
-        navigate({ to: appPath })
-      } else {
-        window.open(getOpenUrl(url), '_blank')
-      }
-    }
-  }
-
-  const handleFavoriteClick = (url: string, item: FavoriteItem) => {
-    if (onFavoriteClick) {
-      onFavoriteClick(url, item)
-    } else {
-      handleItemClick(url)
-    }
-  }
-
-  const handleBookmarkClick = (url: string, item: BookmarkItem) => {
-    if (onBookmarkClick) {
-      onBookmarkClick(url, item)
-    } else {
-      handleItemClick(url)
-    }
-  }
-
   const handleBookmarkTreeClick = (item: BookmarkItem) => {
-    handleBookmarkClick(item.url ?? '#', item)
+    openBookmark(item.url ?? '#', item)
   }
 
   const handleBookmarkTreeChange = (items: BookmarkTreeItem[]) => {
@@ -347,48 +394,19 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   }
 
   const handleFolderSave = () => {
-    const folderName = folderForm.name.trim()
+    const nextItems = getSavedFolderItems({
+      items: activeBookmarkTreeItems,
+      form: folderForm,
+      mode: folderModalMode,
+      parentId: folderParentId
+    })
 
-    if (!folderName) {
+    if (nextItems === null) {
       return
     }
 
-    if (folderModalMode === 'edit' && folderForm.id) {
-      handleBookmarkTreeChange(
-        updateTreeItem(activeBookmarkTreeItems, folderForm.id, item => ({
-          ...item,
-          title: folderName,
-          color: folderForm.color,
-          visualType: folderForm.visualType,
-          emoji: folderForm.emoji,
-          icon: folderForm.icon
-        }))
-      )
-      setFolderModalOpen(false)
-      return
-    }
-
-    const folder: BookmarkTreeItem = {
-      id: createTreeItemId(
-        'folder:custom',
-        collectTreeItemIds(activeBookmarkTreeItems)
-      ),
-      title: folderName,
-      kind: 'folder',
-      color: folderForm.color,
-      visualType: folderForm.visualType,
-      emoji: folderForm.emoji,
-      icon: folderForm.icon,
-      children: []
-    }
-    const result = insertFolderItem(
-      activeBookmarkTreeItems,
-      folder,
-      folderParentId
-    )
-
-    if (result.inserted) {
-      handleBookmarkTreeChange(result.items)
+    if (nextItems) {
+      handleBookmarkTreeChange(nextItems)
     }
 
     setFolderModalOpen(false)
@@ -431,7 +449,7 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
               getFavoriteAvatarFallbackProps={getFavoriteAvatarFallbackProps}
               getFavoriteContentProps={getFavoriteContentProps}
               getFavoriteNameProps={getFavoriteNameProps}
-              onFavoriteClick={handleFavoriteClick}
+              onFavoriteClick={openFavorite}
               onViewAllFavorites={handleViewAllFavorites}
               onBackToNormalView={handleBackToNormalView}
               onToggleScrollFavorites={toggleScrollFavorites}
@@ -466,7 +484,7 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
                 getFavoriteAvatarFallbackProps={getFavoriteAvatarFallbackProps}
                 getFavoriteContentProps={getFavoriteContentProps}
                 getFavoriteNameProps={getFavoriteNameProps}
-                onFavoriteClick={handleFavoriteClick}
+                onFavoriteClick={openFavorite}
                 onViewAllFavorites={handleViewAllFavorites}
                 onBackToNormalView={handleBackToNormalView}
                 onToggleScrollFavorites={toggleScrollFavorites}

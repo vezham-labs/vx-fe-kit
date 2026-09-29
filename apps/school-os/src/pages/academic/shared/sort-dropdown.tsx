@@ -28,6 +28,7 @@ type SortOrderOption = {
 type Props = {
   activeSortLabel: string
   ariaLabel?: string
+  itemClassName?: string
   sortField: SortDescriptor['column']
   sortDirection: SortDescriptor['direction']
   sortOptions: readonly SortOption[]
@@ -39,6 +40,7 @@ type Props = {
 export const SortDropdown = ({
   activeSortLabel,
   ariaLabel = 'Sort records',
+  itemClassName = classNames.dateOptionLabel,
   sortField,
   sortDirection,
   sortOptions,
@@ -89,7 +91,7 @@ export const SortDropdown = ({
                 id={option.key}
                 textValue={option.label}
                 onPress={() => updateSortField(option.column)}>
-                <span className={classNames.dateOptionLabel}>
+                <span className={itemClassName}>
                   {option.label}
                   <Dropdown.ItemIndicator />
                 </span>
@@ -104,7 +106,7 @@ export const SortDropdown = ({
                 id={option.key}
                 textValue={option.label}
                 onPress={() => updateSortField(option.column)}>
-                <span className={classNames.dateOptionLabel}>
+                <span className={itemClassName}>
                   {option.label}
                   <Dropdown.ItemIndicator />
                 </span>
@@ -121,7 +123,7 @@ export const SortDropdown = ({
                 id={option.key}
                 textValue={option.label}
                 onPress={() => updateSortOrder(option.direction)}>
-                <span className={classNames.dateOptionLabel}>
+                <span className={itemClassName}>
                   <span className="flex items-center gap-2">
                     <AppIcon icon={option.icon} size={16} aria-hidden="true" />
                     {option.label}

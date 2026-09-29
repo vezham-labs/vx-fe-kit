@@ -1,4 +1,4 @@
-import { SearchField, type SortDescriptor, Surface } from '@vezham/react-v3'
+import { type SortDescriptor, Surface } from '@vezham/react-v3'
 
 import type {
   CustomDateRangeValue,
@@ -7,6 +7,7 @@ import type {
   SectionColumnKey
 } from '@pages/academic/section/types'
 import { classNames } from '@pages/academic/section/variants'
+import { AcademicToolbarSearch } from '@pages/academic/shared/toolbar-layout'
 
 import { ColumnsDropdown } from './columns-dropdown'
 import { DateRangeDropdown } from './date-range-dropdown'
@@ -101,19 +102,12 @@ export const SectionToolbar = ({
           />
         </div>
       </div>
-
-      <div className={classNames.headerRow}>
-        <SearchField
-          aria-label="Search schedules"
-          value={searchQuery}
-          onChange={onSearchChange}>
-          <SearchField.Group>
-            <SearchField.SearchIcon />
-            <SearchField.Input placeholder="Search" />
-            <SearchField.ClearButton />
-          </SearchField.Group>
-        </SearchField>
-      </div>
+      <AcademicToolbarSearch
+        ariaLabel="Search schedules"
+        className={classNames.headerRow}
+        value={searchQuery}
+        onChange={onSearchChange}
+      />
     </Surface>
   )
 }

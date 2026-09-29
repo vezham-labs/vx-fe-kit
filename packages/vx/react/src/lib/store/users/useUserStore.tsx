@@ -1,6 +1,13 @@
 'use client'
 
-import { ReactNode, createContext, useContext, useState } from 'react'
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState
+} from 'react'
 
 export type User = {
   id?: string
@@ -39,19 +46,19 @@ export const UserProvider = ({
 }) => {
   const [user, setUserState] = useState<User | null>(initialUser)
 
-  const setUser = (user: User) => setUserState(user)
+  const setUser = useCallback((user: User) => setUserState(user), [])
 
-  const updateUser = (data: Partial<User>) => {
+  const updateUser = useCallback((data: Partial<User>) => {
     setUserState(prev => (prev ? { ...prev, ...data } : prev))
-  }
+  }, [])
 
-  const clearUser = () => setUserState(null)
-
-  return (
-    <UserContext.Provider value={{ user, setUser, updateUser, clearUser }}>
-      {children}
-    </UserContext.Provider>
+  const clearUser = useCallback(() => setUserState(null), [])
+  const value = useMemo(
+    () => ({ user, setUser, updateUser, clearUser }),
+    [clearUser, setUser, updateUser, user]
   )
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }
 
 export const useUser = () => {

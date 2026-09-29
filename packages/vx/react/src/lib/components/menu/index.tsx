@@ -37,8 +37,10 @@ const flattenMenuItems = (menuItems: SidebarItem[] = []): SidebarItem[] => {
   return flatList
 }
 
+const EMPTY_ITEMS: SidebarItem[] = []
+
 const BottomNavbar: React.FC<BottomNavbarProps> = ({
-  items = [],
+  items = EMPTY_ITEMS,
   selectedKey,
   onSelect,
   isDarkMode = false,

@@ -1,17 +1,4 @@
 import {
-  AltArrowDown as AltArrowDownIcon,
-  Filter as FilterIcon
-} from '@vezham/icons-react'
-import {
-  Button,
-  Dropdown,
-  Label,
-  ListBox,
-  Select,
-  Surface
-} from '@vezham/react-v3'
-
-import {
   classOptions,
   dayOptions,
   sectionOptions,
@@ -19,146 +6,39 @@ import {
 } from '@pages/academic/homework/data'
 import type { FilterDropdownProps } from '@pages/academic/homework/types'
 import { classNames } from '@pages/academic/homework/variants'
+import { AcademicFilterDropdown } from '@pages/academic/shared/filter-dropdown'
 
-export const FilterDropdown = ({
-  draftFilters,
-  setDraftFilters,
-  onApply,
-  onReset
-}: FilterDropdownProps) => {
-  return (
-    <Dropdown>
-      <Dropdown.Trigger>
-        <Button variant="outline">
-          <FilterIcon size={16} aria-hidden="true" />
-          Filter
-          <AltArrowDownIcon size={16} aria-hidden="true" />
-        </Button>
-      </Dropdown.Trigger>
-      <Dropdown.Popover>
-        <Surface className={classNames.filterPanel}>
-          <h2 className={classNames.filterTitle}>Filter</h2>
+const filters = [
+  {
+    field: 'subject',
+    ariaLabel: 'Filter by subject',
+    label: 'Subject',
+    placeholder: 'Select subject',
+    options: subjectOptions
+  },
+  {
+    field: 'classes',
+    ariaLabel: 'Filter by classes',
+    label: 'Class',
+    placeholder: 'Select classes',
+    options: classOptions
+  },
+  {
+    field: 'section',
+    ariaLabel: 'Filter by section',
+    label: 'Section',
+    placeholder: 'Select section',
+    options: sectionOptions
+  },
+  {
+    field: 'date',
+    ariaLabel: 'Filter by date',
+    label: 'Date',
+    placeholder: 'Select date',
+    options: dayOptions
+  }
+] as const
 
-          <Select
-            fullWidth
-            aria-label="Filter by subject"
-            placeholder="Select subject"
-            value={draftFilters.subject}
-            onChange={value =>
-              setDraftFilters({
-                ...draftFilters,
-                subject: value ? String(value) : null
-              })
-            }>
-            <Label>Subject</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {subjectOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-
-          <Select
-            fullWidth
-            aria-label="Filter by classes"
-            placeholder="Select classes"
-            value={draftFilters.classes}
-            onChange={value =>
-              setDraftFilters({
-                ...draftFilters,
-                classes: value ? String(value) : null
-              })
-            }>
-            <Label>Class</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {classOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-
-          <Select
-            fullWidth
-            aria-label="Filter by section"
-            placeholder="Select section"
-            value={draftFilters.section}
-            onChange={value =>
-              setDraftFilters({
-                ...draftFilters,
-                section: value ? String(value) : null
-              })
-            }>
-            <Label>Section</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {sectionOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-
-          <Select
-            fullWidth
-            aria-label="Filter by date"
-            placeholder="Select date"
-            value={draftFilters.date}
-            onChange={value =>
-              setDraftFilters({
-                ...draftFilters,
-                date: value ? String(value) : null
-              })
-            }>
-            <Label>Date</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {dayOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-
-          <div className={classNames.filterActions}>
-            <Button variant="secondary" onPress={onReset}>
-              Reset
-            </Button>
-            <Button onPress={onApply}>Apply</Button>
-          </div>
-        </Surface>
-      </Dropdown.Popover>
-    </Dropdown>
-  )
-}
+export const FilterDropdown = (props: FilterDropdownProps) => (
+  <AcademicFilterDropdown {...props} classes={classNames} filters={filters} />
+)

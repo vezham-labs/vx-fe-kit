@@ -1,4 +1,4 @@
-import { SearchField, type SortDescriptor, Surface } from '@vezham/react-v3'
+import { type SortDescriptor, Surface } from '@vezham/react-v3'
 
 import { reasonsColumnOptions } from '@pages/academic/reasons/data'
 import type {
@@ -8,6 +8,7 @@ import type {
 } from '@pages/academic/reasons/types'
 import { classNames } from '@pages/academic/reasons/variants'
 import { ColumnsDropdown } from '@pages/academic/shared/columns-dropdown'
+import { AcademicToolbarSearch } from '@pages/academic/shared/toolbar-layout'
 
 import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
@@ -99,18 +100,12 @@ export const ReasonsToolbar = ({
           />
         </div>
       </div>
-      <div className={classNames.headerRow}>
-        <SearchField
-          aria-label="Search schedules"
-          value={searchQuery}
-          onChange={onSearchChange}>
-          <SearchField.Group>
-            <SearchField.SearchIcon />
-            <SearchField.Input placeholder="Search" />
-            <SearchField.ClearButton />
-          </SearchField.Group>
-        </SearchField>
-      </div>
+      <AcademicToolbarSearch
+        ariaLabel="Search schedules"
+        className={classNames.headerRow}
+        value={searchQuery}
+        onChange={onSearchChange}
+      />
     </Surface>
   )
 }
