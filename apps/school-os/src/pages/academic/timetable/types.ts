@@ -15,18 +15,12 @@ export { useDisclosure } from '@store/useAcademic/useTimetable/types'
 
 export type {
   DrawerState,
-  RQTimetable,
-  SortOption,
-  SortOrderOption,
-  Teacher,
   TimetableAgendaEvent,
-  TimetableColor,
   TimetableEvent,
   TimetableFilter,
   TimetableFormErrors,
   TimetableFormRow,
   TimetableFormState,
-  TimetableResponse,
   TimetableView
 } from '@store/useAcademic/useTimetable/types'
 

@@ -6,10 +6,10 @@ import { createRouter } from '@vx/start/router/tanstack'
 import { vxI18n } from '../src/generated/vx'
 import { routeTree } from '../src/routeTree.gen'
 
-const renderApp = () => {
+const renderApp = (path = '/') => {
   const router = createRouter({
     history: createMemoryHistory({
-      initialEntries: ['/']
+      initialEntries: [path]
     }),
     routeTree
   })

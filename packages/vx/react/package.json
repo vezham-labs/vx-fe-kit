@@ -19,6 +19,11 @@
       "import": "./src/lib/components/app-icon/index.tsx",
       "default": "./src/lib/components/app-icon/index.tsx"
     },
+    "./date": {
+      "types": "./src/lib/utils/date.ts",
+      "import": "./src/lib/utils/date.ts",
+      "default": "./src/lib/utils/date.ts"
+    },
     "./bookmarks/favorites": {
       "types": "./src/lib/components/panel/header/bookmarks/favorites/index.tsx",
       "import": "./src/lib/components/panel/header/bookmarks/favorites/index.tsx",
@@ -46,5 +51,9 @@
     }
   },
   "main": "./src/index.ts",
-  "types": "./src/index.ts"
+  "types": "./src/index.ts",
+  "dependencies": {
+    "framer-motion": "catalog:",
+    "react-aria-components": "catalog:"
+  }
 }

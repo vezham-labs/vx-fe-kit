@@ -1,9 +1,5 @@
-import type { SortDescriptor } from '@vezham/react-v3'
-
-import type {
-  OperationColumn,
-  OperationPageConfig
-} from '@pages/operations/_shared/types'
+import { makeOperationPageConfig } from '@pages/operations/_shared/config'
+import type { OperationColumn } from '@pages/operations/_shared/types'
 
 import type { VehicleItem } from './types'
 
@@ -263,7 +259,7 @@ export const vehiclesData: VehicleItem[] = [
   }
 ]
 
-export const vehiclesConfig = makeConfig({
+export const vehiclesConfig = makeOperationPageConfig({
   key: 'vehicles',
   title: 'Transport',
   pageTitle: 'Transport',
@@ -320,37 +316,3 @@ export const vehiclesConfig = makeConfig({
   initialColumn: 'vehicleNo',
   tableMinWidth: 1580
 })
-
-function makeConfig(
-  config: Omit<OperationPageConfig, 'initialSort' | 'sortOptions'> & {
-    initialColumn: string
-  }
-): OperationPageConfig {
-  const initialSort = {
-    column: config.initialColumn,
-    direction: 'ascending'
-  } satisfies SortDescriptor
-  return {
-    ...config,
-    initialSort,
-    sortOptions: [
-      { key: 'ascending', label: 'Ascending', descriptor: initialSort },
-      {
-        key: 'descending',
-        label: 'Descending',
-        descriptor: {
-          column: config.initialColumn,
-          direction: 'descending'
-        } satisfies SortDescriptor
-      },
-      {
-        key: 'recentlyAdded',
-        label: 'Recently Added',
-        descriptor: {
-          column: 'createdAt',
-          direction: 'descending'
-        } satisfies SortDescriptor
-      }
-    ]
-  }
-}

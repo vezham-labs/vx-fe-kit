@@ -1,3 +1,5 @@
+import { getLocalDateKey } from '../../../utils/date'
+
 const weekdayFormatter = new Intl.DateTimeFormat('en-US', {
   weekday: 'short'
 })
@@ -14,11 +16,6 @@ export const addDays = (date: Date, days: number) => {
   return nextDate
 }
 
-export const getDateKey = (date: Date) =>
-  [
-    date.getFullYear(),
-    String(date.getMonth() + 1).padStart(2, '0'),
-    String(date.getDate()).padStart(2, '0')
-  ].join('-')
+export const getDateKey = getLocalDateKey
 
 export const getShortWeekday = (date: Date) => weekdayFormatter.format(date)

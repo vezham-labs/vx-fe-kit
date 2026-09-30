@@ -2,6 +2,7 @@ import type { ClassFormProps } from '@pages/academic/classes/schedule/types'
 import { classNames } from '@pages/academic/classes/schedule/variants'
 import { AcademicSelectField } from '@pages/academic/shared/select-field'
 import { AcademicStatusSwitch } from '@pages/academic/shared/status-switch'
+import { AcademicTimeSelects } from '@pages/academic/shared/time-fields'
 import {
   endtimeOptions,
   starttimeOptions,
@@ -30,28 +31,13 @@ export const ClassForm = ({
           />
         </div>
 
-        <AcademicSelectField
-          ariaLabel="Start time"
-          error={formErrors.starttime}
-          errorClassName={classNames.selectError}
-          label="Start Time"
-          labelClassName={classNames.fieldLabel}
-          options={starttimeOptions}
-          placeholder="Select start time"
-          value={form.starttime}
-          onChange={value => onFormChange('starttime', value)}
-        />
-
-        <AcademicSelectField
-          ariaLabel="End time"
-          error={formErrors.endtime}
-          errorClassName={classNames.selectError}
-          label="End Time"
-          labelClassName={classNames.fieldLabel}
-          options={endtimeOptions}
-          placeholder="Select end time"
-          value={form.endtime}
-          onChange={value => onFormChange('endtime', value)}
+        <AcademicTimeSelects
+          form={form}
+          errors={formErrors}
+          classes={classNames}
+          startOptions={starttimeOptions}
+          endOptions={endtimeOptions}
+          onChange={(field, value) => onFormChange(field, value)}
         />
       </div>
 

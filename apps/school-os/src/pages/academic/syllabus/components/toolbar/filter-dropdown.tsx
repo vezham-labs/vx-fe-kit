@@ -1,4 +1,5 @@
 import { AcademicFilterDropdown } from '@pages/academic/shared/filter-dropdown'
+import { createSectionStatusFilters } from '@pages/academic/shared/section-status-filters'
 import {
   classOptions,
   sectionOptions,
@@ -15,20 +16,7 @@ const filters = [
     placeholder: 'Select Class',
     options: classOptions
   },
-  {
-    field: 'section',
-    ariaLabel: 'Filter by section',
-    label: 'Section',
-    placeholder: 'Select section',
-    options: sectionOptions
-  },
-  {
-    field: 'status',
-    ariaLabel: 'Filter by capacity',
-    label: 'Status',
-    placeholder: 'Select status',
-    options: statusOptions
-  }
+  ...createSectionStatusFilters(sectionOptions, statusOptions)
 ] as const
 
 export const FilterDropdown = (props: FilterDropdownProps) => (

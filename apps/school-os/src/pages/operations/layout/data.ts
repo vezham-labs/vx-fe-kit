@@ -1,4 +1,4 @@
-import type { AcademicMenuItem, ActionItem } from './types'
+import type { AcademicMenuItem } from './types'
 
 export const operationsSidebarItems: AcademicMenuItem[] = [
   {
@@ -149,57 +149,7 @@ export const operationsSidebarItems: AcademicMenuItem[] = [
   }
 ]
 
-export const defaultLeftActions: ActionItem[] = [
-  {
-    key: 'back',
-    label: 'Back',
-    icon: 'vx:arrow-left',
-    onAction: () => window.history.back()
-  },
-  {
-    key: 'forward',
-    label: 'Forward',
-    icon: 'vx:arrow-right',
-    onAction: () => window.history.forward()
-  }
-]
-
-export const defaultRightActions: ActionItem[] = [
-  {
-    key: 'search',
-    label: 'Search',
-    icon: 'vx:search',
-    kind: 'search'
-  },
-  {
-    key: 'import',
-    label: 'Import',
-    icon: 'vx:upload',
-    kind: 'menu'
-  },
-  {
-    key: 'print',
-    label: 'Print',
-    icon: 'vx:printer',
-    kind: 'menu',
-    onAction: () => window.print()
-  },
-  {
-    key: 'export',
-    label: 'Export',
-    icon: 'vx:download',
-    kind: 'menu'
-  },
-  {
-    key: 'refresh',
-    label: 'Refresh',
-    icon: 'vx:refresh',
-    kind: 'refresh',
-    onAction: () => window.location.reload()
-  }
-]
-
-export const createLabelsByPageKey: Record<string, string> = {
+export const operationsCreateLabelsByPageKey: Record<string, string> = {
   'fees-group': 'Add Fees Group',
   'fees-type': 'Add Fees Type',
   'fees-master': 'Add Fees Master',
@@ -221,4 +171,4 @@ export const createLabelsByPageKey: Record<string, string> = {
   assign: 'Assign New Vehicle'
 }
 
-export const createExcludedPageKeys = new Set<string>()
+export const operationsCreateExcludedPageKeys = new Set<string>()

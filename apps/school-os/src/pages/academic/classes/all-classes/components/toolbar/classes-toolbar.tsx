@@ -1,120 +1,28 @@
-import { type SortDescriptor, Surface } from '@vezham/react-v3'
-
 import type {
   AllClassesColumnKey,
-  CustomDateRangeValue,
   DatePresetKey,
   FilterDraft
 } from '@pages/academic/classes/all-classes/types'
 import { classNames } from '@pages/academic/classes/all-classes/variants'
-import { ColumnsDropdown } from '@pages/academic/shared/columns-dropdown'
-import { AcademicToolbarSearch } from '@pages/academic/shared/toolbar-layout'
+import { createEntityToolbar } from '@pages/academic/shared/entity-toolbar'
 import { allClassesColumnOptions } from '@store/useAcademic/useAllClasses/data'
 
 import { DateRangeDropdown } from './date-range-dropdown'
 import { FilterDropdown } from './filter-dropdown'
-import { SortDropdown } from './sort-dropdown'
+import SortDropdown from './sort-dropdown'
 
-type Props = {
-  activeDateLabel: string
-  activeSortLabel: string
-  datePreset: DatePresetKey
-  draftFilters: FilterDraft
-  isCustomDateRangeOpen: boolean
-  isDateDropdownOpen: boolean
-  searchQuery: string
-  visibleColumns: Set<AllClassesColumnKey>
-  setDraftFilters: (filters: FilterDraft) => void
-  onApplyFilters: () => void
-  onCustomDateRangeChange: (value: CustomDateRangeValue | null) => void
-  onCustomDateRangeOpenChange: (isOpen: boolean) => void
-  onDateDropdownOpenChange: (isOpen: boolean) => void
-  onDatePresetChange: (key: DatePresetKey) => void
-  onResetFilters: () => void
-  onSearchChange: (value: string) => void
-  onVisibleColumnsChange: (columns: Set<AllClassesColumnKey>) => void
-  sortField: SortDescriptor['column']
-  sortDirection: SortDescriptor['direction']
-  onSortFieldChange: (column: SortDescriptor['column']) => void
-  onSortDirectionChange: (direction: SortDescriptor['direction']) => void
-}
-
-export const ClassesToolbar = ({
-  activeDateLabel,
-  activeSortLabel,
-  datePreset,
-  draftFilters,
-  isCustomDateRangeOpen,
-  isDateDropdownOpen,
-  searchQuery,
-  visibleColumns,
-  setDraftFilters,
-  onApplyFilters,
-  onCustomDateRangeChange,
-  onCustomDateRangeOpenChange,
-  onDateDropdownOpenChange,
-  onDatePresetChange,
-  onResetFilters,
-  onSearchChange,
-  onVisibleColumnsChange,
-  sortField,
-  sortDirection,
-  onSortFieldChange,
-  onSortDirectionChange
-}: Props) => {
-  return (
-    <Surface className={classNames.toolbar}>
-      <div className={classNames.headerRow}>
-        <div>
-          <p className={classNames.mutedText}>Classes</p>
-          <h1 className={classNames.title}>Classes List</h1>
-        </div>
-
-        <div className={classNames.toolbarActions}>
-          <DateRangeDropdown
-            activeDateLabel={activeDateLabel}
-            datePreset={datePreset}
-            isCustomDateRangeOpen={isCustomDateRangeOpen}
-            isDateDropdownOpen={isDateDropdownOpen}
-            onCustomDateRangeChange={onCustomDateRangeChange}
-            onCustomDateRangeOpenChange={onCustomDateRangeOpenChange}
-            onDateDropdownOpenChange={onDateDropdownOpenChange}
-            onDatePresetChange={onDatePresetChange}
-          />
-
-          <FilterDropdown
-            draftFilters={draftFilters}
-            setDraftFilters={setDraftFilters}
-            onApply={onApplyFilters}
-            onReset={onResetFilters}
-          />
-
-          <ColumnsDropdown
-            ariaLabel="All classes columns"
-            columns={allClassesColumnOptions}
-            visibleColumns={visibleColumns as Set<string>}
-            onVisibleColumnsChange={columns =>
-              onVisibleColumnsChange(
-                new Set(Array.from(columns) as AllClassesColumnKey[])
-              )
-            }
-          />
-
-          <SortDropdown
-            activeSortLabel={activeSortLabel}
-            sortField={sortField}
-            sortDirection={sortDirection}
-            onSortFieldChange={onSortFieldChange}
-            onSortDirectionChange={onSortDirectionChange}
-          />
-        </div>
-      </div>
-      <AcademicToolbarSearch
-        ariaLabel="Search classes"
-        className={classNames.headerRow}
-        value={searchQuery}
-        onChange={onSearchChange}
-      />
-    </Surface>
-  )
-}
+export const ClassesToolbar = createEntityToolbar<
+  FilterDraft,
+  AllClassesColumnKey,
+  DatePresetKey
+>({
+  classNames,
+  columns: allClassesColumnOptions,
+  columnsAriaLabel: 'All classes columns',
+  dateDropdown: DateRangeDropdown,
+  filterDropdown: FilterDropdown,
+  sortDropdown: SortDropdown,
+  title: 'Classes List',
+  eyebrow: 'Classes',
+  searchAriaLabel: 'Search classes'
+})

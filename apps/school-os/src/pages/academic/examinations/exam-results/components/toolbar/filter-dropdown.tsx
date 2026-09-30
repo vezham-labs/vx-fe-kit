@@ -5,31 +5,14 @@ import {
 } from '@pages/academic/examinations/exam-results/data'
 import type { FilterDropdownProps } from '@pages/academic/examinations/exam-results/types'
 import { classNames } from '@pages/academic/examinations/exam-results/variants'
+import { createExamFilterFields } from '@pages/academic/examinations/shared-filter-fields'
 import { AcademicFilterDropdown } from '@pages/academic/shared/filter-dropdown'
 
-const filters = [
-  {
-    field: 'classes',
-    ariaLabel: 'Filter by classes',
-    label: 'Class',
-    placeholder: 'Select classes',
-    options: classOptions
-  },
-  {
-    field: 'section',
-    ariaLabel: 'Filter by section',
-    label: 'Section',
-    placeholder: 'Select section',
-    options: sectionOptions
-  },
-  {
-    field: 'examtype',
-    ariaLabel: 'Filter by examtype',
-    label: 'Exam Type',
-    placeholder: 'Select examtype',
-    options: examtypeOptions
-  }
-] as const
+const filters = createExamFilterFields(
+  classOptions,
+  sectionOptions,
+  examtypeOptions
+)
 
 export const FilterDropdown = (props: FilterDropdownProps) => (
   <AcademicFilterDropdown {...props} classes={classNames} filters={filters} />

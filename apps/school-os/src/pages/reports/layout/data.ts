@@ -1,4 +1,4 @@
-import type { AcademicMenuItem, ActionItem } from './types'
+import type { AcademicMenuItem } from './types'
 
 export const reportsSidebarItems: AcademicMenuItem[] = [
   {
@@ -89,59 +89,9 @@ export const reportsSidebarItems: AcademicMenuItem[] = [
   }
 ]
 
-export const defaultLeftActions: ActionItem[] = [
-  {
-    key: 'back',
-    label: 'Back',
-    icon: 'vx:arrow-left',
-    onAction: () => window.history.back()
-  },
-  {
-    key: 'forward',
-    label: 'Forward',
-    icon: 'vx:arrow-right',
-    onAction: () => window.history.forward()
-  }
-]
+export const reportsCreateLabelsByPageKey: Record<string, string> = {}
 
-export const defaultRightActions: ActionItem[] = [
-  {
-    key: 'search',
-    label: 'Search',
-    icon: 'vx:search',
-    kind: 'search'
-  },
-  {
-    key: 'import',
-    label: 'Import',
-    icon: 'vx:upload',
-    kind: 'menu'
-  },
-  {
-    key: 'print',
-    label: 'Print',
-    icon: 'vx:printer',
-    kind: 'menu',
-    onAction: () => window.print()
-  },
-  {
-    key: 'export',
-    label: 'Export',
-    icon: 'vx:download',
-    kind: 'menu'
-  },
-  {
-    key: 'refresh',
-    label: 'Refresh',
-    icon: 'vx:refresh',
-    kind: 'refresh',
-    onAction: () => window.location.reload()
-  }
-]
-
-export const createLabelsByPageKey: Record<string, string> = {}
-
-export const createExcludedPageKeys = new Set([
+export const reportsCreateExcludedPageKeys = new Set([
   'attendance-report',
   'students-attendance-type',
   'daily-attendance',

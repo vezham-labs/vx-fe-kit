@@ -7,7 +7,7 @@ import type { RQVehicles } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_VEHICLES = 'vehicles'
+const CK_VEHICLES = 'vehicles'
 
 const useList = (rq: RQVehicles = {}) =>
   useQuery({

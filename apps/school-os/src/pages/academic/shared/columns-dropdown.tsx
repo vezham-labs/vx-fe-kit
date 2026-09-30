@@ -4,14 +4,12 @@ import {
 } from '@vezham/icons-react'
 import { Button, Dropdown } from '@vezham/react-v3'
 
-type ColumnOption<Key extends string> = {
-  key: Key
-  label: string
-}
+type ColumnOption<Key extends string> = { key: Key; label: string }
 
 type Props<Key extends string> = {
   ariaLabel: string
   buttonLabel?: string
+  labelClassName?: string
   options?: readonly ColumnOption<Key>[]
   columns?: readonly ColumnOption<Key>[]
   visibleColumns: Set<Key>
@@ -21,6 +19,7 @@ type Props<Key extends string> = {
 export const ColumnsDropdown = <Key extends string>({
   ariaLabel,
   buttonLabel = 'Columns',
+  labelClassName = 'flex w-full items-center justify-between',
   options,
   columns,
   visibleColumns,
@@ -42,22 +41,19 @@ export const ColumnsDropdown = <Key extends string>({
           aria-label={ariaLabel}
           selectedKeys={visibleColumns}
           selectionMode="multiple"
-          onSelectionChange={keys => {
-            if (keys === 'all') {
-              onVisibleColumnsChange(
-                new Set(resolvedOptions.map(option => option.key))
-              )
-              return
-            }
-
-            onVisibleColumnsChange(new Set(Array.from(keys) as Key[]))
-          }}>
+          onSelectionChange={keys =>
+            onVisibleColumnsChange(
+              keys === 'all'
+                ? new Set(resolvedOptions.map(option => option.key))
+                : new Set(Array.from(keys) as Key[])
+            )
+          }>
           {resolvedOptions.map(option => (
             <Dropdown.Item
               key={option.key}
               id={option.key}
               textValue={option.label}>
-              <span className="flex w-full items-center justify-between">
+              <span className={labelClassName}>
                 {option.label}
                 <Dropdown.ItemIndicator />
               </span>

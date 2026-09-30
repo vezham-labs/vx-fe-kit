@@ -7,7 +7,7 @@ import type { RQSports } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_SPORTS = 'sports'
+const CK_SPORTS = 'sports'
 
 const useList = (rq: RQSports = {}) =>
   useQuery({

@@ -6,6 +6,7 @@ import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Chip, CloseButton, Drawer, ScrollShadow } from '@vezham/react-v3'
 
 import { WidgetsGrid } from '../../../../pages/widgets'
+import { FooterDrawerFrame } from '../drawer-frame'
 import { Props, useProps } from './types'
 
 const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
@@ -47,56 +48,48 @@ const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
   return (
     <Component {...drawerBaseProps}>
-      <Drawer.Backdrop
+      <FooterDrawerFrame
         isOpen={isOpen}
-        onOpenChange={open => !open && onClose()}
-        variant={backdrop}
-        className={getDrawerWrapperProps().className}>
-        <Drawer.Content
-          placement={placement}
-          className={drawerBaseProps.className}>
-          <Drawer.Dialog className={getDrawerContentProps().className}>
-            <Drawer.Header {...getDrawerHeaderProps()}>
-              <span {...getHeaderTitleProps()} />
-              <CloseButton className={closeButtonClassName} onPress={onClose} />
-            </Drawer.Header>
+        onClose={onClose}
+        backdrop={backdrop}
+        placement={placement}
+        wrapperClassName={getDrawerWrapperProps().className}
+        contentClassName={drawerBaseProps.className}
+        dialogClassName={getDrawerContentProps().className}>
+        <Drawer.Header {...getDrawerHeaderProps()}>
+          <span {...getHeaderTitleProps()} />
+          <CloseButton className={closeButtonClassName} onPress={onClose} />
+        </Drawer.Header>
 
-            <Drawer.Body {...getDrawerBodyProps()}>
-              <ScrollShadow {...getScrollShadowProps()}>
-                {isEmpty ? (
-                  <div {...getEmptyStateProps()}>
-                    <EmptyState className="rounded-2xl">
-                      <EmptyState.Media>
-                        <BellIcon
-                          {...getEmptyStateIconProps()}
-                          weight="outline"
-                          aria-hidden="true"
-                        />
-                      </EmptyState.Media>
-                      <EmptyState.Title>
-                        Notifications are Empty
-                      </EmptyState.Title>
-                    </EmptyState>
-                  </div>
-                ) : (
-                  <WidgetsGrid />
-                )}
-              </ScrollShadow>
-            </Drawer.Body>
-
-            {!isEmpty && (
-              <Drawer.Footer {...getDrawerFooterProps()}>
-                <Chip
-                  variant="primary"
-                  {...getChipProps()}
-                  onClick={handleEdit}>
-                  Edit
-                </Chip>
-              </Drawer.Footer>
+        <Drawer.Body {...getDrawerBodyProps()}>
+          <ScrollShadow {...getScrollShadowProps()}>
+            {isEmpty ? (
+              <div {...getEmptyStateProps()}>
+                <EmptyState className="rounded-2xl">
+                  <EmptyState.Media>
+                    <BellIcon
+                      {...getEmptyStateIconProps()}
+                      weight="outline"
+                      aria-hidden="true"
+                    />
+                  </EmptyState.Media>
+                  <EmptyState.Title>Notifications are Empty</EmptyState.Title>
+                </EmptyState>
+              </div>
+            ) : (
+              <WidgetsGrid />
             )}
-          </Drawer.Dialog>
-        </Drawer.Content>
-      </Drawer.Backdrop>
+          </ScrollShadow>
+        </Drawer.Body>
+
+        {!isEmpty && (
+          <Drawer.Footer {...getDrawerFooterProps()}>
+            <Chip variant="primary" {...getChipProps()} onClick={handleEdit}>
+              Edit
+            </Chip>
+          </Drawer.Footer>
+        )}
+      </FooterDrawerFrame>
     </Component>
   )
 })

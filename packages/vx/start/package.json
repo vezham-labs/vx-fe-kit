@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "@vx/template": "workspace:*",
-    "yaml": "latest"
+    "yaml": "catalog:"
   },
   "devDependencies": {
     "@vx/devtools": "workspace:*",

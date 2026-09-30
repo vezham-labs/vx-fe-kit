@@ -13,57 +13,8 @@ import { Trash } from './trash'
 import { ArchiveItem, Props, TrashItem, useProps } from './types'
 
 const DiskContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const {
-    Component,
-    getTabsProps,
-    getTabsListContainerProps,
-    getTabsListProps,
-    getTabArchiveProps,
-    getTabTrashProps,
-    getTabIndicatorProps,
-    getContainerProps,
-    getSearchInputProps,
-    getActionsBarProps,
-    getClearAllButtonProps,
-    getRestoreAllButtonProps,
-    getEmptyContainerProps,
-    getEmptyIconProps,
-    getEmptyTitleProps,
-    getEmptyDescriptionProps,
-    getItemsContainerProps,
-    getDateGroupProps,
-    getDateHeaderProps,
-    getDateLabelProps,
-    getDateDividerProps,
-    getItemsListProps,
-    getItemProps,
-    getItemFaviconProps,
-    getItemFallbackIconProps,
-    getItemContentProps,
-    getItemTitleProps,
-    getItemUrlProps,
-    getItemActionsProps,
-    getUnarchiveButtonProps,
-    getRestoreButtonProps,
-    getDeleteButtonProps,
-    getDeletePermanentButtonProps,
-    getActionIconProps,
-    externalArchiveItems,
-    externalTrashItems,
-    onUnarchive,
-    onDeleteFromArchive,
-    onRestore,
-    onDeletePermanently,
-    onClearAllArchive,
-    onClearAllTrash,
-    onRestoreAllTrash,
-    onItemClick,
-    renderArchiveItem,
-    renderTrashItem
-  } = useProps({
-    ...props,
-    ref
-  })
+  const discProps = useProps({ ...props, ref })
+  const { Component } = discProps
 
   const discQuery = useDisc.list({})
   const [activeTab, setActiveTab] = useState<string>('archive')
@@ -76,8 +27,8 @@ const DiskContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
     () => discQuery.data?.trashItems ?? []
   )
 
-  const archiveItems = externalArchiveItems || internalArchiveItems
-  const trashItems = externalTrashItems || internalTrashItems
+  const archiveItems = discProps.externalArchiveItems || internalArchiveItems
+  const trashItems = discProps.externalTrashItems || internalTrashItems
 
   return (
     <Component className="h-full">
@@ -85,24 +36,24 @@ const DiskContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
         <div className="bg-background/95 sticky top-0 z-20 shrink-0 pb-4">
           <Tabs
             variant="primary"
-            {...getTabsProps()}
+            {...discProps.getTabsProps()}
             selectedKey={activeTab}
             onSelectionChange={key => setActiveTab(key as string)}>
-            <Tabs.ListContainer {...getTabsListContainerProps()}>
-              <Tabs.List {...getTabsListProps()}>
-                <Tabs.Tab {...getTabArchiveProps()}>
+            <Tabs.ListContainer {...discProps.getTabsListContainerProps()}>
+              <Tabs.List {...discProps.getTabsListProps()}>
+                <Tabs.Tab {...discProps.getTabArchiveProps()}>
                   <ArchiveIcon size={18} className="mr-2" aria-hidden="true" />
                   Archive
-                  <Tabs.Indicator {...getTabIndicatorProps()} />
+                  <Tabs.Indicator {...discProps.getTabIndicatorProps()} />
                 </Tabs.Tab>
-                <Tabs.Tab {...getTabTrashProps()}>
+                <Tabs.Tab {...discProps.getTabTrashProps()}>
                   <TrashBinTrashIcon
                     size={18}
                     className="mr-2"
                     aria-hidden="true"
                   />
                   Trash
-                  <Tabs.Indicator {...getTabIndicatorProps()} />
+                  <Tabs.Indicator {...discProps.getTabIndicatorProps()} />
                 </Tabs.Tab>
               </Tabs.List>
             </Tabs.ListContainer>
@@ -112,76 +63,23 @@ const DiskContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
         <div className="flex min-h-0 flex-1 flex-col">
           {activeTab === 'archive' ? (
             <Archive
+              {...discProps}
               archiveItems={archiveItems}
               archiveSearch={archiveSearch}
               setArchiveSearch={setArchiveSearch}
               setInternalArchiveItems={setInternalArchiveItems}
-              getSearchInputProps={getSearchInputProps}
-              getActionsBarProps={getActionsBarProps}
-              getClearAllButtonProps={getClearAllButtonProps}
-              getContainerProps={getContainerProps}
-              getEmptyContainerProps={getEmptyContainerProps}
-              getEmptyIconProps={getEmptyIconProps}
-              getEmptyTitleProps={getEmptyTitleProps}
-              getEmptyDescriptionProps={getEmptyDescriptionProps}
-              getItemsContainerProps={getItemsContainerProps}
-              getDateGroupProps={getDateGroupProps}
-              getDateHeaderProps={getDateHeaderProps}
-              getDateLabelProps={getDateLabelProps}
-              getDateDividerProps={getDateDividerProps}
-              getItemsListProps={getItemsListProps}
-              getItemProps={getItemProps}
-              getItemFaviconProps={getItemFaviconProps}
-              getItemFallbackIconProps={getItemFallbackIconProps}
-              getItemContentProps={getItemContentProps}
-              getItemTitleProps={getItemTitleProps}
-              getItemUrlProps={getItemUrlProps}
-              getItemActionsProps={getItemActionsProps}
-              getUnarchiveButtonProps={getUnarchiveButtonProps}
-              getDeleteButtonProps={getDeleteButtonProps}
-              getActionIconProps={getActionIconProps}
-              onUnarchive={onUnarchive}
-              onDeleteFromArchive={onDeleteFromArchive}
-              onClearAllArchive={onClearAllArchive}
-              onItemClick={onItemClick}
-              renderArchiveItem={renderArchiveItem}
             />
           ) : (
             <Trash
+              {...discProps}
               trashItems={trashItems}
               trashSearch={trashSearch}
               setTrashSearch={setTrashSearch}
               setInternalTrashItems={setInternalTrashItems}
-              getSearchInputProps={getSearchInputProps}
-              getActionsBarProps={getActionsBarProps}
-              getRestoreAllButtonProps={getRestoreAllButtonProps}
-              getClearAllButtonProps={getClearAllButtonProps}
-              getContainerProps={getContainerProps}
-              getEmptyContainerProps={getEmptyContainerProps}
-              getEmptyIconProps={getEmptyIconProps}
-              getEmptyTitleProps={getEmptyTitleProps}
-              getEmptyDescriptionProps={getEmptyDescriptionProps}
-              getItemsContainerProps={getItemsContainerProps}
-              getDateGroupProps={getDateGroupProps}
-              getDateHeaderProps={getDateHeaderProps}
-              getDateLabelProps={getDateLabelProps}
-              getDateDividerProps={getDateDividerProps}
-              getItemsListProps={getItemsListProps}
-              getItemProps={getItemProps}
-              getItemFaviconProps={getItemFaviconProps}
-              getItemFallbackIconProps={getItemFallbackIconProps}
-              getItemContentProps={getItemContentProps}
-              getItemTitleProps={getItemTitleProps}
-              getItemUrlProps={getItemUrlProps}
-              getItemActionsProps={getItemActionsProps}
-              getRestoreButtonProps={getRestoreButtonProps}
-              getDeletePermanentButtonProps={getDeletePermanentButtonProps}
-              getActionIconProps={getActionIconProps}
-              onRestore={onRestore}
-              onDeletePermanently={onDeletePermanently}
-              onClearAllTrash={onClearAllTrash}
-              onRestoreAllTrash={onRestoreAllTrash}
-              renderTrashItem={renderTrashItem}
+
+              getDeletePermanentButtonProps={
+                discProps.getDeletePermanentButtonProps
+              }
             />
           )}
         </div>
@@ -223,4 +121,4 @@ const discPanel: InfoPanelDefinition = {
   content: <DiscPanelContent />
 }
 
-export { discPanel, DiscPanelContent, DiscTrigger, DiskContent }
+export { discPanel, DiscTrigger }

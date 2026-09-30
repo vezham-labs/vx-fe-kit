@@ -83,4 +83,4 @@ const InfoPanelContent = ({ children }: { children: ReactNode }) => {
   )
 }
 
-export { InfoPanelContainer, InfoPanelContent, InfoPanelHeader }
+export { InfoPanelContainer }

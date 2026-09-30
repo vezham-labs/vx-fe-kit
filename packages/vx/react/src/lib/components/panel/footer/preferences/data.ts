@@ -18,11 +18,6 @@ export type SidebarSection = {
   items: SidebarItem[]
 }
 
-export type User = {
-  name?: string
-  avatarUrl?: string
-}
-
 export const settingsSidebar: SidebarSection[] = [
   {
     title: '',

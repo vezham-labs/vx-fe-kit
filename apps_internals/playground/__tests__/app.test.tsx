@@ -15,10 +15,10 @@ vi.mock('@vx/start/vite', async importOriginal => ({
   defineConfig
 }))
 
-const renderApp = () => {
+const renderApp = (path = '/') => {
   const router = createRouter({
     history: createMemoryHistory({
-      initialEntries: ['/']
+      initialEntries: [path]
     }),
     routeTree
   })

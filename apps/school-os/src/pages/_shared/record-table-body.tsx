@@ -16,7 +16,10 @@ type Classes = {
   rowActions: string
 }
 
-type Props<RowValue extends Row, ColumnValue extends Column> = {
+export type RecordTableBodyProps<
+  RowValue extends Row,
+  ColumnValue extends Column
+> = {
   activeRowId: string | null
   classes: Classes
   columns: readonly ColumnValue[]
@@ -45,7 +48,7 @@ export const RecordTableBody = <
   onDelete,
   onEdit,
   onView
-}: Props<RowValue, ColumnValue>) => (
+}: RecordTableBodyProps<RowValue, ColumnValue>) => (
   <Table.Body renderEmptyState={() => emptyState}>
     {rows.map(row => (
       <Table.Row

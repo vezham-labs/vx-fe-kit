@@ -7,7 +7,7 @@ import type { RQExamResults } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_EXAM_RESULTS = 'exam-results'
+const CK_EXAM_RESULTS = 'exam-results'
 
 const useList = (rq: RQExamResults = {}) =>
   useQuery({

@@ -1,9 +1,8 @@
-import type { SortDescriptor } from '@vezham/react-v3'
-
+import { makeOperationPageConfig } from '@pages/operations/_shared/config'
 import { playersData } from '@store/useOperations/usePlayers'
 import type { PlayerItem } from '@store/useOperations/usePlayers'
 
-import type { OperationColumn, OperationPageConfig } from './types'
+import type { OperationColumn } from './types'
 
 const columns: OperationColumn[] = [
   {
@@ -37,7 +36,7 @@ const columns: OperationColumn[] = [
 ]
 const rows: PlayerItem[] = playersData
 
-export const playersConfig = makeConfig({
+export const playersConfig = makeOperationPageConfig({
   key: 'players',
   title: 'Players',
   pageTitle: 'Players',
@@ -62,37 +61,3 @@ export const playersConfig = makeConfig({
   initialColumn: 'name',
   tableMinWidth: 980
 })
-
-function makeConfig(
-  config: Omit<OperationPageConfig, 'initialSort' | 'sortOptions'> & {
-    initialColumn: string
-  }
-): OperationPageConfig {
-  const initialSort = {
-    column: config.initialColumn,
-    direction: 'ascending'
-  } satisfies SortDescriptor
-  return {
-    ...config,
-    initialSort,
-    sortOptions: [
-      { key: 'ascending', label: 'Ascending', descriptor: initialSort },
-      {
-        key: 'descending',
-        label: 'Descending',
-        descriptor: {
-          column: config.initialColumn,
-          direction: 'descending'
-        } satisfies SortDescriptor
-      },
-      {
-        key: 'recentlyAdded',
-        label: 'Recently Added',
-        descriptor: {
-          column: 'createdAt',
-          direction: 'descending'
-        } satisfies SortDescriptor
-      }
-    ]
-  }
-}

@@ -7,7 +7,7 @@ import type { RQClassroom } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_CLASSROOM = 'classroom'
+const CK_CLASSROOM = 'classroom'
 
 const useList = (rq: RQClassroom = {}) =>
   useQuery({

@@ -7,7 +7,7 @@ import type { RQHostelList } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_HOSTEL_LIST = 'hostel-list'
+const CK_HOSTEL_LIST = 'hostel-list'
 
 const useList = (rq: RQHostelList = {}) =>
   useQuery({

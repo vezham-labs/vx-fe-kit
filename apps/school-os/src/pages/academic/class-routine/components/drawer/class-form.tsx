@@ -1,9 +1,9 @@
-import { Input, Label, ListBox, Select } from '@vezham/react-v3'
-
 import type { ClassFormProps } from '@pages/academic/class-routine/types'
 import { classNames } from '@pages/academic/class-routine/variants'
+import { AcademicSectionSelect } from '@pages/academic/shared/section-select'
 import { AcademicSelectField } from '@pages/academic/shared/select-field'
 import { AcademicStatusSwitch } from '@pages/academic/shared/status-switch'
+import { AcademicTimeInputs } from '@pages/academic/shared/time-fields'
 import {
   classOptions,
   dayOptions,
@@ -21,169 +21,74 @@ export const ClassForm = ({
     <div className={classNames.form}>
       <div className={classNames.formFields}>
         <div className={classNames.field}>
-          <Select
-            fullWidth
-            aria-label="Teacher"
-            aria-invalid={Boolean(formErrors.teacher)}
+          <AcademicSelectField
+            ariaLabel="Teacher"
+            error={formErrors.teacher}
+            errorClassName={classNames.fieldError}
+            label="Teacher"
+            labelClassName={classNames.fieldLabel}
+            options={teacherOptions}
             placeholder="Select teacher"
-            value={form.teacher || null}
-            onChange={value =>
-              onFormChange('teacher', value ? String(value) : '')
-            }>
-            <Label className={classNames.fieldLabel}>Teacher</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {teacherOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-          {formErrors.teacher && (
-            <p className={classNames.fieldError}>{formErrors.teacher}</p>
-          )}
-        </div>
-
-        <div className={classNames.field}>
-          <Select
-            fullWidth
-            aria-label="classes"
-            aria-invalid={Boolean(formErrors.classes)}
-            placeholder="Select classes"
-            value={form.classes || null}
-            onChange={value =>
-              onFormChange('classes', value ? String(value) : '')
-            }>
-            <Label className={classNames.fieldLabel}>Class</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {classOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-          {formErrors.classes && (
-            <p className={classNames.fieldError}>{formErrors.classes}</p>
-          )}
+            value={form.teacher}
+            onChange={value => onFormChange('teacher', value)}
+          />
         </div>
 
         <div className={classNames.field}>
           <AcademicSelectField
-            ariaLabel="section"
-            error={formErrors.section}
+            ariaLabel="classes"
+            error={formErrors.classes}
             errorClassName={classNames.fieldError}
-            label="Section"
+            label="Class"
             labelClassName={classNames.fieldLabel}
-            options={sectionOptions}
-            placeholder="Select section"
-            value={form.section}
-            onChange={value => onFormChange('section', value)}
+            options={classOptions}
+            placeholder="Select classes"
+            value={form.classes}
+            onChange={value => onFormChange('classes', value)}
           />
         </div>
 
+        <AcademicSectionSelect
+          classes={classNames}
+          error={formErrors.section}
+          options={sectionOptions}
+          value={form.section}
+          onChange={value => onFormChange('section', value)}
+        />
+
         <div className={classNames.field}>
-          <Select
-            fullWidth
-            aria-label="day"
-            aria-invalid={Boolean(formErrors.day)}
+          <AcademicSelectField
+            ariaLabel="day"
+            error={formErrors.day}
+            errorClassName={classNames.fieldError}
+            label="Day"
+            labelClassName={classNames.fieldLabel}
+            options={dayOptions}
             placeholder="Select day"
-            value={form.day || null}
-            onChange={value => onFormChange('day', value ? String(value) : '')}>
-            <Label className={classNames.fieldLabel}>Day</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {dayOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-          {formErrors.day && (
-            <p className={classNames.fieldError}>{formErrors.day}</p>
-          )}
-        </div>
-
-        <div className={classNames.field}>
-          <Label className={classNames.fieldLabel}>Start Time</Label>
-          <Input
-            fullWidth
-            aria-label="Start time"
-            aria-invalid={Boolean(formErrors.starttime)}
-            type="time"
-            value={form.starttime}
-            onChange={event => onFormChange('starttime', event.target.value)}
+            value={form.day}
+            onChange={value => onFormChange('day', value)}
           />
-          {formErrors.starttime && (
-            <p className={classNames.fieldError}>{formErrors.starttime}</p>
-          )}
         </div>
 
-        <div className={classNames.field}>
-          <Label className={classNames.fieldLabel}>End Time</Label>
-          <Input
-            fullWidth
-            aria-label="End time"
-            aria-invalid={Boolean(formErrors.endtime)}
-            type="time"
-            value={form.endtime}
-            onChange={event => onFormChange('endtime', event.target.value)}
-          />
-          {formErrors.endtime && (
-            <p className={classNames.fieldError}>{formErrors.endtime}</p>
-          )}
-        </div>
+        <AcademicTimeInputs
+          form={form}
+          errors={formErrors}
+          classes={classNames}
+          onChange={(field, value) => onFormChange(field, value)}
+        />
 
         <div className={classNames.field}>
-          <Select
-            fullWidth
-            aria-label="classroom"
-            aria-invalid={Boolean(formErrors.classroom)}
+          <AcademicSelectField
+            ariaLabel="classroom"
+            error={formErrors.classroom}
+            errorClassName={classNames.fieldError}
+            label="Class Room"
+            labelClassName={classNames.fieldLabel}
+            options={roomOptions}
             placeholder="Select classroom"
-            value={form.classroom || null}
-            onChange={value =>
-              onFormChange('classroom', value ? String(value) : '')
-            }>
-            <Label className={classNames.fieldLabel}>Class Room</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {roomOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-          {formErrors.classroom && (
-            <p className={classNames.fieldError}>{formErrors.classroom}</p>
-          )}
+            value={form.classroom}
+            onChange={value => onFormChange('classroom', value)}
+          />
         </div>
       </div>
 

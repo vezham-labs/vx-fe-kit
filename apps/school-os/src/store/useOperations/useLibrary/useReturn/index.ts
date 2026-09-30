@@ -7,7 +7,7 @@ import type { RQReturn } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_RETURN = 'return'
+const CK_RETURN = 'return'
 
 const useList = (rq: RQReturn = {}) =>
   useQuery({

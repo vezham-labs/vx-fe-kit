@@ -7,7 +7,7 @@ import type { RQRoomType } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_ROOM_TYPE = 'room-type'
+const CK_ROOM_TYPE = 'room-type'
 
 const useList = (rq: RQRoomType = {}) =>
   useQuery({

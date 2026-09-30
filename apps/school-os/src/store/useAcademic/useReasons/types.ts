@@ -1,5 +1,3 @@
-import type { SortDescriptor } from '@vezham/react-v3'
-
 export type RQReasons = Record<string, never>
 
 export type ClassStatus = 'Active' | 'Inactive'
@@ -30,20 +28,8 @@ export type ClassFormState = {
   reasons: string
   status: ClassStatus
 }
-
-export type ClassFormErrors = Partial<
-  Record<'role' | 'reasons' | 'status' | 'name', string>
->
-
 export type SortOption = {
   key: string
   label: string
   column: keyof ReasonsItem
-}
-
-export type SortOrderOption = {
-  key: string
-  label: string
-  direction: SortDescriptor['direction']
-  icon: string
 }

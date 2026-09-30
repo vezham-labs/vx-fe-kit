@@ -1,15 +1,8 @@
-import {
-  type SortFieldOption,
-  sortOrderOptions
-} from '@pages/academic/shared/sort'
+import { type SortFieldOption } from '@pages/academic/shared/sort'
 
-import type {
-  ClassFormState,
-  ClassRow,
-  ClassStatus,
-  DatePresetKey,
-  GradeColumnOption
-} from './types'
+import type { ClassFormState, ClassRow, GradeColumnOption } from './types'
+
+export { dateOptions, rowCountOptions } from '../options'
 
 export const initialRows: ClassRow[] = [
   {
@@ -105,16 +98,6 @@ export const initialRows: ClassRow[] = [
   }
 ]
 
-export const dateOptions: { key: DatePresetKey; label: string }[] = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last7', label: 'Last 7 Days' },
-  { key: 'last30', label: 'Last 30 Days' },
-  { key: 'thisYear', label: 'This Year' },
-  { key: 'nextYear', label: 'Next Year' },
-  { key: 'custom', label: 'Custom Range' }
-]
-
 export const gradeColumnOptions = [
   {
     key: 'id',
@@ -171,7 +154,6 @@ export const sortOptions = [
   }))
 ] satisfies readonly SortFieldOption[]
 
-export const rowCountOptions = ['5', '10', '25', '50']
 export const gradeOptions = ['O', 'A+', 'A', 'B+', 'B', 'C+', 'C', 'D', 'F']
 export const marksfromOptions = ['90', '80', '70', '60', '50', '40', '35', '0']
 export const marksuptoOptions = [
@@ -195,9 +177,6 @@ export const percentageOptions = [
   '35% - 40%',
   'Below 35%'
 ]
-export const statusOptions: ClassStatus[] = ['Active', 'Inactive']
-export { sortOrderOptions }
-
 export const emptyForm: ClassFormState = {
   grade: '',
   marksfrom: '',

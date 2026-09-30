@@ -1,5 +1,3 @@
-import type { TimetableColor } from './types'
-
 export const classNames = {
   page: 'space-y-4',
   toolbar: 'flex flex-col gap-4 p-4',
@@ -105,25 +103,3 @@ export const classNames = {
   subjectChip: 'border border-[#e8edf6] bg-white',
   menuItemLabel: 'flex items-center gap-2'
 } as const
-
-export const eventColorClassNames: Record<TimetableColor, string> = {
-  amber: 'bg-warning/15 text-warning-700 border-warning/30',
-  blue: 'bg-primary/15 text-primary-700 border-primary/30',
-  cyan: 'bg-cyan-100 text-cyan-700 border-cyan-200',
-  green: 'bg-success/15 text-success-700 border-success/30',
-  pink: 'bg-pink-100 text-pink-700 border-pink-200',
-  purple: 'bg-secondary/15 text-secondary-700 border-secondary/30',
-  red: 'bg-danger/15 text-danger-700 border-danger/30',
-  slate: 'bg-default/70 text-default-700 border-default-200'
-}
-
-export const eventColorMap: Record<TimetableColor, string> = {
-  amber: 'warning',
-  blue: 'primary',
-  cyan: 'cyan',
-  green: 'success',
-  pink: 'pink',
-  purple: 'secondary',
-  red: 'danger',
-  slate: 'default'
-}

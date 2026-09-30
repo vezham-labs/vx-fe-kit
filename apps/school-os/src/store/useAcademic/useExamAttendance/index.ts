@@ -7,7 +7,7 @@ import type { RQExamAttendance } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_EXAM_ATTENDANCE = 'exam-attendance'
+const CK_EXAM_ATTENDANCE = 'exam-attendance'
 
 const useList = (rq: RQExamAttendance = {}) =>
   useQuery({

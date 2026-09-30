@@ -1,9 +1,8 @@
-import { Input, Label, ListBox, Select } from '@vezham/react-v3'
-
 import { roleOptions } from '@pages/academic/reasons/data'
 import type { ClassFormProps } from '@pages/academic/reasons/types'
 import { classNames } from '@pages/academic/reasons/variants'
-import { AcademicStatusSwitch } from '@pages/academic/shared/status-switch'
+import { AcademicNameStatusForm } from '@pages/academic/shared/name-status-form'
+import { AcademicSelectField } from '@pages/academic/shared/select-field'
 
 export const ClassForm = ({
   form,
@@ -11,57 +10,26 @@ export const ClassForm = ({
   onFormChange
 }: ClassFormProps) => {
   return (
-    <div className={classNames.form}>
-      <div className={classNames.formFields}>
-        <div className={classNames.field}>
-          <Label className={classNames.fieldLabel}>Name</Label>
-          <Input
-            fullWidth
-            aria-invalid={Boolean(formErrors.name)}
-            placeholder="Enter name"
-            value={form.name}
-            onChange={event => onFormChange('name', event.target.value)}
-          />
-          {formErrors.name && (
-            <p className={classNames.fieldError}>{formErrors.name}</p>
-          )}
-        </div>
-      </div>
-      <Select
-        fullWidth
-        aria-label="Role"
-        aria-invalid={Boolean(formErrors.role)}
+    <AcademicNameStatusForm
+      classes={classNames}
+      name={form.name}
+      nameError={formErrors.name}
+      status={form.status}
+      statusError={formErrors.status}
+      selectedStatus="Inactive"
+      onNameChange={value => onFormChange('name', value)}
+      onStatusChange={status => onFormChange('status', status)}>
+      <AcademicSelectField
+        ariaLabel="Role"
+        error={formErrors.role}
+        errorClassName={classNames.selectError}
+        label="Role"
+        labelClassName={classNames.fieldLabel}
+        options={roleOptions}
         placeholder="Select role"
-        value={form.role || null}
-        onChange={value => onFormChange('role', value ? String(value) : '')}>
-        <Label className={classNames.fieldLabel}>Role</Label>
-        <Select.Trigger>
-          <Select.Value />
-          <Select.Indicator />
-        </Select.Trigger>
-        <Select.Popover>
-          <ListBox>
-            {roleOptions.map(option => (
-              <ListBox.Item key={option} id={option} textValue={option}>
-                {option}
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-            ))}
-          </ListBox>
-        </Select.Popover>
-      </Select>
-      {formErrors.role && (
-        <p className={classNames.selectError}>{formErrors.role}</p>
-      )}
-
-      <AcademicStatusSwitch
-        ariaLabel="Class status"
-        classes={classNames}
-        error={formErrors.status}
-        selectedStatus="Inactive"
-        status={form.status}
-        onChange={status => onFormChange('status', status)}
+        value={form.role}
+        onChange={value => onFormChange('role', value)}
       />
-    </div>
+    </AcademicNameStatusForm>
   )
 }

@@ -7,7 +7,7 @@ import type { RQFeesType } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_FEES_TYPE = 'fees-type'
+const CK_FEES_TYPE = 'fees-type'
 
 const useList = (rq: RQFeesType = {}) =>
   useQuery({

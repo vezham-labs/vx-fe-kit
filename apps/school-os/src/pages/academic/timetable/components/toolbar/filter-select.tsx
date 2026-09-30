@@ -1,4 +1,4 @@
-import { Label, ListBox, Select } from '@vezham/react-v3'
+import { AcademicSelectField } from '@pages/academic/shared/select-field'
 
 type Props = {
   label: string
@@ -16,27 +16,13 @@ export const FilterSelect = ({
   onChange
 }: Props) => {
   return (
-    <Select
-      fullWidth
-      aria-label={`Filter by ${label.toLowerCase()}`}
+    <AcademicSelectField
+      ariaLabel={`Filter by ${label.toLowerCase()}`}
+      label={label}
+      options={options}
       placeholder={placeholder}
-      value={value}
-      onChange={nextValue => onChange(nextValue ? String(nextValue) : null)}>
-      <Label>{label}</Label>
-      <Select.Trigger>
-        <Select.Value />
-        <Select.Indicator />
-      </Select.Trigger>
-      <Select.Popover>
-        <ListBox>
-          {options.map(option => (
-            <ListBox.Item key={option} id={option} textValue={option}>
-              {option}
-              <ListBox.ItemIndicator />
-            </ListBox.Item>
-          ))}
-        </ListBox>
-      </Select.Popover>
-    </Select>
+      value={value ?? ''}
+      onChange={nextValue => onChange(nextValue || null)}
+    />
   )
 }

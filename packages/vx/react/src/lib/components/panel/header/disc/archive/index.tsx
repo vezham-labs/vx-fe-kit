@@ -4,19 +4,21 @@ import type { ChangeEvent } from 'react'
 import {
   Archive as ArchiveIcon,
   ArchiveUp as ArchiveUpIcon,
-  Document as DocumentIcon,
   TrashBinTrash as TrashIcon
 } from '@vezham/icons-react'
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
-import { Button, Input, ScrollShadow, Typography } from '@vezham/react-v3'
+import { Button, Input } from '@vezham/react-v3'
 
 import { getAppPath, getOpenUrl } from '../../../../../utils/url'
-import { AppIcon } from '../../../../app-icon'
+import { DiscHistoryActions } from '../history-actions'
+import { DiscHistoryDateGroup } from '../history-date-group'
+import { DiscHistoryItemContent } from '../history-item-content'
+import { DiscHistoryShell } from '../history-shell'
+import { filterHistoryItems, groupHistoryItemsByDate } from '../history-utils'
 import { ArchiveProps } from './types'
 import { archiveActions } from './variants'
 
 const SearchInput = Input
-const ActionButton = Button
 
 const Archive = (props: ArchiveProps) => {
   const navigate = useNavigate()
@@ -54,42 +56,11 @@ const Archive = (props: ArchiveProps) => {
     renderArchiveItem
   } = props
 
-  const filteredArchiveItems = archiveItems.filter(
-    item =>
-      item.title.toLowerCase().includes(archiveSearch.toLowerCase()) ||
-      item.url.toLowerCase().includes(archiveSearch.toLowerCase())
+  const filteredArchiveItems = filterHistoryItems(archiveItems, archiveSearch)
+  const archiveByDate = groupHistoryItemsByDate(
+    filteredArchiveItems,
+    item => item.archivedDate
   )
-
-  const archiveByDate = filteredArchiveItems.reduce(
-    (acc, item) => {
-      const date = item.archivedDate
-      if (!acc[date]) {
-        acc[date] = []
-      }
-      acc[date].push(item)
-      return acc
-    },
-    {} as Record<string, ArchiveProps['archiveItems']>
-  )
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    const today = new Date()
-    const yesterday = new Date(today)
-    yesterday.setDate(yesterday.getDate() - 1)
-
-    if (dateString === today.toISOString().split('T')[0]) {
-      return 'Today'
-    } else if (dateString === yesterday.toISOString().split('T')[0]) {
-      return 'Yesterday'
-    } else {
-      return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      })
-    }
-  }
 
   const handleUnarchive = (id: string) => {
     if (onUnarchive) {
@@ -152,87 +123,73 @@ const Archive = (props: ArchiveProps) => {
     return (
       <div {...getItemsContainerProps()}>
         {Object.entries(archiveByDate).map(([date, items]) => (
-          <div key={date} {...getDateGroupProps()}>
-            <div {...getDateHeaderProps()}>
-              <Typography.Paragraph {...getDateLabelProps()}>
-                {formatDate(date)}
-              </Typography.Paragraph>
-              <div {...getDateDividerProps()} />
-            </div>
+          <DiscHistoryDateGroup
+            key={date}
+            date={date}
+            getDateGroupProps={getDateGroupProps}
+            getDateHeaderProps={getDateHeaderProps}
+            getDateLabelProps={getDateLabelProps}
+            getDateDividerProps={getDateDividerProps}
+            getItemsListProps={getItemsListProps}>
+            {items.map(item => {
+              if (renderArchiveItem) {
+                return renderArchiveItem({
+                  item,
+                  onAction: action => {
+                    if (action === 'unarchive') handleUnarchive(item.id)
+                    if (action === 'delete') handleDeleteFromArchive(item.id)
+                  }
+                })
+              }
 
-            <div {...getItemsListProps()}>
-              {items.map(item => {
-                if (renderArchiveItem) {
-                  return renderArchiveItem({
-                    item,
-                    onAction: action => {
-                      if (action === 'unarchive') handleUnarchive(item.id)
-                      if (action === 'delete') handleDeleteFromArchive(item.id)
-                    }
-                  })
-                }
+              return (
+                <div key={item.id} {...getItemProps()}>
+                  <button
+                    type="button"
+                    className="flex min-w-0 flex-1 items-center gap-3 text-left"
+                    onClick={() => handleItemClick(item.url)}>
+                    <DiscHistoryItemContent
+                      item={item}
+                      getItemFaviconProps={getItemFaviconProps}
+                      getItemFallbackIconProps={getItemFallbackIconProps}
+                      getItemContentProps={getItemContentProps}
+                      getItemTitleProps={getItemTitleProps}
+                      getItemUrlProps={getItemUrlProps}
+                    />
+                  </button>
 
-                return (
-                  <div key={item.id} {...getItemProps()}>
-                    <button
-                      type="button"
-                      className="flex min-w-0 flex-1 items-center gap-3 text-left"
-                      onClick={() => handleItemClick(item.url)}>
-                      {item.favicon ? (
-                        <img
-                          src={item.favicon}
-                          alt=""
-                          {...getItemFaviconProps()}
-                        />
-                      ) : (
-                        <DocumentIcon
-                          {...getItemFallbackIconProps()}
-                          weight="outline"
-                          aria-hidden="true"
-                        />
-                      )}
-
-                      <div {...getItemContentProps()}>
-                        <Typography.Heading
-                          {...getItemTitleProps(item.title)}
-                        />
-                        <Typography.Paragraph {...getItemUrlProps(item.url)} />
-                      </div>
-                    </button>
-
-                    <div {...getItemActionsProps()}>
-                      <Button
-                        isIconOnly
-                        variant="ghost"
-                        {...getUnarchiveButtonProps()}
-                        onPress={() => {
-                          handleUnarchive(item.id)
-                        }}>
-                        <ArchiveUpIcon
-                          {...getActionIconProps('default')}
-                          weight="outline"
-                          aria-hidden="true"
-                        />
-                      </Button>
-                      <Button
-                        isIconOnly
-                        variant="ghost"
-                        {...getDeleteButtonProps()}
-                        onPress={() => {
-                          handleDeleteFromArchive(item.id)
-                        }}>
-                        <TrashIcon
-                          {...getActionIconProps('danger')}
-                          weight="outline"
-                          aria-hidden="true"
-                        />
-                      </Button>
-                    </div>
+                  <div {...getItemActionsProps()}>
+                    <Button
+                      isIconOnly
+                      variant="ghost"
+                      {...getUnarchiveButtonProps()}
+                      onPress={() => {
+                        handleUnarchive(item.id)
+                      }}>
+                      <ArchiveUpIcon
+                        {...getActionIconProps('default')}
+                        weight="outline"
+                        aria-hidden="true"
+                      />
+                    </Button>
+                    <Button
+                      isIconOnly
+                      variant="ghost"
+                      {...getDeleteButtonProps()}
+                      onPress={() => {
+                        handleDeleteFromArchive(item.id)
+                      }}>
+                      <TrashIcon
+                        {...getActionIconProps('danger')}
+                        weight="outline"
+                        aria-hidden="true"
+                      />
+                    </Button>
                   </div>
-                )
-              })}
-            </div>
-          </div>
+                </div>
+              )
+            })}
+          </DiscHistoryDateGroup>
         ))}
       </div>
     )
@@ -245,8 +202,9 @@ const Archive = (props: ArchiveProps) => {
   }))
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <div className="bg-background/95 sticky top-0 z-10 shrink-0 pb-3">
+    <DiscHistoryShell
+      containerProps={getContainerProps()}
+      search={
         <SearchInput
           {...getSearchInputProps(true)}
           value={archiveSearch}
@@ -254,28 +212,16 @@ const Archive = (props: ArchiveProps) => {
             setArchiveSearch(e.target.value)
           }
         />
-
-        {hasArchiveItems && actions.length > 0 && (
-          <div {...getActionsBarProps(false)}>
-            {actions.map(action => (
-              <ActionButton
-                key={action.type}
-                {...action.props}
-                onPress={action.onPress}>
-                <AppIcon icon={action.icon} size={16} aria-hidden="true" />
-                {action.label}
-              </ActionButton>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div {...getContainerProps()}>
-        <ScrollShadow hideScrollBar className="h-full">
-          {renderArchiveContent()}
-        </ScrollShadow>
-      </div>
-    </div>
+      }
+      actions={
+        <DiscHistoryActions
+          visible={hasArchiveItems}
+          actions={actions}
+          barProps={getActionsBarProps(false)}
+        />
+      }>
+      {renderArchiveContent()}
+    </DiscHistoryShell>
   )
 }
 

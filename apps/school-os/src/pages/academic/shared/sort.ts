@@ -6,7 +6,7 @@ export type SortFieldOption = {
   column: string
 }
 
-export type SortOrderOption = {
+type SortOrderOption = {
   key: string
   label: string
   direction: SortDescriptor['direction']
@@ -27,21 +27,6 @@ export const sortOrderOptions = [
     icon: 'vx:sort-descending'
   }
 ] as const satisfies readonly SortOrderOption[]
-
-export const getActiveSortLabel = (
-  sortOptions: readonly SortFieldOption[],
-  sortDescriptor: SortDescriptor,
-  fallbackLabel?: string
-) => {
-  return (
-    sortOptions.find(option => option.column === sortDescriptor.column)
-      ?.label ??
-    fallbackLabel ??
-    sortOptions[0]?.label ??
-    'Sort'
-  )
-}
-
 export const sortRows = <T extends Record<string, unknown>>(
   rows: T[],
   sortDescriptor: SortDescriptor

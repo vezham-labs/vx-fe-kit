@@ -1,5 +1,3 @@
-import type { SortDescriptor } from '@vezham/react-v3'
-
 export type RQSyllabus = Record<string, never>
 
 export type ClassStatus = 'Active' | 'Inactive'
@@ -34,20 +32,8 @@ export type ClassFormState = {
   classes: string
   subject: string
 }
-
-export type ClassFormErrors = Partial<
-  Record<'section' | 'classes' | 'subject' | 'status', string>
->
-
 export type SortOption = {
   key: string
   label: string
   column: keyof SyllabusItem
-}
-
-export type SortOrderOption = {
-  key: string
-  label: string
-  direction: SortDescriptor['direction']
-  icon: string
 }

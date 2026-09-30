@@ -1,5 +1,13 @@
 import { Avatar } from '@vezham/react-v3'
 
+export const getStudentInitials = (name: string) =>
+  name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(part => part[0]?.toUpperCase())
+    .join('')
+
 type Classes = {
   studentNameAvatar: string
   studentNameCell: string

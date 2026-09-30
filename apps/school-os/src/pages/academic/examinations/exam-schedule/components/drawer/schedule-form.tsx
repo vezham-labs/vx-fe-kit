@@ -2,7 +2,7 @@ import {
   AddCircle as AddCircleIcon,
   TrashBinTrash as TrashBinTrashIcon
 } from '@vezham/icons-react'
-import { Button, Input, Label, ListBox, Select } from '@vezham/react-v3'
+import { Button, Input, Label } from '@vezham/react-v3'
 
 import {
   classOptions,
@@ -22,6 +22,7 @@ import type {
 } from '@pages/academic/examinations/exam-schedule/types'
 import { classNames } from '@pages/academic/examinations/exam-schedule/variants'
 import { AcademicSelectField } from '@pages/academic/shared/select-field'
+import { AcademicTimeInputs } from '@pages/academic/shared/time-fields'
 
 export const ScheduleForm = ({
   form,
@@ -85,34 +86,17 @@ export const ScheduleForm = ({
     <div className={classNames.form}>
       <div className={classNames.formFields}>
         <div className={classNames.scheduleTopGrid}>
-          <Select
-            fullWidth
-            aria-label="Class"
-            aria-invalid={Boolean(formErrors.classes)}
+          <AcademicSelectField
+            ariaLabel="Class"
+            error={formErrors.classes}
+            errorClassName={classNames.fieldError}
+            label="Class"
+            labelClassName={classNames.fieldLabel}
+            options={classOptions}
             placeholder="Select class"
-            value={form.classes || null}
-            onChange={value =>
-              onFormChange('classes', value ? String(value) : '')
-            }>
-            <Label className={classNames.fieldLabel}>Class</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {classOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-          {formErrors.classes && (
-            <p className={classNames.fieldError}>{formErrors.classes}</p>
-          )}
+            value={form.classes}
+            onChange={value => onFormChange('classes', value)}
+          />
 
           <AcademicSelectField
             ariaLabel="Section"
@@ -126,93 +110,36 @@ export const ScheduleForm = ({
             onChange={value => onFormChange('section', value)}
           />
 
-          <Select
-            fullWidth
-            aria-label="Exam name"
-            aria-invalid={Boolean(formErrors.examName)}
+          <AcademicSelectField
+            ariaLabel="Exam name"
+            error={formErrors.examName}
+            errorClassName={classNames.fieldError}
+            label="Exam Name"
+            labelClassName={classNames.fieldLabel}
+            options={examOptions}
             placeholder="Select exam name"
-            value={form.examName || null}
-            onChange={value =>
-              onFormChange('examName', value ? String(value) : '')
-            }>
-            <Label className={classNames.fieldLabel}>Exam Name</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {examOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-          {formErrors.examName && (
-            <p className={classNames.fieldError}>{formErrors.examName}</p>
-          )}
+            value={form.examName}
+            onChange={value => onFormChange('examName', value)}
+          />
 
-          <div className={classNames.field}>
-            <Label className={classNames.fieldLabel}>Start Time</Label>
-            <Input
-              fullWidth
-              aria-label="Start time"
-              aria-invalid={Boolean(formErrors.starttime)}
-              type="time"
-              value={form.starttime}
-              onChange={event => onFormChange('starttime', event.target.value)}
-            />
-            {formErrors.starttime && (
-              <p className={classNames.fieldError}>{formErrors.starttime}</p>
-            )}
-          </div>
+          <AcademicTimeInputs
+            form={form}
+            errors={formErrors}
+            classes={classNames}
+            onChange={(field, value) => onFormChange(field, value)}
+          />
 
-          <div className={classNames.field}>
-            <Label className={classNames.fieldLabel}>End Time</Label>
-            <Input
-              fullWidth
-              aria-label="End time"
-              aria-invalid={Boolean(formErrors.endtime)}
-              type="time"
-              value={form.endtime}
-              onChange={event => onFormChange('endtime', event.target.value)}
-            />
-            {formErrors.endtime && (
-              <p className={classNames.fieldError}>{formErrors.endtime}</p>
-            )}
-          </div>
-
-          <Select
-            fullWidth
-            aria-label="Duration"
-            aria-invalid={Boolean(formErrors.duration)}
+          <AcademicSelectField
+            ariaLabel="Duration"
+            error={formErrors.duration}
+            errorClassName={classNames.fieldError}
+            label="Duration(min)"
+            labelClassName={classNames.fieldLabel}
+            options={durationOptions}
             placeholder="Select duration"
-            value={form.duration || null}
-            onChange={value =>
-              onFormChange('duration', value ? String(value) : '')
-            }>
-            <Label className={classNames.fieldLabel}>Duration(min)</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {durationOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-          {formErrors.duration && (
-            <p className={classNames.fieldError}>{formErrors.duration}</p>
-          )}
+            value={form.duration}
+            onChange={value => onFormChange('duration', value)}
+          />
         </div>
 
         <ScheduleRows
@@ -234,29 +161,17 @@ export const ScheduleForm = ({
       </div>
 
       <div className={classNames.statusRow}>
-        <Select
-          fullWidth
-          aria-label="Status"
-          aria-invalid={Boolean(formErrors.status)}
+        <AcademicSelectField
+          ariaLabel="Status"
+          error={formErrors.status}
+          label="Status"
+          labelClassName={classNames.fieldLabel}
+          options={statusOptions}
           placeholder="Select status"
           value={form.status}
-          onChange={updateStatus}>
-          <Label className={classNames.fieldLabel}>Status</Label>
-          <Select.Trigger>
-            <Select.Value />
-            <Select.Indicator />
-          </Select.Trigger>
-          <Select.Popover>
-            <ListBox>
-              {statusOptions.map(option => (
-                <ListBox.Item key={option} id={option} textValue={option}>
-                  {option}
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </Select.Popover>
-        </Select>
+          showError={false}
+          onChange={updateStatus}
+        />
       </div>
       {formErrors.status && (
         <p className={classNames.selectError}>{formErrors.status}</p>
@@ -286,92 +201,39 @@ const ScheduleRows = ({
     <div className={classNames.scheduleRows}>
       {scheduleRows.map((scheduleRow, index) => (
         <div key={scheduleRow.id} className={classNames.scheduleRow}>
-          <Select
-            fullWidth
-            aria-label={`Exam date ${index + 1}`}
+          <AcademicSelectField
+            ariaLabel={`Exam date ${index + 1}`}
+            label="Exam Date"
+            labelClassName={classNames.fieldLabel}
+            options={examdateOptions}
             placeholder="Select"
-            value={scheduleRow.date || null}
-            onChange={value =>
-              updateScheduleRow(
-                scheduleRow.id,
-                'date',
-                value ? String(value) : ''
-              )
-            }>
-            <Label className={classNames.fieldLabel}>Exam Date</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {examdateOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
+            value={scheduleRow.date}
+            onChange={value => updateScheduleRow(scheduleRow.id, 'date', value)}
+          />
 
-          <Select
-            fullWidth
-            aria-label={`Subject ${index + 1}`}
+          <AcademicSelectField
+            ariaLabel={`Subject ${index + 1}`}
+            label="Subject"
+            labelClassName={classNames.fieldLabel}
+            options={subjectOptions}
             placeholder="Select"
-            value={scheduleRow.subject || null}
+            value={scheduleRow.subject}
             onChange={value =>
-              updateScheduleRow(
-                scheduleRow.id,
-                'subject',
-                value ? String(value) : ''
-              )
-            }>
-            <Label className={classNames.fieldLabel}>Subject</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {subjectOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
+              updateScheduleRow(scheduleRow.id, 'subject', value)
+            }
+          />
 
-          <Select
-            fullWidth
-            aria-label={`Room number ${index + 1}`}
+          <AcademicSelectField
+            ariaLabel={`Room number ${index + 1}`}
+            label="Room No"
+            labelClassName={classNames.fieldLabel}
+            options={roomOptions}
             placeholder="Select"
-            value={scheduleRow.classroom || null}
+            value={scheduleRow.classroom}
             onChange={value =>
-              updateScheduleRow(
-                scheduleRow.id,
-                'classroom',
-                value ? String(value) : ''
-              )
-            }>
-            <Label className={classNames.fieldLabel}>Room No</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {roomOptions.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
+              updateScheduleRow(scheduleRow.id, 'classroom', value)
+            }
+          />
 
           <div className={classNames.field}>
             <Label className={classNames.fieldLabel}>Max Marks</Label>

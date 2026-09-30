@@ -13,7 +13,7 @@ export const navigationItems: AppNavigationItem[] = [
     title: 'Home'
   },
   {
-    key: 'channel',
+    key: 'channels',
     icon: 'vx:library',
     iconActive: 'vx:library-filled',
     href: '/channels',

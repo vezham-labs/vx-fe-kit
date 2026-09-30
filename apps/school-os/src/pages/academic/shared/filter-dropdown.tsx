@@ -1,15 +1,4 @@
-import {
-  AltArrowDown as AltArrowDownIcon,
-  Filter as FilterIcon
-} from '@vezham/icons-react'
-import {
-  Button,
-  Dropdown,
-  Label,
-  ListBox,
-  Select,
-  Surface
-} from '@vezham/react-v3'
+import { RecordFilterDropdown } from '@pages/_shared/record-filter-dropdown'
 
 type FilterClasses = {
   filterActions: string
@@ -37,61 +26,18 @@ type Props<Draft extends Record<string, string | null>> = {
 export const AcademicFilterDropdown = <
   Draft extends Record<string, string | null>
 >({
-  classes,
-  draftFilters,
   filters,
-  setDraftFilters,
-  onApply,
-  onReset
+  ...props
 }: Props<Draft>) => (
-  <Dropdown>
-    <Dropdown.Trigger>
-      <Button variant="outline">
-        <FilterIcon size={16} aria-hidden="true" />
-        Filter
-        <AltArrowDownIcon size={16} aria-hidden="true" />
-      </Button>
-    </Dropdown.Trigger>
-    <Dropdown.Popover>
-      <Surface className={classes.filterPanel}>
-        <h2 className={classes.filterTitle}>Filter</h2>
-        {filters.map(filter => (
-          <Select
-            key={filter.field}
-            fullWidth
-            aria-label={filter.ariaLabel}
-            placeholder={filter.placeholder}
-            value={draftFilters[filter.field]}
-            onChange={value =>
-              setDraftFilters({
-                ...draftFilters,
-                [filter.field]: value ? String(value) : null
-              })
-            }>
-            <Label>{filter.label}</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {filter.options.map(option => (
-                  <ListBox.Item key={option} id={option} textValue={option}>
-                    {option}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
-        ))}
-        <div className={classes.filterActions}>
-          <Button variant="secondary" onPress={onReset}>
-            Reset
-          </Button>
-          <Button onPress={onApply}>Apply</Button>
-        </div>
-      </Surface>
-    </Dropdown.Popover>
-  </Dropdown>
+  <RecordFilterDropdown
+    {...props}
+    showChevron
+    filters={filters.map(filter => ({
+      key: filter.field,
+      label: filter.label,
+      values: filter.options,
+      ariaLabel: filter.ariaLabel,
+      placeholder: filter.placeholder
+    }))}
+  />
 )

@@ -7,7 +7,7 @@ import type { RQClassRoutine } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_CLASS_ROUTINE = 'class-routine'
+const CK_CLASS_ROUTINE = 'class-routine'
 
 const useList = (rq: RQClassRoutine = {}) =>
   useQuery({

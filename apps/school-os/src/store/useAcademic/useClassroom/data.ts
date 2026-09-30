@@ -1,11 +1,8 @@
 import type {
   ClassFormState,
-  ClassStatus,
   ClassroomColumnKey,
   ClassroomItem,
-  DatePresetKey,
-  SortOption,
-  SortOrderOption
+  SortOption
 } from './types'
 
 export const classroomData: ClassroomItem[] = [
@@ -91,16 +88,6 @@ export const classroomData: ClassroomItem[] = [
   }
 ]
 
-export const dateOptions: { key: DatePresetKey; label: string }[] = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last7', label: 'Last 7 Days' },
-  { key: 'last30', label: 'Last 30 Days' },
-  { key: 'thisYear', label: 'This Year' },
-  { key: 'nextYear', label: 'Next Year' },
-  { key: 'custom', label: 'Custom Range' }
-]
-
 export const sortOptions = [
   {
     key: 'recentlyViewed',
@@ -114,22 +101,6 @@ export const sortOptions = [
   }
 ] as const satisfies readonly SortOption[]
 
-export const sortOrderOptions = [
-  {
-    key: 'ascending',
-    label: 'Ascending',
-    direction: 'ascending',
-    icon: 'vx:sort-ascending'
-  },
-  {
-    key: 'descending',
-    label: 'Descending',
-    direction: 'descending',
-    icon: 'vx:sort-descending'
-  }
-] as const satisfies readonly SortOrderOption[]
-
-export const rowCountOptions = ['5', '10', '25', '50']
 export const classroomColumnOptions = [
   {
     key: 'id',
@@ -183,7 +154,6 @@ export const roomnoOptions = [
 ]
 
 export const capacityOptions = ['10', '20', '30', '40', '50', '60', '70', '80']
-export const statusOptions: ClassStatus[] = ['Active', 'Inactive']
 
 export const emptyForm: ClassFormState = {
   roomno: '',

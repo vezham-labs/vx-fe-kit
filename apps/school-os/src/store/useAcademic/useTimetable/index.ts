@@ -7,7 +7,7 @@ import type { RQTimetable } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_TIMETABLE = 'timetable'
+const CK_TIMETABLE = 'timetable'
 
 const useList = (rq: RQTimetable = {}) =>
   useQuery({

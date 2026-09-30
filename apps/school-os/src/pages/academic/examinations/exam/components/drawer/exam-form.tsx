@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date'
 
-import { Calendar, DateField, DatePicker, Input, Label } from '@vezham/react-v3'
+import { Calendar, DateField, DatePicker, Label } from '@vezham/react-v3'
 import type { DateValue } from '@vezham/react-v3'
 
 import {
@@ -9,7 +9,8 @@ import {
 } from '@pages/academic/examinations/exam/data'
 import type { ClassFormProps } from '@pages/academic/examinations/exam/types'
 import { classNames } from '@pages/academic/examinations/exam/variants'
-import { AcademicSelectField } from '@pages/academic/shared/select-field'
+import { AcademicInputField } from '@pages/academic/shared/input-field'
+import { AcademicTimeSelects } from '@pages/academic/shared/time-fields'
 
 export const ExamForm = ({
   form,
@@ -19,19 +20,14 @@ export const ExamForm = ({
   return (
     <div className={classNames.form}>
       <div className={classNames.formFields}>
-        <div className={classNames.field}>
-          <Label className={classNames.fieldLabel}>Exam Name</Label>
-          <Input
-            fullWidth
-            aria-invalid={Boolean(formErrors.name)}
-            placeholder="Enter class name"
-            value={form.name}
-            onChange={event => onFormChange('name', event.target.value)}
-          />
-          {formErrors.name && (
-            <p className={classNames.fieldError}>{formErrors.name}</p>
-          )}
-        </div>
+        <AcademicInputField
+          classes={classNames}
+          error={formErrors.name}
+          label="Exam Name"
+          placeholder="Enter class name"
+          value={form.name}
+          onChange={value => onFormChange('name', value)}
+        />
 
         <DatePicker
           className="w-full"
@@ -86,28 +82,13 @@ export const ExamForm = ({
           <p className={classNames.selectError}>{formErrors.date}</p>
         )}
 
-        <AcademicSelectField
-          ariaLabel="Start time"
-          error={formErrors.starttime}
-          errorClassName={classNames.selectError}
-          label="Start Time"
-          labelClassName={classNames.fieldLabel}
-          options={starttimeOptions}
-          placeholder="Select start time"
-          value={form.starttime}
-          onChange={value => onFormChange('starttime', value)}
-        />
-
-        <AcademicSelectField
-          ariaLabel="End time"
-          error={formErrors.endtime}
-          errorClassName={classNames.selectError}
-          label="End Time"
-          labelClassName={classNames.fieldLabel}
-          options={endtimeOptions}
-          placeholder="Select end time"
-          value={form.endtime}
-          onChange={value => onFormChange('endtime', value)}
+        <AcademicTimeSelects
+          form={form}
+          errors={formErrors}
+          classes={classNames}
+          startOptions={starttimeOptions}
+          endOptions={endtimeOptions}
+          onChange={(field, value) => onFormChange(field, value)}
         />
       </div>
     </div>

@@ -7,7 +7,7 @@ import type { RQDisc } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_DISC = 'disc'
+const CK_DISC = 'disc'
 
 const useDiscList = (rq: RQDisc = {}) =>
   useQuery({

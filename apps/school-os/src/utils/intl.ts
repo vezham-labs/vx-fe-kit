@@ -10,12 +10,6 @@ export const shortDateFormatter = new Intl.DateTimeFormat('en-US', {
   year: 'numeric'
 })
 
-export const shortPaddedDateFormatter = new Intl.DateTimeFormat('en', {
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric'
-})
-
 export const reportDateFormatter = new Intl.DateTimeFormat('en-GB', {
   day: '2-digit',
   month: 'short',

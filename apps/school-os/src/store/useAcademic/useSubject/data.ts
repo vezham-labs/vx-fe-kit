@@ -1,9 +1,6 @@
 import type {
   ClassFormState,
-  ClassStatus,
-  DatePresetKey,
   SortOption,
-  SortOrderOption,
   SubjectItem,
   typeStatus
 } from './types'
@@ -101,16 +98,6 @@ export const subjectData: SubjectItem[] = [
   }
 ]
 
-export const dateOptions: { key: DatePresetKey; label: string }[] = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last7', label: 'Last 7 Days' },
-  { key: 'last30', label: 'Last 30 Days' },
-  { key: 'thisYear', label: 'This Year' },
-  { key: 'nextYear', label: 'Next Year' },
-  { key: 'custom', label: 'Custom Range' }
-]
-
 export const sortOptions = [
   {
     key: 'recentlyViewed',
@@ -124,22 +111,6 @@ export const sortOptions = [
   }
 ] as const satisfies readonly SortOption[]
 
-export const sortOrderOptions = [
-  {
-    key: 'ascending',
-    label: 'Ascending',
-    direction: 'ascending',
-    icon: 'vx:sort-ascending'
-  },
-  {
-    key: 'descending',
-    label: 'Descending',
-    direction: 'descending',
-    icon: 'vx:sort-descending'
-  }
-] as const satisfies readonly SortOrderOption[]
-
-export const rowCountOptions = ['5', '10', '25', '50']
 export const nameOptions = [
   'English',
   'Economics',
@@ -166,8 +137,6 @@ export const codeOptions = [
   '110'
 ]
 export const typeOptions: typeStatus[] = ['Theory', 'Practical']
-export const statusOptions: ClassStatus[] = ['Active', 'Inactive']
-
 export const subjectColumnOptions = [
   {
     key: 'id',

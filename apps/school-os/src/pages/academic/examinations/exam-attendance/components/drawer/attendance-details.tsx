@@ -1,65 +1,31 @@
-import { Chip } from '@vezham/react-v3'
-
-import type {
-  AttendanceDetailSummaryProps,
-  AttendanceDetailsProps,
-  DetailLineProps
-} from '@pages/academic/examinations/exam-attendance/types'
+import type { AttendanceDetailsProps } from '@pages/academic/examinations/exam-attendance/types'
 import {
   getAttendanceChipColor,
   getAttendanceTags
 } from '@pages/academic/examinations/exam-attendance/utils/exam-attendance'
 import { classNames } from '@pages/academic/examinations/exam-attendance/variants'
+import { getExamIdentityFields } from '@pages/academic/examinations/shared-detail-fields'
+import { EntityDetails } from '@pages/academic/shared/entity-details'
+import type { DetailField } from '@pages/academic/shared/entity-details'
 
-export const AttendanceDetails = ({ row }: AttendanceDetailsProps) => {
-  if (!row) {
-    return null
-  }
+type Row = NonNullable<AttendanceDetailsProps['row']>
 
-  return (
-    <div className={classNames.details}>
-      <AttendanceDetailSummary row={row} />
-    </div>
-  )
-}
+const fields: DetailField<Row>[] = [
+  ...getExamIdentityFields<Row>(),
+  { label: 'Physics', value: (row: Row) => row.physics },
+  { label: 'Chemistry', value: (row: Row) => row.chemistry },
+  { label: 'Maths', value: (row: Row) => row.maths },
+  { label: 'Computer', value: (row: Row) => row.computer },
+  { label: 'Env Science', value: (row: Row) => row.envscience }
+]
 
-function AttendanceDetailSummary({ row }: AttendanceDetailSummaryProps) {
-  return (
-    <div className={classNames.detailSummary}>
-      <DetailLine label="Name" value={row.name} />
-      <DetailLine label="English" value={row.english} />
-      <DetailLine label="Spanish" value={row.spanish} />
-      <DetailLine label="Physics" value={row.physics} />
-      <DetailLine label="Chemistry" value={row.chemistry} />
-      <DetailLine label="Maths" value={row.maths} />
-      <DetailLine label="Computer" value={row.computer} />
-      <DetailLine label="Env Science" value={row.envscience} />
-
-      <div className={classNames.detailChipRow}>
-        <span className={classNames.detailHeading}>Status:</span>
-        <Chip color={getAttendanceChipColor(row.status)} variant="soft">
-          <span aria-hidden="true">●</span>
-          <Chip.Label>{row.status}</Chip.Label>
-        </Chip>
-      </div>
-
-      <div className={classNames.detailTagsRow}>
-        <span className={classNames.detailHeading}>Tags:</span>
-        {getAttendanceTags(row).map(tag => (
-          <Chip key={tag} variant="soft">
-            <Chip.Label>{tag}</Chip.Label>
-          </Chip>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function DetailLine({ label, value }: DetailLineProps) {
-  return (
-    <div className={classNames.detailLine}>
-      <span className={classNames.fieldLabel}>{label}:</span>
-      <span className={classNames.detailValue}>{value}</span>
-    </div>
-  )
-}
+export const AttendanceDetails = ({ row }: AttendanceDetailsProps) => (
+  <EntityDetails
+    row={row}
+    fields={fields}
+    classNames={classNames}
+    getTags={getAttendanceTags}
+    getStatus={(item: Row) => item.status}
+    getStatusColor={(item: Row) => getAttendanceChipColor(item.status)}
+  />
+)

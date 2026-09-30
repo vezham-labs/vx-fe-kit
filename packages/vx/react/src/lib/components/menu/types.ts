@@ -20,17 +20,6 @@ export interface BottomNavbarProps {
   buttonTextColor?: string
 }
 
-export interface BottomDrawerMenuProps {
-  items: SidebarItem[]
-  selectedKey: string
-  onSelect: (key: string) => void
-  isOpen: boolean
-  onClose: () => void
-  isDarkMode?: boolean
-  bgColorClass?: string
-  buttonTextColor?: string
-}
-
 export type MenuDrawerProps = {
   items: SidebarItem[]
   selectedKey: string

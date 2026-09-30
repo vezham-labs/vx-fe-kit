@@ -7,7 +7,7 @@ import type { RQAssign } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_ASSIGN = 'assign'
+const CK_ASSIGN = 'assign'
 
 const useList = (rq: RQAssign = {}) =>
   useQuery({

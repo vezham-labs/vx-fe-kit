@@ -1,27 +1,6 @@
 import { type SortDescriptor, useOverlayState } from '@vezham/react-v3'
 
-export type DatePresetKey =
-  | 'today'
-  | 'yesterday'
-  | 'last7'
-  | 'last30'
-  | 'thisYear'
-  | 'nextYear'
-  | 'custom'
-
-export type PickerDateValue = {
-  toString(): string
-}
-
-export type CustomDateRangeValue = {
-  start: PickerDateValue
-  end: PickerDateValue
-}
-
-export type DateRangeFilter = {
-  start: string
-  end: string
-}
+export type { DatePresetKey } from '@src/utils/date-options'
 
 export type AttendanceStatus =
   'Present' | 'Absent' | 'Late' | 'Half Day' | 'Halfday' | 'Holiday'
@@ -84,13 +63,6 @@ export type AttendancePageConfig = {
 export type FilterDraft = Record<string, string | null>
 export type DrawerMode = 'view' | 'edit'
 
-export type ToastState = {
-  message: string
-  status: 'success' | 'danger'
-}
-
-export type DrawerState = ReturnType<typeof useDisclosure>
-
 export type SortableHeaderProps = {
   children: string
   sortDirection?: 'ascending' | 'descending'
@@ -101,7 +73,7 @@ export type DrawerQueryState = {
   mode: DrawerMode
 }
 
-export function useDisclosure() {
+export const useDisclosure = () => {
   const state = useOverlayState()
 
   return {

@@ -7,7 +7,7 @@ import type { RQBooks } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_BOOKS = 'books'
+const CK_BOOKS = 'books'
 
 const useList = (rq: RQBooks = {}) =>
   useQuery({

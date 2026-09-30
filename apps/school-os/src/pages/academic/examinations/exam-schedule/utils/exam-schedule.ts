@@ -3,6 +3,14 @@ import type {
   ClassFormState,
   ClassRow
 } from '@pages/academic/examinations/exam-schedule/types'
+import {
+  getAcademicScheduleFields,
+  validateAcademicPlacement,
+  validateTimeAndStatus
+} from '@pages/academic/shared/entity-utils'
+
+export { getPaginationSummary } from '@pages/academic/shared/entity-utils'
+export { getEntityDrawerTitle as getDrawerTitle } from '@pages/academic/shared/entity-utils'
 
 export const getScheduleTags = (row: ClassRow) => {
   return [
@@ -15,44 +23,14 @@ export const getScheduleTags = (row: ClassRow) => {
   ]
 }
 
-export const getDrawerTitle = (row: ClassRow) => {
-  const values = row as Record<string, unknown>
-  const idValue =
-    getDrawerText(values.displayId) ||
-    getDrawerText(values.refId) ||
-    getDrawerText(values.studentId) ||
-    getDrawerText(values.admissionNo) ||
-    getDrawerText(values.admissionNumber) ||
-    getDrawerText(values.serialNo) ||
-    getDrawerText(values.sNo) ||
-    getDrawerText(values.id)
-  const nameValue =
-    getDrawerText(values.name) ||
-    getDrawerText(values.studentName) ||
-    getDrawerText(values.staffName) ||
-    getDrawerText(values.teacherName)
-
-  if (idValue) {
-    return idValue.startsWith('#') ? idValue : `#${idValue}`
-  }
-
-  return nameValue || '-'
-}
-
 export const rowToForm = (row: ClassRow): ClassFormState => {
   return {
-    classes: row.classes,
-    section: row.section,
+    ...getAcademicScheduleFields(row),
     examName: row.examName,
-    subject: row.subject,
     date: row.date,
-    starttime: row.starttime,
-    endtime: row.endtime,
     duration: row.duration,
-    classroom: row.classroom,
     maximum: row.maximum,
     minimum: row.minimum,
-    status: row.status,
     scheduleRows: [
       {
         id: `${row.id}-schedule`,
@@ -67,15 +45,7 @@ export const rowToForm = (row: ClassRow): ClassFormState => {
 }
 
 export const validateScheduleForm = (form: ClassFormState) => {
-  const errors: ClassFormErrors = {}
-
-  if (!form.classes.trim()) {
-    errors.classes = 'Class is required.'
-  }
-
-  if (!form.section.trim()) {
-    errors.section = 'Section is required.'
-  }
+  const errors: ClassFormErrors = validateAcademicPlacement(form)
 
   if (!form.examName.trim()) {
     errors.examName = 'Exam name is required.'
@@ -99,73 +69,5 @@ export const validateScheduleForm = (form: ClassFormState) => {
     errors.scheduleRows = 'Complete every exam schedule row.'
   }
 
-  if (!form.starttime.trim()) {
-    errors.starttime = 'Start time is required.'
-  }
-
-  if (!form.endtime.trim()) {
-    errors.endtime = 'End time is required.'
-  }
-
-  if (
-    form.starttime &&
-    form.endtime &&
-    parseTimeOption(form.endtime) <= parseTimeOption(form.starttime)
-  ) {
-    errors.endtime = 'End time must be after start time.'
-  }
-
-  if (!form.status) {
-    errors.status = 'Status is required.'
-  }
-
-  return errors
-}
-
-export const getPaginationSummary = (
-  page: number,
-  pageSize: number,
-  total: number
-) => {
-  if (!total) {
-    return '0 of 0'
-  }
-
-  const start = (page - 1) * pageSize + 1
-  const end = Math.min(page * pageSize, total)
-
-  return `${start}-${end} of ${total}`
-}
-
-function getDrawerText(value: unknown) {
-  if (value && typeof value === 'object' && 'name' in value) {
-    return String((value as { name?: unknown }).name ?? '').trim()
-  }
-
-  if (value === null || value === undefined) return ''
-
-  return String(value).trim().split('\n')[0]
-}
-
-function parseTimeOption(value: string) {
-  const timeInputMatch = value.match(/^(\d{2}):(\d{2})$/)
-
-  if (timeInputMatch) {
-    const [, hourValue, minuteValue] = timeInputMatch
-    return Number(hourValue) * 60 + Number(minuteValue)
-  }
-
-  const match = value.match(/^(\d{2})\.(\d{2})\s(AM|PM)$/)
-
-  if (!match) {
-    return 0
-  }
-
-  const [, hourValue, minuteValue, period] = match
-  const hour = Number(hourValue)
-  const minute = Number(minuteValue)
-  const normalizedHour =
-    period === 'PM' ? (hour === 12 ? 12 : hour + 12) : hour === 12 ? 0 : hour
-
-  return normalizedHour * 60 + minute
+  return validateTimeAndStatus(form, errors)
 }

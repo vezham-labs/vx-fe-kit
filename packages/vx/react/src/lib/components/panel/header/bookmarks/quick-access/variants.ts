@@ -21,8 +21,4 @@ const orderFavorites = (items: FavoriteItem[], orderIds: string[]) => {
     .filter((item): item is FavoriteItem => Boolean(item))
 }
 
-const areIdsEqual = (firstIds: string[], secondIds: string[]) =>
-  firstIds.length === secondIds.length &&
-  firstIds.every((id, index) => id === secondIds[index])
-
-export { areIdsEqual, getFavoriteIds, orderFavorites, reconcileFavoriteOrder }
+export { getFavoriteIds, orderFavorites }

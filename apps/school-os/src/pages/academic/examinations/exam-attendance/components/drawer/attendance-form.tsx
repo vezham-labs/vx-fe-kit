@@ -1,4 +1,4 @@
-import { Input, Label, ListBox, Select } from '@vezham/react-v3'
+import { Label, ListBox, Select } from '@vezham/react-v3'
 
 import { statusOptions } from '@pages/academic/examinations/exam-attendance/data'
 import type {
@@ -7,6 +7,7 @@ import type {
   AttendanceStatus
 } from '@pages/academic/examinations/exam-attendance/types'
 import { classNames } from '@pages/academic/examinations/exam-attendance/variants'
+import { AcademicInputField } from '@pages/academic/shared/input-field'
 
 const attendanceSubjectFields: {
   key: keyof Pick<
@@ -38,19 +39,14 @@ export const AttendanceForm = ({
   return (
     <div className={classNames.form}>
       <div className={classNames.formFields}>
-        <div className={classNames.field}>
-          <Label className={classNames.fieldLabel}>Name</Label>
-          <Input
-            fullWidth
-            aria-invalid={Boolean(formErrors.name)}
-            placeholder="Enter name"
-            value={form.name}
-            onChange={event => onFormChange('name', event.target.value)}
-          />
-          {formErrors.name && (
-            <p className={classNames.fieldError}>{formErrors.name}</p>
-          )}
-        </div>
+        <AcademicInputField
+          classes={classNames}
+          error={formErrors.name}
+          label="Name"
+          placeholder="Enter name"
+          value={form.name}
+          onChange={value => onFormChange('name', value)}
+        />
 
         {attendanceSubjectFields.map(field => (
           <AttendanceStatusSelect

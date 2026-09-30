@@ -1,12 +1,7 @@
 export {
   classOptions,
-  dateOptions,
-  emptyForm,
-  rowCountOptions,
   sectionOptions,
   sortOptions,
-  sortOrderOptions,
   statusOptions,
-  syllabusColumnOptions,
-  syllabusData as initialRows
+  syllabusColumnOptions
 } from '@store/useAcademic/useSyllabus'

@@ -1,61 +1,27 @@
-import { useOverlayState } from '@vezham/react-v3'
+import type {
+  DrawerMode,
+  DrawerState,
+  EntityFilterDropdownProps
+} from '@pages/academic/shared/entity-types'
+import type {
+  AttendanceFormState,
+  AttendanceRow,
+  AttendanceStatus
+} from '@store/useAcademic/useExamAttendance/types'
 
-export type AttendanceStatus = 'Present' | 'Absent' | 'Late'
-export type DrawerMode = 'view' | 'edit' | 'create'
-export type AttendanceColumnKey =
-  | 'id'
-  | 'name'
-  | 'english'
-  | 'spanish'
-  | 'physics'
-  | 'chemistry'
-  | 'maths'
-  | 'computer'
-  | 'envscience'
+export type {
+  AttendanceStatus,
+  AttendanceColumnKey,
+  AttendanceRow,
+  AttendanceFormState
+} from '@store/useAcademic/useExamAttendance/types'
 
-export type ToastState = {
-  message: string
-  status: 'success' | 'danger'
-}
+export type {
+  DrawerMode,
+  DrawerState
+} from '@pages/academic/shared/entity-types'
 
-export type AttendanceRow = {
-  id: string
-  name: string
-  avatar?: string
-  email?: string
-  rollNo?: string
-  english: AttendanceStatus
-  spanish: AttendanceStatus
-  physics: AttendanceStatus
-  chemistry: AttendanceStatus
-  maths: AttendanceStatus
-  computer: AttendanceStatus
-  envscience: AttendanceStatus
-  examtype?: string
-  classes?: string
-  section?: string
-  status: AttendanceStatus
-  createdAt: string
-  viewedAt: string
-}
-
-export type DatePresetKey =
-  | 'today'
-  | 'yesterday'
-  | 'last7'
-  | 'last30'
-  | 'thisYear'
-  | 'nextYear'
-  | 'custom'
-
-export type DateRangeFilter = {
-  start: string
-  end: string
-}
-
-export type PickerDateValue = {
-  toString(): string
-}
+export type { DatePresetKey } from '@src/utils/date-options'
 
 export type FilterDraft = {
   name: string | null
@@ -70,21 +36,6 @@ export type FilterDraft = {
   status: AttendanceStatus | null
   classes?: string | null
   section?: string | null
-}
-
-export type AttendanceFormState = {
-  name: string
-  english: AttendanceStatus
-  spanish: AttendanceStatus
-  physics: AttendanceStatus
-  chemistry: AttendanceStatus
-  maths: AttendanceStatus
-  computer: AttendanceStatus
-  envscience: AttendanceStatus
-  examtype?: string
-  classes?: string
-  section?: string
-  status: AttendanceStatus
 }
 
 export type AttendanceFormErrors = Partial<
@@ -105,14 +56,7 @@ export type AttendanceFormErrors = Partial<
   >
 >
 
-export type DrawerState = ReturnType<typeof useDisclosure>
-
-export type FilterDropdownProps = {
-  draftFilters: FilterDraft
-  setDraftFilters: (filters: FilterDraft) => void
-  onApply: () => void
-  onReset: () => void
-}
+export type FilterDropdownProps = EntityFilterDropdownProps<FilterDraft>
 
 export type AttendanceDrawerProps = {
   canGoNext: boolean
@@ -144,52 +88,4 @@ export type AttendanceFormProps = {
 
 export type AttendanceDetailsProps = {
   row: AttendanceRow | null
-}
-
-export type DetailLineProps = {
-  label: string
-  value: string
-}
-
-export type AttendanceDetailSummaryProps = {
-  row: AttendanceRow
-}
-
-export type SortableHeaderProps = {
-  children: string
-  sortDirection?: 'ascending' | 'descending'
-}
-
-export type AttendanceColumnOption = {
-  key: AttendanceColumnKey
-  label: string
-  defaultWidth: number
-  minWidth: number
-  maxWidth: number
-}
-
-export type DrawerQueryState = {
-  id?: string
-  mode: DrawerMode
-}
-
-export type OpenDrawerOptions = {
-  syncUrl?: boolean
-  replaceUrl?: boolean
-}
-
-export type CustomDateRangeValue = {
-  start: PickerDateValue
-  end: PickerDateValue
-}
-
-export function useDisclosure() {
-  const state = useOverlayState()
-
-  return {
-    ...state,
-    onOpen: state.open,
-    onClose: state.close,
-    onOpenChange: state.setOpen
-  }
 }

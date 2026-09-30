@@ -1,67 +1,34 @@
-import { Chip } from '@vezham/react-v3'
-
-import type {
-  ClassDetailSummaryProps,
-  ClassDetailsProps,
-  DetailLineProps
-} from '@pages/academic/examinations/exam-schedule/types'
+import type { ClassDetailsProps } from '@pages/academic/examinations/exam-schedule/types'
 import { getScheduleTags } from '@pages/academic/examinations/exam-schedule/utils/exam-schedule'
 import { classNames } from '@pages/academic/examinations/exam-schedule/variants'
+import { EntityDetails } from '@pages/academic/shared/entity-details'
+import type { DetailField } from '@pages/academic/shared/entity-details'
 
-export const ScheduleDetails = ({ row }: ClassDetailsProps) => {
-  if (!row) {
-    return null
-  }
+type Row = NonNullable<ClassDetailsProps['row']>
 
-  return (
-    <div className={classNames.details}>
-      <ScheduleDetailSummary row={row} />
-    </div>
-  )
-}
+const fields: DetailField<Row>[] = [
+  { label: 'Class', value: (row: Row) => row.classes },
+  { label: 'Section', value: (row: Row) => row.section },
+  { label: 'Exam Name', value: (row: Row) => row.examName },
+  { label: 'Exam Date', value: (row: Row) => row.date },
+  { label: 'Subject', value: (row: Row) => row.subject },
+  { label: 'Start Time', value: (row: Row) => row.starttime },
+  { label: 'End Time', value: (row: Row) => row.endtime },
+  { label: 'Duration', value: (row: Row) => row.duration },
+  { label: 'Room No', value: (row: Row) => row.classroom },
+  { label: 'Max Marks', value: (row: Row) => row.maximum },
+  { label: 'Min Marks', value: (row: Row) => row.minimum }
+]
 
-function ScheduleDetailSummary({ row }: ClassDetailSummaryProps) {
-  return (
-    <div className={classNames.detailSummary}>
-      <DetailLine label="Class" value={row.classes} />
-      <DetailLine label="Section" value={row.section} />
-      <DetailLine label="Exam Name" value={row.examName} />
-      <DetailLine label="Exam Date" value={row.date} />
-      <DetailLine label="Subject" value={row.subject} />
-      <DetailLine label="Start Time" value={row.starttime} />
-      <DetailLine label="End Time" value={row.endtime} />
-      <DetailLine label="Duration" value={row.duration} />
-      <DetailLine label="Room No" value={row.classroom} />
-      <DetailLine label="Max Marks" value={row.maximum} />
-      <DetailLine label="Min Marks" value={row.minimum} />
-
-      <div className={classNames.detailChipRow}>
-        <span className={classNames.detailHeading}>Status:</span>
-        <Chip
-          color={row.status === 'Active' ? 'success' : 'danger'}
-          variant="soft">
-          <span aria-hidden="true">●</span>
-          <Chip.Label>{row.status}</Chip.Label>
-        </Chip>
-      </div>
-
-      <div className={classNames.detailTagsRow}>
-        <span className={classNames.detailHeading}>Tags:</span>
-        {getScheduleTags(row).map(tag => (
-          <Chip key={tag} variant="soft">
-            <Chip.Label>{tag}</Chip.Label>
-          </Chip>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function DetailLine({ label, value }: DetailLineProps) {
-  return (
-    <div className={classNames.detailLine}>
-      <span className={classNames.fieldLabel}>{label}:</span>
-      <span className={classNames.detailValue}>{value}</span>
-    </div>
-  )
-}
+export const ScheduleDetails = ({ row }: ClassDetailsProps) => (
+  <EntityDetails
+    row={row}
+    fields={fields}
+    classNames={classNames}
+    getTags={getScheduleTags}
+    getStatus={(item: Row) => item.status}
+    getStatusColor={(item: Row) =>
+      item.status === 'Active' ? 'success' : 'danger'
+    }
+  />
+)

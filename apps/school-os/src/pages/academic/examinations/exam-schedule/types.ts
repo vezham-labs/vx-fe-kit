@@ -1,71 +1,30 @@
-import { useOverlayState } from '@vezham/react-v3'
+import type {
+  DrawerMode,
+  DrawerState,
+  EntityDetailsProps,
+  EntityFilterDropdownProps
+} from '@pages/academic/shared/entity-types'
+import type {
+  ClassFormState,
+  ClassRow,
+  ClassStatus
+} from '@store/useAcademic/useExamSchedule/types'
 
-export type ClassStatus = 'Active' | 'Inactive'
-export type DrawerMode = 'view' | 'edit' | 'create'
-export type ScheduleColumnKey =
-  | 'id'
-  | 'classes'
-  | 'section'
-  | 'examName'
-  | 'date'
-  | 'subject'
-  | 'starttime'
-  | 'endtime'
-  | 'duration'
-  | 'classroom'
-  | 'maximum'
-  | 'minimum'
-  | 'status'
+export type {
+  ClassStatus,
+  ScheduleColumnKey,
+  ClassRow,
+  ExamScheduleItem,
+  ClassFormState
+} from '@store/useAcademic/useExamSchedule/types'
 
-export type ToastState = {
-  message: string
-  status: 'success' | 'danger'
-}
+export type {
+  DrawerMode,
+  ToastState,
+  DrawerState
+} from '@pages/academic/shared/entity-types'
 
-export type ClassRow = {
-  id: string
-  classes: string
-  section: string
-  examName: string
-  subject: string
-  date: string
-  starttime: string
-  endtime: string
-  duration: string
-  classroom: string
-  maximum: string
-  minimum: string
-  status: ClassStatus
-  createdAt: string
-  viewedAt: string
-}
-
-export type ExamScheduleItem = {
-  id: string
-  date: string
-  subject: string
-  classroom: string
-  maximum: string
-  minimum: string
-}
-
-export type DatePresetKey =
-  | 'today'
-  | 'yesterday'
-  | 'last7'
-  | 'last30'
-  | 'thisYear'
-  | 'nextYear'
-  | 'custom'
-
-export type DateRangeFilter = {
-  start: string
-  end: string
-}
-
-export type PickerDateValue = {
-  toString(): string
-}
+export type { DatePresetKey } from '@src/utils/date-options'
 
 export type FilterDraft = {
   classes: string | null
@@ -80,22 +39,6 @@ export type FilterDraft = {
   maximum: string | null
   minimum: string | null
   status: ClassStatus | null
-}
-
-export type ClassFormState = {
-  classes: string
-  section: string
-  examName: string
-  subject: string
-  date: string
-  starttime: string
-  endtime: string
-  duration: string
-  classroom: string
-  maximum: string
-  minimum: string
-  status: ClassStatus
-  scheduleRows: ExamScheduleItem[]
 }
 
 export type ClassFormErrors = Partial<
@@ -117,14 +60,7 @@ export type ClassFormErrors = Partial<
   >
 >
 
-export type DrawerState = ReturnType<typeof useDisclosure>
-
-export type FilterDropdownProps = {
-  draftFilters: FilterDraft
-  setDraftFilters: (filters: FilterDraft) => void
-  onApply: () => void
-  onReset: () => void
-}
+export type FilterDropdownProps = EntityFilterDropdownProps<FilterDraft>
 
 export type ClassDrawerProps = {
   canGoNext: boolean
@@ -160,54 +96,4 @@ export type ClassFormProps = {
   ) => void
 }
 
-export type ClassDetailsProps = {
-  row: ClassRow | null
-}
-
-export type ClassDetailSummaryProps = {
-  row: ClassRow
-}
-
-export type DetailLineProps = {
-  label: string
-  value: string
-}
-
-export type SortableHeaderProps = {
-  children: string
-  sortDirection?: 'ascending' | 'descending'
-}
-
-export type ScheduleColumnOption = {
-  key: ScheduleColumnKey
-  label: string
-  defaultWidth: number
-  minWidth: number
-  maxWidth: number
-}
-
-export type DrawerQueryState = {
-  id?: string
-  mode: DrawerMode
-}
-
-export type OpenDrawerOptions = {
-  syncUrl?: boolean
-  replaceUrl?: boolean
-}
-
-export type CustomDateRangeValue = {
-  start: PickerDateValue
-  end: PickerDateValue
-}
-
-export function useDisclosure() {
-  const state = useOverlayState()
-
-  return {
-    ...state,
-    onOpen: state.open,
-    onClose: state.close,
-    onOpenChange: state.setOpen
-  }
-}
+export type ClassDetailsProps = EntityDetailsProps<ClassRow>

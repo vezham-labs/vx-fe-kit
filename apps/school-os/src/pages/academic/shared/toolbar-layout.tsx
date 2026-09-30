@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { SearchField } from '@vezham/react-v3'
+import { SearchField, Surface } from '@vezham/react-v3'
 
 type HeaderProps = {
   actions: ReactNode
@@ -12,7 +12,7 @@ type HeaderProps = {
   titleClassName: string
 }
 
-export const AcademicToolbarHeader = ({
+const AcademicToolbarHeader = ({
   actions,
   actionsClassName,
   eyebrow,
@@ -38,7 +38,7 @@ type SearchProps = {
   onChange: (value: string) => void
 }
 
-export const AcademicToolbarSearch = ({
+const AcademicToolbarSearch = ({
   ariaLabel,
   className,
   value,
@@ -56,4 +56,53 @@ export const AcademicToolbarSearch = ({
       </SearchField>
     </div>
   </div>
+)
+
+type ToolbarClassNames = {
+  headerRow: string
+  mutedText: string
+  title: string
+  toolbar: string
+  toolbarActions: string
+}
+
+type ToolbarProps = {
+  classNames: ToolbarClassNames
+  controls: ReactNode
+  eyebrow?: string
+  searchAlignEnd?: boolean
+  searchAriaLabel: string
+  searchQuery: string
+  title: string
+  onSearchChange: (value: string) => void
+}
+
+export const AcademicToolbar = ({
+  classNames,
+  controls,
+  eyebrow = 'Academic',
+  searchAlignEnd = false,
+  searchAriaLabel,
+  searchQuery,
+  title,
+  onSearchChange
+}: ToolbarProps) => (
+  <Surface className={classNames.toolbar}>
+    <AcademicToolbarHeader
+      actionsClassName={classNames.toolbarActions}
+      eyebrow={eyebrow}
+      headerClassName={classNames.headerRow}
+      mutedTextClassName={classNames.mutedText}
+      title={title}
+      titleClassName={classNames.title}
+      actions={controls}
+    />
+    <AcademicToolbarSearch
+      ariaLabel={searchAriaLabel}
+      alignEnd={searchAlignEnd}
+      className={classNames.headerRow}
+      value={searchQuery}
+      onChange={onSearchChange}
+    />
+  </Surface>
 )

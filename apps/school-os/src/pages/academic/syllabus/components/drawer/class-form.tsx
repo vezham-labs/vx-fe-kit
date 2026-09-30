@@ -1,5 +1,4 @@
-import { Input, Label, ListBox, Select } from '@vezham/react-v3'
-
+import { AcademicInputField } from '@pages/academic/shared/input-field'
 import { AcademicSelectField } from '@pages/academic/shared/select-field'
 import { classOptions, sectionOptions } from '@pages/academic/syllabus/data'
 import type { ClassFormProps } from '@pages/academic/syllabus/types'
@@ -12,32 +11,17 @@ export const ClassForm = ({
 }: ClassFormProps) => {
   return (
     <div className={classNames.form}>
-      <Select
-        fullWidth
-        aria-label="Class"
-        aria-invalid={Boolean(formErrors.classes)}
+      <AcademicSelectField
+        ariaLabel="Class"
+        error={formErrors.classes}
+        errorClassName={classNames.selectError}
+        label="Class"
+        labelClassName={classNames.fieldLabel}
+        options={classOptions}
         placeholder="Select classes"
-        value={form.classes || null}
-        onChange={value => onFormChange('classes', value ? String(value) : '')}>
-        <Label className={classNames.fieldLabel}>Class</Label>
-        <Select.Trigger>
-          <Select.Value />
-          <Select.Indicator />
-        </Select.Trigger>
-        <Select.Popover>
-          <ListBox>
-            {classOptions.map(option => (
-              <ListBox.Item key={option} id={option} textValue={option}>
-                {option}
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-            ))}
-          </ListBox>
-        </Select.Popover>
-      </Select>
-      {formErrors.classes && (
-        <p className={classNames.selectError}>{formErrors.classes}</p>
-      )}
+        value={form.classes}
+        onChange={value => onFormChange('classes', value)}
+      />
 
       <AcademicSelectField
         ariaLabel="Section"
@@ -52,19 +36,14 @@ export const ClassForm = ({
       />
 
       <div className={classNames.formFields}>
-        <div className={classNames.field}>
-          <Label className={classNames.fieldLabel}>Subject Group</Label>
-          <Input
-            fullWidth
-            aria-invalid={Boolean(formErrors.subject)}
-            placeholder="Enter subject"
-            value={form.subject}
-            onChange={event => onFormChange('subject', event.target.value)}
-          />
-          {formErrors.subject && (
-            <p className={classNames.fieldError}>{formErrors.subject}</p>
-          )}
-        </div>
+        <AcademicInputField
+          classes={classNames}
+          error={formErrors.subject}
+          label="Subject Group"
+          placeholder="Enter subject"
+          value={form.subject}
+          onChange={value => onFormChange('subject', value)}
+        />
       </div>
     </div>
   )

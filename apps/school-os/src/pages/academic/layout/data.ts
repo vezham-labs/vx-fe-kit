@@ -1,3 +1,5 @@
+import { defaultRightActions as baseRightActions } from '@pages/_shared/layout-actions'
+
 import type { AcademicMenuItem, ActionItem } from './types'
 
 export const sidebarItems: AcademicMenuItem[] = [
@@ -109,63 +111,12 @@ export const sidebarItems: AcademicMenuItem[] = [
   }
 ]
 
-export const defaultLeftActions: ActionItem[] = [
-  {
-    key: 'back',
-    label: 'Back',
-    icon: 'vx:arrow-left',
-    onAction: () => window.history.back()
-  },
-  {
-    key: 'forward',
-    label: 'Forward',
-    icon: 'vx:arrow-right',
-    onAction: () => window.history.forward()
-  }
+export const academicRightActions: ActionItem[] = [
+  ...baseRightActions,
+  { key: 'create', label: 'Create', icon: 'vx:plus', kind: 'primary' }
 ]
 
-export const defaultRightActions: ActionItem[] = [
-  {
-    key: 'search',
-    label: 'Search',
-    icon: 'vx:search',
-    kind: 'search'
-  },
-  {
-    key: 'import',
-    label: 'Import',
-    icon: 'vx:upload',
-    kind: 'menu'
-  },
-  {
-    key: 'print',
-    label: 'Print',
-    icon: 'vx:printer',
-    kind: 'menu',
-    onAction: () => window.print()
-  },
-  {
-    key: 'export',
-    label: 'Export',
-    icon: 'vx:download',
-    kind: 'menu'
-  },
-  {
-    key: 'refresh',
-    label: 'Refresh',
-    icon: 'vx:refresh',
-    kind: 'refresh',
-    onAction: () => window.location.reload()
-  },
-  {
-    key: 'create',
-    label: 'Create',
-    icon: 'vx:plus',
-    kind: 'primary'
-  }
-]
-
-export const createLabelsByPageKey: Record<string, string> = {
+export const academicCreateLabelsByPageKey: Record<string, string> = {
   allclasses: 'Add Class',
   schedule: 'Add Schedule',
   classroom: 'Add Classroom',
@@ -181,7 +132,7 @@ export const createLabelsByPageKey: Record<string, string> = {
   grades: 'Add Grades'
 }
 
-export const createExcludedPageKeys = new Set([
+export const academicCreateExcludedPageKeys = new Set([
   'exam-attendance',
   'exam-results'
 ])

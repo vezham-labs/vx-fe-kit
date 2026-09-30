@@ -7,7 +7,7 @@ import type { RQVehicleDrivers } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_VEHICLE_DRIVERS = 'vehicle-drivers'
+const CK_VEHICLE_DRIVERS = 'vehicle-drivers'
 
 const useList = (rq: RQVehicleDrivers = {}) =>
   useQuery({

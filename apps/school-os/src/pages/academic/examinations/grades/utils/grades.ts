@@ -3,6 +3,12 @@ import type {
   ClassFormState,
   ClassRow
 } from '@pages/academic/examinations/grades/types'
+import {
+  getEntityDrawerTitle,
+  getNextEntityId
+} from '@pages/academic/shared/entity-utils'
+
+export { getPaginationSummary } from '@pages/academic/shared/entity-utils'
 
 export const getClassTags = (row: ClassRow) => {
   return [
@@ -13,9 +19,7 @@ export const getClassTags = (row: ClassRow) => {
   ]
 }
 
-export const getDrawerTitle = (row: ClassRow) => {
-  return row.id.startsWith('#') ? row.id : `#${row.id}`
-}
+export const getDrawerTitle = (row: ClassRow) => getEntityDrawerTitle(row)
 
 export const rowToForm = (row: ClassRow): ClassFormState => {
   return {
@@ -66,27 +70,8 @@ export const validateClassForm = (form: ClassFormState) => {
   return errors
 }
 
-export const createNextClassId = (rows: ClassRow[]) => {
-  const nextNumber =
-    Math.max(0, ...rows.map(row => Number(row.id.replace(/\D/g, '')) || 0)) + 1
-
-  return `G${String(nextNumber).padStart(6, '0')}`
-}
-
-export const getPaginationSummary = (
-  page: number,
-  pageSize: number,
-  total: number
-) => {
-  if (!total) {
-    return '0 of 0'
-  }
-
-  const start = (page - 1) * pageSize + 1
-  const end = Math.min(page * pageSize, total)
-
-  return `${start}-${end} of ${total}`
-}
+export const createNextClassId = (rows: ClassRow[]) =>
+  getNextEntityId(rows, 'G', 6)
 
 export const getPercentageRange = (form: ClassFormState) => {
   if (form.percentage.trim()) {

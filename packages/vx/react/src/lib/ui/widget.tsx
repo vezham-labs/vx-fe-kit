@@ -26,12 +26,12 @@ const widgetVariants = tv({
   }
 })
 
-export interface WidgetProps
+interface Props
   extends
     React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof widgetVariants> {}
 
-const Widget = React.forwardRef<HTMLDivElement, WidgetProps>(
+const Widget = React.forwardRef<HTMLDivElement, Props>(
   ({ className, size, design, variant, children, ...props }, ref) => (
     <Surface
       variant="transparent"
@@ -45,33 +45,6 @@ const Widget = React.forwardRef<HTMLDivElement, WidgetProps>(
 
 Widget.displayName = 'Widget'
 
-const WidgetHeader = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn('text-semibold flex flex-none justify-between', className)}
-    {...props}
-  />
-))
-
-WidgetHeader.displayName = 'WidgetHeader'
-
-const WidgetTitle = React.forwardRef<
-  HTMLHeadingElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ children, className, ...props }, ref) => (
-  <h5
-    ref={ref}
-    className={cn('leading-none font-semibold tracking-tight', className)}
-    {...props}>
-    {children}
-  </h5>
-))
-
-WidgetTitle.displayName = 'WidgetTitle'
-
 const WidgetContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -81,24 +54,4 @@ const WidgetContent = React.forwardRef<
 
 WidgetContent.displayName = 'WidgetContent'
 
-const WidgetFooter = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn('flex flex-none items-center justify-between', className)}
-    {...props}
-  />
-))
-
-WidgetFooter.displayName = 'WidgetFooter'
-
-export {
-  Widget,
-  WidgetContent,
-  WidgetFooter,
-  WidgetHeader,
-  WidgetTitle,
-  widgetVariants
-}
+export { Widget, WidgetContent }

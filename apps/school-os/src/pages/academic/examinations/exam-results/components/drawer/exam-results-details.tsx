@@ -1,67 +1,34 @@
-import { Chip } from '@vezham/react-v3'
-
-import type {
-  ClassDetailSummaryProps,
-  ClassDetailsProps,
-  DetailLineProps
-} from '@pages/academic/examinations/exam-results/types'
+import type { ClassDetailsProps } from '@pages/academic/examinations/exam-results/types'
 import { getClassTags } from '@pages/academic/examinations/exam-results/utils/exam-results'
 import { classNames } from '@pages/academic/examinations/exam-results/variants'
+import { getExamIdentityFields } from '@pages/academic/examinations/shared-detail-fields'
+import { EntityDetails } from '@pages/academic/shared/entity-details'
+import type { DetailField } from '@pages/academic/shared/entity-details'
 
-export const ExamResultsDetails = ({ row }: ClassDetailsProps) => {
-  if (!row) {
-    return null
-  }
+type Row = NonNullable<ClassDetailsProps['row']>
 
-  return (
-    <div className={classNames.details}>
-      <ClassDetailSummary row={row} />
-    </div>
-  )
-}
+const fields: DetailField<Row>[] = [
+  ...getExamIdentityFields<Row>(),
+  { label: 'Maths', value: (row: Row) => row.maths },
+  { label: 'Computer', value: (row: Row) => row.computer },
+  { label: 'Env Science', value: (row: Row) => row.envscience },
+  { label: 'Physics', value: (row: Row) => row.physics },
+  { label: 'Chemistry', value: (row: Row) => row.chemistry },
+  { label: 'total', value: (row: Row) => row.total },
+  { label: 'Percent', value: (row: Row) => row.percent },
+  { label: 'Grade', value: (row: Row) => row.grade }
+]
 
-function ClassDetailSummary({ row }: ClassDetailSummaryProps) {
-  return (
-    <div className={classNames.detailSummary}>
-      <DetailLine label="Name" value={row.name} />
-      <DetailLine label="English" value={row.english} />
-      <DetailLine label="Spanish" value={row.spanish} />
-      <DetailLine label="Maths" value={row.maths} />
-      <DetailLine label="Computer" value={row.computer} />
-      <DetailLine label="Env Science" value={row.envscience} />
-      <DetailLine label="Physics" value={row.physics} />
-      <DetailLine label="Chemistry" value={row.chemistry} />
-      <DetailLine label="total" value={row.total} />
-      <DetailLine label="Percent" value={row.percent} />
-      <DetailLine label="Grade" value={row.grade} />
-
-      <div className={classNames.detailChipRow}>
-        <span className={classNames.detailHeading}>Result:</span>
-        <Chip
-          color={row.result === 'Pass' ? 'success' : 'danger'}
-          variant="soft">
-          <span aria-hidden="true">●</span>
-          <Chip.Label>{row.result}</Chip.Label>
-        </Chip>
-      </div>
-
-      <div className={classNames.detailTagsRow}>
-        <span className={classNames.detailHeading}>Tags:</span>
-        {getClassTags(row).map(tag => (
-          <Chip key={tag} variant="soft">
-            <Chip.Label>{tag}</Chip.Label>
-          </Chip>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function DetailLine({ label, value }: DetailLineProps) {
-  return (
-    <div className={classNames.detailLine}>
-      <span className={classNames.fieldLabel}>{label}:</span>
-      <span className={classNames.detailValue}>{value}</span>
-    </div>
-  )
-}
+export const ExamResultsDetails = ({ row }: ClassDetailsProps) => (
+  <EntityDetails
+    row={row}
+    fields={fields}
+    classNames={classNames}
+    getTags={getClassTags}
+    getStatus={(item: Row) => item.result}
+    getStatusColor={(item: Row) =>
+      item.result === 'Pass' ? 'success' : 'danger'
+    }
+    statusLabel="Result"
+  />
+)

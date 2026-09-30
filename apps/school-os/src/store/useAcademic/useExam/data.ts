@@ -1,15 +1,8 @@
-import {
-  type SortFieldOption,
-  sortOrderOptions
-} from '@pages/academic/shared/sort'
+import { type SortFieldOption } from '@pages/academic/shared/sort'
 
-import type {
-  ClassFormState,
-  ClassRow,
-  ClassStatus,
-  DatePresetKey,
-  ExamColumnOption
-} from './types'
+import type { ClassFormState, ClassRow, ExamColumnOption } from './types'
+
+export { dateOptions, rowCountOptions } from '../options'
 
 export const initialRows: ClassRow[] = [
   {
@@ -115,16 +108,6 @@ export const initialRows: ClassRow[] = [
   }
 ]
 
-export const dateOptions: { key: DatePresetKey; label: string }[] = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last7', label: 'Last 7 Days' },
-  { key: 'last30', label: 'Last 30 Days' },
-  { key: 'thisYear', label: 'This Year' },
-  { key: 'nextYear', label: 'Next Year' },
-  { key: 'custom', label: 'Custom Range' }
-]
-
 export const examColumnOptions = [
   {
     key: 'id',
@@ -181,7 +164,6 @@ export const sortOptions = [
   }))
 ] satisfies readonly SortFieldOption[]
 
-export const rowCountOptions = ['5', '10', '25', '50']
 export const examOptions = [
   'Weekly Test',
   'Monthly Test',
@@ -212,9 +194,6 @@ export const endtimeOptions = [
   '04.30 PM',
   '05.30 PM'
 ]
-export const statusOptions: ClassStatus[] = ['Active', 'Inactive']
-export { sortOrderOptions }
-
 export const emptyForm: ClassFormState = {
   name: '',
   date: '',

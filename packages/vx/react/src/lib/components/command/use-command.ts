@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-export interface CommandContextValue {
+interface CommandContextValue {
   isOpen: boolean
   openCommand: () => void
   closeCommand: () => void

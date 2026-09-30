@@ -1,11 +1,4 @@
-import type {
-  ClassFormState,
-  ClassStatus,
-  DatePresetKey,
-  HomeworkItem,
-  SortOption,
-  SortOrderOption
-} from './types'
+import type { ClassFormState, HomeworkItem, SortOption } from './types'
 
 export const homeworkData: HomeworkItem[] = [
   {
@@ -190,16 +183,6 @@ export const homeworkData: HomeworkItem[] = [
   }
 ]
 
-export const dateOptions: { key: DatePresetKey; label: string }[] = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last7', label: 'Last 7 Days' },
-  { key: 'last30', label: 'Last 30 Days' },
-  { key: 'thisYear', label: 'This Year' },
-  { key: 'nextYear', label: 'Next Year' },
-  { key: 'custom', label: 'Custom Range' }
-]
-
 export const sortOptions = [
   {
     key: 'recentlyViewed',
@@ -213,22 +196,6 @@ export const sortOptions = [
   }
 ] as const satisfies readonly SortOption[]
 
-export const sortOrderOptions = [
-  {
-    key: 'ascending',
-    label: 'Ascending',
-    direction: 'ascending',
-    icon: 'vx:sort-ascending'
-  },
-  {
-    key: 'descending',
-    label: 'Descending',
-    direction: 'descending',
-    icon: 'vx:sort-descending'
-  }
-] as const satisfies readonly SortOrderOption[]
-
-export const rowCountOptions = ['5', '10', '25', '50']
 export const classOptions = ['I', 'II', 'III', 'IV', 'V']
 export const sectionOptions = ['A', 'B', 'C', 'D', 'E']
 export const subjectOptions = [
@@ -238,19 +205,6 @@ export const subjectOptions = [
   'Chemistry',
   'Biology'
 ]
-export const roomOptions = [
-  '101',
-  '102',
-  '103',
-  '104',
-  '105',
-  '106',
-  '107',
-  '108',
-  '109',
-  '110'
-]
-
 export const dayOptions = [
   'Monday',
   'Tuesday',
@@ -291,8 +245,6 @@ export const homeworkColumnOptions = [
     maxWidth: 180
   }
 ] as const
-
-export const statusOptions: ClassStatus[] = ['Active', 'Inactive']
 
 export const emptyForm: ClassFormState = {
   classes: '',

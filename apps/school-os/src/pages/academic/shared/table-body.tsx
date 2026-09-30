@@ -10,6 +10,7 @@ type Props<RowValue extends Row, Key extends string> = {
   columns: readonly Column<Key>[]
   emptyState: ReactNode
   rows: readonly RowValue[]
+  rowDataAttribute?: `data-${string}`
   selectionLabel: string
   visibleColumns: ReadonlySet<string>
   getRowClassName: (isActive: boolean) => string
@@ -22,6 +23,7 @@ export const AcademicTableBody = <RowValue extends Row, Key extends string>({
   columns,
   emptyState,
   rows,
+  rowDataAttribute = 'data-class-row-id',
   selectionLabel,
   visibleColumns,
   getRowClassName,
@@ -33,7 +35,7 @@ export const AcademicTableBody = <RowValue extends Row, Key extends string>({
       <Table.Row
         key={row.id}
         id={row.id}
-        data-class-row-id={row.id}
+        {...{ [rowDataAttribute]: row.id }}
         className={getRowClassName(activeRowId === row.id)}>
         <Table.Cell>
           <Checkbox

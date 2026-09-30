@@ -19,6 +19,7 @@ import {
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Button, Chip, CloseButton, Drawer } from '@vezham/react-v3'
 
+import { FooterDrawerFrame } from '../drawer-frame'
 import { Props, View, useProps } from './types'
 
 const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
@@ -69,105 +70,93 @@ const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
   return (
     <Component {...drawerBaseProps}>
       <LazyMotion features={domAnimation}>
-        <Drawer.Backdrop
+        <FooterDrawerFrame
           isOpen={isOpen}
-          onOpenChange={open => !open && onClose()}
-          variant={backdrop}
-          className={getDrawerWrapperProps().className}>
-          <Drawer.Content
-            placement={placement}
-            className={drawerBaseProps.className}>
-            <Drawer.Dialog className={getDrawerContentProps().className}>
-              <Drawer.Header {...getDrawerHeaderProps()}>
-                <CloseButton
-                  className={closeButtonClassName}
-                  onPress={onClose}
-                />
-              </Drawer.Header>
+          onClose={onClose}
+          backdrop={backdrop}
+          placement={placement}
+          wrapperClassName={getDrawerWrapperProps().className}
+          contentClassName={drawerBaseProps.className}
+          dialogClassName={getDrawerContentProps().className}>
+          <Drawer.Header {...getDrawerHeaderProps()}>
+            <CloseButton className={closeButtonClassName} onPress={onClose} />
+          </Drawer.Header>
 
-              <m.div {...getMotionContainerProps()}>
-                {isEmpty ? (
-                  <div {...getEmptyStateProps()}>
-                    <EmptyState className="rounded-2xl">
-                      <EmptyState.Media>
-                        <SettingsIcon
-                          {...getEmptyStateIconProps()}
-                          weight="outline"
-                          aria-hidden="true"
-                        />
-                      </EmptyState.Media>
-                      <EmptyState.Title>
-                        Control Center is Empty
-                      </EmptyState.Title>
-                    </EmptyState>
-                  </div>
-                ) : (
-                  <AnimatePresence mode="wait">
-                    {renderControlCenterMainView(
-                      controls,
-                      view,
-                      handleViewChange
-                    )}
+          <m.div {...getMotionContainerProps()}>
+            {isEmpty ? (
+              <div {...getEmptyStateProps()}>
+                <EmptyState className="rounded-2xl">
+                  <EmptyState.Media>
+                    <SettingsIcon
+                      {...getEmptyStateIconProps()}
+                      weight="outline"
+                      aria-hidden="true"
+                    />
+                  </EmptyState.Media>
+                  <EmptyState.Title>Control Center is Empty</EmptyState.Title>
+                </EmptyState>
+              </div>
+            ) : (
+              <AnimatePresence mode="wait">
+                {renderControlCenterMainView(controls, view, handleViewChange)}
 
-                    {view === 'wifi' && (
-                      <m.div key="wifi" {...getSubViewProps()}>
-                        <div {...getSubViewHeaderProps()}>
-                          <Button
-                            aria-label="Back to controls"
-                            isIconOnly
-                            onPress={goBack}
-                            variant="ghost">
-                            <AltArrowLeftIcon size="1em" aria-hidden="true" />
-                          </Button>
-                          <div {...getSubViewTitleProps('Wi-Fi')} />
-                        </div>
+                {view === 'wifi' && (
+                  <m.div key="wifi" {...getSubViewProps()}>
+                    <div {...getSubViewHeaderProps()}>
+                      <Button
+                        aria-label="Back to controls"
+                        isIconOnly
+                        onPress={goBack}
+                        variant="ghost">
+                        <AltArrowLeftIcon size="1em" aria-hidden="true" />
+                      </Button>
+                      <div {...getSubViewTitleProps('Wi-Fi')} />
+                    </div>
 
-                        <div {...getSubViewContentProps()}>
-                          <div {...getOptionProps({})}>
-                            <span {...getOptionLabelProps('iPhone')} />
-                          </div>
-                          <div {...getOptionProps({})}>
-                            <span {...getOptionLabelProps('Office WiFi')} />
-                          </div>
-                        </div>
-                      </m.div>
-                    )}
-
-                    {view === 'airdrop' && (
-                      <m.div key="airdrop" {...getSubViewProps()}>
-                        <div {...getSubViewHeaderProps()}>
-                          <Button
-                            aria-label="Back to controls"
-                            isIconOnly
-                            onPress={goBack}
-                            variant="ghost">
-                            <AltArrowLeftIcon size="1em" aria-hidden="true" />
-                          </Button>
-                          <div {...getSubViewTitleProps('AirDrop')} />
-                        </div>
-
-                        <div {...getSubViewContentProps()}>
-                          <div {...getOptionProps({})}>
-                            <span {...getOptionLabelProps('Contacts Only')} />
-                          </div>
-                          <div {...getOptionProps({})}>
-                            <span {...getOptionLabelProps('Everyone')} />
-                          </div>
-                        </div>
-                      </m.div>
-                    )}
-                  </AnimatePresence>
+                    <div {...getSubViewContentProps()}>
+                      <div {...getOptionProps({})}>
+                        <span {...getOptionLabelProps('iPhone')} />
+                      </div>
+                      <div {...getOptionProps({})}>
+                        <span {...getOptionLabelProps('Office WiFi')} />
+                      </div>
+                    </div>
+                  </m.div>
                 )}
 
-                {!isEmpty && (
-                  <Drawer.Footer {...getDrawerFooterProps()}>
-                    <Chip {...getChipProps()}>Edit Controls</Chip>
-                  </Drawer.Footer>
+                {view === 'airdrop' && (
+                  <m.div key="airdrop" {...getSubViewProps()}>
+                    <div {...getSubViewHeaderProps()}>
+                      <Button
+                        aria-label="Back to controls"
+                        isIconOnly
+                        onPress={goBack}
+                        variant="ghost">
+                        <AltArrowLeftIcon size="1em" aria-hidden="true" />
+                      </Button>
+                      <div {...getSubViewTitleProps('AirDrop')} />
+                    </div>
+
+                    <div {...getSubViewContentProps()}>
+                      <div {...getOptionProps({})}>
+                        <span {...getOptionLabelProps('Contacts Only')} />
+                      </div>
+                      <div {...getOptionProps({})}>
+                        <span {...getOptionLabelProps('Everyone')} />
+                      </div>
+                    </div>
+                  </m.div>
                 )}
-              </m.div>
-            </Drawer.Dialog>
-          </Drawer.Content>
-        </Drawer.Backdrop>
+              </AnimatePresence>
+            )}
+
+            {!isEmpty && (
+              <Drawer.Footer {...getDrawerFooterProps()}>
+                <Chip {...getChipProps()}>Edit Controls</Chip>
+              </Drawer.Footer>
+            )}
+          </m.div>
+        </FooterDrawerFrame>
       </LazyMotion>
     </Component>
   )

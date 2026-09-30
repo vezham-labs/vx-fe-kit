@@ -1,42 +1,23 @@
-import { useOverlayState } from '@vezham/react-v3'
+import type {
+  EntityDetailsProps,
+  EntityDrawerProps,
+  EntityFilterDropdownProps,
+  EntityFormProps
+} from '@pages/academic/shared/entity-types'
+import type {
+  ClassFormState,
+  ClassRow,
+  ClassStatus
+} from '@store/useAcademic/useExam/types'
 
-export type ClassStatus = 'Active' | 'Inactive'
-export type DrawerMode = 'view' | 'edit' | 'create'
-export type ExamColumnKey = 'id' | 'name' | 'date' | 'starttime' | 'endtime'
+export type {
+  ClassStatus,
+  ExamColumnKey,
+  ClassRow,
+  ClassFormState
+} from '@store/useAcademic/useExam/types'
 
-export type ToastState = {
-  message: string
-  status: 'success' | 'danger'
-}
-
-export type ClassRow = {
-  id: string
-  name: string
-  date: string
-  starttime: string
-  endtime: string
-  status: ClassStatus
-  createdAt: string
-  viewedAt: string
-}
-
-export type DatePresetKey =
-  | 'today'
-  | 'yesterday'
-  | 'last7'
-  | 'last30'
-  | 'thisYear'
-  | 'nextYear'
-  | 'custom'
-
-export type DateRangeFilter = {
-  start: string
-  end: string
-}
-
-export type PickerDateValue = {
-  toString(): string
-}
+export type { DatePresetKey } from '@src/utils/date-options'
 
 export type FilterDraft = {
   name: string | null
@@ -46,103 +27,22 @@ export type FilterDraft = {
   status: ClassStatus | null
 }
 
-export type ClassFormState = {
-  name: string
-  date: string | null
-  starttime: string
-  endtime: string
-  status: ClassStatus
-}
-
 export type ClassFormErrors = Partial<
   Record<'name' | 'date' | 'starttime' | 'endtime' | 'status', string>
 >
 
-export type DrawerState = ReturnType<typeof useDisclosure>
+export type FilterDropdownProps = EntityFilterDropdownProps<FilterDraft>
 
-export type FilterDropdownProps = {
-  draftFilters: FilterDraft
-  setDraftFilters: (filters: FilterDraft) => void
-  onApply: () => void
-  onReset: () => void
-}
+export type ClassDrawerProps = EntityDrawerProps<
+  ClassRow,
+  ClassFormState,
+  ClassFormErrors
+>
 
-export type ClassDrawerProps = {
-  canGoNext: boolean
-  canGoPrevious: boolean
-  drawerState: DrawerState
-  form: ClassFormState
-  formErrors: ClassFormErrors
-  mode: DrawerMode
-  row: ClassRow | null
-  onCancel: () => void
-  onClose: () => void
-  onCopyId: (row: ClassRow) => void
-  onCopyLink: (row: ClassRow) => void
-  onEdit: () => void
-  onFormChange: (field: keyof ClassFormState, value: string) => void
-  onGoNext: () => void
-  onGoPrevious: () => void
-  onOpenPage: (row: ClassRow) => void
-  onSave: () => void
-}
+export type ClassFormProps = EntityFormProps<
+  ClassRow,
+  ClassFormState,
+  ClassFormErrors
+>
 
-export type ClassFormProps = {
-  form: ClassFormState
-  formErrors: ClassFormErrors
-  mode: DrawerMode
-  row: ClassRow | null
-  onFormChange: (field: keyof ClassFormState, value: string) => void
-}
-
-export type ClassDetailsProps = {
-  row: ClassRow | null
-}
-
-export type ClassDetailSummaryProps = {
-  row: ClassRow
-}
-
-export type DetailLineProps = {
-  label: string
-  value: string
-}
-
-export type SortableHeaderProps = {
-  children: string
-  sortDirection?: 'ascending' | 'descending'
-}
-
-export type ExamColumnOption = {
-  key: ExamColumnKey
-  label: string
-  defaultWidth: number
-  minWidth: number
-  maxWidth: number
-}
-
-export type DrawerQueryState = {
-  id?: string
-  mode: DrawerMode
-}
-
-export type OpenDrawerOptions = {
-  syncUrl?: boolean
-  replaceUrl?: boolean
-}
-
-export type CustomDateRangeValue = {
-  start: PickerDateValue
-  end: PickerDateValue
-}
-
-export function useDisclosure() {
-  const state = useOverlayState()
-
-  return {
-    ...state,
-    onOpen: state.open,
-    onClose: state.close,
-    onOpenChange: state.setOpen
-  }
-}
+export type ClassDetailsProps = EntityDetailsProps<ClassRow>

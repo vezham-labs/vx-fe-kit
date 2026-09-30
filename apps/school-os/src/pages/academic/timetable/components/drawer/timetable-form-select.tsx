@@ -1,5 +1,4 @@
-import { Label, ListBox, Select } from '@vezham/react-v3'
-
+import { AcademicSelectField } from '@pages/academic/shared/select-field'
 import { classNames } from '@pages/academic/timetable/variants'
 
 type Props = {
@@ -21,30 +20,17 @@ export const TimetableFormSelect = ({
 }: Props) => {
   return (
     <div className={classNames.field}>
-      <Select
-        fullWidth
-        aria-label={label}
-        aria-invalid={Boolean(error)}
+      <AcademicSelectField
+        ariaLabel={label}
+        error={error}
+        errorClassName={classNames.fieldError}
+        label={label}
+        labelClassName={classNames.fieldLabel}
+        options={options}
         placeholder={placeholder}
-        value={value || null}
-        onChange={nextValue => onChange(nextValue ? String(nextValue) : '')}>
-        <Label className={classNames.fieldLabel}>{label}</Label>
-        <Select.Trigger>
-          <Select.Value />
-          <Select.Indicator />
-        </Select.Trigger>
-        <Select.Popover>
-          <ListBox>
-            {options.map(option => (
-              <ListBox.Item key={option} id={option} textValue={option}>
-                {option}
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-            ))}
-          </ListBox>
-        </Select.Popover>
-      </Select>
-      {error && <p className={classNames.fieldError}>{error}</p>}
+        value={value}
+        onChange={onChange}
+      />
     </div>
   )
 }

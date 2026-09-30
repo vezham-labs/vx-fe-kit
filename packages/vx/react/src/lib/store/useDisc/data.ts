@@ -1,6 +1,6 @@
 import type { ArchiveItem, DiscResponse, TrashItem } from './types'
 
-export const sampleArchiveItems: ArchiveItem[] = [
+const sampleArchiveItems: ArchiveItem[] = [
   {
     id: 'a1',
     title: 'HeroUI v3 (Previous',
@@ -92,7 +92,7 @@ export const sampleArchiveItems: ArchiveItem[] = [
   }
 ]
 
-export const sampleTrashItems: TrashItem[] = [
+const sampleTrashItems: TrashItem[] = [
   {
     id: 't1',
     title: 'Untitled folder so just demo testing purpose',

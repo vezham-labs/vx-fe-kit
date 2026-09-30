@@ -2,18 +2,20 @@ import type { ChangeEvent } from 'react'
 
 import {
   ArchiveUp as ArchiveUpIcon,
-  Document as DocumentIcon,
   TrashBinTrash as TrashIcon
 } from '@vezham/icons-react'
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
-import { Button, Input, ScrollShadow, Typography } from '@vezham/react-v3'
+import { Button, Input } from '@vezham/react-v3'
 
-import { AppIcon } from '../../../../app-icon'
+import { DiscHistoryActions } from '../history-actions'
+import { DiscHistoryDateGroup } from '../history-date-group'
+import { DiscHistoryItemContent } from '../history-item-content'
+import { DiscHistoryShell } from '../history-shell'
+import { filterHistoryItems, groupHistoryItemsByDate } from '../history-utils'
 import { TrashProps } from './types'
 import { trashActions } from './variants'
 
 const SearchInput = Input
-const ActionButton = Button
 
 const Trash = (props: TrashProps) => {
   const {
@@ -51,42 +53,11 @@ const Trash = (props: TrashProps) => {
     renderTrashItem
   } = props
 
-  const filteredTrashItems = trashItems.filter(
-    item =>
-      item.title.toLowerCase().includes(trashSearch.toLowerCase()) ||
-      item.url.toLowerCase().includes(trashSearch.toLowerCase())
+  const filteredTrashItems = filterHistoryItems(trashItems, trashSearch)
+  const trashByDate = groupHistoryItemsByDate(
+    filteredTrashItems,
+    item => item.deletedDate
   )
-
-  const trashByDate = filteredTrashItems.reduce(
-    (acc, item) => {
-      const date = item.deletedDate
-      if (!acc[date]) {
-        acc[date] = []
-      }
-      acc[date].push(item)
-      return acc
-    },
-    {} as Record<string, TrashProps['trashItems']>
-  )
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    const today = new Date()
-    const yesterday = new Date(today)
-    yesterday.setDate(yesterday.getDate() - 1)
-
-    if (dateString === today.toISOString().split('T')[0]) {
-      return 'Today'
-    } else if (dateString === yesterday.toISOString().split('T')[0]) {
-      return 'Yesterday'
-    } else {
-      return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      })
-    }
-  }
 
   const handleRestore = (id: string) => {
     if (onRestore) {
@@ -143,80 +114,68 @@ const Trash = (props: TrashProps) => {
     return (
       <div {...getItemsContainerProps()}>
         {Object.entries(trashByDate).map(([date, items]) => (
-          <div key={date} {...getDateGroupProps()}>
-            <div {...getDateHeaderProps()}>
-              <Typography.Paragraph {...getDateLabelProps()}>
-                {formatDate(date)}
-              </Typography.Paragraph>
-              <div {...getDateDividerProps()} />
-            </div>
+          <DiscHistoryDateGroup
+            key={date}
+            date={date}
+            getDateGroupProps={getDateGroupProps}
+            getDateHeaderProps={getDateHeaderProps}
+            getDateLabelProps={getDateLabelProps}
+            getDateDividerProps={getDateDividerProps}
+            getItemsListProps={getItemsListProps}>
+            {items.map(item => {
+              if (renderTrashItem) {
+                return renderTrashItem({
+                  item,
+                  onAction: action => {
+                    if (action === 'restore') handleRestore(item.id)
+                    if (action === 'delete') handleDeletePermanently(item.id)
+                  }
+                })
+              }
 
-            <div {...getItemsListProps()}>
-              {items.map(item => {
-                if (renderTrashItem) {
-                  return renderTrashItem({
-                    item,
-                    onAction: action => {
-                      if (action === 'restore') handleRestore(item.id)
-                      if (action === 'delete') handleDeletePermanently(item.id)
-                    }
-                  })
-                }
+              return (
+                <div key={item.id} {...getItemProps()}>
+                  <DiscHistoryItemContent
+                    item={item}
+                    getItemFaviconProps={getItemFaviconProps}
+                    getItemFallbackIconProps={getItemFallbackIconProps}
+                    getItemContentProps={getItemContentProps}
+                    getItemTitleProps={getItemTitleProps}
+                    getItemUrlProps={getItemUrlProps}
+                  />
 
-                return (
-                  <div key={item.id} {...getItemProps()}>
-                    {item.favicon ? (
-                      <img
-                        src={item.favicon}
-                        alt=""
-                        {...getItemFaviconProps()}
-                      />
-                    ) : (
-                      <DocumentIcon
-                        {...getItemFallbackIconProps()}
+                  <div {...getItemActionsProps()}>
+                    <Button
+                      isIconOnly
+                      variant="ghost"
+                      {...getRestoreButtonProps()}
+                      onPress={() => {
+                        handleRestore(item.id)
+                      }}>
+                      <ArchiveUpIcon
+                        {...getActionIconProps('success')}
                         weight="outline"
                         aria-hidden="true"
                       />
-                    )}
-
-                    <div {...getItemContentProps()}>
-                      <Typography.Heading {...getItemTitleProps(item.title)} />
-                      <Typography.Paragraph {...getItemUrlProps(item.url)} />
-                    </div>
-
-                    <div {...getItemActionsProps()}>
-                      <Button
-                        isIconOnly
-                        variant="ghost"
-                        {...getRestoreButtonProps()}
-                        onPress={() => {
-                          handleRestore(item.id)
-                        }}>
-                        <ArchiveUpIcon
-                          {...getActionIconProps('success')}
-                          weight="outline"
-                          aria-hidden="true"
-                        />
-                      </Button>
-                      <Button
-                        isIconOnly
-                        variant="ghost"
-                        {...getDeletePermanentButtonProps()}
-                        onPress={() => {
-                          handleDeletePermanently(item.id)
-                        }}>
-                        <TrashIcon
-                          {...getActionIconProps('danger')}
-                          weight="outline"
-                          aria-hidden="true"
-                        />
-                      </Button>
-                    </div>
+                    </Button>
+                    <Button
+                      isIconOnly
+                      variant="ghost"
+                      {...getDeletePermanentButtonProps()}
+                      onPress={() => {
+                        handleDeletePermanently(item.id)
+                      }}>
+                      <TrashIcon
+                        {...getActionIconProps('danger')}
+                        weight="outline"
+                        aria-hidden="true"
+                      />
+                    </Button>
                   </div>
-                )
-              })}
-            </div>
-          </div>
+                </div>
+              )
+            })}
+          </DiscHistoryDateGroup>
         ))}
       </div>
     )
@@ -233,8 +192,9 @@ const Trash = (props: TrashProps) => {
   }))
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <div className="bg-background/95 sticky top-0 z-10 shrink-0 pb-3">
+    <DiscHistoryShell
+      containerProps={getContainerProps()}
+      search={
         <SearchInput
           {...getSearchInputProps(false)}
           value={trashSearch}
@@ -242,28 +202,16 @@ const Trash = (props: TrashProps) => {
             setTrashSearch(e.target.value)
           }
         />
-
-        {hasTrashItems && actions.length > 0 && (
-          <div {...getActionsBarProps(true)}>
-            {actions.map(action => (
-              <ActionButton
-                key={action.type}
-                {...action.props}
-                onPress={action.onPress}>
-                <AppIcon icon={action.icon} size={16} aria-hidden="true" />
-                {action.label}
-              </ActionButton>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div {...getContainerProps()}>
-        <ScrollShadow hideScrollBar className="h-full">
-          {renderTrashContent()}
-        </ScrollShadow>
-      </div>
-    </div>
+      }
+      actions={
+        <DiscHistoryActions
+          visible={hasTrashItems}
+          actions={actions}
+          barProps={getActionsBarProps(true)}
+        />
+      }>
+      {renderTrashContent()}
+    </DiscHistoryShell>
   )
 }
 

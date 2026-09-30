@@ -6,10 +6,10 @@ import { createRouter } from '@vx/start/router/tanstack'
 import { vxI18n } from '../src/generated/vx'
 import { routeTree } from '../src/routeTree.gen'
 
-const renderApp = () => {
+const renderApp = (path = '/') => {
   const router = createRouter({
     history: createMemoryHistory({
-      initialEntries: ['/']
+      initialEntries: [path]
     }),
     routeTree
   })
@@ -37,6 +37,19 @@ describe('App', () => {
 
     await waitFor(() =>
       expect(baseElement.querySelector('.vx-app')).toBeTruthy()
+    )
+  })
+
+  it('opens a linked exam schedule row on initial navigation', async () => {
+    Element.prototype.getAnimations = () => []
+    Element.prototype.scrollIntoView = () => undefined
+
+    const { baseElement } = renderApp(
+      '/academic/examinations/exam-schedule/RT167648?mode=view'
+    )
+
+    await waitFor(() =>
+      expect(baseElement.querySelector('[role="dialog"]')).toBeTruthy()
     )
   })
 })

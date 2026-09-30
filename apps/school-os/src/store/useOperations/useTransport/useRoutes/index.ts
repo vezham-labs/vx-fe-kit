@@ -7,7 +7,7 @@ import type { RQRoutes } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_ROUTES = 'routes'
+const CK_ROUTES = 'routes'
 
 const useList = (rq: RQRoutes = {}) =>
   useQuery({

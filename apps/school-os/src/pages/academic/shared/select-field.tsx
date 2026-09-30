@@ -3,11 +3,12 @@ import { Label, ListBox, Select } from '@vezham/react-v3'
 type Props = {
   ariaLabel: string
   error?: string
-  errorClassName: string
+  errorClassName?: string
   label: string
-  labelClassName: string
+  labelClassName?: string
   options: readonly string[]
   placeholder: string
+  showError?: boolean
   value: string
   onChange: (value: string) => void
 }
@@ -20,6 +21,7 @@ export const AcademicSelectField = ({
   labelClassName,
   options,
   placeholder,
+  showError = true,
   value,
   onChange
 }: Props) => (
@@ -47,6 +49,6 @@ export const AcademicSelectField = ({
         </ListBox>
       </Select.Popover>
     </Select>
-    {error && <p className={errorClassName}>{error}</p>}
+    {showError && error && <p className={errorClassName}>{error}</p>}
   </>
 )

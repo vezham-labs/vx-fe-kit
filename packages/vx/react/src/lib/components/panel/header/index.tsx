@@ -36,7 +36,6 @@ const Header = ({
   compact = false,
   hideSeparator = false
 }: HeaderActionsProps) => {
-  const [submenu, setSubmenu] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
 
   const { openCommand } = useCommand()
@@ -67,14 +66,7 @@ const Header = ({
             aria-label="Application"
             className="flex h-full items-center bg-transparent p-0"
             onClick={() => onAvatarClick?.(users)}>
-            <Avatar className="h-6 w-6">
-              {users.avatar && (
-                <Avatar.Image src={users.avatar} alt={users.name} />
-              )}
-              <Avatar.Fallback>
-                {users.name?.[0]?.toUpperCase()}
-              </Avatar.Fallback>
-            </Avatar>
+            <HeaderAvatar user={users} />
           </button>
 
           <Popover isOpen={open} onOpenChange={setOpen}>
@@ -91,60 +83,12 @@ const Header = ({
               </button>
             </Popover.Trigger>
 
-            <Popover.Content className="rounded-xl p-2" placement="bottom">
-              <Button
-                variant="ghost"
-                className="hover:bg-background w-full rounded-md px-3 py-2 text-left text-sm"
-                onPress={() => setOpen(false)}>
-                {' '}
-                Back to home
-              </Button>
-              <Separator className="my-2" />
-              <MenuItem
-                ariaLabel="Open command palette"
-                icon="vx:search"
-                shortcut="⌘ K"
-                onClick={handlePopoverSearch}
-              />
-              <Separator className="my-2" />
-              <Popover isOpen={submenu === 'file'}>
-                <Popover.Trigger
-                  className="w-full"
-                  onMouseOver={() => setSubmenu('file')}
-                  onMouseLeave={() => setSubmenu(null)}>
-                  <div>
-                    <MenuItem label="File" hasSub />
-                  </div>
-                </Popover.Trigger>
-                <Popover.Content
-                  placement="right top"
-                  className="ml-2 p-2"
-                  onMouseOver={() => setSubmenu('file')}
-                  onMouseLeave={() => setSubmenu(null)}>
-                  <MenuItem label="New" hasSub />
-                  <Separator className="my-2" />
-                  <MenuItem
-                    icon="vx:gallery"
-                    label="Place image..."
-                    shortcut="⇧ ⌘ K"
-                  />
-                  <Separator className="my-2" />
-                  <MenuItem label="Save local copy..." />
-                  <MenuItem
-                    label="Save to version history..."
-                    shortcut="⌥ ⌘ S"
-                  />
-                  <MenuItem label="Show version history" />
-                  <Separator className="my-2" />
-                  <MenuItem label="Export..." shortcut="⇧ ⌘ E" />
-                  <MenuItem label="Export frames to PDF..." />
-                  <Separator className="my-2" />
-                  <MenuItem label="Create branch..." />
-                </Popover.Content>
-              </Popover>
-              <MenuItem label="Edit" hasSub />
-              <MenuItem label="View" hasSub />
-            </Popover.Content>
+            <HeaderApplicationMenuContent
+              compact={true}
+              onClose={() => setOpen(false)}
+              onSearch={handlePopoverSearch}
+              onCollapseNavigation={onCollapseNavigation}
+            />
           </Popover>
         </div>
 
@@ -200,14 +144,7 @@ const Header = ({
                 setOpen(!open)
                 onAvatarClick?.(users)
               }}>
-              <Avatar className="h-6 w-6">
-                {users.avatar && (
-                  <Avatar.Image src={users.avatar} alt={users.name} />
-                )}
-                <Avatar.Fallback>
-                  {users.name?.[0]?.toUpperCase()}
-                </Avatar.Fallback>
-              </Avatar>
+              <HeaderAvatar user={users} />
               <AltArrowDownIcon
                 size={12}
                 className="text-muted-foreground"
@@ -216,71 +153,12 @@ const Header = ({
             </Button>
           </Popover.Trigger>
 
-          <Popover.Content className="rounded-xl p-2" placement="bottom">
-            <div className="flex items-center">
-              <Button
-                variant="ghost"
-                className="hover:bg-background w-full rounded-md px-3 py-2 text-left text-sm"
-                onPress={() => setOpen(false)}>
-                Back to home
-              </Button>
-              {onCollapseNavigation && (
-                <Button
-                  aria-label="Collapse Home navigation"
-                  isIconOnly
-                  variant="ghost"
-                  className="shrink-0"
-                  onPress={() => {
-                    setOpen(false)
-                    onCollapseNavigation()
-                  }}>
-                  <SidebarMinimalisticIcon size={20} aria-hidden="true" />
-                </Button>
-              )}
-            </div>
-            <Separator className="my-2" />
-            <MenuItem
-              ariaLabel="Open command palette"
-              icon="vx:search"
-              shortcut="⌘ K"
-              onClick={handlePopoverSearch}
-            />
-            <Separator className="my-2" />
-            <Popover isOpen={submenu === 'file'}>
-              <Popover.Trigger
-                className="w-full"
-                onMouseOver={() => setSubmenu('file')}
-                onMouseLeave={() => setSubmenu(null)}>
-                <div>
-                  <MenuItem label="File" hasSub />
-                </div>
-              </Popover.Trigger>
-              <Popover.Content
-                placement="right top"
-                className="ml-2 p-2"
-                onMouseOver={() => setSubmenu('file')}
-                onMouseLeave={() => setSubmenu(null)}>
-                <MenuItem label="New" hasSub />
-                <Separator className="my-2" />
-                <MenuItem
-                  icon="vx:gallery"
-                  label="Place image..."
-                  shortcut="⇧ ⌘ K"
-                />
-                <Separator className="my-2" />
-                <MenuItem label="Save local copy..." />
-                <MenuItem label="Save to version history..." shortcut="⌥ ⌘ S" />
-                <MenuItem label="Show version history" />
-                <Separator className="my-2" />
-                <MenuItem label="Export..." shortcut="⇧ ⌘ E" />
-                <MenuItem label="Export frames to PDF..." />
-                <Separator className="my-2" />
-                <MenuItem label="Create branch..." />
-              </Popover.Content>
-            </Popover>
-            <MenuItem label="Edit" hasSub />
-            <MenuItem label="View" hasSub />
-          </Popover.Content>
+          <HeaderApplicationMenuContent
+            compact={false}
+            onClose={() => setOpen(false)}
+            onSearch={handlePopoverSearch}
+            onCollapseNavigation={onCollapseNavigation}
+          />
         </Popover>
 
         {showSearch && (
@@ -311,6 +189,100 @@ const Header = ({
 
       {!hideSeparator && <Separator className="hidden md:block" />}
     </>
+  )
+}
+
+const HeaderAvatar = ({ user }: { user: HeaderActionsProps['users'] }) => (
+  <Avatar className="h-6 w-6">
+    {user.avatar && <Avatar.Image src={user.avatar} alt={user.name} />}
+    <Avatar.Fallback>{user.name?.[0]?.toUpperCase()}</Avatar.Fallback>
+  </Avatar>
+)
+
+const HeaderApplicationMenuContent = ({
+  compact,
+  onClose,
+  onSearch,
+  onCollapseNavigation
+}: {
+  compact: boolean
+  onClose: () => void
+  onSearch: () => void
+  onCollapseNavigation?: () => void
+}) => {
+  const [submenu, setSubmenu] = useState<string | null>(null)
+
+  return (
+    <Popover.Content className="rounded-xl p-2" placement="bottom">
+      {compact ? (
+        <Button
+          variant="ghost"
+          className="hover:bg-background w-full rounded-md px-3 py-2 text-left text-sm"
+          onPress={onClose}>
+          Back to home
+        </Button>
+      ) : (
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
+            className="hover:bg-background w-full rounded-md px-3 py-2 text-left text-sm"
+            onPress={onClose}>
+            Back to home
+          </Button>
+          {onCollapseNavigation && (
+            <Button
+              aria-label="Collapse Home navigation"
+              isIconOnly
+              variant="ghost"
+              className="shrink-0"
+              onPress={() => {
+                onClose()
+                onCollapseNavigation()
+              }}>
+              <SidebarMinimalisticIcon size={20} aria-hidden="true" />
+            </Button>
+          )}
+        </div>
+      )}
+      <Separator className="my-2" />
+      <MenuItem
+        ariaLabel="Open command palette"
+        icon="vx:search"
+        shortcut="⌘ K"
+        onClick={onSearch}
+      />
+      <Separator className="my-2" />
+      <Popover isOpen={submenu === 'file'}>
+        <Popover.Trigger
+          className="w-full"
+          onMouseOver={() => setSubmenu('file')}
+          onMouseLeave={() => setSubmenu(null)}>
+          <div>
+            <MenuItem label="File" hasSub />
+          </div>
+        </Popover.Trigger>
+        <Popover.Content
+          placement="right top"
+          className="ml-2 p-2"
+          onMouseOver={() => setSubmenu('file')}
+          onMouseLeave={() => setSubmenu(null)}>
+          <MenuItem label="New" hasSub />
+          <Separator className="my-2" />
+          <MenuItem icon="vx:gallery" label="Place image..." shortcut="⇧ ⌘ K" />
+          <Separator className="my-2" />
+          <MenuItem label="Save local copy..." />
+          <MenuItem label="Save to version history..." shortcut="⌥ ⌘ S" />
+          <MenuItem label="Show version history" />
+          <Separator className="my-2" />
+          <MenuItem label="Export..." shortcut="⇧ ⌘ E" />
+          <MenuItem label="Export frames to PDF..." />
+          <Separator className="my-2" />
+          <MenuItem label="Create branch..." />
+        </Popover.Content>
+      </Popover>
+      <MenuItem label="Edit" hasSub />
+      <MenuItem label="View" hasSub />
+    </Popover.Content>
   )
 }
 

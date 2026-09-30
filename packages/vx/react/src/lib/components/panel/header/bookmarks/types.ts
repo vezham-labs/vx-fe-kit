@@ -2,30 +2,13 @@ import { type ComponentPropsWithRef, type ElementType, ReactNode } from 'react'
 
 import { cn } from '@vezham/react-v3'
 
+import type {
+  BookmarkItem,
+  FavoriteItem
+} from '../../../../store/useBookmarks/types'
 import { tvProps, tvSlots, tva } from './variant'
 
-export interface FavoriteItem {
-  id: string
-  name: string
-  url: string
-  avatar?: string
-  backgroundImage?: string
-}
-
-export interface BookmarkItem {
-  id: string
-  name: string
-  url?: string
-  avatar?: string
-  icon?: string
-  color?: string
-  visualType?: 'emoji' | 'icon'
-  emoji?: string
-  folder?: string
-  folderPath?: string[]
-  kind?: 'bookmark' | 'folder'
-  children?: BookmarkItem[]
-}
+export type { BookmarkItem, FavoriteItem }
 
 export interface BookmarkTreeItem {
   id: string

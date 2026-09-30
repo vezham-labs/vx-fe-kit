@@ -59,7 +59,7 @@ export const sampleFavorites: FavoriteItem[] = [
   }
 ]
 
-export const sampleBookmarks: BookmarkItem[] = [
+const sampleBookmarks: BookmarkItem[] = [
   {
     id: 'b1',
     name: 'HeroUI v3 Docs',

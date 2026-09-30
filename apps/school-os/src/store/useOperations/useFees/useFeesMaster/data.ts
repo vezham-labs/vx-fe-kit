@@ -1,9 +1,5 @@
-import type { SortDescriptor } from '@vezham/react-v3'
-
-import type {
-  OperationColumn,
-  OperationPageConfig
-} from '@pages/operations/_shared/types'
+import { makeOperationPageConfig } from '@pages/operations/_shared/config'
+import type { OperationColumn } from '@pages/operations/_shared/types'
 
 import type { FeesMasterItem } from './types'
 
@@ -189,7 +185,7 @@ export const feesMasterData: FeesMasterItem[] = [
   }
 ]
 
-export const feesMasterConfig = makeConfig({
+export const feesMasterConfig = makeOperationPageConfig({
   key: 'fees-master',
   title: 'Fees Collection',
   pageTitle: 'Fees Master',
@@ -224,38 +220,3 @@ export const feesMasterConfig = makeConfig({
   initialColumn: 'feesGroup',
   tableMinWidth: 1320
 })
-
-function makeConfig(
-  config: Omit<OperationPageConfig, 'initialSort' | 'sortOptions'> & {
-    initialColumn: string
-  }
-): OperationPageConfig {
-  const initialSort = {
-    column: config.initialColumn,
-    direction: 'ascending'
-  } satisfies SortDescriptor
-
-  return {
-    ...config,
-    initialSort,
-    sortOptions: [
-      { key: 'ascending', label: 'Ascending', descriptor: initialSort },
-      {
-        key: 'descending',
-        label: 'Descending',
-        descriptor: {
-          column: config.initialColumn,
-          direction: 'descending'
-        } satisfies SortDescriptor
-      },
-      {
-        key: 'recentlyAdded',
-        label: 'Recently Added',
-        descriptor: {
-          column: 'createdAt',
-          direction: 'descending'
-        } satisfies SortDescriptor
-      }
-    ]
-  }
-}

@@ -1,15 +1,7 @@
-import {
-  type SortFieldOption,
-  sortOrderOptions
-} from '@pages/academic/shared/sort'
+import { createExamSortOptions, studentSubjectColumns } from '../exam-columns'
+import type { ClassFormState, ClassRow, ExamResultsColumnOption } from './types'
 
-import type {
-  ClassFormState,
-  ClassRow,
-  ClassStatus,
-  DatePresetKey,
-  ExamResultsColumnOption
-} from './types'
+export { dateOptions, rowCountOptions } from '../options'
 
 export const initialRows: ClassRow[] = [
   {
@@ -290,80 +282,8 @@ export const initialRows: ClassRow[] = [
   }
 ]
 
-export const dateOptions: { key: DatePresetKey; label: string }[] = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last7', label: 'Last 7 Days' },
-  { key: 'last30', label: 'Last 30 Days' },
-  { key: 'thisYear', label: 'This Year' },
-  { key: 'nextYear', label: 'Next Year' },
-  { key: 'custom', label: 'Custom Range' }
-]
-
 export const examResultsColumnOptions = [
-  {
-    key: 'id',
-    label: 'Admission No',
-    defaultWidth: 180,
-    minWidth: 140,
-    maxWidth: 220
-  },
-  {
-    key: 'name',
-    label: 'Student Name',
-    defaultWidth: 220,
-    minWidth: 180,
-    maxWidth: 280
-  },
-  {
-    key: 'english',
-    label: 'English',
-    defaultWidth: 130,
-    minWidth: 120,
-    maxWidth: 160
-  },
-  {
-    key: 'spanish',
-    label: 'Spanish',
-    defaultWidth: 130,
-    minWidth: 120,
-    maxWidth: 160
-  },
-  {
-    key: 'physics',
-    label: 'Physics',
-    defaultWidth: 130,
-    minWidth: 120,
-    maxWidth: 160
-  },
-  {
-    key: 'chemistry',
-    label: 'Chemistry',
-    defaultWidth: 130,
-    minWidth: 120,
-    maxWidth: 160
-  },
-  {
-    key: 'maths',
-    label: 'Maths',
-    defaultWidth: 130,
-    minWidth: 120,
-    maxWidth: 160
-  },
-  {
-    key: 'computer',
-    label: 'Computer',
-    defaultWidth: 130,
-    minWidth: 120,
-    maxWidth: 160
-  },
-  {
-    key: 'envscience',
-    label: 'Env Science',
-    defaultWidth: 150,
-    minWidth: 130,
-    maxWidth: 180
-  },
+  ...studentSubjectColumns,
   {
     key: 'total',
     label: 'Total',
@@ -394,25 +314,8 @@ export const examResultsColumnOptions = [
   }
 ] as const satisfies readonly ExamResultsColumnOption[]
 
-export const sortOptions = [
-  {
-    key: 'recentlyViewed',
-    label: 'Recently Viewed',
-    column: 'viewedAt'
-  },
-  {
-    key: 'recentlyAdded',
-    label: 'Recently Added',
-    column: 'createdAt'
-  },
-  ...examResultsColumnOptions.map(option => ({
-    key: option.key,
-    label: option.label,
-    column: option.key
-  }))
-] satisfies readonly SortFieldOption[]
+export const sortOptions = createExamSortOptions(examResultsColumnOptions)
 
-export const rowCountOptions = ['5', '10', '25', '50']
 export const classOptions = ['I', 'II', 'III', 'IV', 'V']
 export const sectionOptions = ['A', 'B', 'C', 'D', 'E']
 export const examtypeOptions = [
@@ -422,45 +325,6 @@ export const examtypeOptions = [
   'Chapter Wise Test',
   'Progress Test'
 ]
-export const roomOptions = [
-  '101',
-  '102',
-  '103',
-  '104',
-  '105',
-  '106',
-  '107',
-  '108',
-  '109',
-  '110'
-]
-export const dayOptions = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday'
-]
-
-export const starttimeOptions = [
-  '09.30 AM',
-  '10.30 AM',
-  '11.30 AM',
-  '12.30 PM',
-  '01.30 PM',
-  '02.30 PM'
-]
-export const endtimeOptions = [
-  '12.30 PM',
-  '01.30 PM',
-  '02.30 PM',
-  '03.30 PM',
-  '04.30 PM',
-  '05.30 PM'
-]
-export const statusOptions: ClassStatus[] = ['Pass', 'Fail']
 
 export const emptyForm: ClassFormState = {
   name: '',
@@ -476,5 +340,3 @@ export const emptyForm: ClassFormState = {
   grade: '',
   result: 'Pass'
 }
-
-export { sortOrderOptions }

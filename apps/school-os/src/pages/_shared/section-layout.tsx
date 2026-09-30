@@ -18,12 +18,12 @@ import {
 import { AppIcon } from '@vx/react/app-icon'
 import { ShortcutKey } from '@vx/react/shortcut-key'
 
-import type { useProps } from '@pages/academic/layout/types'
+import type { useAcademicLayoutProps } from '@pages/academic/layout/types'
 
 const SectionLayout = ({
   controls
 }: {
-  controls: ReturnType<typeof useProps>
+  controls: ReturnType<typeof useAcademicLayoutProps>
 }) => {
   const {
     Component,
@@ -32,62 +32,44 @@ const SectionLayout = ({
     layoutTitle,
     headerProps,
     sidebarProps,
-    drawerProps,
-    getBaseProps,
-    getHeaderProps,
-    getHeaderInnerProps,
-    getHeaderLeftProps,
-    getHeaderTabsDesktopProps,
-    getHeaderRightProps,
-    getHeaderTabsMobileProps,
-    getShellProps,
-    getSidebarRailProps,
-    getContentProps,
-    getContentSurfaceProps,
-    getDrawerHeaderProps,
-    getDrawerTitleProps,
-    getDrawerBodyProps,
-    getIconButtonProps,
-    getButtonIconProps,
-    getSearchFieldProps,
-    getSearchIconProps,
-    getPrimaryLabelProps,
-    getDropdownLabelProps,
-    getSidebarProps,
-    getSidebarListProps,
-    getSidebarItemWrapProps,
-    getSidebarChildGroupProps,
-    getSidebarItemProps,
-    getCollapsedSidebarListProps,
-    getCollapsedSidebarItemProps,
-    getSidebarFlyoutProps,
-    getSidebarFlyoutLabelProps,
-    getSidebarFlyoutListProps,
-    getSidebarFlyoutItemProps,
-    getSidebarIconProps,
-    getSidebarLabelProps,
-    getSidebarDisclosureIconProps,
-    getTabsScrollerProps,
-    getSeparatorProps,
-    getTabsListProps,
-    getTabsTabProps
+    drawerProps
   } = controls
 
+  const sidebarAccessors = {
+    getSidebarProps: controls.getSidebarProps,
+    getSidebarListProps: controls.getSidebarListProps,
+    getSidebarItemWrapProps: controls.getSidebarItemWrapProps,
+    getSidebarChildGroupProps: controls.getSidebarChildGroupProps,
+    getSidebarItemProps: controls.getSidebarItemProps,
+    getCollapsedSidebarListProps: controls.getCollapsedSidebarListProps,
+    getCollapsedSidebarItemProps: controls.getCollapsedSidebarItemProps,
+    getSidebarFlyoutProps: controls.getSidebarFlyoutProps,
+    getSidebarFlyoutLabelProps: controls.getSidebarFlyoutLabelProps,
+    getSidebarFlyoutListProps: controls.getSidebarFlyoutListProps,
+    getSidebarFlyoutItemProps: controls.getSidebarFlyoutItemProps,
+    getSidebarIconProps: controls.getSidebarIconProps,
+    getSidebarLabelProps: controls.getSidebarLabelProps,
+    getSidebarDisclosureIconProps: controls.getSidebarDisclosureIconProps
+  }
+
   return (
-    <Component {...getBaseProps()}>
+    <Component {...controls.getBaseProps()}>
       <Surface
         key={isNavigationCollapsed ? 'navigation-collapsed' : 'navigation-open'}
-        {...getHeaderProps()}>
-        <Surface {...getHeaderInnerProps()}>
-          <Surface {...getHeaderLeftProps()}>
+        {...controls.getHeaderProps()}>
+        <Surface {...controls.getHeaderInnerProps()}>
+          <Surface {...controls.getHeaderLeftProps()}>
             {!isNavigationCollapsed && (
               <>
                 <HeaderIconTooltip
                   label={headerProps.sidebarToggle.label}
                   shortcut="⌘ S">
-                  <Button {...getIconButtonProps(headerProps.sidebarToggle)}>
+                  <Button
+                    {...controls.getIconButtonProps(headerProps.sidebarToggle)}>
                     <AppIcon
-                      {...getButtonIconProps(headerProps.sidebarToggle.icon)}
+                      {...controls.getButtonIconProps(
+                        headerProps.sidebarToggle.icon
+                      )}
                       size="1em"
                       aria-hidden="true"
                     />
@@ -99,9 +81,9 @@ const SectionLayout = ({
                     key={action.key}
                     label={action.label}
                     shortcut={getActionShortcut(action.key)}>
-                    <Button {...getIconButtonProps(action)}>
+                    <Button {...controls.getIconButtonProps(action)}>
                       <AppIcon
-                        {...getButtonIconProps(action.icon)}
+                        {...controls.getButtonIconProps(action.icon)}
                         size="1em"
                         aria-hidden="true"
                       />
@@ -112,27 +94,30 @@ const SectionLayout = ({
             )}
 
             {activeTabs.length ? (
-              <Surface {...getHeaderTabsDesktopProps()}>
+              <Surface {...controls.getHeaderTabsDesktopProps()}>
                 <HeaderTabs
                   tabs={activeTabs}
                   selectedKey={headerProps.selectedTabKey}
                   onSelectionChange={headerProps.onTabSelectionChange}
-                  getTabsScrollerProps={getTabsScrollerProps}
-                  getTabsListProps={getTabsListProps}
-                  getTabsTabProps={getTabsTabProps}
+                  getTabsScrollerProps={controls.getTabsScrollerProps}
+                  getTabsListProps={controls.getTabsListProps}
+                  getTabsTabProps={controls.getTabsTabProps}
                 />
               </Surface>
             ) : null}
           </Surface>
 
-          <Surface {...getHeaderRightProps()}>
+          <Surface {...controls.getHeaderRightProps()}>
             {headerProps.searchAction ? (
               <>
-                <TextField {...getSearchFieldProps(headerProps.searchAction)}>
+                <TextField
+                  {...controls.getSearchFieldProps(headerProps.searchAction)}>
                   <InputGroup>
                     <InputGroup.Prefix>
                       <AppIcon
-                        {...getSearchIconProps(headerProps.searchAction.icon)}
+                        {...controls.getSearchIconProps(
+                          headerProps.searchAction.icon
+                        )}
                         size="1em"
                         aria-hidden="true"
                       />
@@ -145,9 +130,12 @@ const SectionLayout = ({
                 <HeaderIconTooltip
                   label={headerProps.searchAction.label}
                   shortcut="⌘ K">
-                  <Button {...getIconButtonProps(headerProps.searchAction)}>
+                  <Button
+                    {...controls.getIconButtonProps(headerProps.searchAction)}>
                     <AppIcon
-                      {...getButtonIconProps(headerProps.searchAction.icon)}
+                      {...controls.getButtonIconProps(
+                        headerProps.searchAction.icon
+                      )}
                       size="1em"
                       aria-hidden="true"
                     />
@@ -160,9 +148,12 @@ const SectionLayout = ({
               <HeaderIconTooltip
                 label={headerProps.refreshAction.label}
                 shortcut={getActionShortcut(headerProps.refreshAction.key)}>
-                <Button {...getIconButtonProps(headerProps.refreshAction)}>
+                <Button
+                  {...controls.getIconButtonProps(headerProps.refreshAction)}>
                   <AppIcon
-                    {...getButtonIconProps(headerProps.refreshAction.icon)}
+                    {...controls.getButtonIconProps(
+                      headerProps.refreshAction.icon
+                    )}
                     size="1em"
                     aria-hidden="true"
                   />
@@ -173,20 +164,26 @@ const SectionLayout = ({
             {headerProps.menuActions.length ? (
               <MoreActions
                 actions={headerProps.menuActions}
-                getIconButtonProps={getIconButtonProps}
-                getButtonIconProps={getButtonIconProps}
-                getDropdownLabelProps={getDropdownLabelProps}
+                getIconButtonProps={controls.getIconButtonProps}
+                getButtonIconProps={controls.getButtonIconProps}
+                getDropdownLabelProps={controls.getDropdownLabelProps}
               />
             ) : null}
 
             {headerProps.primaryAction ? (
-              <Button {...getIconButtonProps(headerProps.primaryAction, true)}>
+              <Button
+                {...controls.getIconButtonProps(
+                  headerProps.primaryAction,
+                  true
+                )}>
                 <AppIcon
-                  {...getButtonIconProps(headerProps.primaryAction.icon)}
+                  {...controls.getButtonIconProps(
+                    headerProps.primaryAction.icon
+                  )}
                   size="1em"
                   aria-hidden="true"
                 />
-                <Label {...getPrimaryLabelProps()}>
+                <Label {...controls.getPrimaryLabelProps()}>
                   {headerProps.primaryAction.label}
                 </Label>
               </Button>
@@ -195,42 +192,26 @@ const SectionLayout = ({
         </Surface>
 
         {activeTabs.length ? (
-          <Surface {...getHeaderTabsMobileProps()}>
+          <Surface {...controls.getHeaderTabsMobileProps()}>
             <HeaderTabs
               tabs={activeTabs}
               selectedKey={headerProps.selectedTabKey}
               onSelectionChange={headerProps.onTabSelectionChange}
-              getTabsScrollerProps={getTabsScrollerProps}
-              getTabsListProps={getTabsListProps}
-              getTabsTabProps={getTabsTabProps}
+              getTabsScrollerProps={controls.getTabsScrollerProps}
+              getTabsListProps={controls.getTabsListProps}
+              getTabsTabProps={controls.getTabsTabProps}
             />
           </Surface>
         ) : null}
       </Surface>
 
-      <Surface {...getShellProps()}>
-        <Surface {...getSidebarRailProps()}>
-          <SectionSidebar
-            sidebarProps={sidebarProps}
-            getSidebarProps={getSidebarProps}
-            getSidebarListProps={getSidebarListProps}
-            getSidebarItemWrapProps={getSidebarItemWrapProps}
-            getSidebarChildGroupProps={getSidebarChildGroupProps}
-            getSidebarItemProps={getSidebarItemProps}
-            getCollapsedSidebarListProps={getCollapsedSidebarListProps}
-            getCollapsedSidebarItemProps={getCollapsedSidebarItemProps}
-            getSidebarFlyoutProps={getSidebarFlyoutProps}
-            getSidebarFlyoutLabelProps={getSidebarFlyoutLabelProps}
-            getSidebarFlyoutListProps={getSidebarFlyoutListProps}
-            getSidebarFlyoutItemProps={getSidebarFlyoutItemProps}
-            getSidebarIconProps={getSidebarIconProps}
-            getSidebarLabelProps={getSidebarLabelProps}
-            getSidebarDisclosureIconProps={getSidebarDisclosureIconProps}
-          />
+      <Surface {...controls.getShellProps()}>
+        <Surface {...controls.getSidebarRailProps()}>
+          <SectionSidebar sidebarProps={sidebarProps} {...sidebarAccessors} />
         </Surface>
 
-        <Surface {...getContentProps()}>
-          <Surface {...getContentSurfaceProps()}>
+        <Surface {...controls.getContentProps()}>
+          <Surface {...controls.getContentSurfaceProps()}>
             <Outlet />
           </Surface>
         </Surface>
@@ -239,37 +220,24 @@ const SectionLayout = ({
       <Drawer {...drawerProps.root}>
         <Drawer.Content placement="left">
           <Drawer.Dialog {...drawerProps.dialog}>
-            <Surface {...getDrawerHeaderProps()}>
-              <Drawer.Header {...getDrawerTitleProps()}>
+            <Surface {...controls.getDrawerHeaderProps()}>
+              <Drawer.Header {...controls.getDrawerTitleProps()}>
                 {layoutTitle}
               </Drawer.Header>
 
-              <Button {...getIconButtonProps(drawerProps.closeAction)}>
+              <Button {...controls.getIconButtonProps(drawerProps.closeAction)}>
                 <AppIcon
-                  {...getButtonIconProps(drawerProps.closeAction.icon)}
+                  {...controls.getButtonIconProps(drawerProps.closeAction.icon)}
                   size="1em"
                   aria-hidden="true"
                 />
               </Button>
             </Surface>
-            <Separator {...getSeparatorProps()} />
-            <Drawer.Body {...getDrawerBodyProps()}>
+            <Separator {...controls.getSeparatorProps()} />
+            <Drawer.Body {...controls.getDrawerBodyProps()}>
               <SectionSidebar
                 sidebarProps={drawerProps.sidebar}
-                getSidebarProps={getSidebarProps}
-                getSidebarListProps={getSidebarListProps}
-                getSidebarItemWrapProps={getSidebarItemWrapProps}
-                getSidebarChildGroupProps={getSidebarChildGroupProps}
-                getSidebarItemProps={getSidebarItemProps}
-                getCollapsedSidebarListProps={getCollapsedSidebarListProps}
-                getCollapsedSidebarItemProps={getCollapsedSidebarItemProps}
-                getSidebarFlyoutProps={getSidebarFlyoutProps}
-                getSidebarFlyoutLabelProps={getSidebarFlyoutLabelProps}
-                getSidebarFlyoutListProps={getSidebarFlyoutListProps}
-                getSidebarFlyoutItemProps={getSidebarFlyoutItemProps}
-                getSidebarIconProps={getSidebarIconProps}
-                getSidebarLabelProps={getSidebarLabelProps}
-                getSidebarDisclosureIconProps={getSidebarDisclosureIconProps}
+                {...sidebarAccessors}
               />
             </Drawer.Body>
           </Drawer.Dialog>
@@ -285,10 +253,12 @@ function MoreActions({
   getButtonIconProps,
   getDropdownLabelProps
 }: Pick<
-  ReturnType<typeof useProps>,
+  ReturnType<typeof useAcademicLayoutProps>,
   'getIconButtonProps' | 'getButtonIconProps' | 'getDropdownLabelProps'
 > & {
-  actions: ReturnType<typeof useProps>['headerProps']['menuActions']
+  actions: ReturnType<
+    typeof useAcademicLayoutProps
+  >['headerProps']['menuActions']
 }) {
   return (
     <Dropdown>
@@ -425,7 +395,7 @@ function SectionSidebar({
   getSidebarLabelProps,
   getSidebarDisclosureIconProps
 }: Pick<
-  ReturnType<typeof useProps>,
+  ReturnType<typeof useAcademicLayoutProps>,
   | 'sidebarProps'
   | 'getSidebarProps'
   | 'getSidebarListProps'
@@ -561,13 +531,13 @@ function HeaderTabs({
   getTabsListProps,
   getTabsTabProps
 }: Pick<
-  ReturnType<typeof useProps>,
+  ReturnType<typeof useAcademicLayoutProps>,
   'getTabsScrollerProps' | 'getTabsListProps' | 'getTabsTabProps'
 > & {
-  tabs: ReturnType<typeof useProps>['activeTabs']
+  tabs: ReturnType<typeof useAcademicLayoutProps>['activeTabs']
   selectedKey?: string
   onSelectionChange: ReturnType<
-    typeof useProps
+    typeof useAcademicLayoutProps
   >['headerProps']['onTabSelectionChange']
 }) {
   return (

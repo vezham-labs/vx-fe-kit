@@ -25,6 +25,33 @@ type SortOrderOption = {
   icon: string
 }
 
+const SortFieldSection = ({
+  label,
+  options,
+  itemClassName,
+  onSortFieldChange
+}: {
+  label: string
+  options: readonly SortOption[]
+  itemClassName: string
+  onSortFieldChange: (column: string) => void
+}) => (
+  <Dropdown.Section aria-label={label}>
+    {options.map(option => (
+      <Dropdown.Item
+        key={option.key}
+        id={option.key}
+        textValue={option.label}
+        onPress={() => onSortFieldChange(option.column)}>
+        <span className={itemClassName}>
+          {option.label}
+          <Dropdown.ItemIndicator />
+        </span>
+      </Dropdown.Item>
+    ))}
+  </Dropdown.Section>
+)
+
 type Props = {
   activeSortLabel: string
   ariaLabel?: string
@@ -37,7 +64,39 @@ type Props = {
   onSortDirectionChange: (direction: SortDescriptor['direction']) => void
 }
 
-export const SortDropdown = ({
+export const createSortDropdown = (
+  options: Pick<
+    Props,
+    'ariaLabel' | 'itemClassName' | 'sortOptions' | 'sortOrderOptions'
+  > & {
+    columnOptions?: readonly { key: string; label: string }[]
+  }
+) => {
+  const { columnOptions = [], ...dropdownOptions } = options
+  const availableSortOptions = [
+    ...dropdownOptions.sortOptions,
+    ...columnOptions.map(option => ({ ...option, column: option.key }))
+  ]
+
+  return (
+    props: Pick<
+      Props,
+      | 'activeSortLabel'
+      | 'sortField'
+      | 'sortDirection'
+      | 'onSortFieldChange'
+      | 'onSortDirectionChange'
+    >
+  ) => (
+    <SortDropdown
+      {...props}
+      {...dropdownOptions}
+      sortOptions={availableSortOptions}
+    />
+  )
+}
+
+const SortDropdown = ({
   activeSortLabel,
   ariaLabel = 'Sort records',
   itemClassName = classNames.dateOptionLabel,
@@ -84,35 +143,19 @@ export const SortDropdown = ({
           aria-label={ariaLabel}
           selectedKeys={selectedKeys}
           selectionMode="multiple">
-          <Dropdown.Section aria-label="Recently used">
-            {recentlyUsedOptions.map(option => (
-              <Dropdown.Item
-                key={option.key}
-                id={option.key}
-                textValue={option.label}
-                onPress={() => updateSortField(option.column)}>
-                <span className={itemClassName}>
-                  {option.label}
-                  <Dropdown.ItemIndicator />
-                </span>
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Section>
+          <SortFieldSection
+            label="Recently used"
+            options={recentlyUsedOptions}
+            itemClassName={itemClassName}
+            onSortFieldChange={updateSortField}
+          />
 
-          <Dropdown.Section aria-label="Table columns">
-            {tableColumnOptions.map(option => (
-              <Dropdown.Item
-                key={option.key}
-                id={option.key}
-                textValue={option.label}
-                onPress={() => updateSortField(option.column)}>
-                <span className={itemClassName}>
-                  {option.label}
-                  <Dropdown.ItemIndicator />
-                </span>
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Section>
+          <SortFieldSection
+            label="Table columns"
+            options={tableColumnOptions}
+            itemClassName={itemClassName}
+            onSortFieldChange={updateSortField}
+          />
 
           <Separator />
 

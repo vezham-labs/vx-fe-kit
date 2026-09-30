@@ -1,23 +1,5 @@
 import { type SortDescriptor, useOverlayState } from '@vezham/react-v3'
 
-export type DatePresetKey =
-  | 'today'
-  | 'yesterday'
-  | 'last7'
-  | 'last30'
-  | 'thisYear'
-  | 'nextYear'
-  | 'custom'
-
-export type PickerDateValue = {
-  toString(): string
-}
-
-export type CustomDateRangeValue = {
-  start: PickerDateValue
-  end: PickerDateValue
-}
-export type DateRangeFilter = { start: string; end: string }
 export type OperationStatus = 'Active' | 'Inactive' | 'Paid' | 'Unpaid'
 export type OperationCellType =
   'text' | 'link' | 'person' | 'status' | 'badge' | 'button' | 'code'

@@ -7,7 +7,7 @@ import type { RQSyllabus } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_SYLLABUS = 'syllabus'
+const CK_SYLLABUS = 'syllabus'
 
 const useList = (rq: RQSyllabus = {}) =>
   useQuery({

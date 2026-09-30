@@ -1,7 +1,6 @@
-import { Input, Label } from '@vezham/react-v3'
-
 import type { ClassFormProps } from '@pages/academic/classroom/types'
 import { classNames } from '@pages/academic/classroom/variants'
+import { AcademicInputField } from '@pages/academic/shared/input-field'
 import { AcademicStatusSwitch } from '@pages/academic/shared/status-switch'
 
 export const ClassForm = ({
@@ -12,33 +11,23 @@ export const ClassForm = ({
   return (
     <div className={classNames.form}>
       <div className={classNames.formFields}>
-        <div className={classNames.field}>
-          <Label className={classNames.fieldLabel}>Room No</Label>
-          <Input
-            fullWidth
-            aria-invalid={Boolean(formErrors.roomno)}
-            placeholder="Enter room no"
-            value={form.roomno}
-            onChange={event => onFormChange('roomno', event.target.value)}
-          />
-          {formErrors.roomno && (
-            <p className={classNames.fieldError}>{formErrors.roomno}</p>
-          )}
-        </div>
+        <AcademicInputField
+          classes={classNames}
+          error={formErrors.roomno}
+          label="Room No"
+          placeholder="Enter room no"
+          value={form.roomno}
+          onChange={value => onFormChange('roomno', value)}
+        />
 
-        <div className={classNames.field}>
-          <Label className={classNames.fieldLabel}>Capacity</Label>
-          <Input
-            fullWidth
-            aria-invalid={Boolean(formErrors.capacity)}
-            placeholder="Enter capacity"
-            value={form.capacity}
-            onChange={event => onFormChange('capacity', event.target.value)}
-          />
-          {formErrors.capacity && (
-            <p className={classNames.fieldError}>{formErrors.capacity}</p>
-          )}
-        </div>
+        <AcademicInputField
+          classes={classNames}
+          error={formErrors.capacity}
+          label="Capacity"
+          placeholder="Enter capacity"
+          value={form.capacity}
+          onChange={value => onFormChange('capacity', value)}
+        />
       </div>
 
       <AcademicStatusSwitch

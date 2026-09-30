@@ -1,57 +1,17 @@
-import { Chip } from '@vezham/react-v3'
-
-import type {
-  ClassDetailSummaryProps,
-  ClassDetailsProps,
-  DetailLineProps
-} from '@pages/academic/reasons/types'
+import type { ClassDetailsProps } from '@pages/academic/reasons/types'
 import { getClassTags } from '@pages/academic/reasons/utils/reasons'
 import { classNames } from '@pages/academic/reasons/variants'
+import { createActiveEntityDetails } from '@pages/academic/shared/entity-details'
+import type { DetailField } from '@pages/academic/shared/entity-details'
 
-export const ClassDetails = ({ row }: ClassDetailsProps) => {
-  if (!row) {
-    return null
-  }
+type Row = NonNullable<ClassDetailsProps['row']>
 
-  return (
-    <div className={classNames.details}>
-      <ClassDetailSummary row={row} />
-    </div>
-  )
-}
+const fields: DetailField<Row>[] = [
+  { label: 'Section Role', value: (row: Row) => row.role }
+]
 
-function ClassDetailSummary({ row }: ClassDetailSummaryProps) {
-  return (
-    <div className={classNames.detailSummary}>
-      <DetailLine label="Section Role" value={row.role} />
-
-      <div className={classNames.detailChipRow}>
-        <span className={classNames.detailHeading}>Status:</span>
-        <Chip
-          color={row.status === 'Active' ? 'success' : 'danger'}
-          variant="soft">
-          <span aria-hidden="true">●</span>
-          <Chip.Label>{row.status}</Chip.Label>
-        </Chip>
-      </div>
-
-      <div className={classNames.detailTagsRow}>
-        <span className={classNames.detailHeading}>Tags:</span>
-        {getClassTags(row).map(tag => (
-          <Chip key={tag} variant="soft">
-            <Chip.Label>{tag}</Chip.Label>
-          </Chip>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function DetailLine({ label, value }: DetailLineProps) {
-  return (
-    <div className={classNames.detailLine}>
-      <span className={classNames.fieldLabel}>{label}:</span>
-      <span className={classNames.detailValue}>{value}</span>
-    </div>
-  )
-}
+export const ClassDetails = createActiveEntityDetails<Row>({
+  fields,
+  classNames,
+  getTags: getClassTags
+})

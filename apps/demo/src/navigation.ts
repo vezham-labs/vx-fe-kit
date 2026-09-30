@@ -14,5 +14,12 @@ export const navigationItems: AppNavigationItem[] = [
     iconActive: 'vx:library-filled',
     href: '/pro',
     title: 'Pro'
+  },
+  {
+    key: 'sidebar',
+    icon: 'vx:library',
+    iconActive: 'vx:library-filled',
+    href: '/sidebar',
+    title: 'Sidebar'
   }
 ]

@@ -1,29 +1,15 @@
-import type { SortDescriptor } from '@vezham/react-v3'
+import {
+  makeAttendancePageConfig,
+  reportFilterOption as option
+} from '@pages/reports/_shared/config'
 
-import type {
-  AttendancePageConfig,
-  AttendanceStatus,
-  DatePresetKey,
-  PersonValue,
-  ReportColumn,
-  ReportRow
-} from './types'
+import type { PersonValue, ReportColumn, ReportRow } from './types'
 
-export const rowCountOptions = ['10', '25', '50']
-export const dateOptions: { key: DatePresetKey; label: string }[] = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last7', label: 'Last 7 Days' },
-  { key: 'last30', label: 'Last 30 Days' },
-  { key: 'thisYear', label: 'This Year' },
-  { key: 'nextYear', label: 'Next Year' },
-  { key: 'custom', label: 'Custom Range' }
-]
-export const statusLegend: {
-  status: AttendanceStatus
-  label: string
-  icon: string
-}[] = []
+export {
+  dateOptions,
+  emptyStatusLegend as statusLegend,
+  rowCountOptions
+} from '@pages/reports/_shared/attendance-options'
 
 const columns: ReportColumn[] = [
   {
@@ -161,7 +147,7 @@ const rows: ReportRow[] = [
   )
 ]
 
-export const leaveReportsConfig = makeConfig({
+export const leaveReportsConfig = makeAttendancePageConfig({
   key: 'leave-reports',
   title: 'Leave Report List',
   ariaLabel: 'Leave reports',
@@ -174,60 +160,6 @@ export const leaveReportsConfig = makeConfig({
   initialColumn: 'admissionNo',
   tableMinWidth: 1500
 })
-
-function makeConfig(config: {
-  key: string
-  title: string
-  ariaLabel: string
-  columns: ReportColumn[]
-  rows: ReportRow[]
-  filters: AttendancePageConfig['filters']
-  initialColumn: string
-  tableMinWidth: number
-  showStatusLegend?: boolean
-  actionLabel?: string
-}): AttendancePageConfig {
-  const initialSort = {
-    column: config.initialColumn,
-    direction: 'ascending'
-  } satisfies SortDescriptor
-
-  return {
-    ...config,
-    initialSort,
-    sortOptions: [
-      { key: 'ascending', label: 'Ascending', descriptor: initialSort },
-      {
-        key: 'descending',
-        label: 'Descending',
-        descriptor: {
-          column: config.initialColumn,
-          direction: 'descending'
-        } satisfies SortDescriptor
-      },
-      {
-        key: 'recentlyViewed',
-        label: 'Recently Viewed',
-        descriptor: {
-          column: 'viewedAt',
-          direction: 'descending'
-        } satisfies SortDescriptor
-      },
-      {
-        key: 'recentlyAdded',
-        label: 'Recently Added',
-        descriptor: {
-          column: 'createdAt',
-          direction: 'descending'
-        } satisfies SortDescriptor
-      }
-    ]
-  }
-}
-
-function option(key: string, label: string, values: string[]) {
-  return { key, label, values }
-}
 
 function leaveRow(
   id: string,

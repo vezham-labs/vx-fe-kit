@@ -17,6 +17,7 @@ import { Route as ApiHeartbeatRouteRouteImport } from './routes/api/heartbeat/ro
 import { Route as ApiPulseRouteRouteImport } from './routes/api/pulse/route'
 
 const ProLazyRouteImport = createFileRoute('/pro')()
+const SidebarLazyRouteImport = createFileRoute('/sidebar')()
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -33,6 +34,11 @@ const ProLazyRoute = ProLazyRouteImport.update({
   path: '/pro',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/pro.lazy').then((d) => d.Route))
+const SidebarLazyRoute = SidebarLazyRouteImport.update({
+  id: '/sidebar',
+  path: '/sidebar',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/sidebar.lazy').then((d) => d.Route))
 const ApiHeartbeatRouteRoute = ApiHeartbeatRouteRouteImport.update({
   id: '/api/heartbeat',
   path: '/api/heartbeat',
@@ -48,6 +54,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/pro': typeof ProLazyRoute
+  '/sidebar': typeof SidebarLazyRoute
   '/api/heartbeat': typeof ApiHeartbeatRouteRoute
   '/api/pulse': typeof ApiPulseRouteRoute
 }
@@ -55,6 +62,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/pro': typeof ProLazyRoute
+  '/sidebar': typeof SidebarLazyRoute
   '/api/heartbeat': typeof ApiHeartbeatRouteRoute
   '/api/pulse': typeof ApiPulseRouteRoute
 }
@@ -63,21 +71,30 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/pro': typeof ProLazyRoute
+  '/sidebar': typeof SidebarLazyRoute
   '/api/heartbeat': typeof ApiHeartbeatRouteRoute
   '/api/pulse': typeof ApiPulseRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$' | '/pro' | '/api/heartbeat' | '/api/pulse'
+  fullPaths: '/' | '/$' | '/pro' | '/sidebar' | '/api/heartbeat' | '/api/pulse'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$' | '/pro' | '/api/heartbeat' | '/api/pulse'
-  id: '__root__' | '/' | '/$' | '/pro' | '/api/heartbeat' | '/api/pulse'
+  to: '/' | '/$' | '/pro' | '/sidebar' | '/api/heartbeat' | '/api/pulse'
+  id:
+    | '__root__'
+    | '/'
+    | '/$'
+    | '/pro'
+    | '/sidebar'
+    | '/api/heartbeat'
+    | '/api/pulse'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
   ProLazyRoute: typeof ProLazyRoute
+  SidebarLazyRoute: typeof SidebarLazyRoute
   ApiHeartbeatRouteRoute: typeof ApiHeartbeatRouteRoute
   ApiPulseRouteRoute: typeof ApiPulseRouteRoute
 }
@@ -105,6 +122,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sidebar': {
+      id: '/sidebar'
+      path: '/sidebar'
+      fullPath: '/sidebar'
+      preLoaderRoute: typeof SidebarLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/heartbeat': {
       id: '/api/heartbeat'
       path: '/api/heartbeat'
@@ -126,6 +150,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
   ProLazyRoute: ProLazyRoute,
+  SidebarLazyRoute: SidebarLazyRoute,
   ApiHeartbeatRouteRoute: ApiHeartbeatRouteRoute,
   ApiPulseRouteRoute: ApiPulseRouteRoute,
 }

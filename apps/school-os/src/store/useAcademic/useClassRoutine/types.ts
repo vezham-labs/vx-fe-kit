@@ -1,5 +1,3 @@
-import type { SortDescriptor } from '@vezham/react-v3'
-
 export type RQClassRoutine = Record<string, never>
 
 export type ClassStatus = 'Active' | 'Inactive'
@@ -66,11 +64,4 @@ export type SortOption = {
   key: string
   label: string
   column: keyof ClassRoutineItem
-}
-
-export type SortOrderOption = {
-  key: string
-  label: string
-  direction: SortDescriptor['direction']
-  icon: string
 }

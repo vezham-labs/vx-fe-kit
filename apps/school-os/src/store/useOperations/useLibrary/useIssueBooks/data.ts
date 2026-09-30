@@ -1,13 +1,9 @@
-import type { SortDescriptor } from '@vezham/react-v3'
-
-import type {
-  OperationColumn,
-  OperationPageConfig
-} from '@pages/operations/_shared/types'
+import { makeOperationPageConfig } from '@pages/operations/_shared/config'
+import type { OperationColumn } from '@pages/operations/_shared/types'
 
 import type { IssueBookItem } from './types'
 
-const columns: OperationColumn[] = [
+export const issueBookColumns: OperationColumn[] = [
   {
     key: 'displayId',
     label: 'ID',
@@ -195,7 +191,7 @@ export const issueBooksData: IssueBookItem[] = [
   }
 ]
 
-export const issueBookConfig = makeConfig({
+export const issueBookConfig = makeOperationPageConfig({
   key: 'issue-book',
   title: 'Issue Books',
   pageTitle: 'Issue Book',
@@ -203,7 +199,7 @@ export const issueBookConfig = makeConfig({
   addLabel: 'Issue Book',
   ariaLabel: 'Issue Book',
   breadcrumb: ['Dashboard', 'Management', 'Issue Book'],
-  columns,
+  columns: issueBookColumns,
   rows: issueBooksData,
   filters: [
     {
@@ -232,38 +228,3 @@ export const issueBookConfig = makeConfig({
   initialColumn: 'issueTo',
   tableMinWidth: 1180
 })
-
-function makeConfig(
-  config: Omit<OperationPageConfig, 'initialSort' | 'sortOptions'> & {
-    initialColumn: string
-  }
-): OperationPageConfig {
-  const initialSort = {
-    column: config.initialColumn,
-    direction: 'ascending'
-  } satisfies SortDescriptor
-
-  return {
-    ...config,
-    initialSort,
-    sortOptions: [
-      { key: 'ascending', label: 'Ascending', descriptor: initialSort },
-      {
-        key: 'descending',
-        label: 'Descending',
-        descriptor: {
-          column: config.initialColumn,
-          direction: 'descending'
-        } satisfies SortDescriptor
-      },
-      {
-        key: 'recentlyAdded',
-        label: 'Recently Added',
-        descriptor: {
-          column: 'createdAt',
-          direction: 'descending'
-        } satisfies SortDescriptor
-      }
-    ]
-  }
-}

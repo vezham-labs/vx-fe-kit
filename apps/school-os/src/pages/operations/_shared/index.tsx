@@ -1,125 +1,90 @@
-import { useHotkey } from '@tanstack/react-hotkeys'
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import {
   AltArrowDown as AltArrowDownIcon,
-  AltArrowLeft as AltArrowLeftIcon,
-  AltArrowUp as AltArrowUpIcon,
   ArrowRightUp as ArrowRightUpIcon,
-  CalendarDate as CalendarDateIcon,
-  CheckRead as CheckReadIcon,
   Copy as CopyIcon,
-  Filter as FilterIcon,
-  Inbox as InboxIcon,
   Link as LinkIcon,
   SortVertical as SortVerticalIcon
 } from '@vezham/icons-react'
 import {
-  Avatar,
   Button,
-  DateRangePicker,
   Drawer,
   Dropdown,
-  Input,
-  Label,
-  ListBox,
-  Pagination,
-  RangeCalendar,
-  SearchField,
-  Select,
-  type Selection,
   type SortDescriptor,
   Surface,
-  Table,
   Tooltip
 } from '@vezham/react-v3'
 
-import { ShortcutTooltipLabel } from '@vx/react/shortcut-key'
-
-import { DateRangeFieldGroup } from '@pages/_shared/date-range-field-group'
+import { copyRecordValue } from '@pages/_shared/clipboard'
+import { PageDateRangeDropdown } from '@pages/_shared/date-range-dropdown'
 import { DrawerEditAction } from '@pages/_shared/drawer-edit-action'
 import { DrawerToggle } from '@pages/_shared/drawer-toggle'
-import { PageToast } from '@pages/_shared/page-toast'
-import { PaginationControls } from '@pages/_shared/pagination-controls'
-import { RecordTableBody } from '@pages/_shared/record-table-body'
+import { RecordDrawerBody } from '@pages/_shared/record-drawer-body'
+import { RecordDrawerFooter } from '@pages/_shared/record-drawer-footer'
+import { RecordDrawerFrame } from '@pages/_shared/record-drawer-frame'
+import { RecordDrawerNavigation } from '@pages/_shared/record-drawer-navigation'
+import { RecordFilterDropdown as FilterDropdown } from '@pages/_shared/record-filter-dropdown'
+import { createRecordRowActions } from '@pages/_shared/record-row-actions'
+import { saveExistingRecordRow } from '@pages/_shared/record-row-update'
+import { RecordSearchField } from '@pages/_shared/record-search-field'
+import {
+  RecordPersonCell,
+  RecordTableEmptyState
+} from '@pages/_shared/record-table-cells'
+import { RecordTableHeader } from '@pages/_shared/record-table-header'
+import { RecordTableShell } from '@pages/_shared/record-table-shell'
+import { RecordToastLayer } from '@pages/_shared/record-toast-layer'
 import { RowCountControl } from '@pages/_shared/row-count-control'
-import { reportDateFormatter } from '@src/utils/intl'
+import {
+  filterRecordRows,
+  getRecordDrawerTitle as getDrawerTitle,
+  getPresetDateRange,
+  getRecordSearchText,
+  getRecordSortValue,
+  isPersonValue,
+  recordRowToForm,
+  sortRecordRows
+} from '@pages/_shared/table-utils'
+import {
+  useRecordDrawerToggle,
+  useRecordRowNavigation,
+  useRecordTableInteractions
+} from '@pages/_shared/use-record-interactions'
+import { useRecordTableState } from '@pages/_shared/use-record-table-state'
+import { useRecordTableViewState } from '@pages/_shared/use-record-table-view-state'
+import { dateOptions } from '@src/utils/date-options'
 
 import type {
-  CustomDateRangeValue,
-  DatePresetKey,
-  DateRangeFilter,
   DrawerMode,
   FilterDraft,
   OperationColumn,
   OperationPageConfig,
   OperationRow,
-  OperationStatus,
-  PersonValue
+  OperationStatus
 } from './types'
 import { useDisclosure } from './types'
 import { classNames, getTableRowClassName } from './variant'
 
+const getSearchText = (value: unknown) => getRecordSearchText(value, true)
+const getSortValue = getRecordSortValue
+const rowToForm = recordRowToForm
+
 const rowCountOptions = ['10', '25', '50']
-const dateOptions: { key: DatePresetKey; label: string }[] = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last7', label: 'Last 7 Days' },
-  { key: 'last30', label: 'Last 30 Days' },
-  { key: 'thisYear', label: 'This Year' },
-  { key: 'nextYear', label: 'Next Year' },
-  { key: 'custom', label: 'Custom Range' }
-]
 
 const useOperationsTableModel = (config: OperationPageConfig) => {
   const sectionTitle = getOperationSectionTitle(config)
   const pageSubtitle = getOperationPageSubtitle(config)
-  const [data, setData] = useReducer(
-    (
-      rows: OperationRow[],
-      nextRows:
-        OperationRow[] | ((currentRows: OperationRow[]) => OperationRow[])
-    ) => (typeof nextRows === 'function' ? nextRows(rows) : nextRows),
-    config.rows
-  )
-  const [searchQuery, setSearchQuery] = useState('')
-  const [rowsPerPage, setRowsPerPage] = useState('10')
-  const [page, setPage] = useState(1)
-  const [datePreset, setDatePreset] = useState<DatePresetKey>('last30')
-  const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false)
-  const [isCustomDateRangeOpen, setIsCustomDateRangeOpen] = useState(false)
-  const [customDateRange, setCustomDateRange] =
-    useState<DateRangeFilter | null>(null)
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>(
-    config.initialSort
-  )
-  const emptyFilters = useMemo(
-    () =>
-      config.filters.reduce<FilterDraft>((draft, filter) => {
-        draft[filter.key] = null
-        return draft
-      }, {}),
-    [config.filters]
-  )
-  const [filters, setFilters] = useState<FilterDraft>(emptyFilters)
-  const [draftFilters, setDraftFilters] = useState<FilterDraft>(emptyFilters)
-  const [activeRowId, setActiveRowId] = useState<string | null>(null)
-  const [selectedRowKeys, setSelectedRowKeys] = useState<Selection>(new Set())
-  const [mode, setMode] = useState<DrawerMode>('view')
-  const [form, setForm] = useState<FilterDraft>({})
-  const [toast, setToast] = useState<{
-    message: string
-    status: 'success' | 'danger'
-  } | null>(null)
-  const drawer = useDisclosure()
+  const state = useRecordTableState(config, useDisclosure, 'view' as DrawerMode)
+  const { drawer, setActiveRowId, setForm, setMode } = state
 
   const activeDateRange = useMemo(() => {
-    if (datePreset === 'custom') {
-      return customDateRange
+    if (state.datePreset === 'custom') {
+      return state.customDateRange
     }
 
-    return getPresetDateRange(datePreset)
-  }, [customDateRange, datePreset])
+    return getPresetDateRange(state.datePreset)
+  }, [state.customDateRange, state.datePreset])
   const sortOptions = useMemo(() => getSortOptions(config), [config])
   const editableColumns = useMemo(
     () => config.columns.filter(column => column.type !== 'button'),
@@ -130,142 +95,46 @@ const useOperationsTableModel = (config: OperationPageConfig) => {
     [config.columns]
   )
 
-  const filteredRows = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase()
-
-    return data.filter(row => {
-      const matchesQuery =
-        !query ||
-        config.columns.some(column =>
-          getSearchText(row[column.key]).toLowerCase().includes(query)
-        )
-      const matchesDate = isISODateInRange(
-        row.createdAt,
-        activeDateRange?.start,
-        activeDateRange?.end
-      )
-      const matchesFilters = config.filters.every(filter => {
-        const activeValue = filters[filter.key]
-
-        return (
-          !activeValue || String(getSortValue(row[filter.key])) === activeValue
-        )
-      })
-
-      return matchesQuery && matchesDate && matchesFilters
-    })
-  }, [
-    activeDateRange,
-    config.columns,
-    config.filters,
-    data,
-    filters,
-    searchQuery
-  ])
+  const filteredRows = useMemo(
+    () =>
+      filterRecordRows(
+        state.data,
+        config.columns,
+        config.filters,
+        state.filters,
+        activeDateRange,
+        state.searchQuery,
+        getSearchText,
+        getSortValue
+      ),
+    [
+      activeDateRange,
+      config.columns,
+      config.filters,
+      state.data,
+      state.filters,
+      state.searchQuery
+    ]
+  )
 
   const sortedRows = useMemo(
     () =>
-      [...filteredRows].sort((firstRow, secondRow) => {
-        const first = getSortValue(firstRow[sortDescriptor.column as string])
-        const second = getSortValue(secondRow[sortDescriptor.column as string])
-        const comparison =
-          typeof first === 'number' && typeof second === 'number'
-            ? first - second
-            : String(first ?? '').localeCompare(
-                String(second ?? ''),
-                undefined,
-                {
-                  numeric: true
-                }
-              )
-
-        return sortDescriptor.direction === 'descending'
-          ? comparison * -1
-          : comparison
-      }),
-    [filteredRows, sortDescriptor]
+      sortRecordRows(filteredRows, state.sortDescriptor, getSortValue, true),
+    [filteredRows, state.sortDescriptor]
   )
 
-  const pageSize = Number(rowsPerPage)
-  const totalPages = Math.max(1, Math.ceil(sortedRows.length / pageSize))
-  const currentPage = Math.min(page, totalPages)
-  const paginatedRows = sortedRows.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  )
-  const selectedRow = data.find(row => row.id === activeRowId) ?? null
-  const selectedRowIndex = activeRowId
-    ? sortedRows.findIndex(row => row.id === activeRowId)
-    : -1
-  const tableSelectedKeys = useMemo(
-    () => (activeRowId ? new Set([activeRowId]) : selectedRowKeys),
-    [activeRowId, selectedRowKeys]
-  )
-  const activeSortLabel =
-    sortOptions.find(
-      option =>
-        option.descriptor.column === sortDescriptor.column &&
-        option.descriptor.direction === sortDescriptor.direction
-    )?.label ?? 'Ascending'
-  const activeDateLabel =
-    datePreset === 'custom'
-      ? customDateRange
-        ? formatDateRangeLabel(customDateRange)
-        : 'Custom Range'
-      : formatDateRangeLabel(getPresetDateRange(datePreset))
-
-  const copyText = useCallback(async (value: string) => {
-    if (navigator.clipboard) {
-      await navigator.clipboard.writeText(value)
-      return
-    }
-
-    const textarea = document.createElement('textarea')
-
-    textarea.value = value
-    textarea.setAttribute('readonly', '')
-    textarea.style.position = 'fixed'
-    textarea.style.opacity = '0'
-    document.body.appendChild(textarea)
-    textarea.select()
-    document.execCommand('copy')
-    document.body.removeChild(textarea)
-  }, [])
-
-  const updateDatePreset = (key: DatePresetKey) => {
-    setDatePreset(key)
-    setPage(1)
-
-    if (key === 'custom') {
-      setIsCustomDateRangeOpen(true)
-      setIsDateDropdownOpen(true)
-      window.setTimeout(() => {
-        setIsCustomDateRangeOpen(true)
-        setIsDateDropdownOpen(true)
-      }, 0)
-      return
-    }
-
-    setIsCustomDateRangeOpen(false)
-    setIsDateDropdownOpen(false)
-  }
-
-  const updateCustomDateRange = (value: CustomDateRangeValue | null) => {
-    setDatePreset('custom')
-    setPage(1)
-
-    if (!value?.start || !value?.end) {
-      setCustomDateRange(null)
-      return
-    }
-
-    setCustomDateRange({
-      start: String(value.start),
-      end: String(value.end)
-    })
-    setIsDateDropdownOpen(false)
-    setIsCustomDateRangeOpen(false)
-  }
+  const view = useRecordTableViewState({
+    activeRowId: state.activeRowId,
+    customDateRange: state.customDateRange,
+    data: state.data,
+    datePreset: state.datePreset,
+    page: state.page,
+    rowsPerPage: state.rowsPerPage,
+    selectedRowKeys: state.selectedRowKeys,
+    sortDescriptor: state.sortDescriptor,
+    sortOptions: sortOptions,
+    sortedRows
+  })
 
   const openDrawer = useCallback(
     (nextMode: DrawerMode, row?: OperationRow) => {
@@ -281,32 +150,23 @@ const useOperationsTableModel = (config: OperationPageConfig) => {
 
       drawer.onOpen()
     },
-    [drawer, editableColumns]
+    [drawer, editableColumns, setActiveRowId, setForm, setMode]
   )
 
   const closeDrawer = useCallback(() => {
     drawer.onClose()
     setActiveRowId(null)
     setMode('view')
-  }, [drawer])
+  }, [drawer, setActiveRowId, setMode])
 
-  const toggleDrawer = useCallback(() => {
-    if (drawer.isOpen) {
-      closeDrawer()
-      return
-    }
-
-    const selectedKey = Array.from(selectedRowKeys)[0]
-    const selectedRow =
-      sortedRows.find(row => row.id === selectedKey) ?? sortedRows[0]
-
-    if (selectedRow) {
-      openDrawer('view', selectedRow)
-      return
-    }
-
-    openDrawer('create')
-  }, [closeDrawer, drawer.isOpen, openDrawer, selectedRowKeys, sortedRows])
+  const toggleDrawer = useRecordDrawerToggle({
+    isOpen: state.drawer.isOpen,
+    closeDrawer,
+    selectedRowKeys: state.selectedRowKeys,
+    sortedRows: sortedRows,
+    onSelected: row => openDrawer('view', row),
+    onEmpty: () => openDrawer('create')
+  })
 
   const goToRowAt = useCallback(
     (index: number) => {
@@ -316,28 +176,16 @@ const useOperationsTableModel = (config: OperationPageConfig) => {
         return
       }
 
-      openDrawer(mode === 'create' ? 'view' : mode, nextRow)
+      openDrawer(state.mode === 'create' ? 'view' : state.mode, nextRow)
     },
-    [mode, openDrawer, sortedRows]
+    [state.mode, openDrawer, sortedRows]
   )
 
-  const goToNextRow = useCallback(() => {
-    if (selectedRowIndex < 0) {
-      goToRowAt(0)
-      return
-    }
-
-    goToRowAt(Math.min(sortedRows.length - 1, selectedRowIndex + 1))
-  }, [goToRowAt, selectedRowIndex, sortedRows.length])
-
-  const goToPreviousRow = useCallback(() => {
-    if (selectedRowIndex < 0) {
-      goToRowAt(0)
-      return
-    }
-
-    goToRowAt(Math.max(0, selectedRowIndex - 1))
-  }, [goToRowAt, selectedRowIndex])
+  const { goToNextRow, goToPreviousRow } = useRecordRowNavigation(
+    view.selectedRowIndex,
+    sortedRows.length,
+    goToRowAt
+  )
 
   useEffect(() => {
     const eventName = `operations:${config.key}:create`
@@ -348,81 +196,62 @@ const useOperationsTableModel = (config: OperationPageConfig) => {
     return () => window.removeEventListener(eventName, onCreate)
   }, [config.key, openDrawer])
 
-  useEffect(() => {
-    if (!toast) {
-      return
-    }
-
-    const timeoutId = window.setTimeout(() => setToast(null), 2200)
-
-    return () => window.clearTimeout(timeoutId)
-  }, [toast])
-
-  useEffect(() => {
-    if (!activeRowId) {
-      return
-    }
-
-    const rowIndex = sortedRows.findIndex(row => row.id === activeRowId)
-
-    if (rowIndex < 0) {
-      return
-    }
-
-    const nextPage = Math.floor(rowIndex / pageSize) + 1
-
-    window.requestAnimationFrame(() => {
-      if (nextPage !== currentPage) {
-        setPage(nextPage)
-        return
-      }
-
-      document
-        .querySelector(`[data-operation-row-id="${activeRowId}"]`)
-        ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
-    })
-  }, [activeRowId, currentPage, pageSize, sortedRows])
-
-  useHotkey('Meta+/', () => toggleDrawer())
-
-  useHotkey('Meta+ArrowUp', () => goToPreviousRow(), {
-    enabled: drawer.isOpen && mode !== 'create'
-  })
-
-  useHotkey('Meta+ArrowDown', () => goToNextRow(), {
-    enabled: drawer.isOpen && mode !== 'create'
+  useRecordTableInteractions({
+    activeRowId: state.activeRowId,
+    currentPage: view.currentPage,
+    drawerOpen: state.drawer.isOpen,
+    enableRowHotkeys: state.mode !== 'create',
+    goToNextRow,
+    goToPreviousRow,
+    pageSize: view.pageSize,
+    rowAttribute: 'data-operation-row-id',
+    rows: sortedRows,
+    setPage: state.setPage,
+    setToast: state.setToast,
+    toast: state.toast,
+    toggleDrawer
   })
 
   const saveRow = () => {
-    if (mode === 'create') {
-      const nextRow = formToNewRow(form, editableColumns, data.length + 1)
+    if (state.mode === 'create') {
+      const nextRow = formToNewRow(
+        state.form,
+        editableColumns,
+        state.data.length + 1
+      )
 
-      setData(current => [nextRow, ...current])
-      setToast({ message: `${config.pageTitle} added`, status: 'success' })
+      state.setData(current => [nextRow, ...current])
+      state.setToast({
+        message: `${config.pageTitle} added`,
+        status: 'success'
+      })
       closeDrawer()
       return
     }
 
-    if (!selectedRow) {
-      return
-    }
-
-    const updatedRow = formToRow(selectedRow, form, editableColumns)
-
-    setData(current =>
-      current.map(row => (row.id === updatedRow.id ? updatedRow : row))
-    )
-    setActiveRowId(updatedRow.id)
-    setForm(rowToForm(updatedRow, editableColumns))
-    setMode('view')
-    setToast({ message: `${config.pageTitle} updated`, status: 'success' })
+    const updatedRow = saveExistingRecordRow({
+      selectedRow: view.selectedRow,
+      form: state.form,
+      columns: editableColumns,
+      toRow: formToRow,
+      setData: state.setData,
+      setActiveRowId: state.setActiveRowId,
+      setForm: state.setForm,
+      formFromRow: row => rowToForm(row, editableColumns),
+      setMode: state.setMode
+    })
+    if (!updatedRow) return
+    state.setToast({
+      message: `${config.pageTitle} updated`,
+      status: 'success'
+    })
   }
 
   const deleteRow = (rowId: string) => {
-    setData(current => current.filter(row => row.id !== rowId))
-    setToast({ message: 'Item deleted', status: 'success' })
+    state.setData(current => current.filter(row => row.id !== rowId))
+    state.setToast({ message: 'Item deleted', status: 'success' })
 
-    if (activeRowId === rowId) {
+    if (state.activeRowId === rowId) {
       closeDrawer()
     }
   }
@@ -437,142 +266,17 @@ const useOperationsTableModel = (config: OperationPageConfig) => {
   }
 
   const copyRowLink = (row: OperationRow) => {
-    void copyText(getRowUrl(row))
-      .then(() => setToast({ message: 'URL copied', status: 'success' }))
-      .catch(() =>
-        setToast({ message: 'Unable to copy URL', status: 'danger' })
-      )
+    copyRecordValue(getRowUrl(row), 'URL', state.setToast)
   }
 
   const copyRowId = (row: OperationRow) => {
-    void copyText(getDrawerTitle(row))
-      .then(() => setToast({ message: 'ID copied', status: 'success' }))
-      .catch(() => setToast({ message: 'Unable to copy ID', status: 'danger' }))
+    copyRecordValue(getDrawerTitle(row), 'ID', state.setToast)
   }
 
   const openRowPage = (row: OperationRow) => {
     window.open(getRowUrl(row), '_blank', 'noopener,noreferrer')
   }
 
-  return {
-    activeDateLabel,
-    activeRowId,
-    activeSortLabel,
-    closeDrawer,
-    copyRowId,
-    copyRowLink,
-    currentPage,
-    datePreset,
-    deleteRow,
-    draftFilters,
-    drawer,
-    editableColumns,
-    emptyFilters,
-    form,
-    goToNextRow,
-    goToPreviousRow,
-    isCustomDateRangeOpen,
-    isDateDropdownOpen,
-    mode,
-    openDrawer,
-    openRowPage,
-    pageSize,
-    pageSubtitle,
-    paginatedRows,
-    rowsPerPage,
-    saveRow,
-    searchQuery,
-    sectionTitle,
-    selectedRow,
-    selectedRowIndex,
-    setDraftFilters,
-    setFilters,
-    setForm,
-    setIsCustomDateRangeOpen,
-    setIsDateDropdownOpen,
-    setMode,
-    setPage,
-    setRowsPerPage,
-    setSearchQuery,
-    setSelectedRowKeys,
-    setSortDescriptor,
-    setToast,
-    sortDescriptor,
-    sortedRows,
-    sortOptions,
-    tableColumns,
-    tableSelectedKeys,
-    toast,
-    totalPages,
-    updateCustomDateRange,
-    updateDatePreset
-  }
-}
-
-type Props = {
-  config: OperationPageConfig
-} & ReturnType<typeof useOperationsTableModel>
-
-const OperationsTablePage = ({ config }: { config: OperationPageConfig }) => {
-  const model = useOperationsTableModel(config)
-
-  return renderOperationsTablePage({ config, ...model })
-}
-
-const renderOperationsTablePage = ({
-  config,
-  activeDateLabel,
-  activeRowId,
-  activeSortLabel,
-  closeDrawer,
-  copyRowId,
-  copyRowLink,
-  currentPage,
-  datePreset,
-  deleteRow,
-  draftFilters,
-  drawer,
-  editableColumns,
-  emptyFilters,
-  form,
-  goToNextRow,
-  goToPreviousRow,
-  isCustomDateRangeOpen,
-  isDateDropdownOpen,
-  mode,
-  openDrawer,
-  openRowPage,
-  pageSize,
-  pageSubtitle,
-  paginatedRows,
-  rowsPerPage,
-  saveRow,
-  searchQuery,
-  sectionTitle,
-  selectedRow,
-  selectedRowIndex,
-  setDraftFilters,
-  setFilters,
-  setForm,
-  setIsCustomDateRangeOpen,
-  setIsDateDropdownOpen,
-  setMode,
-  setPage,
-  setRowsPerPage,
-  setSearchQuery,
-  setSelectedRowKeys,
-  setSortDescriptor,
-  setToast,
-  sortDescriptor,
-  sortedRows,
-  sortOptions,
-  tableColumns,
-  tableSelectedKeys,
-  toast,
-  totalPages,
-  updateCustomDateRange,
-  updateDatePreset
-}: Props) => {
   return (
     <section className={classNames.page}>
       <Surface className={classNames.toolbar}>
@@ -583,97 +287,35 @@ const renderOperationsTablePage = ({
           </div>
 
           <div className={classNames.toolbarActions}>
-            <Dropdown
-              isOpen={isDateDropdownOpen}
-              onOpenChange={open => {
-                setIsDateDropdownOpen(open)
-                if (!open) {
-                  setIsCustomDateRangeOpen(false)
-                }
-              }}>
-              <Dropdown.Trigger>
-                <Button variant="outline">
-                  <CalendarDateIcon size={16} aria-hidden="true" />
-                  {activeDateLabel}
-                  <AltArrowDownIcon size={16} aria-hidden="true" />
-                </Button>
-              </Dropdown.Trigger>
-              <Dropdown.Popover>
-                <Surface className={classNames.datePopover}>
-                  {isCustomDateRangeOpen ? (
-                    <div className={classNames.customDatePanel}>
-                      <Button
-                        variant="ghost"
-                        onPress={() => setIsCustomDateRangeOpen(false)}>
-                        <AltArrowLeftIcon size={16} aria-hidden="true" />
-                        Date presets
-                      </Button>
-                      <DateRangePicker
-                        defaultOpen
-                        aria-label={`${config.pageTitle} custom date range`}
-                        className={classNames.fullWidth}
-                        endName="endDate"
-                        startName="startDate"
-                        onChange={updateCustomDateRange}>
-                        <DateRangeFieldGroup />
-                        <DateRangePicker.Popover>
-                          <RangeCalendar
-                            aria-label={`${config.pageTitle} custom date range`}>
-                            <RangeCalendar.Header>
-                              <RangeCalendar.Heading />
-                              <RangeCalendar.NavButton slot="previous" />
-                              <RangeCalendar.NavButton slot="next" />
-                            </RangeCalendar.Header>
-                            <RangeCalendar.Grid>
-                              <RangeCalendar.GridHeader>
-                                {day => (
-                                  <RangeCalendar.HeaderCell>
-                                    {day}
-                                  </RangeCalendar.HeaderCell>
-                                )}
-                              </RangeCalendar.GridHeader>
-                              <RangeCalendar.GridBody>
-                                {date => <RangeCalendar.Cell date={date} />}
-                              </RangeCalendar.GridBody>
-                            </RangeCalendar.Grid>
-                          </RangeCalendar>
-                        </DateRangePicker.Popover>
-                      </DateRangePicker>
-                    </div>
-                  ) : (
-                    <Dropdown.Menu aria-label="Date presets">
-                      {dateOptions.map(option => (
-                        <Dropdown.Item
-                          key={option.key}
-                          id={option.key}
-                          textValue={option.label}
-                          onPress={() => updateDatePreset(option.key)}>
-                          <span className={classNames.dateOptionLabel}>
-                            {option.label}
-                            {datePreset === option.key && (
-                              <CheckReadIcon size={16} aria-hidden="true" />
-                            )}
-                          </span>
-                        </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  )}
-                </Surface>
-              </Dropdown.Popover>
-            </Dropdown>
+            <PageDateRangeDropdown
+              activeDateLabel={view.activeDateLabel}
+              ariaLabel={`${config.pageTitle} custom date range`}
+              classes={classNames}
+              closeCustomOnDismiss
+              dateOptions={dateOptions}
+              datePreset={state.datePreset}
+              isCustomDateRangeOpen={state.isCustomDateRangeOpen}
+              isDateDropdownOpen={state.isDateDropdownOpen}
+              onCustomDateRangeChange={state.updateCustomDateRange}
+              onCustomDateRangeOpenChange={state.setIsCustomDateRangeOpen}
+              onDateDropdownOpenChange={state.setIsDateDropdownOpen}
+              onDatePresetChange={state.updateDatePreset}
+            />
 
             <FilterDropdown
-              draftFilters={draftFilters}
+              classes={classNames}
+              showChevron
+              draftFilters={state.draftFilters}
               filters={config.filters}
-              setDraftFilters={setDraftFilters}
+              setDraftFilters={state.setDraftFilters}
               onApply={() => {
-                setFilters(draftFilters)
-                setPage(1)
+                state.setFilters(state.draftFilters)
+                state.setPage(1)
               }}
               onReset={() => {
-                setDraftFilters(emptyFilters)
-                setFilters(emptyFilters)
-                setPage(1)
+                state.setDraftFilters(state.emptyFilters)
+                state.setFilters(state.emptyFilters)
+                state.setPage(1)
               }}
             />
 
@@ -681,7 +323,7 @@ const renderOperationsTablePage = ({
               <Dropdown.Trigger>
                 <Button variant="outline">
                   <SortVerticalIcon size={16} aria-hidden="true" />
-                  Sort by {activeSortLabel}
+                  Sort by {view.activeSortLabel}
                   <AltArrowDownIcon size={16} aria-hidden="true" />
                 </Button>
               </Dropdown.Trigger>
@@ -693,8 +335,8 @@ const renderOperationsTablePage = ({
                       id={option.key}
                       textValue={option.label}
                       onPress={() => {
-                        setSortDescriptor(option.descriptor)
-                        setPage(1)
+                        state.setSortDescriptor(option.descriptor)
+                        state.setPage(1)
                       }}>
                       {option.label}
                     </Dropdown.Item>
@@ -709,114 +351,94 @@ const renderOperationsTablePage = ({
           <RowCountControl
             className={classNames.rowsControls}
             options={rowCountOptions}
-            value={rowsPerPage}
+            value={state.rowsPerPage}
             onChange={value => {
-              setRowsPerPage(value)
-              setPage(1)
+              state.setRowsPerPage(value)
+              state.setPage(1)
             }}
           />
 
-          <SearchField
-            aria-label={`Search ${config.pageTitle}`}
-            value={searchQuery}
+          <RecordSearchField
+            title={config.pageTitle}
+            value={state.searchQuery}
             onChange={value => {
-              setSearchQuery(value)
-              setPage(1)
-            }}>
-            <SearchField.Group>
-              <SearchField.SearchIcon />
-              <SearchField.Input placeholder="Search" />
-              <SearchField.ClearButton />
-            </SearchField.Group>
-          </SearchField>
+              state.setSearchQuery(value)
+              state.setPage(1)
+            }}
+          />
         </div>
       </Surface>
 
-      <Table>
-        <Table.ScrollContainer>
-          <Table.Content
-            aria-label={config.ariaLabel}
-            className={classNames.tableContent}
-            selectedKeys={tableSelectedKeys}
-            selectionMode="multiple"
-            sortDescriptor={sortDescriptor}
-            style={{ minWidth: config.tableMinWidth }}
-            onSelectionChange={setSelectedRowKeys}
-            onSortChange={descriptor => {
-              setSortDescriptor(descriptor)
-              setPage(1)
-            }}>
-            <Table.Header>
-              <Table.Column className={classNames.selectionColumn} />
-              {tableColumns.map(column => (
-                <Table.Column
-                  key={column.key}
-                  allowsSorting={column.allowsSorting}
-                  id={column.key}
-                  isRowHeader={column.type === 'person'}
-                  style={{ minWidth: column.minWidth }}>
-                  {({ sortDirection }) => (
-                    <SortableHeader sortDirection={sortDirection}>
-                      {column.label}
-                    </SortableHeader>
-                  )}
-                </Table.Column>
-              ))}
-              <Table.Column>Action</Table.Column>
-            </Table.Header>
-
-            <RecordTableBody
-              activeRowId={activeRowId}
-              classes={classNames}
-              columns={tableColumns}
-              emptyState={<TableEmptyState />}
-              getRowClassName={getTableRowClassName}
-              rowDataAttribute="data-operation-row-id"
-              rows={paginatedRows}
-              renderCell={(row, column) => (
-                <OperationCell
-                  column={column}
-                  row={row}
-                  onAction={() => openDrawer('view', row)}
-                />
-              )}
-              onDelete={row => deleteRow(row.id)}
-              onEdit={row => openDrawer('edit', row)}
-              onView={row => openDrawer('view', row)}
+      <RecordTableShell
+        contentProps={{
+          'aria-label': config.ariaLabel,
+          className: classNames.tableContent,
+          selectedKeys: view.tableSelectedKeys,
+          selectionMode: 'multiple',
+          sortDescriptor: state.sortDescriptor,
+          style: { minWidth: config.tableMinWidth },
+          onSelectionChange: state.setSelectedRowKeys,
+          onSortChange: descriptor => {
+            state.setSortDescriptor(descriptor)
+            state.setPage(1)
+          }
+        }}
+        header={
+          <RecordTableHeader
+            columns={tableColumns}
+            selectionColumnClassName={classNames.selectionColumn}
+            actionLabel="Action"
+            renderHeader={(columnLabel, sortDirection) => (
+              <SortableHeader sortDirection={sortDirection}>
+                {columnLabel}
+              </SortableHeader>
+            )}
+          />
+        }
+        bodyProps={{
+          activeRowId: state.activeRowId,
+          classes: classNames,
+          columns: tableColumns,
+          emptyState: <TableEmptyState />,
+          getRowClassName: getTableRowClassName,
+          rowDataAttribute: 'data-operation-row-id',
+          rows: view.paginatedRows,
+          renderCell: (row, column) => (
+            <OperationCell
+              column={column}
+              row={row}
+              onAction={() => openDrawer('view', row)}
             />
-          </Table.Content>
-        </Table.ScrollContainer>
-
-        <Table.Footer className={classNames.paginationFooter}>
-          <Pagination>
-            <Pagination.Summary>
-              {getPaginationSummary(currentPage, pageSize, sortedRows.length)}
-            </Pagination.Summary>
-            <PaginationControls
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setPage}
-            />
-          </Pagination>
-        </Table.Footer>
-      </Table>
+          ),
+          ...createRecordRowActions<OperationRow>(deleteRow, openDrawer)
+        }}
+        paginationProps={{
+          className: classNames.paginationFooter,
+          currentPage: view.currentPage,
+          pageSize: view.pageSize,
+          totalItems: sortedRows.length,
+          totalPages: view.totalPages,
+          onPageChange: state.setPage
+        }}
+      />
 
       <OperationsDrawer
         columns={editableColumns}
-        drawerState={drawer}
-        form={form}
-        mode={mode}
-        row={selectedRow}
+        drawerState={state.drawer}
+        form={state.form}
+        mode={state.mode}
+        row={view.selectedRow}
         title={config.pageTitle}
         canGoNext={
-          selectedRowIndex >= 0 && selectedRowIndex < sortedRows.length - 1
+          view.selectedRowIndex >= 0 &&
+          view.selectedRowIndex < sortedRows.length - 1
         }
-        canGoPrevious={selectedRowIndex > 0}
+        canGoPrevious={view.selectedRowIndex > 0}
         onCancel={closeDrawer}
         onClose={closeDrawer}
-        onEdit={() => setMode('edit')}
+        onEdit={() => state.setMode('edit')}
         onFormChange={(field, value) =>
-          setForm(current => ({ ...current, [field]: value }))
+          state.setForm(current => ({ ...current, [field]: value }))
         }
         onGoNext={goToNextRow}
         onGoPrevious={goToPreviousRow}
@@ -826,85 +448,19 @@ const renderOperationsTablePage = ({
         onSave={saveRow}
       />
 
-      {toast && (
-        <PageToast
-          className={classNames.toast}
-          message={toast.message}
-          status={toast.status}
-          onClose={() => setToast(null)}
-        />
-      )}
+      <RecordToastLayer
+        className={classNames.toast}
+        toast={state.toast}
+        onClose={() => state.setToast(null)}
+      />
     </section>
   )
 }
 
-export default OperationsTablePage
+const OperationsTablePage = ({ config }: { config: OperationPageConfig }) =>
+  useOperationsTableModel(config)
 
-function FilterDropdown({
-  filters,
-  draftFilters,
-  setDraftFilters,
-  onApply,
-  onReset
-}: {
-  filters: OperationPageConfig['filters']
-  draftFilters: FilterDraft
-  setDraftFilters: (filters: FilterDraft) => void
-  onApply: () => void
-  onReset: () => void
-}) {
-  return (
-    <Dropdown>
-      <Dropdown.Trigger>
-        <Button variant="outline">
-          <FilterIcon size={16} aria-hidden="true" />
-          Filter
-          <AltArrowDownIcon size={16} aria-hidden="true" />
-        </Button>
-      </Dropdown.Trigger>
-      <Dropdown.Popover>
-        <Surface className={classNames.filterPanel}>
-          <h2 className={classNames.filterTitle}>Filter</h2>
-          {filters.map(filter => (
-            <Select
-              key={filter.key}
-              fullWidth
-              aria-label={`Filter by ${filter.label}`}
-              value={draftFilters[filter.key]}
-              onChange={value =>
-                setDraftFilters({
-                  ...draftFilters,
-                  [filter.key]: value ? String(value) : null
-                })
-              }>
-              <Label>{filter.label}</Label>
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-              <Select.Popover>
-                <ListBox>
-                  {filter.values.map(option => (
-                    <ListBox.Item key={option} id={option} textValue={option}>
-                      {option}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
-            </Select>
-          ))}
-          <div className={classNames.filterActions}>
-            <Button variant="secondary" onPress={onReset}>
-              Reset
-            </Button>
-            <Button onPress={onApply}>Apply</Button>
-          </div>
-        </Surface>
-      </Dropdown.Popover>
-    </Dropdown>
-  )
-}
+export default OperationsTablePage
 
 function OperationCell({
   column,
@@ -943,25 +499,18 @@ function OperationCell({
 }
 
 function PersonCell({ value }: { value: unknown }) {
-  const personValue = value as PersonValue
-
   return (
-    <div className={classNames.personCell}>
-      <Avatar className={classNames.personAvatar} size="sm">
-        {personValue.avatar && (
-          <Avatar.Image src={personValue.avatar} alt={personValue.name} />
-        )}
-        <Avatar.Fallback>{getInitials(personValue.name)}</Avatar.Fallback>
-      </Avatar>
-      <span className={classNames.personText}>
-        <span className={classNames.personName}>{personValue.name}</span>
-        {personValue.subtitle ? (
-          <span className={classNames.personSubtitle}>
-            {personValue.subtitle}
-          </span>
-        ) : null}
-      </span>
-    </div>
+    <RecordPersonCell
+      value={value}
+      secondaryKey="subtitle"
+      classes={{
+        personCell: classNames.personCell,
+        personAvatar: classNames.personAvatar,
+        personText: classNames.personText,
+        personName: classNames.personName,
+        personSecondary: classNames.personSubtitle
+      }}
+    />
   )
 }
 
@@ -1015,16 +564,7 @@ function SortableHeader({
 }
 
 function TableEmptyState() {
-  return (
-    <div className={classNames.emptyState}>
-      <InboxIcon
-        className={classNames.emptyIcon}
-        size={42}
-        aria-hidden="true"
-      />
-      <p className={classNames.emptyText}>No results found</p>
-    </div>
-  )
+  return <RecordTableEmptyState classes={classNames} />
 }
 
 function OperationsDrawer({
@@ -1072,197 +612,104 @@ function OperationsDrawer({
     mode === 'create' ? `Add ${title}` : row ? getDrawerTitle(row) : title
 
   return (
-    <Drawer state={drawerState}>
-      <Drawer.Backdrop variant="transparent">
-        <Drawer.Content placement="right">
-          <Drawer.Dialog className={classNames.drawerDialog}>
-            <Drawer.Header className={classNames.drawerHeader}>
-              <div className={classNames.drawerHeaderRow}>
-                <div className={classNames.drawerTitleGroup}>
-                  <DrawerToggle onPress={onClose} />
-                  <span className={classNames.drawerTitle}>{drawerTitle}</span>
-                  {row && mode !== 'create' ? (
-                    <Tooltip delay={0}>
-                      <Tooltip.Trigger>
-                        <Button
-                          isIconOnly
-                          aria-label={`Copy ID ${drawerTitle}`}
-                          variant="ghost"
-                          onPress={() => onCopyId(row)}>
-                          <CopyIcon size={16} aria-hidden="true" />
-                        </Button>
-                      </Tooltip.Trigger>
-                      <Tooltip.Content>Copy</Tooltip.Content>
-                    </Tooltip>
-                  ) : null}
-                </div>
-                <div className={classNames.drawerActions}>
-                  {showRecordActions ? (
-                    <>
-                      <Tooltip delay={0}>
-                        <Tooltip.Trigger>
-                          <Button
-                            isIconOnly
-                            aria-label={`Copy URL for ${drawerTitle}`}
-                            variant="secondary"
-                            onPress={() => row && onCopyLink(row)}>
-                            <LinkIcon size={16} aria-hidden="true" />
-                          </Button>
-                        </Tooltip.Trigger>
-                        <Tooltip.Content>Copy clipboard</Tooltip.Content>
-                      </Tooltip>
-                      <DrawerEditAction
-                        ariaLabel={`Edit ${drawerTitle}`}
-                        onPress={onEdit}
-                      />
-                      <Tooltip delay={0}>
-                        <Tooltip.Trigger>
-                          <Button
-                            isIconOnly
-                            aria-label={`Open ${drawerTitle}`}
-                            variant="secondary"
-                            onPress={() => row && onOpenPage(row)}>
-                            <ArrowRightUpIcon size={16} aria-hidden="true" />
-                          </Button>
-                        </Tooltip.Trigger>
-                        <Tooltip.Content>Open ↗</Tooltip.Content>
-                      </Tooltip>
-                    </>
-                  ) : null}
-                  {showRecordActions ? (
-                    <>
-                      <Tooltip delay={0}>
-                        <Tooltip.Trigger>
-                          <Button
-                            isIconOnly
-                            aria-label="Previous row"
-                            isDisabled={!canGoPrevious}
-                            variant="secondary"
-                            onPress={onGoPrevious}>
-                            <AltArrowUpIcon size={18} aria-hidden="true" />
-                          </Button>
-                        </Tooltip.Trigger>
-                        <Tooltip.Content>
-                          <ShortcutTooltipLabel
-                            label="Previous"
-                            shortcut="⌘ ↑"
-                          />
-                        </Tooltip.Content>
-                      </Tooltip>
-                      <Tooltip delay={0}>
-                        <Tooltip.Trigger>
-                          <Button
-                            isIconOnly
-                            aria-label="Next row"
-                            isDisabled={!canGoNext}
-                            variant="secondary"
-                            onPress={onGoNext}>
-                            <AltArrowDownIcon size={18} aria-hidden="true" />
-                          </Button>
-                        </Tooltip.Trigger>
-                        <Tooltip.Content>
-                          <ShortcutTooltipLabel label="Next" shortcut="⌘ ↓" />
-                        </Tooltip.Content>
-                      </Tooltip>
-                    </>
-                  ) : null}
-                </div>
-              </div>
-            </Drawer.Header>
-            <Drawer.Body className={classNames.drawerBody}>
-              {isFormMode ? (
-                <div className={classNames.form}>
-                  {columns.map(column => (
-                    <div key={column.key} className={classNames.field}>
-                      <Label className={classNames.fieldLabel}>
-                        {column.label || column.key}
-                      </Label>
-                      <Input
-                        fullWidth
-                        placeholder={getInputPlaceholder(column)}
-                        value={form[column.key] ?? ''}
-                        onChange={event =>
-                          onFormChange(column.key, event.target.value)
-                        }
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className={classNames.details}>
-                  {columns.map(column => (
-                    <div key={column.key} className={classNames.detailLine}>
-                      <p className={classNames.detailLabel}>
-                        {column.label || column.key}
-                      </p>
-                      <div className={classNames.detailValue}>
-                        {row ? (
-                          <OperationCell
-                            column={column}
-                            row={row}
-                            onAction={() => undefined}
-                          />
-                        ) : (
-                          '-'
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </Drawer.Body>
-            <Drawer.Footer className={classNames.drawerFooter}>
-              {isFormMode ? (
-                <div className={classNames.drawerFormFooterActions}>
-                  <Button variant="secondary" onPress={onCancel}>
-                    Cancel
-                  </Button>
-                  <Button onPress={onSave}>
-                    {mode === 'create' ? 'Create' : 'Save'}
-                  </Button>
-                </div>
-              ) : (
-                <div className={classNames.drawerViewFooterActions}>
+    <RecordDrawerFrame state={drawerState} className={classNames.drawerDialog}>
+      <Drawer.Header className={classNames.drawerHeader}>
+        <div className={classNames.drawerHeaderRow}>
+          <div className={classNames.drawerTitleGroup}>
+            <DrawerToggle onPress={onClose} />
+            <span className={classNames.drawerTitle}>{drawerTitle}</span>
+            {row && mode !== 'create' ? (
+              <Tooltip delay={0}>
+                <Tooltip.Trigger>
                   <Button
-                    className={classNames.flexOne}
-                    variant="secondary"
-                    onPress={onClose}>
-                    Close
+                    isIconOnly
+                    aria-label={`Copy ID ${drawerTitle}`}
+                    variant="ghost"
+                    onPress={() => onCopyId(row)}>
+                    <CopyIcon size={16} aria-hidden="true" />
                   </Button>
-                  <Button className={classNames.flexOne} onPress={onEdit}>
-                    Edit
-                  </Button>
-                </div>
-              )}
-            </Drawer.Footer>
-          </Drawer.Dialog>
-        </Drawer.Content>
-      </Drawer.Backdrop>
-    </Drawer>
+                </Tooltip.Trigger>
+                <Tooltip.Content>Copy</Tooltip.Content>
+              </Tooltip>
+            ) : null}
+          </div>
+          <div className={classNames.drawerActions}>
+            {showRecordActions ? (
+              <>
+                <Tooltip delay={0}>
+                  <Tooltip.Trigger>
+                    <Button
+                      isIconOnly
+                      aria-label={`Copy URL for ${drawerTitle}`}
+                      variant="secondary"
+                      onPress={() => row && onCopyLink(row)}>
+                      <LinkIcon size={16} aria-hidden="true" />
+                    </Button>
+                  </Tooltip.Trigger>
+                  <Tooltip.Content>Copy clipboard</Tooltip.Content>
+                </Tooltip>
+                <DrawerEditAction
+                  ariaLabel={`Edit ${drawerTitle}`}
+                  onPress={onEdit}
+                />
+                <Tooltip delay={0}>
+                  <Tooltip.Trigger>
+                    <Button
+                      isIconOnly
+                      aria-label={`Open ${drawerTitle}`}
+                      variant="secondary"
+                      onPress={() => row && onOpenPage(row)}>
+                      <ArrowRightUpIcon size={16} aria-hidden="true" />
+                    </Button>
+                  </Tooltip.Trigger>
+                  <Tooltip.Content>Open ↗</Tooltip.Content>
+                </Tooltip>
+              </>
+            ) : null}
+            {showRecordActions && (
+              <RecordDrawerNavigation
+                canGoNext={canGoNext}
+                canGoPrevious={canGoPrevious}
+                variant="secondary"
+                onGoNext={onGoNext}
+                onGoPrevious={onGoPrevious}
+              />
+            )}
+          </div>
+        </div>
+      </Drawer.Header>
+      <Drawer.Body className={classNames.drawerBody}>
+        <RecordDrawerBody
+          isFormMode={isFormMode}
+          columns={columns}
+          classes={classNames}
+          form={form}
+          row={row}
+          renderCell={(item, column) => (
+            <OperationCell
+              column={column}
+              row={item}
+              onAction={() => undefined}
+            />
+          )}
+          onFormChange={onFormChange}
+        />
+      </Drawer.Body>
+      <Drawer.Footer className={classNames.drawerFooter}>
+        <RecordDrawerFooter
+          isFormMode={isFormMode}
+          isCreateMode={mode === 'create'}
+          formActionsClassName={classNames.drawerFormFooterActions}
+          viewActionsClassName={classNames.drawerViewFooterActions}
+          flexOneClassName={classNames.flexOne}
+          onCancel={onCancel}
+          onClose={onClose}
+          onEdit={onEdit}
+          onSave={onSave}
+        />
+      </Drawer.Footer>
+    </RecordDrawerFrame>
   )
-}
-
-function getDrawerTitle(row: OperationRow) {
-  const idValue =
-    getTextValue(row.displayId) ||
-    getTextValue(row.refId) ||
-    getTextValue(row.studentId) ||
-    getTextValue(row.admissionNo) ||
-    getTextValue(row.admissionNumber) ||
-    getTextValue(row.serialNo) ||
-    getTextValue(row.sNo) ||
-    getTextValue(row.id)
-  const nameValue =
-    getTextValue(row.name) ||
-    getTextValue(row.studentName) ||
-    getTextValue(row.staffName) ||
-    getTextValue(row.teacherName)
-
-  if (idValue) {
-    return idValue.startsWith('#') ? idValue : `#${idValue}`
-  }
-
-  return nameValue || '-'
 }
 
 function getOperationSectionTitle(config: OperationPageConfig) {
@@ -1323,31 +770,6 @@ const operationPageSubtitles: Record<string, string> = {
   assign: 'Assign Vehicles'
 }
 
-function getInputPlaceholder(column: OperationColumn) {
-  const label = (column.label || column.key).toLowerCase()
-
-  if (column.type === 'status') return `Select ${label}`
-  if (label.includes('date')) return `Choose ${label}`
-  if (label.includes('amount') || label.includes('count'))
-    return `Enter ${label}`
-
-  return `Enter ${label}`
-}
-
-function getTextValue(value: unknown) {
-  if (isPersonValue(value)) return value.name
-  if (value === null || value === undefined) return ''
-
-  return String(value).trim().split('\n')[0]
-}
-
-function rowToForm(row: OperationRow, columns: OperationColumn[]): FilterDraft {
-  return columns.reduce<FilterDraft>((draft, column) => {
-    draft[column.key] = String(getSortValue(row[column.key]) ?? '')
-    return draft
-  }, {})
-}
-
 function createEmptyForm(columns: OperationColumn[]): FilterDraft {
   return columns.reduce<FilterDraft>((draft, column) => {
     draft[column.key] = ''
@@ -1396,79 +818,6 @@ function formToNewRow(
   return row
 }
 
-function getPresetDateRange(key: DatePresetKey): DateRangeFilter {
-  const today = new Date()
-  const currentYear = today.getFullYear()
-
-  if (key === 'today') {
-    const value = toISODate(today)
-
-    return { start: value, end: value }
-  }
-
-  if (key === 'yesterday') {
-    const yesterday = new Date(today)
-    yesterday.setDate(today.getDate() - 1)
-    const value = toISODate(yesterday)
-
-    return { start: value, end: value }
-  }
-
-  if (key === 'last7') {
-    const start = new Date(today)
-    start.setDate(today.getDate() - 6)
-
-    return { start: toISODate(start), end: toISODate(today) }
-  }
-
-  if (key === 'thisYear') {
-    return {
-      start: `${currentYear}-01-01`,
-      end: `${currentYear}-12-31`
-    }
-  }
-
-  if (key === 'nextYear') {
-    const nextYear = currentYear + 1
-
-    return {
-      start: `${nextYear}-01-01`,
-      end: `${nextYear}-12-31`
-    }
-  }
-
-  const start = new Date(today)
-  start.setDate(today.getDate() - 29)
-
-  return { start: toISODate(start), end: toISODate(today) }
-}
-
-function formatDateRangeLabel(range: DateRangeFilter) {
-  return `${formatISODate(range.start)} - ${formatISODate(range.end)}`
-}
-
-function formatISODate(value: string) {
-  const date = new Date(`${value}T00:00:00`)
-
-  return reportDateFormatter.format(date)
-}
-
-function isISODateInRange(value: string, start?: string, end?: string) {
-  if (!start || !end) {
-    return true
-  }
-
-  return value >= start && value <= end
-}
-
-function toISODate(date: Date) {
-  return [
-    date.getFullYear(),
-    String(date.getMonth() + 1).padStart(2, '0'),
-    String(date.getDate()).padStart(2, '0')
-  ].join('-')
-}
-
 function getSortOptions(config: OperationPageConfig) {
   return [
     {
@@ -1504,48 +853,4 @@ function getSortOptions(config: OperationPageConfig) {
       } satisfies SortDescriptor
     }
   ]
-}
-
-function getInitials(name: string) {
-  return name
-    .split(' ')
-    .map(part => part[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase()
-}
-
-function getSearchText(value: unknown) {
-  if (isPersonValue(value)) {
-    return `${value.name} ${value.subtitle ?? ''}`
-  }
-
-  return String(value ?? '')
-}
-
-function getSortValue(value: unknown) {
-  if (isPersonValue(value)) {
-    return value.name
-  }
-
-  return value as string | number
-}
-
-function isPersonValue(value: unknown): value is PersonValue {
-  return value !== null && typeof value === 'object' && 'name' in value
-}
-
-function getPaginationSummary(
-  page: number,
-  pageSize: number,
-  totalItems: number
-) {
-  if (!totalItems) {
-    return 'Showing 0 entries'
-  }
-
-  const start = (page - 1) * pageSize + 1
-  const end = Math.min(page * pageSize, totalItems)
-
-  return `Showing ${start}-${end} of ${totalItems} entries`
 }

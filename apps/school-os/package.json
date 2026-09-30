@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@internationalized/date": "catalog:",
+    "@tanstack/react-hotkeys": "catalog:",
     "@vx/react": "workspace:*",
     "@vx/template": "workspace:*"
   },

@@ -7,7 +7,7 @@ import type { RQHomework } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_HOMEWORK = 'homework'
+const CK_HOMEWORK = 'homework'
 
 const useList = (rq: RQHomework = {}) =>
   useQuery({

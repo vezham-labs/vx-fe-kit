@@ -1,7 +1,8 @@
-import { type ComponentPropsWithRef, type ElementType, ReactNode } from 'react'
+import { type ComponentPropsWithRef, type ElementType } from 'react'
 
 import { cn } from '@vezham/react-v3'
 
+import { createFooterDrawerAccessors } from '../drawer-accessors'
 import { tvProps, tvSlots, tva } from './variant'
 
 type View = 'main' | 'airdrop' | 'wifi'
@@ -13,27 +14,11 @@ interface TileProps {
   onClick?: () => void
 }
 
-interface MediaTileProps {
-  status?: string
-}
-
 interface CircleActionProps {
   icon: string
   label?: string
   sub?: string
   large?: boolean
-}
-
-interface SliderProps {
-  label: string
-  icon: string
-  value?: number
-}
-
-interface SubViewProps {
-  title: string
-  onBack: () => void
-  children: ReactNode
 }
 
 interface OptionProps {
@@ -79,29 +64,21 @@ const useProps = (originalProps: Props) => {
   const domRef = ref
   const slots = tva({ variant, placement, size, blur, animation })
 
-  const getDrawerBaseProps = () => ({
-    ...otherProps,
+  const {
+    getDrawerBaseProps,
+    getDrawerWrapperProps,
+    getDrawerContentProps,
+    getDrawerHeaderProps,
+    closeButtonClassName,
+    getEmptyStateProps,
+    getEmptyStateIconProps
+  } = createFooterDrawerAccessors({
+    slots,
+    classNames,
+    className,
     id,
-    ref: domRef,
-    className: slots.drawer_base({
-      class: cn(classNames?.drawer_base, className)
-    })
-  })
-
-  const getDrawerWrapperProps = () => ({
-    className: slots.drawer_wrapper({ class: classNames?.drawer_wrapper })
-  })
-
-  const getDrawerContentProps = () => ({
-    className: slots.drawer_content({ class: classNames?.drawer_content })
-  })
-
-  const getDrawerHeaderProps = () => ({
-    className: slots.drawer_header({ class: classNames?.drawer_header })
-  })
-
-  const closeButtonClassName = slots.close_button({
-    class: classNames?.close_button
+    domRef,
+    otherProps
   })
 
   const getMotionContainerProps = () => ({
@@ -110,17 +87,6 @@ const useProps = (originalProps: Props) => {
     animate: { y: 0, opacity: 1 },
     exit: { y: 80, opacity: 0 },
     transition: { type: 'spring' as const, stiffness: 320, damping: 28 }
-  })
-
-  const getEmptyStateProps = () => ({
-    className: slots.empty_state({ class: classNames?.empty_state })
-  })
-
-  const getEmptyStateIconProps = () => ({
-    size: 64,
-    className: slots.empty_state_icon({
-      class: classNames?.empty_state_icon
-    })
   })
 
   const getMainViewProps = () => ({
@@ -335,13 +301,4 @@ const useProps = (originalProps: Props) => {
 }
 
 export { useProps }
-export type {
-  Props,
-  TileProps,
-  MediaTileProps,
-  CircleActionProps,
-  SliderProps,
-  SubViewProps,
-  OptionProps,
-  View
-}
+export type { Props, View }

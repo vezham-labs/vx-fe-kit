@@ -1,15 +1,13 @@
-import {
-  type SortFieldOption,
-  sortOrderOptions
-} from '@pages/academic/shared/sort'
+import { type SortFieldOption } from '@pages/academic/shared/sort'
 
 import type {
   ClassFormState,
   ClassRow,
   ClassStatus,
-  DatePresetKey,
   ScheduleColumnOption
 } from './types'
+
+export { dateOptions, rowCountOptions } from '../options'
 
 export const initialRows: ClassRow[] = [
   {
@@ -222,16 +220,6 @@ export const initialRows: ClassRow[] = [
   }
 ]
 
-export const dateOptions: { key: DatePresetKey; label: string }[] = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last7', label: 'Last 7 Days' },
-  { key: 'last30', label: 'Last 30 Days' },
-  { key: 'thisYear', label: 'This Year' },
-  { key: 'nextYear', label: 'Next Year' },
-  { key: 'custom', label: 'Custom Range' }
-]
-
 export const examScheduleColumnOptions = [
   {
     key: 'id',
@@ -344,7 +332,6 @@ export const sortOptions = [
   }))
 ] satisfies readonly SortFieldOption[]
 
-export const rowCountOptions = ['5', '10', '25', '50']
 export const classOptions = ['I', 'II', 'III', 'IV', 'V']
 export const sectionOptions = ['A', 'B', 'C', 'D', 'E']
 export const examOptions = [
@@ -367,15 +354,7 @@ export const roomOptions = [
   '109',
   '110'
 ]
-export const dayOptions = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday'
-]
+
 export const examdateOptions = [
   '13 May 2024',
   '14 May 2024',
@@ -395,24 +374,7 @@ export const subjectOptions = [
   'Economics'
 ]
 
-export const starttimeOptions = [
-  '09.30 AM',
-  '10.30 AM',
-  '11.30 AM',
-  '12.30 PM',
-  '01.30 PM',
-  '02.30 PM'
-]
-export const endtimeOptions = [
-  '12.30 PM',
-  '01.30 PM',
-  '02.30 PM',
-  '03.30 PM',
-  '04.30 PM',
-  '05.30 PM'
-]
 export const statusOptions: ClassStatus[] = ['Active', 'Inactive']
-export { sortOrderOptions }
 
 export const emptyForm: ClassFormState = {
   classes: '',

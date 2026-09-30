@@ -70,5 +70,3 @@ export const aiPanel: InfoPanelDefinition = {
   title: 'AI',
   content: <AIContent isOpen={false} onClose={() => undefined} />
 }
-
-export { AIContent, AIDrawer }

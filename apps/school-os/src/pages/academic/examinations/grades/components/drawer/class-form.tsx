@@ -1,4 +1,4 @@
-import { Input, Label, ListBox, Select } from '@vezham/react-v3'
+import { Label, ListBox, Select } from '@vezham/react-v3'
 
 import {
   gradeOptions,
@@ -8,6 +8,7 @@ import {
 } from '@pages/academic/examinations/grades/data'
 import type { ClassFormProps } from '@pages/academic/examinations/grades/types'
 import { classNames } from '@pages/academic/examinations/grades/variants'
+import { AcademicInputField } from '@pages/academic/shared/input-field'
 import { AcademicStatusSwitch } from '@pages/academic/shared/status-switch'
 
 export const ClassForm = ({
@@ -142,19 +143,14 @@ export const ClassForm = ({
           )}
         </div>
 
-        <div className={classNames.field}>
-          <Label className={classNames.fieldLabel}>Description</Label>
-          <Input
-            fullWidth
-            aria-invalid={Boolean(formErrors.description)}
-            placeholder="Enter description"
-            value={form.description}
-            onChange={event => onFormChange('description', event.target.value)}
-          />
-          {formErrors.description && (
-            <p className={classNames.fieldError}>{formErrors.description}</p>
-          )}
-        </div>
+        <AcademicInputField
+          classes={classNames}
+          error={formErrors.description}
+          label="Description"
+          placeholder="Enter description"
+          value={form.description}
+          onChange={value => onFormChange('description', value)}
+        />
       </div>
 
       <AcademicStatusSwitch

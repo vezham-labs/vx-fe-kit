@@ -1,36 +1,41 @@
-import { useHotkey } from '@tanstack/react-hotkeys'
-import { useParams } from '@tanstack/react-router'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useLocation, useParams } from '@tanstack/react-router'
+import { useCallback, useMemo, useState } from 'react'
 
 import type { Selection, SortDescriptor } from '@vezham/react-v3'
 
+import { commitRecordRowUpdate } from '@pages/_shared/record-row-update'
 import type {
   ClassFormErrors,
   ClassFormState,
   ClassRow,
-  CustomDateRangeValue,
-  DatePresetKey,
-  DateRangeFilter,
   DrawerMode,
-  DrawerQueryState,
   FilterDraft,
-  OpenDrawerOptions,
   ScheduleColumnKey,
   ToastState
 } from '@pages/academic/examinations/exam-schedule/types'
-import { useDisclosure } from '@pages/academic/examinations/exam-schedule/types'
-import {
-  formatDateRangeLabel,
-  getPresetDateRange,
-  isISODateInRange,
-  toISODate
-} from '@pages/academic/examinations/exam-schedule/utils/date'
 import {
   rowToForm,
   validateScheduleForm
 } from '@pages/academic/examinations/exam-schedule/utils/exam-schedule'
-import { hiddenTextareaStyles } from '@pages/academic/examinations/exam-schedule/variants'
+import { toISODate } from '@pages/academic/shared/date'
+import { createEntityDeleteAction } from '@pages/academic/shared/entity-delete-action'
+import { filterEntityRows } from '@pages/academic/shared/entity-filter'
+import { createEntityRoute } from '@pages/academic/shared/entity-route'
+import { createEntityTableActions } from '@pages/academic/shared/entity-table-actions'
 import { sortRows } from '@pages/academic/shared/sort'
+import { useEntityBulkActions } from '@pages/academic/shared/use-entity-bulk-actions'
+import { useEntityCopyActions } from '@pages/academic/shared/use-entity-copy-actions'
+import { useEntityDateControls } from '@pages/academic/shared/use-entity-date-controls'
+import { useEntityDrawerActions } from '@pages/academic/shared/use-entity-drawer-actions'
+import { useEntityDrawerState } from '@pages/academic/shared/use-entity-drawer-state'
+import { getEntityDrawerRouteState } from '@pages/academic/shared/use-entity-drawer-url-sync'
+import {
+  useEntitySortDescriptor,
+  useEntityToast
+} from '@pages/academic/shared/use-entity-model-actions'
+import { useEntityPageLifecycle } from '@pages/academic/shared/use-entity-page-lifecycle'
+import { useEntityRowNavigation } from '@pages/academic/shared/use-entity-row-navigation'
+import { useEntityTableRows } from '@pages/academic/shared/use-entity-table-rows'
 import {
   emptyForm,
   examScheduleColumnOptions,
@@ -38,29 +43,11 @@ import {
   useExamSchedule
 } from '@store/useAcademic/useExamSchedule'
 
-const moduleRoutePath = '/academic/examinations/exam-schedule'
-
-const getModuleBasePath = (pathname: string) => {
-  const routeIndex = pathname.indexOf(moduleRoutePath)
-
-  if (routeIndex < 0) {
-    return pathname.replace(/\/$/, '')
-  }
-
-  return pathname.slice(0, routeIndex + moduleRoutePath.length)
-}
-
-const getRowIdFromPath = (pathname: string) => {
-  const basePath = getModuleBasePath(pathname)
-
-  if (!pathname.startsWith(basePath + '/')) {
-    return null
-  }
-
-  const [id] = pathname.slice(basePath.length + 1).split('/')
-
-  return id ? decodeURIComponent(id) : null
-}
+const {
+  getBasePath: getModuleBasePath,
+  getRowIdFromPath,
+  updateDrawerQuery
+} = createEntityRoute('/academic/examinations/exam-schedule')
 
 const emptyFilters: FilterDraft = {
   classes: null,
@@ -87,16 +74,34 @@ const getSortLabel = (column: SortDescriptor['column']) => {
 
 export const useExamSchedulePage = () => {
   const routeParams = useParams({ strict: false }) as { id?: string }
+  const routeLocation = useLocation()
   const examScheduleQuery = useExamSchedule.list({})
+  const [initialDrawer] = useState(() =>
+    getEntityDrawerRouteState({
+      data: examScheduleQuery.data,
+      emptyForm,
+      getRowIdFromPath,
+      pathname: routeLocation.pathname,
+      routeId: routeParams.id,
+      rowToForm,
+      urlMode: (routeLocation.search as Record<string, unknown>).mode
+    })
+  )
   const [data, setData] = useState<ClassRow[]>(examScheduleQuery.data)
   const [searchQuery, setSearchQuery] = useState('')
   const [rowsPerPage, setRowsPerPage] = useState('5')
   const [page, setPage] = useState(1)
-  const [datePreset, setDatePreset] = useState<DatePresetKey>('thisYear')
-  const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false)
-  const [isCustomDateRangeOpen, setIsCustomDateRangeOpen] = useState(false)
-  const [customDateRange, setCustomDateRange] =
-    useState<DateRangeFilter | null>(null)
+  const {
+    activeDateLabel,
+    activeDateRange,
+    datePreset,
+    isCustomDateRangeOpen,
+    isDateDropdownOpen,
+    setIsCustomDateRangeOpen,
+    updateCustomDateRange,
+    updateDatePreset,
+    updateDateDropdownOpen
+  } = useEntityDateControls(setPage)
   const [sortField, setSortField] = useState<SortDescriptor['column']>('id')
   const [sortDirection, setSortDirection] =
     useState<SortDescriptor['direction']>('descending')
@@ -108,191 +113,120 @@ export const useExamSchedulePage = () => {
   const [visibleColumns, setVisibleColumns] = useState<Set<ScheduleColumnKey>>(
     () => new Set(examScheduleColumnOptions.map(column => column.key))
   )
-  const [activeRowId, setActiveRowId] = useState<string | null>(null)
-  const [selectedRowKeys, setSelectedRowKeys] = useState<Selection>(new Set())
-  const [mode, setMode] = useState<DrawerMode>('view')
-  const [form, setForm] = useState<ClassFormState>(emptyForm)
-  const [formErrors, setFormErrors] = useState<ClassFormErrors>({})
+  const {
+    activeRowId,
+    drawer,
+    form,
+    formErrors,
+    mode,
+    selectedRowKeys,
+    setActiveRowId,
+    setForm,
+    setFormErrors,
+    setMode,
+    setSelectedRowKeys
+  } = useEntityDrawerState<ClassFormState, ClassFormErrors>({
+    clearActiveRowOnClose: false,
+    clearSelectionOnClose: true,
+    initial: initialDrawer
+  })
   const [toast, setToast] = useState<ToastState | null>(null)
-  const drawer = useDisclosure()
-  const wasDrawerOpenRef = useRef(drawer.isOpen)
 
-  const activeDateRange = useMemo(() => {
-    if (datePreset === 'custom') {
-      return customDateRange
-    }
+  const sortDescriptor = useEntitySortDescriptor(sortField, sortDirection)
 
-    return getPresetDateRange(datePreset)
-  }, [customDateRange, datePreset])
-
-  const sortDescriptor = useMemo<SortDescriptor>(
-    () => ({
-      column: sortField,
-      direction: sortDirection
-    }),
-    [sortDirection, sortField]
+  const filteredRows = useMemo(
+    () =>
+      filterEntityRows({
+        data,
+        dateRange: activeDateRange,
+        filters,
+        filterKeys: [
+          'classes',
+          'section',
+          'examName',
+          'date',
+          'duration',
+          'subject',
+          'starttime',
+          'endtime',
+          'classroom',
+          'status'
+        ],
+        searchKeys: [
+          'id',
+          'classes',
+          'section',
+          'examName',
+          'date',
+          'subject',
+          'duration',
+          'starttime',
+          'endtime',
+          'classroom',
+          'status'
+        ],
+        searchQuery,
+        matchesFilter: (key, rowValue, filterValue) =>
+          key === 'date'
+            ? String(rowValue).trim() === String(filterValue).trim()
+            : Object.is(rowValue, filterValue)
+      }),
+    [activeDateRange, data, filters, searchQuery]
   )
 
-  const filteredRows = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase()
+  const {
+    currentPage,
+    pageSize,
+    paginatedRows,
+    selectedRow,
+    selectedRows,
+    selectedRowIndex,
+    sortedRows,
+    tableSelectedKeys,
+    totalPages
+  } = useEntityTableRows({
+    activeRowId,
+    data,
+    filteredRows,
+    page,
+    rowsPerPage,
+    selectedRowKeys,
+    sortDescriptor,
+    sortRows
+  })
 
-    return data.filter(row => {
-      const matchesQuery =
-        !query ||
-        row.id.toLowerCase().includes(query) ||
-        row.classes.toLowerCase().includes(query) ||
-        row.section.toLowerCase().includes(query) ||
-        row.examName.toLowerCase().includes(query) ||
-        row.date.toLowerCase().includes(query) ||
-        row.subject.toLowerCase().includes(query) ||
-        row.duration.toLowerCase().includes(query) ||
-        row.starttime.toLowerCase().includes(query) ||
-        row.endtime.toLowerCase().includes(query) ||
-        row.classroom.toLowerCase().includes(query) ||
-        row.status.toLowerCase().includes(query)
-      const matchesDate =
-        !activeDateRange ||
-        isISODateInRange(
-          row.createdAt,
-          activeDateRange.start,
-          activeDateRange.end
-        )
-
-      return (
-        matchesQuery &&
-        matchesDate &&
-        (!filters.classes || row.classes === filters.classes) &&
-        (!filters.section || row.section === filters.section) &&
-        (!filters.examName || row.examName === filters.examName) &&
-        (!filters.date || row.date.trim() === filters.date.trim()) &&
-        (!filters.duration || row.duration === filters.duration) &&
-        (!filters.subject || row.subject === filters.subject) &&
-        (!filters.starttime || row.starttime === filters.starttime) &&
-        (!filters.endtime || row.endtime === filters.endtime) &&
-        (!filters.classroom || row.classroom === filters.classroom) &&
-        (!filters.status || row.status === filters.status)
-      )
-    })
-  }, [activeDateRange, data, filters, searchQuery])
-
-  const sortedRows = useMemo(() => {
-    return sortRows(filteredRows, sortDescriptor)
-  }, [filteredRows, sortDescriptor])
-
-  const pageSize = Number(rowsPerPage)
-  const totalPages = Math.max(1, Math.ceil(sortedRows.length / pageSize))
-  const currentPage = Math.min(page, totalPages)
-  const paginatedRows = sortedRows.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  )
-  const selectedRow = useMemo(
-    () => data.find(row => row.id === activeRowId) ?? null,
-    [activeRowId, data]
-  )
-  const selectedRows = useMemo(() => {
-    if (selectedRowKeys === 'all') {
-      return data
-    }
-
-    return data.filter(row => selectedRowKeys.has(row.id))
-  }, [data, selectedRowKeys])
-  const selectedRowIndex = activeRowId
-    ? sortedRows.findIndex(row => row.id === activeRowId)
-    : -1
-  const tableSelectedKeys = useMemo(
-    () => (activeRowId ? new Set([activeRowId]) : selectedRowKeys),
-    [activeRowId, selectedRowKeys]
-  )
   const selectedCount = selectedRows.length
 
-  const activeDateLabel =
-    datePreset === 'custom'
-      ? customDateRange
-        ? formatDateRangeLabel(customDateRange)
-        : 'Custom Range'
-      : formatDateRangeLabel(getPresetDateRange(datePreset))
+  const showToast = useEntityToast(setToast)
 
-  const showToast = useCallback(
-    (message: string, status: ToastState['status'] = 'success') => {
-      setToast({ message, status })
+  const updateTableSelection = useCallback(
+    (keys: Selection) => {
+      setSelectedRowKeys(keys)
     },
-    []
+    [setSelectedRowKeys]
   )
 
-  const copyText = useCallback(async (value: string) => {
-    if (navigator.clipboard) {
-      await navigator.clipboard.writeText(value)
-      return
-    }
-
-    const textarea = document.createElement('textarea')
-
-    textarea.value = value
-    textarea.setAttribute('readonly', '')
-    Object.assign(textarea.style, hiddenTextareaStyles)
-    document.body.appendChild(textarea)
-    textarea.select()
-    document.execCommand('copy')
-    document.body.removeChild(textarea)
-  }, [])
-
-  const updateDrawerQuery = useCallback(
-    (nextState: DrawerQueryState | null, replace = false) => {
-      const url = new URL(window.location.href)
-      const basePath = getModuleBasePath(url.pathname)
-
-      if (nextState) {
-        url.pathname =
-          nextState.mode === 'create' || !nextState.id
-            ? basePath
-            : basePath + '/' + encodeURIComponent(nextState.id)
-        url.searchParams.delete('id')
-        url.searchParams.set('mode', nextState.mode)
-      } else {
-        url.pathname = basePath
-        url.searchParams.delete('id')
-        url.searchParams.delete('mode')
-      }
-
-      window.history[replace ? 'replaceState' : 'pushState'](
-        null,
-        '',
-        `${url.pathname}${url.search}${url.hash}`
-      )
-    },
-    []
-  )
-
-  const openDrawer = useCallback(
-    (
-      nextMode: DrawerMode,
-      row: ClassRow | null,
-      options: OpenDrawerOptions = {}
-    ) => {
-      setMode(nextMode)
-      setActiveRowId(row?.id ?? null)
-      setForm(row ? rowToForm(row) : emptyForm)
-      setFormErrors({})
-      drawer.onOpen()
-
-      if (options.syncUrl !== false) {
-        updateDrawerQuery(
-          nextMode === 'create'
-            ? { mode: nextMode }
-            : row
-              ? { id: row.id, mode: nextMode }
-              : null,
-          options.replaceUrl
-        )
-      }
-    },
-    [drawer, updateDrawerQuery]
-  )
-
-  const updateTableSelection = useCallback((keys: Selection) => {
-    setSelectedRowKeys(keys)
-  }, [])
+  const {
+    applyFilters,
+    resetFilters,
+    updateRowsPerPage,
+    updateSearch,
+    updateSortChange: updateSortDescriptor,
+    updateSortDirection,
+    updateSortField
+  } = createEntityTableActions({
+    draftFilters,
+    emptyFilters,
+    getSortLabel,
+    setActiveSortLabel,
+    setDraftFilters,
+    setFilters,
+    setPage,
+    setRowsPerPage,
+    setSearchQuery,
+    setSortDirection,
+    setSortField
+  })
 
   const updateVisibleColumns = useCallback(
     (columns: Set<ScheduleColumnKey>) => {
@@ -303,80 +237,35 @@ export const useExamSchedulePage = () => {
 
   const clearSelection = useCallback(() => {
     setSelectedRowKeys(new Set())
-  }, [])
+  }, [setSelectedRowKeys])
 
-  const closeDrawer = useCallback(() => {
-    setFormErrors({})
-    drawer.onClose()
-    setActiveRowId(null)
-    updateDrawerQuery(null)
-  }, [drawer, updateDrawerQuery])
+  const { closeDrawer, openDrawer, setDrawerMode, toggleDrawer } =
+    useEntityDrawerActions({
+      clearSelectionOnClose: false,
+      drawer,
+      emptyForm,
+      rowToForm,
+      selectedRow,
+      selectedRowKeys,
+      sortedRows,
+      setActiveRowId,
+      setForm,
+      setFormErrors,
+      setMode,
+      setSelectedRowKeys,
+      updateDrawerQuery
+    })
 
-  const toggleDrawer = useCallback(() => {
-    if (drawer.isOpen) {
-      closeDrawer()
-      return
-    }
-
-    const selectedKey = Array.from(selectedRowKeys)[0]
-    const selectedRow =
-      sortedRows.find(row => row.id === selectedKey) ?? sortedRows[0]
-
-    if (selectedRow) {
-      openDrawer('view', selectedRow, { replaceUrl: true })
-      return
-    }
-
-    openDrawer('create', null)
-  }, [closeDrawer, drawer.isOpen, openDrawer, selectedRowKeys, sortedRows])
-
-  const setDrawerMode = useCallback(
-    (nextMode: Exclude<DrawerMode, 'create'>) => {
-      setMode(nextMode)
-
-      if (selectedRow) {
-        updateDrawerQuery({ id: selectedRow.id, mode: nextMode })
-      }
-    },
-    [selectedRow, updateDrawerQuery]
-  )
-
-  const goToRowAt = useCallback(
-    (index: number) => {
-      const nextRow = sortedRows[index]
-
-      if (!nextRow) {
-        return
-      }
-
-      setActiveRowId(nextRow.id)
-      setForm(rowToForm(nextRow))
-      setMode(currentMode => (currentMode === 'create' ? 'view' : currentMode))
-      updateDrawerQuery({
-        id: nextRow.id,
-        mode: mode === 'edit' ? 'edit' : 'view'
-      })
-    },
-    [mode, sortedRows, updateDrawerQuery]
-  )
-
-  const goToNextRow = useCallback(() => {
-    if (selectedRowIndex < 0) {
-      goToRowAt(0)
-      return
-    }
-
-    goToRowAt(Math.min(sortedRows.length - 1, selectedRowIndex + 1))
-  }, [goToRowAt, selectedRowIndex, sortedRows.length])
-
-  const goToPreviousRow = useCallback(() => {
-    if (selectedRowIndex < 0) {
-      goToRowAt(0)
-      return
-    }
-
-    goToRowAt(Math.max(0, selectedRowIndex - 1))
-  }, [goToRowAt, selectedRowIndex])
+  const { goToNextRow, goToPreviousRow } = useEntityRowNavigation({
+    mode,
+    rowToForm,
+    selectedRowIndex,
+    sortedRows,
+    setActiveRowId,
+    setForm,
+    setMode,
+    updateDrawerQuery
+  })
 
   const getScheduleUrl = useCallback(
     (row: ClassRow, nextMode: Exclude<DrawerMode, 'create'> = 'view') => {
@@ -393,261 +282,57 @@ export const useExamSchedulePage = () => {
     []
   )
 
-  const copySelectedIds = useCallback(() => {
-    if (!selectedRows.length) {
-      return
-    }
-
-    void copyText(selectedRows.map(row => row.id).join('\n'))
-      .then(() => {
-        showToast(
-          selectedRows.length === 1
-            ? 'ID copied'
-            : `${selectedRows.length} IDs copied`
-        )
-      })
-      .catch(() => {
-        showToast('Unable to copy IDs', 'danger')
-      })
-  }, [copyText, selectedRows, showToast])
-
-  const copySelectedLinks = useCallback(() => {
-    if (!selectedRows.length) {
-      return
-    }
-
-    void copyText(
-      selectedRows
-        .map(row => getScheduleUrl(row, mode === 'edit' ? 'edit' : 'view'))
-        .join('\n')
-    )
-      .then(() => {
-        showToast(
-          selectedRows.length === 1
-            ? 'URL copied'
-            : `${selectedRows.length} URLs copied`
-        )
-      })
-      .catch(() => {
-        showToast('Unable to copy URLs', 'danger')
-      })
-  }, [copyText, getScheduleUrl, mode, selectedRows, showToast])
-
-  const editSelectedRows = useCallback(() => {
-    if (selectedRows.length !== 1) {
-      return
-    }
-
-    openDrawer('edit', selectedRows[0])
-  }, [openDrawer, selectedRows])
-
-  const deleteSelectedRows = useCallback(() => {
-    if (!selectedRows.length) {
-      return
-    }
-
-    const selectedIds = new Set(selectedRows.map(row => row.id))
-
-    setData(current => current.filter(row => !selectedIds.has(row.id)))
-    setSelectedRowKeys(new Set())
-
-    if (activeRowId && selectedIds.has(activeRowId)) {
-      closeDrawer()
-    }
-
-    showToast(
-      selectedRows.length === 1
-        ? 'Item deleted'
-        : `${selectedRows.length} items deleted`
-    )
-  }, [activeRowId, closeDrawer, selectedRows, showToast])
-
-  useEffect(() => {
-    const openAddSchedule = () => openDrawer('create', null)
-
-    window.addEventListener('academic:exam-schedule:create', openAddSchedule)
-    return () =>
-      window.removeEventListener(
-        'academic:exam-schedule:create',
-        openAddSchedule
-      )
-  }, [openDrawer])
-
-  useEffect(() => {
-    if (!toast) {
-      return
-    }
-
-    const timeoutId = window.setTimeout(() => setToast(null), 2200)
-
-    return () => window.clearTimeout(timeoutId)
-  }, [toast])
-
-  useEffect(() => {
-    const syncDrawerFromUrl = () => {
-      const params = new URLSearchParams(window.location.search)
-      const id = getRowIdFromPath(window.location.pathname) ?? routeParams.id
-      const urlMode = params.get('mode')
-
-      if (urlMode === 'create') {
-        setMode('create')
-        setActiveRowId(null)
-        setForm(emptyForm)
-        setFormErrors({})
-        drawer.onOpen()
-        return
-      }
-
-      if (!id || (urlMode !== 'view' && urlMode !== 'edit')) {
-        setActiveRowId(null)
-        drawer.onClose()
-        return
-      }
-
-      const row = data.find(item => item.id === id)
-
-      if (!row) {
-        setActiveRowId(null)
-        drawer.onClose()
-        return
-      }
-
-      setMode(urlMode)
-      setActiveRowId(row.id)
-      setForm(rowToForm(row))
-      setFormErrors({})
-      drawer.onOpen()
-    }
-
-    syncDrawerFromUrl()
-    window.addEventListener('popstate', syncDrawerFromUrl)
-
-    return () => window.removeEventListener('popstate', syncDrawerFromUrl)
-  }, [data, drawer, routeParams.id])
-
-  useEffect(() => {
-    if (wasDrawerOpenRef.current && !drawer.isOpen) {
-      setSelectedRowKeys(new Set())
-    }
-
-    wasDrawerOpenRef.current = drawer.isOpen
-  }, [drawer.isOpen])
-
-  useEffect(() => {
-    if (!activeRowId) {
-      return
-    }
-
-    const rowIndex = sortedRows.findIndex(row => row.id === activeRowId)
-
-    if (rowIndex < 0) {
-      return
-    }
-
-    const nextPage = Math.floor(rowIndex / pageSize) + 1
-
-    window.requestAnimationFrame(() => {
-      if (nextPage !== currentPage) {
-        setPage(nextPage)
-        return
-      }
-
-      document
-        .querySelector(`[data-class-row-id="${activeRowId}"]`)
-        ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
-    })
-  }, [activeRowId, currentPage, pageSize, sortedRows])
-
-  useHotkey('Meta+/', () => toggleDrawer())
-
-  useHotkey('Meta+ArrowUp', () => goToNextRow(), {
-    enabled: drawer.isOpen && mode !== 'create'
+  const {
+    copyClassId: copyScheduleId,
+    copyClassLink: copyScheduleLink,
+    copySelectedIds,
+    copySelectedLinks,
+    openClassPage: openSchedulePage
+  } = useEntityCopyActions({
+    getRowUrl: getScheduleUrl,
+    mode,
+    selectedRows,
+    showToast
   })
 
-  useHotkey('Meta+ArrowDown', () => goToPreviousRow(), {
-    enabled: drawer.isOpen && mode !== 'create'
-  })
-
-  const updateDateDropdownOpen = (open: boolean) => {
-    setIsDateDropdownOpen(open)
-    if (!open) {
-      setIsCustomDateRangeOpen(false)
-    }
-  }
-
-  const updateDatePreset = (key: DatePresetKey) => {
-    setDatePreset(key)
-    setPage(1)
-
-    if (key === 'custom') {
-      setIsCustomDateRangeOpen(true)
-      setIsDateDropdownOpen(true)
-      window.setTimeout(() => {
-        setIsCustomDateRangeOpen(true)
-        setIsDateDropdownOpen(true)
-      }, 0)
-      return
-    }
-
-    setIsCustomDateRangeOpen(false)
-    setIsDateDropdownOpen(false)
-  }
-
-  const updateCustomDateRange = (value: CustomDateRangeValue | null) => {
-    setDatePreset('custom')
-    setPage(1)
-
-    if (!value?.start || !value?.end) {
-      setCustomDateRange(null)
-      return
-    }
-
-    setCustomDateRange({
-      start: String(value.start),
-      end: String(value.end)
+  const { editSelected: editSelectedRows, deleteSelected: deleteSelectedRows } =
+    useEntityBulkActions({
+      activeRowId,
+      closeDrawer,
+      openDrawer,
+      selectedRows,
+      setData,
+      setSelectedRowKeys,
+      showToast
     })
-    setIsDateDropdownOpen(false)
-    setIsCustomDateRangeOpen(false)
-  }
 
-  const updateSearch = (value: string) => {
-    setSearchQuery(value)
-    setPage(1)
-  }
-
-  const updateRowsPerPage = (value: string | number | null) => {
-    setRowsPerPage(value ? String(value) : '10')
-    setPage(1)
-  }
-
-  const applyFilters = () => {
-    setFilters(draftFilters)
-    setPage(1)
-  }
-
-  const resetFilters = () => {
-    setDraftFilters(emptyFilters)
-    setFilters(emptyFilters)
-    setPage(1)
-  }
-
-  const updateSortField = (column: SortDescriptor['column']) => {
-    setSortField(column)
-    setActiveSortLabel(getSortLabel(column))
-    setPage(1)
-  }
-
-  const updateSortDirection = (direction: SortDescriptor['direction']) => {
-    setSortDirection(direction)
-    setPage(1)
-  }
-
-  const updateSortDescriptor = (descriptor: SortDescriptor) => {
-    setSortField(descriptor.column)
-    setSortDirection(descriptor.direction)
-    setActiveSortLabel(getSortLabel(descriptor.column))
-    setPage(1)
-  }
+  useEntityPageLifecycle({
+    activeRowId,
+    createEventName: 'academic:exam-schedule:create',
+    currentPage,
+    data,
+    drawer,
+    emptyForm,
+    getRowIdFromPath,
+    goToNextRow,
+    goToPreviousRow,
+    mode,
+    openDrawer,
+    pageSize,
+    routeId: routeParams.id,
+    rowToForm,
+    setActiveRowId,
+    setForm,
+    setFormErrors,
+    setMode,
+    setPage,
+    setSelectedRowKeys,
+    setToast,
+    sortedRows,
+    syncSelectionFromUrl: false,
+    toast,
+    toggleDrawer
+  })
 
   const updateForm = <K extends keyof ClassFormState>(
     field: K,
@@ -731,67 +416,27 @@ export const useExamSchedulePage = () => {
       status: form.status
     }
 
-    setData(current =>
-      current.map(row => (row.id === updatedRow.id ? updatedRow : row))
-    )
-    setActiveRowId(updatedRow.id)
-    setForm(rowToForm(updatedRow))
-    setMode('view')
+    commitRecordRowUpdate({
+      updatedRow,
+      setData,
+      setActiveRowId,
+      setForm,
+      formFromRow: rowToForm,
+      setMode
+    })
     updateDrawerQuery({ id: updatedRow.id, mode: 'view' })
   }
 
-  const deleteSchedule = (rowId: string) => {
-    setData(current => current.filter(row => row.id !== rowId))
-    setSelectedRowKeys(current => {
-      if (current === 'all') {
-        return new Set()
-      }
-
-      if (!current.size) {
-        return current
-      }
-
-      const next = new Set(current)
-
-      next.delete(rowId)
-
-      return next
-    })
-
-    if (activeRowId === rowId) {
-      setActiveRowId(null)
-      drawer.onClose()
-      updateDrawerQuery(null)
-    }
-
-    showToast('Item deleted')
-  }
-
-  const copyScheduleLink = (row: ClassRow) => {
-    const classUrl = getScheduleUrl(row, mode === 'edit' ? 'edit' : 'view')
-
-    void copyText(classUrl)
-      .then(() => {
-        showToast('URL copied')
-      })
-      .catch(() => {
-        showToast('Unable to copy URL', 'danger')
-      })
-  }
-
-  const copyScheduleId = (row: ClassRow) => {
-    void copyText(row.id)
-      .then(() => {
-        showToast('ID copied')
-      })
-      .catch(() => {
-        showToast('Unable to copy ID', 'danger')
-      })
-  }
-
-  const openSchedulePage = (row: ClassRow) => {
-    window.open(getScheduleUrl(row), '_blank', 'noopener,noreferrer')
-  }
+  const deleteSchedule = createEntityDeleteAction({
+    activeRowId,
+    drawer,
+    removeFromSelection: true,
+    setActiveRowId,
+    setData,
+    setSelectedRowKeys,
+    showToast,
+    updateDrawerQuery
+  })
 
   return {
     toast,

@@ -6,11 +6,6 @@ import { ArchiveItem, ArchiveItemRendererProps } from './archive/types'
 import { TrashItem, TrashItemRendererProps } from './trash/types'
 import { tvProps, tvSlots, tva } from './variant'
 
-export interface ItemRendererProps<T> {
-  item: T
-  onAction?: (action: string, item: T) => void
-}
-
 interface Props extends tvProps, ComponentPropsWithRef<'div'> {
   as?: ElementType
   classNames?: Partial<Record<tvSlots, string>>

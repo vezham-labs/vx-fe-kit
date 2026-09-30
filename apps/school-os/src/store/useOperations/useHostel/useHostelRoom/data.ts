@@ -1,9 +1,5 @@
-import type { SortDescriptor } from '@vezham/react-v3'
-
-import type {
-  OperationColumn,
-  OperationPageConfig
-} from '@pages/operations/_shared/types'
+import { makeOperationPageConfig } from '@pages/operations/_shared/config'
+import type { OperationColumn } from '@pages/operations/_shared/types'
 
 import type { HostelRoomItem } from './types'
 
@@ -155,7 +151,7 @@ export const hostelRoomData: HostelRoomItem[] = [
   }
 ]
 
-export const hostelRoomConfig = makeConfig({
+export const hostelRoomConfig = makeOperationPageConfig({
   key: 'hostel-room',
   title: 'Hostel Rooms',
   pageTitle: 'Hostel Rooms',
@@ -190,37 +186,3 @@ export const hostelRoomConfig = makeConfig({
   initialColumn: 'roomNo',
   tableMinWidth: 1160
 })
-
-function makeConfig(
-  config: Omit<OperationPageConfig, 'initialSort' | 'sortOptions'> & {
-    initialColumn: string
-  }
-): OperationPageConfig {
-  const initialSort = {
-    column: config.initialColumn,
-    direction: 'ascending'
-  } satisfies SortDescriptor
-  return {
-    ...config,
-    initialSort,
-    sortOptions: [
-      { key: 'ascending', label: 'Ascending', descriptor: initialSort },
-      {
-        key: 'descending',
-        label: 'Descending',
-        descriptor: {
-          column: config.initialColumn,
-          direction: 'descending'
-        } satisfies SortDescriptor
-      },
-      {
-        key: 'recentlyAdded',
-        label: 'Recently Added',
-        descriptor: {
-          column: 'createdAt',
-          direction: 'descending'
-        } satisfies SortDescriptor
-      }
-    ]
-  }
-}

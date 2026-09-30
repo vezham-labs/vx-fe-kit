@@ -7,7 +7,7 @@ import type { RQPlayers } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_PLAYERS = 'players'
+const CK_PLAYERS = 'players'
 
 const useList = (rq: RQPlayers = {}) =>
   useQuery({

@@ -1,15 +1,12 @@
-import {
-  type SortFieldOption,
-  sortOrderOptions
-} from '@pages/academic/shared/sort'
-
+import { createExamSortOptions, studentSubjectColumns } from '../exam-columns'
 import type {
   AttendanceColumnOption,
   AttendanceFormState,
   AttendanceRow,
-  AttendanceStatus,
-  DatePresetKey
+  AttendanceStatus
 } from './types'
+
+export { dateOptions, rowCountOptions } from '../options'
 
 export const initialRows: AttendanceRow[] = [
   {
@@ -214,101 +211,11 @@ export const initialRows: AttendanceRow[] = [
   }
 ]
 
-export const dateOptions: { key: DatePresetKey; label: string }[] = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last7', label: 'Last 7 Days' },
-  { key: 'last30', label: 'Last 30 Days' },
-  { key: 'thisYear', label: 'This Year' },
-  { key: 'nextYear', label: 'Next Year' },
-  { key: 'custom', label: 'Custom Range' }
-]
+export const attendanceColumnOptions =
+  studentSubjectColumns satisfies readonly AttendanceColumnOption[]
 
-export const attendanceColumnOptions = [
-  {
-    key: 'id',
-    label: 'Admission No',
-    defaultWidth: 180,
-    minWidth: 140,
-    maxWidth: 220
-  },
-  {
-    key: 'name',
-    label: 'Student Name',
-    defaultWidth: 220,
-    minWidth: 180,
-    maxWidth: 280
-  },
-  {
-    key: 'english',
-    label: 'English',
-    defaultWidth: 130,
-    minWidth: 120,
-    maxWidth: 160
-  },
-  {
-    key: 'spanish',
-    label: 'Spanish',
-    defaultWidth: 130,
-    minWidth: 120,
-    maxWidth: 160
-  },
-  {
-    key: 'physics',
-    label: 'Physics',
-    defaultWidth: 130,
-    minWidth: 120,
-    maxWidth: 160
-  },
-  {
-    key: 'chemistry',
-    label: 'Chemistry',
-    defaultWidth: 130,
-    minWidth: 120,
-    maxWidth: 160
-  },
-  {
-    key: 'maths',
-    label: 'Maths',
-    defaultWidth: 130,
-    minWidth: 120,
-    maxWidth: 160
-  },
-  {
-    key: 'computer',
-    label: 'Computer',
-    defaultWidth: 130,
-    minWidth: 120,
-    maxWidth: 160
-  },
-  {
-    key: 'envscience',
-    label: 'Env Science',
-    defaultWidth: 150,
-    minWidth: 130,
-    maxWidth: 180
-  }
-] as const satisfies readonly AttendanceColumnOption[]
+export const sortOptions = createExamSortOptions(attendanceColumnOptions)
 
-export const sortOptions = [
-  {
-    key: 'recentlyViewed',
-    label: 'Recently Viewed',
-    column: 'viewedAt'
-  },
-  {
-    key: 'recentlyAdded',
-    label: 'Recently Added',
-    column: 'createdAt'
-  },
-  ...attendanceColumnOptions.map(option => ({
-    key: option.key,
-    label: option.label,
-    column: option.key
-  }))
-] satisfies readonly SortFieldOption[]
-
-export const rowCountOptions = ['5', '10', '25', '50']
 export const classOptions = ['I', 'II', 'III', 'IV', 'V']
 export const sectionOptions = ['A', 'B', 'C', 'D', 'E']
 export const examtypeOptions = [
@@ -319,7 +226,6 @@ export const examtypeOptions = [
   'Progress Test'
 ]
 export const statusOptions: AttendanceStatus[] = ['Present', 'Absent', 'Late']
-export { sortOrderOptions }
 
 export const emptyForm: AttendanceFormState = {
   name: '',

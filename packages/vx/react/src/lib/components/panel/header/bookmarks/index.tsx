@@ -562,9 +562,4 @@ const bookmarksPanel: InfoPanelDefinition = {
   content: <BookmarksPanelContent />
 }
 
-export {
-  BookmarksContent,
-  BookmarksPanelContent,
-  BookmarksTrigger,
-  bookmarksPanel
-}
+export { BookmarksTrigger, bookmarksPanel }

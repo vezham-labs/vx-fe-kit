@@ -45,17 +45,4 @@ export const createNextClassId = (rows: ClassRow[]) => {
   return `AD${nextNumber}`
 }
 
-export const getPaginationSummary = (
-  page: number,
-  pageSize: number,
-  total: number
-) => {
-  if (!total) {
-    return '0 of 0'
-  }
-
-  const start = (page - 1) * pageSize + 1
-  const end = Math.min(total, page * pageSize)
-
-  return `${start}-${end} of ${total}`
-}
+export { getPaginationSummary } from '@pages/academic/shared/entity-utils'

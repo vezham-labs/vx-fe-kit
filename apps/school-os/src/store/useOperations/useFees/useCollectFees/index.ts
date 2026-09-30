@@ -7,7 +7,7 @@ import type { RQCollectFees } from './types'
 export * from './data'
 export * from './types'
 
-export const CK_COLLECT_FEES = 'collect-fees'
+const CK_COLLECT_FEES = 'collect-fees'
 
 const useList = (rq: RQCollectFees = {}) =>
   useQuery({

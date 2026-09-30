@@ -1,60 +1,27 @@
-import { Chip } from '@vezham/react-v3'
-
-import type {
-  ClassDetailSummaryProps,
-  ClassDetailsProps,
-  DetailLineProps
-} from '@pages/academic/examinations/exam/types'
+import type { ClassDetailsProps } from '@pages/academic/examinations/exam/types'
 import { getClassTags } from '@pages/academic/examinations/exam/utils/exam'
 import { classNames } from '@pages/academic/examinations/exam/variants'
+import { EntityDetails } from '@pages/academic/shared/entity-details'
+import type { DetailField } from '@pages/academic/shared/entity-details'
 
-export const ExamDetails = ({ row }: ClassDetailsProps) => {
-  if (!row) {
-    return null
-  }
+type Row = NonNullable<ClassDetailsProps['row']>
 
-  return (
-    <div className={classNames.details}>
-      <ExamDetailSummary row={row} />
-    </div>
-  )
-}
+const fields: DetailField<Row>[] = [
+  { label: 'Exam Name', value: (row: Row) => row.name },
+  { label: 'Exam Date', value: (row: Row) => row.date },
+  { label: 'Start Time', value: (row: Row) => row.starttime },
+  { label: 'End Time', value: (row: Row) => row.endtime }
+]
 
-function ExamDetailSummary({ row }: ClassDetailSummaryProps) {
-  return (
-    <div className={classNames.detailSummary}>
-      <DetailLine label="Exam Name" value={row.name} />
-      <DetailLine label="Exam Date" value={row.date} />
-      <DetailLine label="Start Time" value={row.starttime} />
-      <DetailLine label="End Time" value={row.endtime} />
-
-      <div className={classNames.detailChipRow}>
-        <span className={classNames.detailHeading}>Status:</span>
-        <Chip
-          color={row.status === 'Active' ? 'success' : 'danger'}
-          variant="soft">
-          <span aria-hidden="true">●</span>
-          <Chip.Label>{row.status}</Chip.Label>
-        </Chip>
-      </div>
-
-      <div className={classNames.detailTagsRow}>
-        <span className={classNames.detailHeading}>Tags:</span>
-        {getClassTags(row).map(tag => (
-          <Chip key={tag} variant="soft">
-            <Chip.Label>{tag}</Chip.Label>
-          </Chip>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function DetailLine({ label, value }: DetailLineProps) {
-  return (
-    <div className={classNames.detailLine}>
-      <span className={classNames.fieldLabel}>{label}:</span>
-      <span className={classNames.detailValue}>{value}</span>
-    </div>
-  )
-}
+export const ExamDetails = ({ row }: ClassDetailsProps) => (
+  <EntityDetails
+    row={row}
+    fields={fields}
+    classNames={classNames}
+    getTags={getClassTags}
+    getStatus={(item: Row) => item.status}
+    getStatusColor={(item: Row) =>
+      item.status === 'Active' ? 'success' : 'danger'
+    }
+  />
+)

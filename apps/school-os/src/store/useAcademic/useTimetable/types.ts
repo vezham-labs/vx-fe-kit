@@ -1,6 +1,6 @@
 import type { CalendarDateTime } from '@internationalized/date'
 
-import { type SortDescriptor, useOverlayState } from '@vezham/react-v3'
+import { useOverlayState } from '@vezham/react-v3'
 
 export type RQTimetable = Record<string, never>
 
@@ -74,13 +74,6 @@ export type SortOption = {
   key: string
   label: string
   column: keyof TimetableEvent
-}
-
-export type SortOrderOption = {
-  key: string
-  label: string
-  direction: SortDescriptor['direction']
-  icon: string
 }
 
 export type TimetableResponse = TimetableEvent[]

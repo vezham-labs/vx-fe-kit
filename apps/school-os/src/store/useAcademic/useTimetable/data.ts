@@ -1,15 +1,13 @@
-import { CalendarDate, CalendarDateTime } from '@internationalized/date'
+import { CalendarDateTime } from '@internationalized/date'
 
 import type {
   SortOption,
-  SortOrderOption,
   Teacher,
   TimetableAgendaEvent,
   TimetableColor,
   TimetableEvent,
   TimetableFilter,
-  TimetableFormState,
-  TimetableView
+  TimetableFormState
 } from './types'
 
 const agendaColorMap: Record<TimetableColor, string> = {
@@ -71,12 +69,6 @@ const lesson = (
     ...options
   }
 }
-
-export const timetableViews: { key: TimetableView; label: string }[] = [
-  { key: 'day', label: 'Day' },
-  { key: 'week', label: 'Week' },
-  { key: 'month', label: 'Month' }
-]
 
 export const teachers: Teacher[] = [
   {
@@ -169,11 +161,6 @@ export const timetableDayTabs = [
 ]
 export const durationOptions = ['30', '45', '60', '90', '120']
 
-export const statusOptions = [
-  { key: 'confirmed', label: 'Confirmed' },
-  { key: 'unconfirmed', label: 'Unconfirmed' }
-] as const
-
 export const sortOptions = [
   {
     key: 'startTime',
@@ -191,32 +178,6 @@ export const sortOptions = [
     column: 'day'
   }
 ] as const satisfies readonly SortOption[]
-
-export const sortOrderOptions = [
-  {
-    key: 'ascending',
-    label: 'Ascending',
-    direction: 'ascending',
-    icon: 'vx:sort-ascending'
-  },
-  {
-    key: 'descending',
-    label: 'Descending',
-    direction: 'descending',
-    icon: 'vx:sort-descending'
-  }
-] as const satisfies readonly SortOrderOption[]
-
-export const roomOptions = [
-  'Auditorium',
-  'Biology Lab',
-  'Cafeteria',
-  'Chemistry Lab',
-  'Computer Lab',
-  'Physics Lab',
-  'Playground',
-  'Room 201'
-]
 
 export const emptyTimetableForm: TimetableFormState = {
   className: '',
@@ -242,8 +203,6 @@ export const emptyFilters: TimetableFilter = {
   teacher: null,
   view: null
 }
-
-export const defaultTimetableDate = new CalendarDate(2026, 5, 21)
 
 export const timetableEvents: TimetableEvent[] = [
   lesson(
@@ -665,5 +624,3 @@ export const toAgendaEvents = (
     title: event.title
   }))
 }
-
-export const timetableAgendaEvents = toAgendaEvents(timetableEvents)
