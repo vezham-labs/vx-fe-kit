@@ -123,7 +123,10 @@ const SectionLayout = ({
                       />
                     </InputGroup.Prefix>
                     <InputGroup.Input
-                      placeholder={headerProps.searchAction.label}
+                      placeholder={
+                        headerProps.searchAction.placeholder ??
+                        headerProps.searchAction.label
+                      }
                     />
                   </InputGroup>
                 </TextField>
@@ -144,15 +147,15 @@ const SectionLayout = ({
               </>
             ) : null}
 
-            {headerProps.refreshAction ? (
+            {headerProps.syncAction ? (
               <HeaderIconTooltip
-                label={headerProps.refreshAction.label}
-                shortcut={getActionShortcut(headerProps.refreshAction.key)}>
+                label={headerProps.syncAction.label}
+                shortcut={getActionShortcut(headerProps.syncAction.key)}>
                 <Button
-                  {...controls.getIconButtonProps(headerProps.refreshAction)}>
+                  {...controls.getIconButtonProps(headerProps.syncAction)}>
                   <AppIcon
                     {...controls.getButtonIconProps(
-                      headerProps.refreshAction.icon
+                      headerProps.syncAction.icon
                     )}
                     size="1em"
                     aria-hidden="true"
@@ -260,6 +263,42 @@ function MoreActions({
     typeof useAcademicLayoutProps
   >['headerProps']['menuActions']
 }) {
+  const renderItems = (items: typeof actions): ReactNode =>
+    items.map(action =>
+      action.children?.length ? (
+        <Dropdown.SubmenuTrigger key={action.key}>
+          <Dropdown.Item id={action.key} textValue={action.label}>
+            <Label {...getDropdownLabelProps()}>
+              <AppIcon
+                {...getButtonIconProps(action.icon, true)}
+                size="1em"
+                aria-hidden="true"
+              />
+              {action.label}
+            </Label>
+            <Dropdown.SubmenuIndicator />
+          </Dropdown.Item>
+          <Dropdown.Popover>
+            <Dropdown.Menu>{renderItems(action.children)}</Dropdown.Menu>
+          </Dropdown.Popover>
+        </Dropdown.SubmenuTrigger>
+      ) : (
+        <Dropdown.Item
+          key={action.key}
+          id={action.key}
+          textValue={action.label}
+          onPress={action.onAction}>
+          <Label {...getDropdownLabelProps()}>
+            <AppIcon
+              {...getButtonIconProps(action.icon, true)}
+              size="1em"
+              aria-hidden="true"
+            />
+            {action.label}
+          </Label>
+        </Dropdown.Item>
+      )
+    )
   return (
     <Dropdown>
       <Dropdown.Trigger>
@@ -279,70 +318,7 @@ function MoreActions({
         </HeaderIconTooltip>
       </Dropdown.Trigger>
       <Dropdown.Popover>
-        <Dropdown.Menu>
-          {actions.map(action =>
-            action.key === 'export' ? (
-              <Dropdown.SubmenuTrigger key={action.key}>
-                <Dropdown.Item id={action.key} textValue={action.label}>
-                  <Label {...getDropdownLabelProps()}>
-                    <AppIcon
-                      {...getButtonIconProps(action.icon, true)}
-                      size="1em"
-                      aria-hidden="true"
-                    />
-                    {action.label}
-                  </Label>
-                  <Dropdown.SubmenuIndicator />
-                </Dropdown.Item>
-                <Dropdown.Popover>
-                  <Dropdown.Menu>
-                    <Dropdown.Item
-                      id="export-pdf"
-                      textValue="Export as PDF"
-                      onPress={action.onAction}>
-                      <Label {...getDropdownLabelProps()}>
-                        <AppIcon
-                          {...getButtonIconProps('vx:file-text', true)}
-                          size="1em"
-                          aria-hidden="true"
-                        />
-                        Export as PDF
-                      </Label>
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      id="export-excel"
-                      textValue="Export as Excel"
-                      onPress={action.onAction}>
-                      <Label {...getDropdownLabelProps()}>
-                        <AppIcon
-                          {...getButtonIconProps('vx:file-spreadsheet', true)}
-                          size="1em"
-                          aria-hidden="true"
-                        />
-                        Export as Excel
-                      </Label>
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown.Popover>
-              </Dropdown.SubmenuTrigger>
-            ) : (
-              <Dropdown.Item
-                key={action.key}
-                id={action.key}
-                textValue={action.label}
-                onPress={action.onAction}>
-                <Label {...getDropdownLabelProps()}>
-                  <AppIcon
-                    {...getButtonIconProps(action.icon, true)}
-                    size="1em"
-                    aria-hidden="true"
-                  />
-                  {action.label}
-                </Label>
-              </Dropdown.Item>
-            )
-          )}
-        </Dropdown.Menu>
+        <Dropdown.Menu>{renderItems(actions)}</Dropdown.Menu>
       </Dropdown.Popover>
     </Dropdown>
   )
@@ -373,7 +349,7 @@ function HeaderIconTooltip({
 function getActionShortcut(key: string) {
   if (key === 'back') return '⌘ ←'
   if (key === 'forward') return '⌘ →'
-  if (key === 'refresh') return '⌘ R'
+  if (key === 'sync') return '⌘ R'
 
   return undefined
 }

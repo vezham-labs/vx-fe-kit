@@ -6,7 +6,12 @@
   "additionalProperties": false,
   "required": ["items"],
   "properties": {
-    "items": { "type": "array", "items": { "$ref": "#/definitions/item" } }
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/item"
+      }
+    }
   },
   "definitions": {
     "item": {
@@ -14,14 +19,102 @@
       "additionalProperties": false,
       "required": ["key", "title"],
       "properties": {
-        "key": { "type": "string", "minLength": 1 },
-        "title": { "type": "string", "minLength": 1 },
-        "href": { "type": "string" },
-        "icon": { "type": "string" },
-        "iconActive": { "type": "string" },
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "href": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "iconActive": {
+          "type": "string"
+        },
         "children": {
           "type": "array",
-          "items": { "$ref": "#/definitions/item" }
+          "items": {
+            "$ref": "#/definitions/item"
+          }
+        },
+        "toolbar": {
+          "$ref": "#/definitions/toolbar"
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "icon"],
+      "properties": {
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "icon": {
+          "type": "string",
+          "minLength": 1
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/action"
+          }
+        }
+      }
+    },
+    "toolbar": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "search": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "placeholder": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          ]
+        },
+        "sync": {
+          "type": "boolean"
+        },
+        "menuActions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/action"
+          }
+        },
+        "primaryAction": {
+          "anyOf": [
+            {
+              "const": false
+            },
+            {
+              "$ref": "#/definitions/action"
+            }
+          ]
         }
       }
     }

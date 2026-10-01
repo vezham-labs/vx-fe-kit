@@ -20,18 +20,50 @@ items:
     icon: vx:library
     iconActive: vx:library-filled
     href: /tabs/overview
+    toolbar: &sectionToolbar
+      search: true
+      sync: true
+      menuActions:
+        - key: import
+          label: Import
+          icon: vx:upload
+        - key: print
+          label: Print
+          icon: vx:printer
+        - key: export
+          label: Export
+          icon: vx:download
+          children:
+            - key: export-pdf
+              label: Export as PDF
+              icon: vx:file-text
+            - key: export-excel
+              label: Export as Excel
+              icon: vx:file-spreadsheet
+      primaryAction: false
     children:
       - key: overview
         title: Overview
         href: /tabs/overview
+        toolbar:
+          primaryAction:
+            key: create
+            label: Add Overview
+            icon: vx:plus
       - key: activity
         title: Activity
         href: /tabs/activity
+        toolbar:
+          primaryAction:
+            key: create
+            label: Add Activity
+            icon: vx:plus
   - key: workspace
     title: Workspace
     icon: vx:library
     iconActive: vx:library-filled
     href: /workspace/projects/overview
+    toolbar: *sectionToolbar
     children:
       - key: projects
         title: Projects
@@ -40,9 +72,19 @@ items:
           - key: overview
             title: Overview
             href: /workspace/projects/overview
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Overview
+                icon: vx:plus
           - key: activity
             title: Activity
             href: /workspace/projects/activity
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Activity
+                icon: vx:plus
       - key: team
         title: Team
         href: /workspace/team/members
@@ -50,14 +92,25 @@ items:
           - key: members
             title: Members
             href: /workspace/team/members
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Members
+                icon: vx:plus
           - key: roles
             title: Roles
             href: /workspace/team/roles
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Roles
+                icon: vx:plus
   - key: academic
     icon: vx:library
     iconActive: vx:library-filled
     href: /academic
     title: Academic
+    toolbar: *sectionToolbar
     children:
       - key: classes
         title: Classes
@@ -68,38 +121,83 @@ items:
             title: All Classes
             href: /academic/classes/allclasses
             icon: vx:list
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Class
+                icon: vx:plus
           - key: schedule
             title: Schedule
             href: /academic/classes/schedule
             icon: vx:calendar-clock
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Schedule
+                icon: vx:plus
       - key: classroom
         title: Class Room
         href: /academic/classroom
         icon: vx:grid
+        toolbar:
+          primaryAction:
+            key: create
+            label: Add Classroom
+            icon: vx:plus
       - key: classroutine
         title: Class Routine
         href: /academic/class-routine
         icon: vx:calendar-days
+        toolbar:
+          primaryAction:
+            key: create
+            label: Add Class Routine
+            icon: vx:plus
       - key: section
         title: Section
         href: /academic/section
         icon: vx:sidebar
+        toolbar:
+          primaryAction:
+            key: create
+            label: Add Section
+            icon: vx:plus
       - key: subject
         title: Subject
         href: /academic/subject
         icon: vx:book
+        toolbar:
+          primaryAction:
+            key: create
+            label: Add Subject
+            icon: vx:plus
       - key: syllabus
         title: Syllabus
         href: /academic/syllabus
         icon: vx:file-text
+        toolbar:
+          primaryAction:
+            key: create
+            label: Add Subject Group
+            icon: vx:plus
       - key: timetable
         title: Time Table
         href: /academic/timetable
         icon: vx:clock
+        toolbar:
+          primaryAction:
+            key: create
+            label: Add Timetable
+            icon: vx:plus
       - key: homework
         title: Home Work
         href: /academic/homework
         icon: vx:clipboard-list
+        toolbar:
+          primaryAction:
+            key: create
+            label: Add Homework
+            icon: vx:plus
       - key: examinations
         title: Examinations
         href: /academic/examinations
@@ -109,31 +207,56 @@ items:
             title: Exam
             href: /academic/examinations/exam
             icon: vx:document-edit
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Exam
+                icon: vx:plus
           - key: exam-schedule
             title: Exam Schedule
             href: /academic/examinations/exam-schedule
             icon: vx:calendar-check
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Exam Schedule
+                icon: vx:plus
           - key: grades
             title: Grades
             href: /academic/examinations/grades
             icon: vx:verified
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Grades
+                icon: vx:plus
           - key: exam-attendance
             title: Exam Attendance
             href: /academic/examinations/exam-attendance
             icon: vx:user-check
+            toolbar:
+              primaryAction: false
           - key: exam-results
             title: Exam Results
             href: /academic/examinations/exam-results
             icon: vx:chart
+            toolbar:
+              primaryAction: false
       - key: reasons
         title: Reasons
         href: /academic/reasons
         icon: vx:help
+        toolbar:
+          primaryAction:
+            key: create
+            label: Add Reactions
+            icon: vx:plus
   - key: operations
     icon: vx:box
     iconActive: vx:box-filled
     href: /operations
     title: Operations
+    toolbar: *sectionToolbar
     children:
       - key: fees
         title: Fees Collections
@@ -144,22 +267,47 @@ items:
             title: Fees Group
             href: /operations/fees/fees-group
             icon: vx:report
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Fees Group
+                icon: vx:plus
           - key: fees-type
             title: Fees Type
             href: /operations/fees/fees-type
             icon: vx:user-round-check
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Fees Type
+                icon: vx:plus
           - key: fees-master
             title: Fees Master
             href: /operations/fees/fees-master
             icon: vx:calendar-days
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Fees Master
+                icon: vx:plus
           - key: fees-assign
             title: Fees Assign
             href: /operations/fees/fees-assign
             icon: vx:user
+            toolbar:
+              primaryAction:
+                key: create
+                label: Assign New
+                icon: vx:plus
           - key: collect-fees
             title: Collect Fees
             href: /operations/fees/collect-fees
             icon: vx:academic-cap
+            toolbar:
+              primaryAction:
+                key: create
+                label: Collect Fees
+                icon: vx:plus
       - key: library
         title: Library
         href: /operations/library
@@ -169,26 +317,56 @@ items:
             title: Library Members
             href: /operations/library/members
             icon: vx:report
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Member
+                icon: vx:plus
           - key: books
             title: Books
             href: /operations/library/books
             icon: vx:user-round-check
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Book
+                icon: vx:plus
           - key: issue-book
             title: Issue Book
             href: /operations/library/issue-book
             icon: vx:calendar-days
+            toolbar:
+              primaryAction:
+                key: create
+                label: Issue Book
+                icon: vx:plus
           - key: return
             title: Return
             href: /operations/library/return
             icon: vx:user
+            toolbar:
+              primaryAction:
+                key: create
+                label: Return Book
+                icon: vx:plus
       - key: sports
         title: Sports
         href: /operations/sports
         icon: vx:users
+        toolbar:
+          primaryAction:
+            key: create
+            label: Add Sport
+            icon: vx:plus
       - key: players
         title: Players
         href: /operations/players
         icon: vx:users
+        toolbar:
+          primaryAction:
+            key: create
+            label: Add Players
+            icon: vx:plus
       - key: hostel
         title: Hostel
         href: /operations/hostel
@@ -198,14 +376,29 @@ items:
             title: Hostel List
             href: /operations/hostel/hostel-list
             icon: vx:report
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Hostel
+                icon: vx:plus
           - key: hostel-room
             title: Hostel Room
             href: /operations/hostel/hostel-room
             icon: vx:user-round-check
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Hostel Rooms
+                icon: vx:plus
           - key: room-type
             title: Room Type
             href: /operations/hostel/room-type
             icon: vx:calendar-days
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Room Type
+                icon: vx:plus
       - key: transport
         title: Transport
         href: /operations/transport
@@ -215,27 +408,53 @@ items:
             title: Routes
             href: /operations/transport/routes
             icon: vx:report
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Route
+                icon: vx:plus
           - key: pickup-points
             title: Pickup points
             href: /operations/transport/pickup-points
             icon: vx:user-round-check
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Pickup Points
+                icon: vx:plus
           - key: vehicle-drivers
             title: Vehicle Drivers
             href: /operations/transport/vehicle-drivers
             icon: vx:calendar-days
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Drivers
+                icon: vx:plus
           - key: vehicles
             title: Vehicles
             href: /operations/transport/vehicles
             icon: vx:user-round-check
+            toolbar:
+              primaryAction:
+                key: create
+                label: Add Vehicle
+                icon: vx:plus
           - key: assign
             title: Assign Vehicles
             href: /operations/transport/assign
             icon: vx:calendar-days
+            toolbar:
+              primaryAction:
+                key: create
+                label: Assign New Vehicle
+                icon: vx:plus
   - key: reports
     icon: vx:chart
     iconActive: vx:chart-filled
     href: /reports
     title: Reports
+    toolbar: *sectionToolbar
     children:
       - key: attendance
         title: Attendance Reports

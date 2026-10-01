@@ -1,14 +1,7 @@
-import {
-  defaultLeftActions,
-  defaultRightActions
-} from '@pages/_shared/layout-actions'
+import { defaultLeftActions } from '@pages/_shared/layout-actions'
 import { createSectionLayout } from '@pages/academic/layout/types'
 
-import {
-  operationsCreateExcludedPageKeys as createExcludedPageKeys,
-  operationsCreateLabelsByPageKey as createLabelsByPageKey,
-  operationsSidebarItems
-} from './data'
+import { operationsSidebarItems } from './data'
 import { tva } from './variant'
 
 const useOperationsLayoutProps = createSectionLayout({
@@ -23,9 +16,6 @@ const useOperationsLayoutProps = createSectionLayout({
     sidebarItems: operationsSidebarItems
   },
   defaultLeftActions,
-  defaultRightActions,
-  createExcludedPageKeys,
-  createLabelsByPageKey,
   tva
 })
 

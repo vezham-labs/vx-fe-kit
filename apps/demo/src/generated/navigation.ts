@@ -29,16 +29,64 @@ export const navigationItems = [
     "icon": "vx:library",
     "iconActive": "vx:library-filled",
     "href": "/tabs/overview",
+    "toolbar": {
+      "search": true,
+      "sync": true,
+      "menuActions": [
+        {
+          "key": "import",
+          "label": "Import",
+          "icon": "vx:upload"
+        },
+        {
+          "key": "print",
+          "label": "Print",
+          "icon": "vx:printer"
+        },
+        {
+          "key": "export",
+          "label": "Export",
+          "icon": "vx:download",
+          "children": [
+            {
+              "key": "export-pdf",
+              "label": "Export as PDF",
+              "icon": "vx:file-text"
+            },
+            {
+              "key": "export-excel",
+              "label": "Export as Excel",
+              "icon": "vx:file-spreadsheet"
+            }
+          ]
+        }
+      ],
+      "primaryAction": false
+    },
     "children": [
       {
         "key": "overview",
         "title": "Overview",
-        "href": "/tabs/overview"
+        "href": "/tabs/overview",
+        "toolbar": {
+          "primaryAction": {
+            "key": "create",
+            "label": "Add Overview",
+            "icon": "vx:plus"
+          }
+        }
       },
       {
         "key": "activity",
         "title": "Activity",
-        "href": "/tabs/activity"
+        "href": "/tabs/activity",
+        "toolbar": {
+          "primaryAction": {
+            "key": "create",
+            "label": "Add Activity",
+            "icon": "vx:plus"
+          }
+        }
       }
     ]
   },
@@ -48,6 +96,40 @@ export const navigationItems = [
     "icon": "vx:library",
     "iconActive": "vx:library-filled",
     "href": "/workspace/projects/overview",
+    "toolbar": {
+      "search": true,
+      "sync": true,
+      "menuActions": [
+        {
+          "key": "import",
+          "label": "Import",
+          "icon": "vx:upload"
+        },
+        {
+          "key": "print",
+          "label": "Print",
+          "icon": "vx:printer"
+        },
+        {
+          "key": "export",
+          "label": "Export",
+          "icon": "vx:download",
+          "children": [
+            {
+              "key": "export-pdf",
+              "label": "Export as PDF",
+              "icon": "vx:file-text"
+            },
+            {
+              "key": "export-excel",
+              "label": "Export as Excel",
+              "icon": "vx:file-spreadsheet"
+            }
+          ]
+        }
+      ],
+      "primaryAction": false
+    },
     "children": [
       {
         "key": "projects",
@@ -57,12 +139,26 @@ export const navigationItems = [
           {
             "key": "overview",
             "title": "Overview",
-            "href": "/workspace/projects/overview"
+            "href": "/workspace/projects/overview",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Overview",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "activity",
             "title": "Activity",
-            "href": "/workspace/projects/activity"
+            "href": "/workspace/projects/activity",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Activity",
+                "icon": "vx:plus"
+              }
+            }
           }
         ]
       },
@@ -74,12 +170,26 @@ export const navigationItems = [
           {
             "key": "members",
             "title": "Members",
-            "href": "/workspace/team/members"
+            "href": "/workspace/team/members",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Members",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "roles",
             "title": "Roles",
-            "href": "/workspace/team/roles"
+            "href": "/workspace/team/roles",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Roles",
+                "icon": "vx:plus"
+              }
+            }
           }
         ]
       }
@@ -91,6 +201,40 @@ export const navigationItems = [
     "iconActive": "vx:library-filled",
     "href": "/academic",
     "title": "Academic",
+    "toolbar": {
+      "search": true,
+      "sync": true,
+      "menuActions": [
+        {
+          "key": "import",
+          "label": "Import",
+          "icon": "vx:upload"
+        },
+        {
+          "key": "print",
+          "label": "Print",
+          "icon": "vx:printer"
+        },
+        {
+          "key": "export",
+          "label": "Export",
+          "icon": "vx:download",
+          "children": [
+            {
+              "key": "export-pdf",
+              "label": "Export as PDF",
+              "icon": "vx:file-text"
+            },
+            {
+              "key": "export-excel",
+              "label": "Export as Excel",
+              "icon": "vx:file-spreadsheet"
+            }
+          ]
+        }
+      ],
+      "primaryAction": false
+    },
     "children": [
       {
         "key": "classes",
@@ -102,13 +246,27 @@ export const navigationItems = [
             "key": "allclasses",
             "title": "All Classes",
             "href": "/academic/classes/allclasses",
-            "icon": "vx:list"
+            "icon": "vx:list",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Class",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "schedule",
             "title": "Schedule",
             "href": "/academic/classes/schedule",
-            "icon": "vx:calendar-clock"
+            "icon": "vx:calendar-clock",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Schedule",
+                "icon": "vx:plus"
+              }
+            }
           }
         ]
       },
@@ -116,43 +274,92 @@ export const navigationItems = [
         "key": "classroom",
         "title": "Class Room",
         "href": "/academic/classroom",
-        "icon": "vx:grid"
+        "icon": "vx:grid",
+        "toolbar": {
+          "primaryAction": {
+            "key": "create",
+            "label": "Add Classroom",
+            "icon": "vx:plus"
+          }
+        }
       },
       {
         "key": "classroutine",
         "title": "Class Routine",
         "href": "/academic/class-routine",
-        "icon": "vx:calendar-days"
+        "icon": "vx:calendar-days",
+        "toolbar": {
+          "primaryAction": {
+            "key": "create",
+            "label": "Add Class Routine",
+            "icon": "vx:plus"
+          }
+        }
       },
       {
         "key": "section",
         "title": "Section",
         "href": "/academic/section",
-        "icon": "vx:sidebar"
+        "icon": "vx:sidebar",
+        "toolbar": {
+          "primaryAction": {
+            "key": "create",
+            "label": "Add Section",
+            "icon": "vx:plus"
+          }
+        }
       },
       {
         "key": "subject",
         "title": "Subject",
         "href": "/academic/subject",
-        "icon": "vx:book"
+        "icon": "vx:book",
+        "toolbar": {
+          "primaryAction": {
+            "key": "create",
+            "label": "Add Subject",
+            "icon": "vx:plus"
+          }
+        }
       },
       {
         "key": "syllabus",
         "title": "Syllabus",
         "href": "/academic/syllabus",
-        "icon": "vx:file-text"
+        "icon": "vx:file-text",
+        "toolbar": {
+          "primaryAction": {
+            "key": "create",
+            "label": "Add Subject Group",
+            "icon": "vx:plus"
+          }
+        }
       },
       {
         "key": "timetable",
         "title": "Time Table",
         "href": "/academic/timetable",
-        "icon": "vx:clock"
+        "icon": "vx:clock",
+        "toolbar": {
+          "primaryAction": {
+            "key": "create",
+            "label": "Add Timetable",
+            "icon": "vx:plus"
+          }
+        }
       },
       {
         "key": "homework",
         "title": "Home Work",
         "href": "/academic/homework",
-        "icon": "vx:clipboard-list"
+        "icon": "vx:clipboard-list",
+        "toolbar": {
+          "primaryAction": {
+            "key": "create",
+            "label": "Add Homework",
+            "icon": "vx:plus"
+          }
+        }
       },
       {
         "key": "examinations",
@@ -164,31 +371,58 @@ export const navigationItems = [
             "key": "exam",
             "title": "Exam",
             "href": "/academic/examinations/exam",
-            "icon": "vx:document-edit"
+            "icon": "vx:document-edit",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Exam",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "exam-schedule",
             "title": "Exam Schedule",
             "href": "/academic/examinations/exam-schedule",
-            "icon": "vx:calendar-check"
+            "icon": "vx:calendar-check",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Exam Schedule",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "grades",
             "title": "Grades",
             "href": "/academic/examinations/grades",
-            "icon": "vx:verified"
+            "icon": "vx:verified",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Grades",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "exam-attendance",
             "title": "Exam Attendance",
             "href": "/academic/examinations/exam-attendance",
-            "icon": "vx:user-check"
+            "icon": "vx:user-check",
+            "toolbar": {
+              "primaryAction": false
+            }
           },
           {
             "key": "exam-results",
             "title": "Exam Results",
             "href": "/academic/examinations/exam-results",
-            "icon": "vx:chart"
+            "icon": "vx:chart",
+            "toolbar": {
+              "primaryAction": false
+            }
           }
         ]
       },
@@ -196,7 +430,14 @@ export const navigationItems = [
         "key": "reasons",
         "title": "Reasons",
         "href": "/academic/reasons",
-        "icon": "vx:help"
+        "icon": "vx:help",
+        "toolbar": {
+          "primaryAction": {
+            "key": "create",
+            "label": "Add Reactions",
+            "icon": "vx:plus"
+          }
+        }
       }
     ]
   },
@@ -206,6 +447,40 @@ export const navigationItems = [
     "iconActive": "vx:box-filled",
     "href": "/operations",
     "title": "Operations",
+    "toolbar": {
+      "search": true,
+      "sync": true,
+      "menuActions": [
+        {
+          "key": "import",
+          "label": "Import",
+          "icon": "vx:upload"
+        },
+        {
+          "key": "print",
+          "label": "Print",
+          "icon": "vx:printer"
+        },
+        {
+          "key": "export",
+          "label": "Export",
+          "icon": "vx:download",
+          "children": [
+            {
+              "key": "export-pdf",
+              "label": "Export as PDF",
+              "icon": "vx:file-text"
+            },
+            {
+              "key": "export-excel",
+              "label": "Export as Excel",
+              "icon": "vx:file-spreadsheet"
+            }
+          ]
+        }
+      ],
+      "primaryAction": false
+    },
     "children": [
       {
         "key": "fees",
@@ -217,31 +492,66 @@ export const navigationItems = [
             "key": "fees-group",
             "title": "Fees Group",
             "href": "/operations/fees/fees-group",
-            "icon": "vx:report"
+            "icon": "vx:report",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Fees Group",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "fees-type",
             "title": "Fees Type",
             "href": "/operations/fees/fees-type",
-            "icon": "vx:user-round-check"
+            "icon": "vx:user-round-check",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Fees Type",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "fees-master",
             "title": "Fees Master",
             "href": "/operations/fees/fees-master",
-            "icon": "vx:calendar-days"
+            "icon": "vx:calendar-days",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Fees Master",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "fees-assign",
             "title": "Fees Assign",
             "href": "/operations/fees/fees-assign",
-            "icon": "vx:user"
+            "icon": "vx:user",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Assign New",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "collect-fees",
             "title": "Collect Fees",
             "href": "/operations/fees/collect-fees",
-            "icon": "vx:academic-cap"
+            "icon": "vx:academic-cap",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Collect Fees",
+                "icon": "vx:plus"
+              }
+            }
           }
         ]
       },
@@ -255,25 +565,53 @@ export const navigationItems = [
             "key": "members",
             "title": "Library Members",
             "href": "/operations/library/members",
-            "icon": "vx:report"
+            "icon": "vx:report",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Member",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "books",
             "title": "Books",
             "href": "/operations/library/books",
-            "icon": "vx:user-round-check"
+            "icon": "vx:user-round-check",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Book",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "issue-book",
             "title": "Issue Book",
             "href": "/operations/library/issue-book",
-            "icon": "vx:calendar-days"
+            "icon": "vx:calendar-days",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Issue Book",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "return",
             "title": "Return",
             "href": "/operations/library/return",
-            "icon": "vx:user"
+            "icon": "vx:user",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Return Book",
+                "icon": "vx:plus"
+              }
+            }
           }
         ]
       },
@@ -281,13 +619,27 @@ export const navigationItems = [
         "key": "sports",
         "title": "Sports",
         "href": "/operations/sports",
-        "icon": "vx:users"
+        "icon": "vx:users",
+        "toolbar": {
+          "primaryAction": {
+            "key": "create",
+            "label": "Add Sport",
+            "icon": "vx:plus"
+          }
+        }
       },
       {
         "key": "players",
         "title": "Players",
         "href": "/operations/players",
-        "icon": "vx:users"
+        "icon": "vx:users",
+        "toolbar": {
+          "primaryAction": {
+            "key": "create",
+            "label": "Add Players",
+            "icon": "vx:plus"
+          }
+        }
       },
       {
         "key": "hostel",
@@ -299,19 +651,40 @@ export const navigationItems = [
             "key": "hostel-list",
             "title": "Hostel List",
             "href": "/operations/hostel/hostel-list",
-            "icon": "vx:report"
+            "icon": "vx:report",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Hostel",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "hostel-room",
             "title": "Hostel Room",
             "href": "/operations/hostel/hostel-room",
-            "icon": "vx:user-round-check"
+            "icon": "vx:user-round-check",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Hostel Rooms",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "room-type",
             "title": "Room Type",
             "href": "/operations/hostel/room-type",
-            "icon": "vx:calendar-days"
+            "icon": "vx:calendar-days",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Room Type",
+                "icon": "vx:plus"
+              }
+            }
           }
         ]
       },
@@ -325,31 +698,66 @@ export const navigationItems = [
             "key": "routes",
             "title": "Routes",
             "href": "/operations/transport/routes",
-            "icon": "vx:report"
+            "icon": "vx:report",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Route",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "pickup-points",
             "title": "Pickup points",
             "href": "/operations/transport/pickup-points",
-            "icon": "vx:user-round-check"
+            "icon": "vx:user-round-check",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Pickup Points",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "vehicle-drivers",
             "title": "Vehicle Drivers",
             "href": "/operations/transport/vehicle-drivers",
-            "icon": "vx:calendar-days"
+            "icon": "vx:calendar-days",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Drivers",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "vehicles",
             "title": "Vehicles",
             "href": "/operations/transport/vehicles",
-            "icon": "vx:user-round-check"
+            "icon": "vx:user-round-check",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Add Vehicle",
+                "icon": "vx:plus"
+              }
+            }
           },
           {
             "key": "assign",
             "title": "Assign Vehicles",
             "href": "/operations/transport/assign",
-            "icon": "vx:calendar-days"
+            "icon": "vx:calendar-days",
+            "toolbar": {
+              "primaryAction": {
+                "key": "create",
+                "label": "Assign New Vehicle",
+                "icon": "vx:plus"
+              }
+            }
           }
         ]
       }
@@ -361,6 +769,40 @@ export const navigationItems = [
     "iconActive": "vx:chart-filled",
     "href": "/reports",
     "title": "Reports",
+    "toolbar": {
+      "search": true,
+      "sync": true,
+      "menuActions": [
+        {
+          "key": "import",
+          "label": "Import",
+          "icon": "vx:upload"
+        },
+        {
+          "key": "print",
+          "label": "Print",
+          "icon": "vx:printer"
+        },
+        {
+          "key": "export",
+          "label": "Export",
+          "icon": "vx:download",
+          "children": [
+            {
+              "key": "export-pdf",
+              "label": "Export as PDF",
+              "icon": "vx:file-text"
+            },
+            {
+              "key": "export-excel",
+              "label": "Export as Excel",
+              "icon": "vx:file-spreadsheet"
+            }
+          ]
+        }
+      ],
+      "primaryAction": false
+    },
     "children": [
       {
         "key": "attendance",

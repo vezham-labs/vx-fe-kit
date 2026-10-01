@@ -3,6 +3,7 @@ import type { FC, ReactNode } from 'react'
 import { StrictMode, useState } from 'react'
 
 import { VezhamProvider, cn } from '@vezham/react-v2'
+import { Toast } from '@vezham/react-v3'
 import { defineLogger } from '@vezham/use-logger'
 
 import type { DevtoolsApp } from '@vx/devtools'
@@ -61,6 +62,7 @@ const createProvider = ({ env, renderDevtools }: CreateProviderProps) => {
           <div data-vx-app-version={version} className={classList}>
             {children}
           </div>
+          <Toast.Provider />
           {/* vx-bot/TODO: Restore the theme provider with lockscreen, announcement,
             search spotlight, and portal support.
             <ThemeProvider classTarget={classTarget} vmode={vmode}>

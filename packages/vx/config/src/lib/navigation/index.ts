@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs'
 import path from 'node:path'
 
 import { readYamlConfig } from '../yaml-config.ts'
+import { validateToolbar } from './toolbar.ts'
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -23,6 +24,8 @@ const validateItems = (items: unknown, location: string): void => {
     for (const [field, value] of Object.entries(item)) {
       if (field === 'children') {
         validateItems(value, `${location}.${key}.children`)
+      } else if (field === 'toolbar') {
+        validateToolbar(value, `${location}.${key}.toolbar`)
       } else if (
         !['key', 'title', 'href', 'icon', 'iconActive'].includes(field)
       ) {

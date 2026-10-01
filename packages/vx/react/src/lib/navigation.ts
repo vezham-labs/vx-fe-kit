@@ -1,11 +1,14 @@
 import type { ReactNode } from 'react'
 
+import type { NavigationToolbar } from './navigation-toolbar'
+
 export type AppNavigationItem = {
   key: string
   title: string
   href?: string
   icon?: string
   iconActive?: string
+  toolbar?: NavigationToolbar
   startContent?: ReactNode
   endContent?: ReactNode
   children?: AppNavigationItem[]

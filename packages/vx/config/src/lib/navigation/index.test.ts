@@ -53,6 +53,104 @@ describe('navigation generation', () => {
     expect(getNavigationFiles(project())).toEqual([])
   })
 
+  it('accepts boolean search settings', () => {
+    const root = project()
+    writeFileSync(
+      path.join(root, 'vx.nav.yaml'),
+      stringify({
+        items: [
+          { key: 'home', title: 'Home', toolbar: { search: true } },
+          { key: 'other', title: 'Other', toolbar: { search: false } }
+        ]
+      })
+    )
+    const content = getNavigationFiles(root)[0].content
+    expect(content).toContain('"search": true')
+    expect(content).toContain('"search": false')
+  })
+
+  it('preserves serializable toolbar defaults and page overrides', () => {
+    const root = project()
+    const toolbar = {
+      search: { label: 'Find', placeholder: 'Search records' },
+      sync: true,
+      menuActions: [
+        {
+          key: 'export',
+          label: 'Export',
+          icon: 'vx:download',
+          children: [{ key: 'export-pdf', label: 'PDF', icon: 'vx:file-text' }]
+        }
+      ],
+      primaryAction: { key: 'create', label: 'Add', icon: 'vx:plus' }
+    }
+    writeFileSync(
+      path.join(root, 'vx.nav.yaml'),
+      stringify({
+        items: [
+          {
+            key: 'school',
+            title: 'School',
+            toolbar,
+            children: [
+              {
+                key: 'attendance',
+                title: 'Attendance',
+                toolbar: { primaryAction: false }
+              }
+            ]
+          }
+        ]
+      })
+    )
+    const exports: {
+      navigationItems?: {
+        toolbar: typeof toolbar
+        children: { toolbar: { primaryAction: false } }[]
+      }[]
+    } = {}
+    runInNewContext(
+      transpile(getNavigationFiles(root)[0].content, {
+        module: ModuleKind.CommonJS
+      }),
+      { exports }
+    )
+    expect(exports.navigationItems?.[0].toolbar).toEqual(toolbar)
+    expect(exports.navigationItems?.[0].children[0].toolbar.primaryAction).toBe(
+      false
+    )
+  })
+
+  it.each([
+    { search: 'yes' },
+    { sync: 'yes' },
+    { primaryAction: { key: 'create' } },
+    {
+      menuActions: [
+        {
+          key: 'print',
+          label: 'Print',
+          icon: 'vx:printer',
+          onAction: 'callback'
+        }
+      ]
+    },
+    {
+      menuActions: [
+        { key: 'print', label: 'Print', icon: 'vx:printer' },
+        { key: 'print', label: 'Again', icon: 'vx:printer' }
+      ]
+    },
+    { primaryAction: null }
+  ])('rejects invalid toolbar configuration: %j', toolbar => {
+    const root = project()
+    writeFileSync(
+      path.join(root, 'vx.nav.yaml'),
+      stringify({ items: [{ key: 'home', title: 'Home', toolbar }] })
+    )
+    expect(() => getNavigationFiles(root)).toThrow()
+  })
+
   it('preserves ordered nested navigation and emits a typed module', () => {
     const root = project()
     const items = [

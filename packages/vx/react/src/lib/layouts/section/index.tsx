@@ -29,6 +29,8 @@ export type SectionLayoutProps = {
   tabs: AppNavigationItem[]
   toolbar?: ReactNode
   search?: SectionSearch
+  sync?: boolean
+  onSync?: () => void
   menuActions?: SectionAction[]
   primaryAction?: SectionAction
   children: ReactNode
@@ -44,6 +46,8 @@ const SectionLayout = ({
   tabs,
   toolbar,
   search,
+  sync = true,
+  onSync,
   menuActions = [],
   primaryAction,
   children
@@ -78,9 +82,13 @@ const SectionLayout = ({
   })
   useHotkey('Meta+ArrowLeft', () => router.history.back())
   useHotkey('Meta+ArrowRight', () => router.history.forward())
-  useHotkey('Meta+R', () => {
-    void router.invalidate()
-  })
+  useHotkey(
+    'Meta+R',
+    () => {
+      onSync?.()
+    },
+    { enabled: sync && Boolean(onSync) }
+  )
   const sidebar = (
     <nav aria-label={navigationLabel} className="space-y-1 p-2">
       {sidebarItems.map(item => {
@@ -108,6 +116,7 @@ const SectionLayout = ({
     <>
       <SectionToolbar
         title={title}
+        sync={sync}
         tabs={tabs}
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
@@ -124,9 +133,7 @@ const SectionLayout = ({
         menuActions={menuActions}
         primaryAction={primaryAction}
         toolbar={toolbar}
-        onRefresh={() => {
-          void router.invalidate()
-        }}
+        onSync={() => onSync?.()}
         navigationControls={
           <>
             <ShortcutButton

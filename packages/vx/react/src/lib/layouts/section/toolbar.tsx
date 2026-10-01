@@ -27,6 +27,7 @@ export type SectionSearch = {
   value: string
   onChange: (value: string) => void
   label?: string
+  placeholder?: string
 }
 
 type ToolbarSearch = SectionSearch & {
@@ -43,7 +44,8 @@ type Props = {
   search?: ToolbarSearch
   menuActions: SectionAction[]
   primaryAction?: SectionAction
-  onRefresh: () => void
+  onSync: () => void
+  sync?: boolean
   isMenuOpen: boolean
   onMenuOpenChange: (isOpen: boolean) => void
 }
@@ -99,7 +101,7 @@ const SectionSearchField = ({ search }: { search: ToolbarSearch }) => {
         <InputGroup.Input
           ref={isDesktop ? search.inputRef : undefined}
           type="search"
-          placeholder="Search"
+          placeholder={search.placeholder ?? 'Search'}
           value={search.value}
           onChange={event => search.onChange(event.target.value)}
         />
@@ -137,7 +139,8 @@ const SectionToolbar = ({
   search,
   menuActions,
   primaryAction,
-  onRefresh,
+  onSync,
+  sync = true,
   isMenuOpen,
   onMenuOpenChange
 }: Props) => (
@@ -171,14 +174,16 @@ const SectionToolbar = ({
         className="col-start-2 row-start-1 flex shrink-0 items-center gap-1 sm:gap-2">
         {search && <SectionSearchField search={search} />}
         {toolbar}
-        <ShortcutButton
-          label="Refresh"
-          shortcut="⌘ R"
-          aria-keyshortcuts="Meta+R"
-          className={iconButtonClassName}
-          onPress={onRefresh}>
-          <AppIcon icon="vx:refresh" size={18} aria-hidden="true" />
-        </ShortcutButton>
+        {sync && (
+          <ShortcutButton
+            label="Sync"
+            shortcut="⌘ R"
+            aria-keyshortcuts="Meta+R"
+            className={iconButtonClassName}
+            onPress={onSync}>
+            <AppIcon icon="vx:refresh" size={18} aria-hidden="true" />
+          </ShortcutButton>
+        )}
         {menuActions.length > 0 && (
           <Dropdown isOpen={isMenuOpen} onOpenChange={onMenuOpenChange}>
             <Tooltip delay={0}>

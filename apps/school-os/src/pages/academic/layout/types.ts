@@ -12,19 +12,18 @@ import {
 
 import { cn } from '@vezham/react-v3'
 
+import type { NavigationToolbar } from '@vx/react'
 import {
   useSidebarShortcut,
   useWorkspaceNavigation
 } from '@vx/react/workspace-navigation'
 
-import { defaultLeftActions } from '@pages/_shared/layout-actions'
-
 import {
-  academicCreateExcludedPageKeys as createExcludedPageKeys,
-  academicCreateLabelsByPageKey as createLabelsByPageKey,
-  academicRightActions as defaultRightActions,
-  sidebarItems
-} from './data'
+  defaultLeftActions,
+  getLayoutRightActions
+} from '@pages/_shared/layout-actions'
+
+import { sidebarItems } from './data'
 import { tvProps, tvSlots, tva } from './variant'
 
 type AcademicMenuItem = {
@@ -32,6 +31,7 @@ type AcademicMenuItem = {
   title: string
   href: string
   icon: string
+  toolbar?: NavigationToolbar
   children?: AcademicMenuItem[]
 }
 
@@ -41,7 +41,9 @@ type ActionItem = {
   icon: string
   onAction?: () => void
   isVisible?: (pageKey: string) => boolean
-  kind?: 'search' | 'refresh' | 'menu' | 'primary'
+  children?: ActionItem[]
+  placeholder?: string
+  kind?: 'search' | 'sync' | 'menu' | 'primary'
 }
 
 type HeaderActionsConfig = {
@@ -63,9 +65,6 @@ type LayoutConfig = {
 type SectionLayoutDependencies = {
   defaults: Required<LayoutConfig>
   defaultLeftActions: ActionItem[]
-  defaultRightActions: ActionItem[]
-  createExcludedPageKeys: Set<string>
-  createLabelsByPageKey: Record<string, string>
   tva: typeof tva
 }
 
@@ -151,21 +150,20 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
 
     const rightActions = useMemo(
       () =>
-        getPageRightActions(
-          activePageKey,
+        getLayoutRightActions(
+          location.pathname,
           layoutConfig.createEventPrefix,
-          dependencies.createExcludedPageKeys,
-          dependencies.createLabelsByPageKey
+          activePageKey
         ),
-      [activePageKey, layoutConfig.createEventPrefix]
+      [location.pathname, layoutConfig.createEventPrefix, activePageKey]
     )
     const resolvedLeftActions = mergeActions(
       dependencies.defaultLeftActions,
       actions?.leftActions
     )
     const resolvedRightActions = mergeActions(
-      dependencies.defaultRightActions,
-      actions?.rightActions ?? rightActions
+      rightActions,
+      actions?.rightActions
     )
     const visibleRightActions = resolvedRightActions.filter(
       action => !action.isVisible || action.isVisible(activePageKey)
@@ -216,8 +214,8 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
     const forwardAction = resolvedLeftActions.find(
       action => action.key === 'forward'
     )
-    const refreshAction = visibleRightActions.find(
-      action => action.kind === 'refresh'
+    const syncAction = visibleRightActions.find(
+      action => action.kind === 'sync'
     )
 
     useHotkey('Meta+ArrowLeft', () => backAction?.onAction?.(), {
@@ -228,8 +226,8 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
       enabled: Boolean(forwardAction?.onAction)
     })
 
-    useHotkey('Meta+R', () => refreshAction?.onAction?.(), {
-      enabled: Boolean(refreshAction?.onAction)
+    useHotkey('Meta+R', () => syncAction?.onAction?.(), {
+      enabled: Boolean(syncAction?.onAction)
     })
 
     useSidebarShortcut(onToggleSidebar)
@@ -571,7 +569,7 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
         primaryAction: visibleRightActions.find(
           action => action.kind === 'primary'
         ),
-        refreshAction,
+        syncAction,
         menuActions: visibleRightActions.filter(
           action => action.kind === 'menu'
         ),
@@ -651,43 +649,6 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
   }
 
   return useProps
-}
-
-function getPageRightActions(
-  activePageKey: string,
-  createEventPrefix: string,
-  createExcludedPageKeys: Set<string>,
-  createLabelsByPageKey: Record<string, string>
-): ActionItem[] {
-  if (createExcludedPageKeys.has(activePageKey)) {
-    return [
-      {
-        key: 'create',
-        label: 'Create',
-        icon: 'vx:plus',
-        kind: 'primary',
-        isVisible: () => false
-      }
-    ]
-  }
-
-  const label = createLabelsByPageKey[activePageKey]
-
-  return label
-    ? [
-        {
-          key: 'create',
-          label,
-          icon: 'vx:plus',
-          kind: 'primary',
-          onAction: () => dispatchCreateAction(activePageKey, createEventPrefix)
-        }
-      ]
-    : []
-}
-
-function dispatchCreateAction(pageKey: string, prefix: string) {
-  window.dispatchEvent(new CustomEvent(`${prefix}:${pageKey}:create`))
 }
 
 function mergeActions(
@@ -812,9 +773,6 @@ const useAcademicLayoutProps = createSectionLayout({
     sidebarItems
   },
   defaultLeftActions,
-  defaultRightActions,
-  createExcludedPageKeys,
-  createLabelsByPageKey,
   tva
 })
 

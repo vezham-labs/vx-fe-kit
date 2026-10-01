@@ -1,6 +1,8 @@
 import { RouterProvider, createMemoryHistory } from '@tanstack/react-router'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 
+import { toast } from '@vezham/react-v3'
+
 import { createRouter } from '@vx/start/router/tanstack'
 
 import { routeTree } from '../src/routeTree.gen'
@@ -36,7 +38,7 @@ describe('Navigation toolbar', () => {
           .getAllByRole('button')
           .map(button => button.getAttribute('aria-label'))
           .filter(Boolean)
-      ).toEqual(['Search', 'Refresh', 'More', 'Add Class'])
+      ).toEqual(['Search', 'Sync', 'More', 'Add Class'])
       fireEvent.click(screen.getByRole('tab', { name: 'Schedule' }))
       await screen.findByRole('button', { name: 'Add Schedule' })
       expect(screen.getByRole('tabpanel').textContent).toContain(
@@ -47,14 +49,18 @@ describe('Navigation toolbar', () => {
     }
   })
 
-  it('refreshes the route and hides Add on result pages', async () => {
+  it('shows the Sync placeholder without refreshing and hides Add on result pages', async () => {
     const router = renderApp('/academic/examinations/exam-results')
     await screen.findByRole('tab', { name: 'Exam Results' })
     const actions = screen.getByRole('group', { name: 'Toolbar actions' })
     expect(within(actions).queryByRole('button', { name: /^Add / })).toBeNull()
     const refresh = vi.spyOn(router, 'invalidate')
-    fireEvent.click(screen.getByRole('button', { name: 'Refresh' }))
-    expect(refresh).toHaveBeenCalledOnce()
+    fireEvent.click(screen.getByRole('button', { name: 'Sync' }))
+    await screen.findByRole('alertdialog', {
+      name: 'Server sync is not implemented yet.'
+    })
+    expect(refresh).not.toHaveBeenCalled()
+    toast.clear()
     expect(screen.getByRole('tabpanel').textContent).toContain(
       '/academic/examinations/exam-results'
     )

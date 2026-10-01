@@ -12,7 +12,7 @@ import { SectionToolbar } from './toolbar'
 
 const actions = vi.hoisted(() => ({
   import: vi.fn(),
-  refresh: vi.fn(),
+  sync: vi.fn(),
   create: vi.fn()
 }))
 
@@ -49,7 +49,7 @@ const ToolbarFixture = () => {
         icon: 'vx:plus',
         onAction: actions.create
       }}
-      onRefresh={actions.refresh}
+      onSync={actions.sync}
     />
   )
 }

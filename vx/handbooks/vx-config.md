@@ -7,6 +7,8 @@ route rules, docs generation, prerender paths, and social metadata.
 deployment provider config, such as Firebase Hosting redirects, headers, and
 rewrites.
 
+See the [YAML handbook](./yaml.md) for configuration syntax and reusable anchors.
+
 See the [Deployment handbook](./deploy.md) for provider setup and deployment
 preset selection.
 
