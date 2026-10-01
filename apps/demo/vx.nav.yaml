@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../vx/schemas/vx.nav.json
+items:
+  - key: home
+    icon: vx:home
+    iconActive: vx:home-filled
+    href: /
+    title: Home
+  - key: pro
+    icon: vx:library
+    iconActive: vx:library-filled
+    href: /pro
+    title: Pro
+  - key: sidebar
+    icon: vx:library
+    iconActive: vx:library-filled
+    href: /sidebar
+    title: Sidebar

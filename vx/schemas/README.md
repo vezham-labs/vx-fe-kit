@@ -1,5 +1,7 @@
 # Vx configuration schemas
 
+- `vx.nav.json`: schema for `vx.nav.yaml`, covering ordered menu items and nested navigation.
+
 - `vx.app.json`: schema for `vx.app.yaml`, covering app framework, metadata, branding, i18n, PWA, docs, routes, and OG configuration.
 - `vx.deploy.json`: schema for `vx.deploy.yaml`, covering deployment preset and hosting-provider options.
 

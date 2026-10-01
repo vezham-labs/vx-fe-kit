@@ -3,8 +3,8 @@ import { Outlet, createRootRoute } from '@tanstack/react-router'
 import { AppLayout } from '@vx/react/layouts/app'
 import { createRootComponent } from '@vx/start/tanstack'
 
+import { navigationItems } from '@generated/navigation'
 import { tanstackHead, vxI18n } from '@generated/vx'
-import { navigationItems } from '@src/navigation'
 
 export const Route = createRootRoute({
   head: () => tanstackHead,

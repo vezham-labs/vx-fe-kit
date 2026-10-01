@@ -8,6 +8,7 @@ import {
 import path from 'node:path'
 
 import { validateFramework } from '../framework.ts'
+import { getNavigationFiles } from '../navigation/index.ts'
 import { readYamlConfig } from '../yaml-config.ts'
 import { getVxEnv, syncEnvContent } from './env.ts'
 import { syncIndexHtmlContent } from './html.ts'
@@ -44,6 +45,7 @@ export const getMetadataFiles = (
   const envFile = path.resolve(projectRoot, '.env')
 
   return [
+    ...getNavigationFiles(projectRoot),
     ...getPublicMetadataFiles(config, projectRoot),
     ...(existsSync(indexFile)
       ? [
@@ -93,7 +95,9 @@ export const watchMetadata = (options: GenerateMetadataOptions = {}) => {
 
   regenerate()
 
-  return watch(configFile, { persistent: true }, regenerate)
+  return watch(projectRoot, { persistent: true }, (_event, filename) => {
+    if (filename === 'vx.app.yaml' || filename === 'vx.nav.yaml') regenerate()
+  })
 }
 
 // vx-bot/NOTE: Preserve the public options type at the metadata entry point.
