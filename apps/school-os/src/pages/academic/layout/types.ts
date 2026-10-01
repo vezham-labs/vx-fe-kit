@@ -10,9 +10,11 @@ import {
   useState
 } from 'react'
 
+import { toast } from '@vezham/react-v3'
 import { cn } from '@vezham/react-v3'
 
 import type { NavigationToolbar } from '@vx/react'
+import { useToolbarAction, useToolbarActions } from '@vx/react/toolbar-actions'
 import {
   useSidebarShortcut,
   useWorkspaceNavigation
@@ -55,7 +57,6 @@ type LayoutConfig = {
   title?: string
   navigationLabel?: string
   subNavigationLabel?: string
-  createEventPrefix?: string
   collapsedSidebarMode?: SidebarProps['collapsedMode']
   initialSidebarCollapsed?: boolean
   renderChildrenInSidebar?: boolean
@@ -148,14 +149,15 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
         location.pathname.startsWith(`${tab.href}/`)
     )?.key
 
+    const { emit } = useToolbarActions()
+    useToolbarAction('sync', () => {
+      // vx-bot/TODO: Replace this notice with server synchronization.
+      toast.info('Server sync is not implemented yet.')
+    })
+    useToolbarAction('print', () => window.print())
     const rightActions = useMemo(
-      () =>
-        getLayoutRightActions(
-          location.pathname,
-          layoutConfig.createEventPrefix,
-          activePageKey
-        ),
-      [location.pathname, layoutConfig.createEventPrefix, activePageKey]
+      () => getLayoutRightActions(location.pathname, activePageKey, emit),
+      [location.pathname, activePageKey, emit]
     )
     const resolvedLeftActions = mergeActions(
       dependencies.defaultLeftActions,
@@ -766,7 +768,6 @@ const useAcademicLayoutProps = createSectionLayout({
     title: 'Academic',
     navigationLabel: 'Academic navigation',
     subNavigationLabel: 'Academic sub navigation',
-    createEventPrefix: 'academic',
     collapsedSidebarMode: 'hidden',
     initialSidebarCollapsed: false,
     renderChildrenInSidebar: false,

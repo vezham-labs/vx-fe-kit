@@ -48,6 +48,11 @@
       "types": "./src/lib/components/workspace-navigation/index.tsx",
       "import": "./src/lib/components/workspace-navigation/index.tsx",
       "default": "./src/lib/components/workspace-navigation/index.tsx"
+    },
+    "./toolbar-actions": {
+      "types": "./src/lib/components/toolbar-actions/index.tsx",
+      "import": "./src/lib/components/toolbar-actions/index.tsx",
+      "default": "./src/lib/components/toolbar-actions/index.tsx"
     }
   },
   "main": "./src/index.ts",

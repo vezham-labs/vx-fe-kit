@@ -1,21 +1,17 @@
 import type { NavigationAction, NavigationToolbar } from '@vx/react'
 import type { SectionAction } from '@vx/react/layouts/section'
+import type { ToolbarActionEvent } from '@vx/react/toolbar-actions'
 
 export const getToolbarActions = (
   toolbar: NavigationToolbar,
-  pageKey: string
+  context: Omit<ToolbarActionEvent, 'actionKey'>,
+  emit: (event: ToolbarActionEvent) => boolean
 ) => {
   const bindAction = (action: NavigationAction): SectionAction => ({
     ...action,
     children: action.children?.map(bindAction),
     onAction: () => {
-      if (action.key === 'print') window.print()
-      else
-        window.dispatchEvent(
-          new CustomEvent('demo:toolbar-action', {
-            detail: { action: action.key, pageKey }
-          })
-        )
+      emit({ ...context, actionKey: action.key })
     }
   })
   return {

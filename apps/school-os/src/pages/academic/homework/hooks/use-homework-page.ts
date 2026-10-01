@@ -39,7 +39,7 @@ const config: AcademicEntityPageConfig<
   FilterDraft
 > = {
   columnKeys: homeworkColumnOptions.map(column => column.key),
-  createEventName: 'academic:homework:create',
+  pageKey: 'homework',
   emptyFilters: {
     classes: null,
     section: null,

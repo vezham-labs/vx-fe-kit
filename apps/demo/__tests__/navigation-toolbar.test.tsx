@@ -24,29 +24,27 @@ describe('Navigation toolbar', () => {
   it('uses page-specific Add actions in the School OS toolbar order', async () => {
     renderApp('/academic/classes/allclasses')
     const create = await screen.findByRole('button', { name: 'Add Class' })
-    const onAction = vi.fn()
-    window.addEventListener('demo:toolbar-action', onAction)
+    const notice = vi.spyOn(toast, 'info').mockReturnValue('create-notice')
     try {
       fireEvent.click(create)
-      expect(onAction.mock.calls[0][0].detail).toEqual({
-        action: 'create',
-        pageKey: 'allclasses'
-      })
-      const actions = screen.getByRole('group', { name: 'Toolbar actions' })
-      expect(
-        within(actions)
-          .getAllByRole('button')
-          .map(button => button.getAttribute('aria-label'))
-          .filter(Boolean)
-      ).toEqual(['Search', 'Sync', 'More', 'Add Class'])
-      fireEvent.click(screen.getByRole('tab', { name: 'Schedule' }))
-      await screen.findByRole('button', { name: 'Add Schedule' })
-      expect(screen.getByRole('tabpanel').textContent).toContain(
-        '/academic/classes/schedule'
+      expect(notice).toHaveBeenCalledWith(
+        'Create is not implemented in this navigation demo.'
       )
     } finally {
-      window.removeEventListener('demo:toolbar-action', onAction)
+      notice.mockRestore()
     }
+    const actions = screen.getByRole('group', { name: 'Toolbar actions' })
+    expect(
+      within(actions)
+        .getAllByRole('button')
+        .map(button => button.getAttribute('aria-label'))
+        .filter(Boolean)
+    ).toEqual(['Search', 'Sync', 'More', 'Add Class'])
+    fireEvent.click(screen.getByRole('tab', { name: 'Schedule' }))
+    await screen.findByRole('button', { name: 'Add Schedule' })
+    expect(screen.getByRole('tabpanel').textContent).toContain(
+      '/academic/classes/schedule'
+    )
   })
 
   it('shows the Sync placeholder without refreshing and hides Add on result pages', async () => {

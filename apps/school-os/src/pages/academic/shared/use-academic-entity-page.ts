@@ -34,7 +34,7 @@ export type AcademicEntityPageConfig<
   columnKeys: readonly ColumnKey[]
   clearActiveRowOnClose?: boolean
   clearSelectionOnClose?: boolean
-  createEventName: string
+  pageKey: string
   dateDropdownOpenChange?: 'direct' | 'close-custom'
   drawerClearSelectionOnClose?: boolean
   emptyFilters: Filters
@@ -207,7 +207,7 @@ export const useAcademicEntityPage = <
 
   useEntityPageLifecycle({
     activeRowId,
-    createEventName: config.createEventName,
+    pageKey: config.pageKey,
     currentPage,
     data,
     drawer,

@@ -49,7 +49,7 @@ const config: AcademicEntityPageConfig<
 > = {
   columnKeys: examResultsColumnOptions.map(column => column.key),
   clearActiveRowOnClose: false,
-  createEventName: 'academic:exam-results:create',
+  pageKey: 'exam-results',
   drawerClearSelectionOnClose: false,
   emptyFilters: {
     name: null,

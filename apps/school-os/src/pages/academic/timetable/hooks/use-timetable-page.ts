@@ -1,8 +1,10 @@
 import { CalendarDateTime } from '@internationalized/date'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { useAgenda } from '@vezham/react-pro-v3'
 import type { SortDescriptor } from '@vezham/react-v3'
+
+import { useToolbarAction } from '@vx/react/toolbar-actions'
 
 import type {
   TimetableEvent,
@@ -268,13 +270,7 @@ export const useTimetablePage = () => {
     closeCreateDrawer()
   }
 
-  useEffect(() => {
-    window.addEventListener('academic:timetable:create', openCreateDrawer)
-
-    return () => {
-      window.removeEventListener('academic:timetable:create', openCreateDrawer)
-    }
-  }, [openCreateDrawer])
+  useToolbarAction('create', openCreateDrawer, { pageKey: 'timetable' })
 
   return {
     calendar: {

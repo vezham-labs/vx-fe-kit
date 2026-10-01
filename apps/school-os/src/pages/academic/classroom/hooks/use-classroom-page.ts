@@ -40,7 +40,7 @@ const config: AcademicEntityPageConfig<
   columnKeys: classroomColumnOptions.map(column => column.key),
   clearActiveRowOnClose: false,
   clearSelectionOnClose: false,
-  createEventName: 'academic:classroom:create',
+  pageKey: 'classroom',
   drawerClearSelectionOnClose: false,
   emptyFilters: { roomno: null, capacity: null, status: null },
   emptyForm,

@@ -42,7 +42,7 @@ const config: AcademicEntityPageConfig<
 > = {
   columnKeys: gradeColumnOptions.map(column => column.key),
   clearActiveRowOnClose: false,
-  createEventName: 'academic:grades:create',
+  pageKey: 'grades',
   drawerClearSelectionOnClose: false,
   emptyFilters: { grade: null, percentage: null, points: null, status: null },
   emptyForm,

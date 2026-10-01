@@ -9,7 +9,6 @@ const useReportsLayoutProps = createSectionLayout({
     title: 'Reports',
     navigationLabel: 'Reports navigation',
     subNavigationLabel: 'Reports sub navigation',
-    createEventPrefix: 'reports',
     collapsedSidebarMode: 'hidden',
     initialSidebarCollapsed: false,
     renderChildrenInSidebar: true,

@@ -1,5 +1,5 @@
 import { RouterProvider, createMemoryHistory } from '@tanstack/react-router'
-import { render, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { createRouter } from '@vx/start/router/tanstack'
 
@@ -18,6 +18,13 @@ const renderApp = (path = '/') => {
 }
 
 describe('App', () => {
+  it('opens the local Create drawer from a toolbar action', async () => {
+    Element.prototype.getAnimations = () => []
+    Element.prototype.scrollIntoView = () => undefined
+    renderApp('/academic/classes/allclasses')
+    fireEvent.click(await screen.findByRole('button', { name: 'Add Class' }))
+    await screen.findByRole('dialog')
+  })
   it('uses the configured default language for the document', async () => {
     renderApp()
 

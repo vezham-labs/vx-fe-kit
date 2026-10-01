@@ -308,7 +308,7 @@ export const useExamSchedulePage = () => {
 
   useEntityPageLifecycle({
     activeRowId,
-    createEventName: 'academic:exam-schedule:create',
+    pageKey: 'exam-schedule',
     currentPage,
     data,
     drawer,

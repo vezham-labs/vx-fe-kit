@@ -1,8 +1,9 @@
 import { useHotkey } from '@tanstack/react-hotkeys'
-import { useEffect } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 
 import type { Selection } from '@vezham/react-v3'
+
+import { useToolbarAction } from '@vx/react/toolbar-actions'
 
 import type {
   DrawerMode,
@@ -18,7 +19,7 @@ type EntityRow = { id: string }
 
 type Options<Row extends EntityRow, Form, Errors extends object> = {
   activeRowId: string | null
-  createEventName: string
+  pageKey: string
   currentPage: number
   data: Row[]
   drawer: DrawerState
@@ -54,7 +55,7 @@ export const useEntityPageLifecycle = <
   Errors extends object
 >({
   activeRowId,
-  createEventName,
+  pageKey,
   currentPage,
   data,
   drawer,
@@ -79,11 +80,7 @@ export const useEntityPageLifecycle = <
   toast,
   toggleDrawer
 }: Options<Row, Form, Errors>) => {
-  useEffect(() => {
-    const openCreateDrawer = () => openDrawer('create', null)
-    window.addEventListener(createEventName, openCreateDrawer)
-    return () => window.removeEventListener(createEventName, openCreateDrawer)
-  }, [createEventName, openDrawer])
+  useToolbarAction('create', () => openDrawer('create', null), { pageKey })
 
   useToastTimeout(toast, setToast)
 

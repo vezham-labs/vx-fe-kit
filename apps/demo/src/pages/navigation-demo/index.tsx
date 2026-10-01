@@ -5,6 +5,7 @@ import { toast } from '@vezham/react-v3'
 
 import { getNavigationToolbar } from '@vx/react'
 import { SectionLayout } from '@vx/react/layouts/section'
+import { useToolbarAction, useToolbarActions } from '@vx/react/toolbar-actions'
 
 import { navigationItems } from '@generated/navigation'
 
@@ -19,7 +20,20 @@ const NavigationDemoLayout = ({ menuKey }: Props) => {
 
   const [search, setSearch] = useState('')
   const toolbar = getNavigationToolbar(navigationItems, pathname)
-  const actions = getToolbarActions(toolbar, page.key)
+  const { emit } = useToolbarActions()
+  const actions = getToolbarActions(
+    toolbar,
+    { pageKey: page.key, pathname },
+    emit
+  )
+  useToolbarAction('sync', () => {
+    // vx-bot/TODO: Replace this notice with server synchronization.
+    toast.info('Server sync is not implemented yet.')
+  })
+  useToolbarAction('print', () => window.print())
+  useToolbarAction('create', () => {
+    toast.info('Create is not implemented in this navigation demo.')
+  })
 
   return (
     <SectionLayout
@@ -31,8 +45,7 @@ const NavigationDemoLayout = ({ menuKey }: Props) => {
       tabs={tabs}
       {...actions}
       onSync={() => {
-        // vx-bot/TODO: Replace this notice with server synchronization.
-        toast.info('Server sync is not implemented yet.')
+        emit({ actionKey: 'sync', pageKey: page.key, pathname })
       }}
       search={
         toolbar.search

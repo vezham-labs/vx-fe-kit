@@ -4,6 +4,7 @@ import { Surface, cn } from '@vezham/react-v3'
 
 import { CommandProvider } from '../../components/command'
 import { InfoPanelProvider } from '../../components/panel/info-panel'
+import { ToolbarActionsProvider } from '../../components/toolbar-actions'
 import { WorkspaceNavigationProvider } from '../../components/workspace-navigation'
 import type { AppNavigationItem } from '../../navigation'
 import { type User, UserProvider } from '../../store/users/useUserStore'
@@ -56,19 +57,21 @@ const AppLayout = ({
   ...frameProps
 }: AppLayoutProps) => {
   return (
-    <UserProvider initialUser={user}>
-      <CommandProvider items={navigationItems}>
-        <InfoPanelProvider>
-          <WorkspaceNavigationProvider>
-            <AppFrame
-              {...frameProps}
-              navigation={<MenuLayout items={navigationItems} />}>
-              {children}
-            </AppFrame>
-          </WorkspaceNavigationProvider>
-        </InfoPanelProvider>
-      </CommandProvider>
-    </UserProvider>
+    <ToolbarActionsProvider>
+      <UserProvider initialUser={user}>
+        <CommandProvider items={navigationItems}>
+          <InfoPanelProvider>
+            <WorkspaceNavigationProvider>
+              <AppFrame
+                {...frameProps}
+                navigation={<MenuLayout items={navigationItems} />}>
+                {children}
+              </AppFrame>
+            </WorkspaceNavigationProvider>
+          </InfoPanelProvider>
+        </CommandProvider>
+      </UserProvider>
+    </ToolbarActionsProvider>
   )
 }
 

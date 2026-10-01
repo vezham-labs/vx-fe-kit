@@ -9,7 +9,6 @@ const useOperationsLayoutProps = createSectionLayout({
     title: 'Operations',
     navigationLabel: 'Operations navigation',
     subNavigationLabel: 'Operations sub navigation',
-    createEventPrefix: 'operations',
     collapsedSidebarMode: 'hidden',
     initialSidebarCollapsed: false,
     renderChildrenInSidebar: true,

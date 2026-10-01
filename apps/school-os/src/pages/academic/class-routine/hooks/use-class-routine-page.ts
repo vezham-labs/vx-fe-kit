@@ -44,7 +44,7 @@ const config: AcademicEntityPageConfig<
   ClassRoutineColumnKey
 > = {
   columnKeys: classRoutineColumnOptions.map(column => column.key),
-  createEventName: 'academic:classroutine:create',
+  pageKey: 'classroutine',
   emptyFilters: {
     classes: null,
     section: null,

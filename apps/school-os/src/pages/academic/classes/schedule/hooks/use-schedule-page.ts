@@ -42,7 +42,7 @@ const config: AcademicEntityPageConfig<
   columnKeys: scheduleColumnOptions.map(column => column.key),
   clearActiveRowOnClose: true,
   clearSelectionOnClose: true,
-  createEventName: 'academic:schedule:create',
+  pageKey: 'schedule',
   emptyFilters: { type: null, status: null },
   emptyForm,
   filterKeys: ['type', 'status'],

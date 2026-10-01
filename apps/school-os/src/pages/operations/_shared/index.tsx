@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import {
   AltArrowDown as AltArrowDownIcon,
@@ -15,6 +15,8 @@ import {
   Surface,
   Tooltip
 } from '@vezham/react-v3'
+
+import { useToolbarAction } from '@vx/react/toolbar-actions'
 
 import { copyRecordValue } from '@pages/_shared/clipboard'
 import { PageDateRangeDropdown } from '@pages/_shared/date-range-dropdown'
@@ -187,14 +189,9 @@ const useOperationsTableModel = (config: OperationPageConfig) => {
     goToRowAt
   )
 
-  useEffect(() => {
-    const eventName = `operations:${config.key}:create`
-    const onCreate = () => openDrawer('create')
-
-    window.addEventListener(eventName, onCreate)
-
-    return () => window.removeEventListener(eventName, onCreate)
-  }, [config.key, openDrawer])
+  useToolbarAction('create', () => openDrawer('create'), {
+    pageKey: config.key
+  })
 
   useRecordTableInteractions({
     activeRowId: state.activeRowId,

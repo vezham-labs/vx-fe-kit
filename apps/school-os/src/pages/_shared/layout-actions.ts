@@ -1,6 +1,5 @@
-import { toast } from '@vezham/react-v3'
-
 import { type NavigationAction, getNavigationToolbar } from '@vx/react'
+import type { ToolbarActionEvent } from '@vx/react/toolbar-actions'
 
 import { navigationItems } from '@generated/navigation'
 import type { ActionItem } from '@pages/academic/layout/types'
@@ -22,23 +21,17 @@ export const defaultLeftActions: ActionItem[] = [
 
 export const getLayoutRightActions = (
   pathname: string,
-  prefix: string,
-  pageKey: string
+  pageKey: string,
+  emit: (event: ToolbarActionEvent) => boolean
 ): ActionItem[] => {
   const toolbar = getNavigationToolbar(navigationItems, pathname)
   const bindAction = (action: NavigationAction): ActionItem => ({
     ...action,
     kind: 'menu',
     children: action.children?.map(bindAction),
-    onAction:
-      action.key === 'print'
-        ? () => window.print()
-        : action.key === 'create'
-          ? () =>
-              window.dispatchEvent(
-                new CustomEvent(`${prefix}:${pageKey}:create`)
-              )
-          : undefined
+    onAction: () => {
+      emit({ actionKey: action.key, pageKey, pathname })
+    }
   })
   const actions: ActionItem[] = []
   if (toolbar.search)
@@ -56,9 +49,8 @@ export const getLayoutRightActions = (
       label: 'Sync',
       icon: 'vx:refresh',
       kind: 'sync',
-      // vx-bot/TODO: Replace this notice with server synchronization.
       onAction: () => {
-        toast.info('Server sync is not implemented yet.')
+        emit({ actionKey: 'sync', pageKey, pathname })
       }
     })
   if (toolbar.primaryAction)

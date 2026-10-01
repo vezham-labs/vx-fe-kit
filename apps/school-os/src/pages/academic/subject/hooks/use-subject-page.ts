@@ -37,7 +37,7 @@ const config: AcademicEntityPageConfig<
   FilterDraft
 > = {
   columnKeys: subjectColumnOptions.map(column => column.key),
-  createEventName: 'academic:subject:create',
+  pageKey: 'subject',
   emptyFilters: { name: null, code: null, type: null, status: null },
   emptyForm,
   filterKeys: ['name', 'code', 'type', 'status'],

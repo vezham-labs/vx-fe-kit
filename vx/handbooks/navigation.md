@@ -55,6 +55,33 @@ state, permissions, API calls, and navigation behavior. Do not put executable
 callbacks, React components, or platform-specific implementation in the YAML;
 native consumers can interpret the same configuration independently.
 
+## Action dispatch
+
+`AppLayout` provides an app-scoped toolbar dispatcher. Import its hooks from
+`@vx/react/toolbar-actions`. Toolbars emit `{ actionKey, pageKey, pathname }`;
+their adapters only prepare rendering and dispatch, without performing actions.
+Clicks and shortcuts use the same dispatch path. Search input remains controlled
+separately.
+
+Register a page handler where its state lives:
+
+```tsx
+const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+useToolbarAction('create', () => setIsDrawerOpen(true), {
+  pageKey: 'allclasses'
+})
+```
+
+Subscriptions stay registered across callback changes, while dispatch uses the
+latest committed callback. They re-register only when the action key, scope,
+or enabled state changes, and clean up on unmount. Dispatch checks only the
+handlers registered for that action key. A matching
+page or pathname scope takes precedence over an unscoped app default. Only one
+handler runs; the latest registration wins at equal specificity. An unhandled
+action returns `false` from `emit`. Separate providers isolate app instances.
+Layouts register default Sync and Print handlers; pages register Create handlers.
+Standalone consumers can mount `ToolbarActionsProvider` without `AppLayout`.
+
 `sync` expresses the intent to synchronize data with the server. Its button and
 tooltip say Sync. App handlers currently show “Server sync is not implemented
 yet.” without reloading or invalidating the route. Replace the notice with
@@ -94,8 +121,8 @@ controlled `search`, `menuActions` (with optional submenu children), and
 `primaryAction` to `SectionLayout`. Labels come from navigation configuration;
 apps bind callbacks. Pass `sync` to control Sync and its shortcut.
 On small screens, tabs move below the controls, Search opens a popover, and the
-primary action keeps its icon while hiding its label. Demo actions emit
-`demo:toolbar-action` events; domain content stays in the app's route outlet.
+primary action keeps its icon while hiding its label. Demo actions use the same
+scoped dispatcher; domain content stays in the app's route outlet.
 
 Short mobile tab groups use a centered content-width pill; long groups scroll
 within the available header width. Keep row spacing outside the pill. A new

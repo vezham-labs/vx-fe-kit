@@ -46,7 +46,7 @@ const config: AcademicEntityPageConfig<
 > = {
   columnKeys: attendanceColumnOptions.map(column => column.key),
   clearActiveRowOnClose: false,
-  createEventName: 'academic:exam-attendance:create',
+  pageKey: 'exam-attendance',
   dateDropdownOpenChange: 'direct',
   drawerClearSelectionOnClose: false,
   emptyFilters: {

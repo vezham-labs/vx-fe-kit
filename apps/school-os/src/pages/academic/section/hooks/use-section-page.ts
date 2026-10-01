@@ -38,7 +38,7 @@ const config: AcademicEntityPageConfig<
 > = {
   columnKeys: sectionColumnOptions.map(column => column.key),
   clearActiveRowOnClose: false,
-  createEventName: 'academic:section:create',
+  pageKey: 'section',
   emptyFilters: { section: null, status: null },
   emptyForm,
   filterKeys: ['section', 'status'],
