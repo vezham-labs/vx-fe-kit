@@ -12,7 +12,10 @@ import {
 
 import { cn } from '@vezham/react-v3'
 
-import { useWorkspaceNavigation } from '@vx/react/workspace-navigation'
+import {
+  useSidebarShortcut,
+  useWorkspaceNavigation
+} from '@vx/react/workspace-navigation'
 
 import { defaultLeftActions } from '@pages/_shared/layout-actions'
 
@@ -197,7 +200,7 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
       if (window.matchMedia('(min-width: 768px)').matches) {
         toggleNavigation()
       } else {
-        setIsSidebarOpen(true)
+        setIsSidebarOpen(open => !open)
       }
     }, [setIsSidebarOpen, toggleNavigation])
 
@@ -229,7 +232,7 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
       enabled: Boolean(refreshAction?.onAction)
     })
 
-    useHotkey('Meta+S', () => onToggleSidebar())
+    useSidebarShortcut(onToggleSidebar)
 
     const onSidebarAction = (key: Key, onNavigate?: () => void) => {
       const item = findSidebarItem(layoutSidebarItems, String(key))
@@ -539,9 +542,7 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
       toggleButtonProps: {
         variant: 'ghost' as const,
         className: slots.sidebar_toggle({ class: classNames?.sidebar_toggle }),
-        'aria-label': isSidebarCollapsed
-          ? `Expand ${layoutConfig.navigationLabel}`
-          : `Collapse ${layoutConfig.navigationLabel}`,
+        'aria-label': isSidebarCollapsed ? 'Show Sidebar' : 'Hide Sidebar',
         onPress: onToggleSidebar
       },
       onAction: key => onSidebarAction(key)
@@ -576,7 +577,7 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
         ),
         sidebarToggle: {
           key: 'sidebar-toggle',
-          label: isSidebarCollapsed ? 'Show navigation' : 'Hide navigation',
+          label: isSidebarCollapsed ? 'Show Sidebar' : 'Hide Sidebar',
           icon: isSidebarCollapsed
             ? 'vx:panel-left-open'
             : 'vx:panel-left-close',
@@ -602,7 +603,7 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
         },
         closeAction: {
           key: 'close-sidebar',
-          label: `Close ${layoutConfig.navigationLabel}`,
+          label: 'Hide Sidebar',
           icon: 'vx:close',
           onAction: () => setIsSidebarOpen(false)
         },

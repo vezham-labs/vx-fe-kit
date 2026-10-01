@@ -17,7 +17,11 @@ import {
 
 import { AppIcon } from '../../app-icon'
 import { useCommand } from '../../command'
-import { ShortcutKey } from '../../shortcut-key'
+import {
+  ShortcutButton,
+  ShortcutKey,
+  ShortcutTooltipLabel
+} from '../../shortcut-key'
 import { BookmarksTrigger } from './bookmarks'
 import { DiscTrigger } from './disc'
 import { HeaderActionsProps } from './types'
@@ -95,7 +99,8 @@ const Header = ({
         <Tooltip delay={0}>
           <Tooltip.Trigger>
             <Button
-              aria-label="Expand workspace navigation"
+              aria-label="Show Sidebar"
+              aria-keyshortcuts="Meta+S"
               isIconOnly
               size="sm"
               variant="ghost"
@@ -108,7 +113,9 @@ const Header = ({
               />
             </Button>
           </Tooltip.Trigger>
-          <Tooltip.Content placement="right">Expand navigation</Tooltip.Content>
+          <Tooltip.Content placement="right">
+            <ShortcutTooltipLabel label="Show Sidebar" shortcut="⌘ S" />
+          </Tooltip.Content>
         </Tooltip>
 
         <Tooltip delay={0}>
@@ -123,7 +130,9 @@ const Header = ({
               <MagnifierIcon size={16} className="size-4" aria-hidden="true" />
             </Button>
           </Tooltip.Trigger>
-          <Tooltip.Content placement="right">Search (Ctrl/⌘ K)</Tooltip.Content>
+          <Tooltip.Content placement="right">
+            <ShortcutTooltipLabel label="Search" shortcut="Mod K" />
+          </Tooltip.Content>
         </Tooltip>
       </Surface>
     )
@@ -178,7 +187,7 @@ const Header = ({
             </Tooltip.Trigger>
 
             <Tooltip.Content placement="right">
-              Search (Ctrl/⌘ K)
+              <ShortcutTooltipLabel label="Search" shortcut="Mod K" />
             </Tooltip.Content>
           </Tooltip>
         )}
@@ -230,8 +239,10 @@ const HeaderApplicationMenuContent = ({
             Back to home
           </Button>
           {onCollapseNavigation && (
-            <Button
-              aria-label="Collapse Home navigation"
+            <ShortcutButton
+              label="Hide Sidebar"
+              shortcut="⌘ S"
+              aria-keyshortcuts="Meta+S"
               isIconOnly
               variant="ghost"
               className="shrink-0"
@@ -240,7 +251,7 @@ const HeaderApplicationMenuContent = ({
                 onCollapseNavigation()
               }}>
               <SidebarMinimalisticIcon size={20} aria-hidden="true" />
-            </Button>
+            </ShortcutButton>
           )}
         </div>
       )}

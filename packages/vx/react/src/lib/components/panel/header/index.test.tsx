@@ -21,10 +21,7 @@ describe('Shared compact navigation header', () => {
       <Header compact users={{ id: '1', name: 'School' }} />
     )
 
-    for (const name of [
-      'Expand workspace navigation',
-      'Open command palette'
-    ]) {
+    for (const name of ['Show Sidebar', 'Open command palette']) {
       const button = screen.getByRole('button', { name })
       expect(button).toHaveClass(
         'button--icon-only',
@@ -57,9 +54,7 @@ describe('Shared compact navigation header', () => {
         onOpenNavigation={actions.expand}
       />
     )
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Expand workspace navigation' })
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'Show Sidebar' }))
     fireEvent.click(
       screen.getByRole('button', { name: 'Open command palette' })
     )

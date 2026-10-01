@@ -41,5 +41,33 @@ header controls through `toolbar`. Render an `Outlet` as its children so each
 app owns the content pages and their toolbars independently of the navigation
 layout. Keep the layout on a parent route so child navigation preserves it.
 
+When a section has no tabs, leave the toolbar title area empty. The section
+title remains available for accessible tab labels and the mobile sidebar dialog.
+
+Section headers follow the School OS toolbar: sidebar/history controls and tabs
+on the left; Search, Refresh, More, and the primary action on the right. Pass
+controlled `search`, `menuActions` (with optional submenu children), and
+`primaryAction` to `SectionLayout`. Apps own the action labels and callbacks.
+On small screens, tabs move below the controls, Search opens a popover, and the
+primary action keeps its icon while hiding its label. Demo actions emit
+`demo:toolbar-action` events; domain content stays in the app's route outlet.
+
+Short mobile tab groups use a centered content-width pill; long groups scroll
+within the available header width. Keep row spacing outside the pill. A new
+tab collection remounts the Tabs root so its indicator measures the new labels;
+navigation within that collection preserves the root and its transition.
+
 Keep navigation-review demos focused on the navigation and toolbar. Their page
 outlets display only the current URL; domain page content is added separately.
+
+## Sidebar controls
+
+Use macOS menu terminology: **Show Sidebar** and **Hide Sidebar**. Sidebar
+controls show a shortcut tooltip and use ⌘S. Section toolbars also support ⌘←
+for Back, ⌘→ for Forward, and ⌘R for Refresh. Register sidebar actions with
+`useSidebarShortcut` so the active layout handles the shortcut once, including
+the mobile drawer and the independent Home sidebar.
+
+For shortcuts that accept either platform modifier, pass `Mod` to `ShortcutKey`
+or `ShortcutTooltipLabel` (for example, `Mod K`). It displays ⌘ on macOS and
+Ctrl on Windows/Linux. Keep explicit modifiers for bindings that require them.

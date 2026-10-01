@@ -1,16 +1,26 @@
+import { useHotkey } from '@tanstack/react-hotkeys'
 import {
   Link,
   useLocation,
   useNavigate,
   useRouter
 } from '@tanstack/react-router'
-import { type ReactNode, useState } from 'react'
+import { type ReactNode, useId, useRef, useState } from 'react'
 
-import { Button, Drawer, Surface, Tabs } from '@vezham/react-v3'
+import { Drawer, Surface, Tabs } from '@vezham/react-v3'
 
 import { AppIcon } from '../../components/app-icon'
-import { useWorkspaceNavigation } from '../../components/workspace-navigation'
+import { ShortcutButton } from '../../components/shortcut-key'
+import {
+  useSidebarShortcut,
+  useWorkspaceNavigation
+} from '../../components/workspace-navigation'
 import type { AppNavigationItem } from '../../navigation'
+import {
+  type SectionAction,
+  type SectionSearch,
+  SectionToolbar
+} from './toolbar'
 
 export type SectionLayoutProps = {
   title: string
@@ -18,6 +28,9 @@ export type SectionLayoutProps = {
   sidebarItems?: AppNavigationItem[]
   tabs: AppNavigationItem[]
   toolbar?: ReactNode
+  search?: SectionSearch
+  menuActions?: SectionAction[]
+  primaryAction?: SectionAction
   children: ReactNode
 }
 
@@ -30,6 +43,9 @@ const SectionLayout = ({
   sidebarItems = [],
   tabs,
   toolbar,
+  search,
+  menuActions = [],
+  primaryAction,
   children
 }: SectionLayoutProps) => {
   const { pathname } = useLocation()
@@ -37,9 +53,34 @@ const SectionLayout = ({
   const router = useRouter()
   const { isNavigationCollapsed, toggleNavigation } = useWorkspaceNavigation()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const searchInput = useRef<HTMLInputElement>(null)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  useHotkey(
+    'Mod+K',
+    () => {
+      if (window.matchMedia('(min-width: 768px)').matches)
+        searchInput.current?.focus()
+      else setIsSearchOpen(true)
+    },
+    { enabled: Boolean(search) }
+  )
   const selectedTab =
     tabs.find(tab => matchesPath(pathname, tab.href)) ?? tabs[0]
   const hasSidebar = sidebarItems.length > 0
+  const sidebarId = useId()
+  useSidebarShortcut(() => {
+    if (hasSidebar && !window.matchMedia('(min-width: 768px)').matches) {
+      setIsDrawerOpen(open => !open)
+    } else {
+      toggleNavigation()
+    }
+  })
+  useHotkey('Meta+ArrowLeft', () => router.history.back())
+  useHotkey('Meta+ArrowRight', () => router.history.forward())
+  useHotkey('Meta+R', () => {
+    void router.invalidate()
+  })
   const sidebar = (
     <nav aria-label={navigationLabel} className="space-y-1 p-2">
       {sidebarItems.map(item => {
@@ -65,79 +106,78 @@ const SectionLayout = ({
 
   const content = (
     <>
-      <header className="flex shrink-0 flex-wrap items-center gap-1 px-3 py-2 sm:px-4">
-        <Button
-          isIconOnly
-          variant="ghost"
-          size="sm"
-          className={hasSidebar ? 'hidden md:flex' : undefined}
-          aria-label={
-            isNavigationCollapsed
-              ? 'Expand section navigation'
-              : 'Collapse section navigation'
-          }
-          aria-expanded={!isNavigationCollapsed}
-          onPress={toggleNavigation}>
-          <AppIcon icon="vx:sidebar" size={18} aria-hidden="true" />
-        </Button>
-        {hasSidebar && (
-          <Button
-            isIconOnly
-            variant="ghost"
-            size="sm"
-            className="md:hidden"
-            aria-label="Open section sidebar"
-            aria-expanded={isDrawerOpen}
-            onPress={() => setIsDrawerOpen(true)}>
-            <AppIcon icon="vx:sidebar" size={18} aria-hidden="true" />
-          </Button>
-        )}
-        <Button
-          isIconOnly
-          variant="ghost"
-          size="sm"
-          aria-label="Back"
-          onPress={() => router.history.back()}>
-          <AppIcon icon="vx:arrow-left" size={18} aria-hidden="true" />
-        </Button>
-        <Button
-          isIconOnly
-          variant="ghost"
-          size="sm"
-          aria-label="Forward"
-          onPress={() => router.history.forward()}>
-          <AppIcon icon="vx:arrow-right" size={18} aria-hidden="true" />
-        </Button>
-        {tabs.length > 0 && (
-          <Tabs.ListContainer className="min-w-0 flex-1">
-            <Tabs.List aria-label={`${title} tabs`}>
-              {tabs.map(tab => (
-                <Tabs.Tab key={tab.key} id={tab.key}>
-                  {tab.title}
-                  <Tabs.Indicator />
-                </Tabs.Tab>
-              ))}
-            </Tabs.List>
-          </Tabs.ListContainer>
-        )}
-        {tabs.length === 0 && (
-          <h2 className="min-w-0 flex-1 px-2 font-medium">{title}</h2>
-        )}
-        {toolbar}
-        <Button
-          isIconOnly
-          variant="ghost"
-          size="sm"
-          aria-label="Refresh section"
-          onPress={() => {
-            void router.invalidate()
-          }}>
-          <AppIcon icon="vx:refresh" size={18} aria-hidden="true" />
-        </Button>
-      </header>
+      <SectionToolbar
+        title={title}
+        tabs={tabs}
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={setIsMenuOpen}
+        search={
+          search
+            ? {
+                ...search,
+                inputRef: searchInput,
+                isOpen: isSearchOpen,
+                onOpenChange: setIsSearchOpen
+              }
+            : undefined
+        }
+        menuActions={menuActions}
+        primaryAction={primaryAction}
+        toolbar={toolbar}
+        onRefresh={() => {
+          void router.invalidate()
+        }}
+        navigationControls={
+          <>
+            <ShortcutButton
+              className={
+                hasSidebar
+                  ? 'hidden h-9 w-9 min-w-9 p-0 md:flex'
+                  : 'h-9 w-9 min-w-9 p-0'
+              }
+              label={isNavigationCollapsed ? 'Show Sidebar' : 'Hide Sidebar'}
+              shortcut="⌘ S"
+              aria-keyshortcuts="Meta+S"
+              aria-controls={sidebarId}
+              aria-expanded={!isNavigationCollapsed}
+              onPress={toggleNavigation}>
+              <AppIcon icon="vx:sidebar" size={18} aria-hidden="true" />
+            </ShortcutButton>
+            {hasSidebar && (
+              <ShortcutButton
+                className="h-9 w-9 min-w-9 p-0 md:hidden"
+                label={isDrawerOpen ? 'Hide Sidebar' : 'Show Sidebar'}
+                shortcut="⌘ S"
+                aria-keyshortcuts="Meta+S"
+                aria-expanded={isDrawerOpen}
+                onPress={() => setIsDrawerOpen(open => !open)}>
+                <AppIcon icon="vx:sidebar" size={18} aria-hidden="true" />
+              </ShortcutButton>
+            )}
+            <ShortcutButton
+              className="h-9 w-9 min-w-9 p-0"
+              label="Back"
+              shortcut="⌘ ←"
+              aria-keyshortcuts="Meta+ArrowLeft"
+              onPress={() => router.history.back()}>
+              <AppIcon icon="vx:arrow-left" size={18} aria-hidden="true" />
+            </ShortcutButton>
+            <ShortcutButton
+              className="h-9 w-9 min-w-9 p-0"
+              label="Forward"
+              shortcut="⌘ →"
+              aria-keyshortcuts="Meta+ArrowRight"
+              onPress={() => router.history.forward()}>
+              <AppIcon icon="vx:arrow-right" size={18} aria-hidden="true" />
+            </ShortcutButton>
+          </>
+        }
+      />
       <div className="flex min-h-0 flex-1">
         {hasSidebar && !isNavigationCollapsed && (
-          <aside className="hidden w-56 shrink-0 overflow-y-auto md:block">
+          <aside
+            id={sidebarId}
+            className="hidden w-56 shrink-0 overflow-y-auto md:block">
             {sidebar}
           </aside>
         )}
@@ -159,6 +199,8 @@ const SectionLayout = ({
     <div className="bg-background flex h-full min-h-0 min-w-0 flex-1 flex-col">
       {tabs.length > 0 ? (
         <Tabs
+          // vx-bot/NOTE: Each section owns its tab collection and indicator measurements.
+          key={JSON.stringify(tabs.map(tab => tab.key))}
           selectedKey={selectedTab?.key}
           onSelectionChange={key => {
             const tab = tabs.find(item => item.key === key)
@@ -177,7 +219,7 @@ const SectionLayout = ({
             <Drawer.Dialog className="bg-background w-[min(20rem,calc(100vw-2rem))]">
               <Drawer.Header>
                 <Drawer.Heading>{title}</Drawer.Heading>
-                <Drawer.CloseTrigger />
+                <Drawer.CloseTrigger aria-label="Hide Sidebar" />
               </Drawer.Header>
               <Drawer.Body>{sidebar}</Drawer.Body>
             </Drawer.Dialog>
@@ -189,3 +231,4 @@ const SectionLayout = ({
 }
 
 export { SectionLayout }
+export type { SectionAction, SectionSearch } from './toolbar'

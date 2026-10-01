@@ -17,7 +17,10 @@ import {
   useInfoPanel
 } from '../../components/panel/info-panel'
 import { Menu } from '../../components/panel/menu'
-import { useWorkspaceNavigation } from '../../components/workspace-navigation'
+import {
+  useSidebarShortcut,
+  useWorkspaceNavigation
+} from '../../components/workspace-navigation'
 import type { AppNavigationItem } from '../../navigation'
 import { getSelectedMenuKey } from '../../navigation'
 import { useUser } from '../../store/users/useUserStore'
@@ -55,6 +58,11 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
     setNotificationsOpen(false)
     setControlsOpen(false)
   }
+
+  useSidebarShortcut(() => {
+    if (isHomeCollapsed) setIsHomeCollapsed(false)
+    else collapseHomeNavigation()
+  }, isHome)
 
   const selectedKey = getSelectedMenuKey(location.pathname, items)
 

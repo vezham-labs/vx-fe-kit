@@ -22,6 +22,7 @@ const CommandProvider = ({
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
+        event.defaultPrevented ||
         event.key.toLowerCase() !== 'k' ||
         (!event.metaKey && !event.ctrlKey)
       ) {

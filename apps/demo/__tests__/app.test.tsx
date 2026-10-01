@@ -89,7 +89,9 @@ describe('App', () => {
     renderApp('/workspace/projects/overview')
     await screen.findByRole('navigation', { name: 'Workspace sections' })
     fireEvent.click(
-      screen.getByRole('button', { name: 'Collapse section navigation' })
+      screen
+        .getAllByRole('button', { name: 'Hide Sidebar' })
+        .find(button => button.hasAttribute('aria-controls'))!
     )
     expect(
       screen.queryByRole('navigation', { name: 'Workspace sections' })
@@ -104,7 +106,9 @@ describe('App', () => {
       screen.queryByRole('navigation', { name: 'Workspace sections' })
     ).toBeNull()
     fireEvent.click(
-      screen.getByRole('button', { name: 'Expand section navigation' })
+      screen
+        .getAllByRole('button', { name: 'Show Sidebar' })
+        .find(button => button.hasAttribute('aria-controls'))!
     )
     expect(
       screen.getByRole('navigation', { name: 'Workspace sections' })
@@ -114,7 +118,11 @@ describe('App', () => {
   it('opens section navigation in a drawer and closes it after selecting a section', async () => {
     renderApp('/workspace/projects/overview')
     fireEvent.click(
-      await screen.findByRole('button', { name: 'Open section sidebar' })
+      (await screen.findAllByRole('button', { name: 'Show Sidebar' })).find(
+        button =>
+          button.hasAttribute('aria-expanded') &&
+          !button.hasAttribute('aria-controls')
+      )!
     )
     const drawer = await screen.findByRole('dialog', { name: 'Projects' })
     fireEvent.click(within(drawer).getByRole('link', { name: 'Team' }))

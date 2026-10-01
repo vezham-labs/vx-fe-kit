@@ -1,16 +1,19 @@
 import { Outlet, useLocation } from '@tanstack/react-router'
-
-import { SearchField } from '@vezham/react-v3'
+import { useState } from 'react'
 
 import { SectionLayout } from '@vx/react/layouts/section'
 
+import { getToolbarActions } from './actions'
 import { type MenuKey, getNavigationPage } from './navigation'
 
 type Props = { menuKey: MenuKey }
 
 const NavigationDemoLayout = ({ menuKey }: Props) => {
   const { pathname } = useLocation()
-  const { items, section, tabs } = getNavigationPage(menuKey, pathname)
+  const { items, section, page, tabs } = getNavigationPage(menuKey, pathname)
+
+  const [search, setSearch] = useState('')
+  const actions = getToolbarActions(page)
 
   return (
     <SectionLayout
@@ -20,17 +23,8 @@ const NavigationDemoLayout = ({ menuKey }: Props) => {
       }
       sidebarItems={menuKey !== 'tabs' ? items : undefined}
       tabs={tabs}
-      toolbar={
-        <SearchField
-          aria-label="Search content"
-          className="hidden w-56 lg:block">
-          <SearchField.Group>
-            <SearchField.SearchIcon />
-            <SearchField.Input placeholder="Search" />
-            <SearchField.ClearButton />
-          </SearchField.Group>
-        </SearchField>
-      }>
+      {...actions}
+      search={{ value: search, onChange: setSearch }}>
       <Outlet />
     </SectionLayout>
   )

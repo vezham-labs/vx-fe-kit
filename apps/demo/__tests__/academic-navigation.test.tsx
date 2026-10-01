@@ -59,6 +59,20 @@ describe('Academic navigation', () => {
         '/academic/examinations/exam-results'
       )
     )
+    expect(
+      screen
+        .getByRole('tab', { name: 'Exam Results' })
+        .getAttribute('aria-selected')
+    ).toBe('true')
+
+    fireEvent.click(
+      within(
+        screen.getByRole('navigation', { name: 'Academic sections' })
+      ).getByRole('link', { name: 'Classes' })
+    )
+    const allClasses = await screen.findByRole('tab', { name: 'All Classes' })
+    expect(allClasses.getAttribute('aria-selected')).toBe('true')
+    expect(screen.queryByRole('tab', { name: 'Exam Results' })).toBeNull()
   })
 
   it('loads an Academic tab directly', async () => {
@@ -67,6 +81,25 @@ describe('Academic navigation', () => {
     expect(grades.getAttribute('aria-selected')).toBe('true')
     expect(screen.getByRole('tabpanel').textContent).toContain(
       '/academic/examinations/grades'
+    )
+  })
+
+  it('shows and hides the mobile sidebar with its shortcut', async () => {
+    renderApp('/academic/classes/allclasses')
+    await screen.findByRole('tab', { name: 'All Classes' })
+    const toggle = () => {
+      fireEvent.keyDown(document, { key: 's', code: 'KeyS', metaKey: true })
+      fireEvent.keyUp(document, { key: 's', code: 'KeyS', metaKey: true })
+    }
+
+    toggle()
+    const drawer = await screen.findByRole('dialog', { name: 'Classes' })
+    expect(
+      within(drawer).getByRole('button', { name: 'Hide Sidebar' })
+    ).toBeTruthy()
+    toggle()
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog', { name: 'Classes' })).toBeNull()
     )
   })
 })

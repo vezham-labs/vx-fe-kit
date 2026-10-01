@@ -1,9 +1,12 @@
+import { useHotkey } from '@tanstack/react-hotkeys'
 import {
   type ReactNode,
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
+  useRef,
   useState
 } from 'react'
 
@@ -15,6 +18,7 @@ type WorkspaceNavigationContextValue = {
   collapseNavigation: () => void
   expandNavigation: () => void
   toggleNavigation: () => void
+  registerSidebarShortcut: (handler: () => void) => () => void
 }
 
 const WorkspaceNavigationContext =
@@ -29,6 +33,14 @@ const WorkspaceNavigationProvider = ({ children }: { children: ReactNode }) => {
   const [isNavigationCollapsed, setIsNavigationCollapsed] = useState(false)
   const { closeInfoPanel } = useInfoPanel()
   const { closeCommand } = useCommand()
+  const sidebarShortcutHandlers = useRef(new Set<() => void>())
+
+  const registerSidebarShortcut = useCallback((handler: () => void) => {
+    sidebarShortcutHandlers.current.add(handler)
+    return () => {
+      sidebarShortcutHandlers.current.delete(handler)
+    }
+  }, [])
 
   const collapseNavigation = useCallback(() => {
     setIsNavigationCollapsed(true)
@@ -46,18 +58,26 @@ const WorkspaceNavigationProvider = ({ children }: { children: ReactNode }) => {
     closeCommand()
   }, [closeCommand, closeInfoPanel])
 
+  useHotkey('Meta+S', () => {
+    const handlers = [...sidebarShortcutHandlers.current]
+    const handler = handlers[handlers.length - 1] ?? toggleNavigation
+    handler()
+  })
+
   const value = useMemo(
     () => ({
       isNavigationCollapsed,
       collapseNavigation,
       expandNavigation,
-      toggleNavigation
+      toggleNavigation,
+      registerSidebarShortcut
     }),
     [
       collapseNavigation,
       expandNavigation,
       isNavigationCollapsed,
-      toggleNavigation
+      toggleNavigation,
+      registerSidebarShortcut
     ]
   )
 
@@ -80,4 +100,12 @@ export const useWorkspaceNavigation = () => {
   }
 
   return context
+}
+
+export const useSidebarShortcut = (handler: () => void, enabled = true) => {
+  const { registerSidebarShortcut } = useWorkspaceNavigation()
+  useEffect(() => {
+    if (enabled) return registerSidebarShortcut(handler)
+    return undefined
+  }, [enabled, handler, registerSidebarShortcut])
 }

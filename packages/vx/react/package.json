@@ -53,6 +53,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "dependencies": {
+    "@tanstack/react-hotkeys": "catalog:",
     "framer-motion": "catalog:",
     "react-aria-components": "catalog:"
   }

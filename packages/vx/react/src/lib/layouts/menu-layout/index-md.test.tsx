@@ -26,7 +26,8 @@ vi.mock('@tanstack/react-router', () => ({
   useLocation: () => ({ pathname: state.pathname })
 }))
 vi.mock('../../components/workspace-navigation', () => ({
-  useWorkspaceNavigation: () => state
+  useWorkspaceNavigation: () => state,
+  useSidebarShortcut: vi.fn()
 }))
 vi.mock('../../components/command', () => ({
   useCommand: () => state
@@ -47,18 +48,14 @@ vi.mock('../../components/panel/header', () => ({
     }: HeaderActionsProps) =>
       compact ? (
         <div>
-          <button onClick={onOpenNavigation}>
-            Expand workspace navigation
-          </button>
+          <button onClick={onOpenNavigation}>Show Sidebar</button>
           <button onClick={state.openCommand}>Open command palette</button>
         </div>
       ) : (
         <div>
           Application menu
           {onCollapseNavigation && (
-            <button onClick={onCollapseNavigation}>
-              Collapse Home navigation
-            </button>
+            <button onClick={onCollapseNavigation}>Hide Sidebar</button>
           )}
         </div>
       )
@@ -103,54 +100,40 @@ describe('Home desktop navigation', () => {
 
   it('closes auxiliary panels and restores the rail from the Home bubble', () => {
     render(<MenuMD items={items} />)
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Collapse Home navigation' })
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'Hide Sidebar' }))
 
     expect(state.closeInfoPanel).toHaveBeenCalledOnce()
     expect(state.closeCommand).toHaveBeenCalledOnce()
     expect(screen.queryByText('Application menu')).toBeNull()
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Expand workspace navigation' })
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'Show Sidebar' }))
     expect(screen.getByText('Application menu')).toBeTruthy()
     expect(state.expandNavigation).not.toHaveBeenCalled()
   })
 
   it('opens search from the bubble without expanding the rail', () => {
     render(<MenuMD items={items} />)
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Collapse Home navigation' })
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'Hide Sidebar' }))
     fireEvent.click(
       screen.getByRole('button', { name: 'Open command palette' })
     )
 
     expect(state.openCommand).toHaveBeenCalledOnce()
-    expect(
-      screen.getByRole('button', { name: 'Expand workspace navigation' })
-    ).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Show Sidebar' })).toBeTruthy()
   })
 
   it('keeps Home collapsed independently when navigating to a module and back', () => {
     const { rerender } = render(<MenuMD items={items} />)
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Collapse Home navigation' })
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'Hide Sidebar' }))
 
     state.pathname = '/academic'
     rerender(<MenuMD items={items} />)
     expect(screen.getByText('Application menu')).toBeTruthy()
-    expect(
-      screen.queryByRole('button', { name: 'Collapse Home navigation' })
-    ).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Hide Sidebar' })).toBeNull()
 
     state.pathname = '/'
     rerender(<MenuMD items={items} />)
-    expect(
-      screen.getByRole('button', { name: 'Expand workspace navigation' })
-    ).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Show Sidebar' })).toBeTruthy()
   })
 
   it('preserves the module bubble and its existing expand action', () => {
@@ -160,9 +143,7 @@ describe('Home desktop navigation', () => {
 
     state.pathname = '/reports/grade'
     rerender(<MenuMD items={items} />)
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Expand workspace navigation' })
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'Show Sidebar' }))
     expect(state.expandNavigation).toHaveBeenCalledOnce()
     expect(screen.queryByRole('group', { name: 'Home navigation' })).toBeNull()
   })
@@ -170,9 +151,7 @@ describe('Home desktop navigation', () => {
   it('reuses the compact application header with the same app avatar', () => {
     render(<MenuMD items={items} />)
     const expandedUsers = vi.mocked(Header).mock.calls[0][0].users
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Collapse Home navigation' })
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'Hide Sidebar' }))
 
     expect(screen.getByRole('group', { name: 'Home navigation' })).toBeTruthy()
     expect(vi.mocked(Header).mock.lastCall?.[0]).toEqual(
@@ -185,16 +164,12 @@ describe('Home desktop navigation', () => {
     const rail = container.querySelector('[data-vx="menu-layout"]')
     expect(rail).toHaveClass('w-[106px]')
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Collapse Home navigation' })
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'Hide Sidebar' }))
     expect(rail).toHaveClass('w-[106px]', 'p-0', 'border-0')
     expect(rail).not.toHaveClass('w-0')
     expect(rail).toBeEmptyDOMElement()
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Expand workspace navigation' })
-    )
+    fireEvent.click(screen.getByRole('button', { name: 'Show Sidebar' }))
     expect(rail).toHaveClass('w-[106px]')
 
     state.pathname = '/academic'
