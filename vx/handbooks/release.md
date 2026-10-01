@@ -41,7 +41,7 @@ Main apps keep these files in sync:
 
 ```text
 <apps-category>/<app>/package.json
-<apps-category>/<app>/vx.app.json
+<apps-category>/<app>/vx.app.yaml
 <apps-category>/<app>/.env
 ```
 
@@ -59,10 +59,10 @@ version action:
 That action extends Nx's JavaScript release behavior:
 
 - Nx updates `package.json`.
-- Vx additionally updates `vx.app.json` at `core.version` when the project
+- Vx additionally updates `vx.app.yaml` at `core.version` when the project
   has a Vx config file.
 - `metadata:generate` then syncs `.env` keys such as `V_APP_VER` from
-  `vx.app.json`.
+  `vx.app.yaml`.
 
 ## Release Commands
 

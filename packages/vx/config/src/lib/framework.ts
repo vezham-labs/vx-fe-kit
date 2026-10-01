@@ -9,6 +9,6 @@ export const validateFramework = (value: unknown): Framework => {
   )
     return value
   throw new Error(
-    'vx.app.json framework must be vite, tanstack, tanstack-docs, or next'
+    'vx.app.yaml framework must be vite, tanstack, tanstack-docs, or next'
   )
 }

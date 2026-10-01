@@ -1,5 +1,0 @@
-{
-  "$schema": "../../vx/schemas/vx.deploy.json",
-  "preset": "start-spa",
-  "providers": ["firebase"]
-}

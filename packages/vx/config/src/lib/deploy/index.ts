@@ -1,6 +1,7 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 
+import { readYamlConfig } from '../yaml-config.ts'
 import { getFirebaseDeployFile } from './firebase.ts'
 import type {
   DeployFile,
@@ -11,9 +12,6 @@ import type {
 import { getVercelDeployFile } from './vercel.ts'
 
 export type { GenerateDeployConfigOptions } from './types.ts'
-
-const readJson = <T>(file: string): T =>
-  JSON.parse(readFileSync(file, 'utf8')) as T
 
 const writeDeployFile = ({ path: file, content }: DeployFile) => {
   mkdirSync(path.dirname(file), { recursive: true })
@@ -38,10 +36,10 @@ const findWorkspaceRoot = (projectRoot: string) => {
   }
 }
 
-const loadJsonConfig = <T>(projectRoot: string, fileName: string) => {
+const loadYamlConfig = <T>(projectRoot: string, fileName: string) => {
   const configFile = path.resolve(projectRoot, fileName)
 
-  return existsSync(configFile) ? readJson<T>(configFile) : undefined
+  return existsSync(configFile) ? readYamlConfig<T>(configFile) : undefined
 }
 
 const getDeployFiles = (
@@ -73,10 +71,10 @@ export const generateDeployConfig = (
   options: GenerateDeployConfigOptions = {}
 ) => {
   const projectRoot = path.resolve(options.projectRoot ?? process.cwd())
-  const appConfig = loadJsonConfig<VxAppConfig>(projectRoot, 'vx.app.json')
-  const deployConfig = loadJsonConfig<VxDeployConfig>(
+  const appConfig = loadYamlConfig<VxAppConfig>(projectRoot, 'vx.app.yaml')
+  const deployConfig = loadYamlConfig<VxDeployConfig>(
     projectRoot,
-    'vx.deploy.json'
+    'vx.deploy.yaml'
   )
 
   if (!appConfig || !deployConfig) {

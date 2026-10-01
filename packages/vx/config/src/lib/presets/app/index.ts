@@ -11,6 +11,7 @@ import {
   getViteConfig
 } from '@vx/config/vite'
 
+import { readYamlConfig } from '../../yaml-config.ts'
 import { unique, walkFiles } from '../files.ts'
 import {
   expandFilesystemRoute,
@@ -249,8 +250,8 @@ export const getPrerenderPages = (
   projectRoot = process.cwd(),
   { routes: extraRoutes = [] }: PrerenderPagesOptions = {}
 ) => {
-  const configFile = path.join(projectRoot, 'vx.app.json')
-  const config = JSON.parse(fs.readFileSync(configFile, 'utf8')) as VxAppConfig
+  const configFile = path.join(projectRoot, 'vx.app.yaml')
+  const config = readYamlConfig<VxAppConfig>(configFile)
   const routes = [...(config.routes ?? []), ...extraRoutes]
   const routeEntries: RouteConfig[] = routes.map(normalizeRoute)
 

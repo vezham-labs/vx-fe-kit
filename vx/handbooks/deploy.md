@@ -1,6 +1,6 @@
 # Deployment
 
-Each deployable application owns `vx.app.json` and `vx.deploy.json`. The
+Each deployable application owns `vx.app.yaml` and `vx.deploy.yaml`. The
 deployment generator combines them into provider configuration under
 `vx/deploy/<provider>/<project-root>.json`.
 
@@ -30,13 +30,12 @@ file per provider.
 
 Firebase output includes the public directory, static cache headers, optional
 docs headers, route-derived API headers, redirects, and rewrites. Configure
-provider options in `vx.deploy.json` only when changing the generated defaults.
+provider options in `vx.deploy.yaml` only when changing the generated defaults.
 
-```json
-{
-  "preset": "spa",
-  "providers": ["firebase"]
-}
+```yaml
+preset: spa
+providers:
+  - firebase
 ```
 
 ## Vercel
@@ -45,27 +44,25 @@ Vercel output declares the framework. Configure the Vercel project with the
 application directory as its project root, then have CI place the generated
 file there as `vercel.json` before deployment.
 
-```json
-{
-  "preset": "next",
-  "providers": ["vercel"]
-}
+```yaml
+preset: next
+providers:
+  - vercel
 ```
 
 For TanStack Start SSR:
 
-```json
-{
-  "preset": "tanstack-start",
-  "providers": ["vercel"]
-}
+```yaml
+preset: tanstack-start
+providers:
+  - vercel
 ```
 
 For a static Vite SPA on both providers:
 
-```json
-{
-  "preset": "spa",
-  "providers": ["firebase", "vercel"]
-}
+```yaml
+preset: spa
+providers:
+  - firebase
+  - vercel
 ```

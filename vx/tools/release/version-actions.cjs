@@ -1,6 +1,6 @@
 const { join } = require('node:path')
 
-const { updateJson } = require('@nx/devkit')
+const { parseDocument } = require('yaml')
 const jsRelease = require('@nx/js/src/release/version-actions')
 
 const JsVersionActions = jsRelease.default ?? jsRelease
@@ -8,19 +8,16 @@ const JsVersionActions = jsRelease.default ?? jsRelease
 class VxVersionActions extends JsVersionActions {
   async updateProjectVersion(tree, newVersion) {
     const logMessages = await super.updateProjectVersion(tree, newVersion)
-    const vxConfigPath = join(this.projectGraphNode.data.root, 'vx.app.json')
+    const vxConfigPath = join(this.projectGraphNode.data.root, 'vx.app.yaml')
 
     if (!tree.exists(vxConfigPath)) {
       return logMessages
     }
 
-    updateJson(tree, vxConfigPath, json => ({
-      ...json,
-      core: {
-        ...json.core,
-        version: newVersion
-      }
-    }))
+    const document = parseDocument(tree.read(vxConfigPath, 'utf-8'))
+    if (document.errors.length) throw document.errors[0]
+    document.setIn(['core', 'version'], newVersion)
+    tree.write(vxConfigPath, document.toString())
 
     return [
       ...logMessages,

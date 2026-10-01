@@ -172,8 +172,9 @@
       "executor": "nx:run-commands",
       "cache": true,
       "inputs": [
-        "{projectRoot}/vx.app.json",
-        "{projectRoot}/vx.deploy.json",
+        "{projectRoot}/vx.app.yaml",
+        "{projectRoot}/vx.deploy.yaml",
+        "{workspaceRoot}/packages/vx/config/src/lib/yaml-config.ts",
         "{workspaceRoot}/packages/vx/config/src/lib/deploy/**/*"
       ],
       "outputs": [
@@ -197,7 +198,7 @@
       "executor": "nx:run-commands",
       "cache": false,
       "inputs": [
-        "{projectRoot}/vx.app.json",
+        "{projectRoot}/vx.app.yaml",
         "{projectRoot}/content/docs/**/*",
         "{projectRoot}/openapi.yaml",
         "{projectRoot}/openapi/**/*",
@@ -213,7 +214,7 @@
       "cache": true,
       "dependsOn": ["openapi:generate"],
       "inputs": [
-        "{projectRoot}/vx.app.json",
+        "{projectRoot}/vx.app.yaml",
         "{projectRoot}/content/**/*",
         "{projectRoot}/openapi.yaml",
         "{projectRoot}/openapi/**/*",
@@ -223,6 +224,7 @@
         "{projectRoot}/public/**/*",
         "!{projectRoot}/public/og/**/*",
         "{workspaceRoot}/packages/vx/config/src/lib/i18n.ts",
+        "{workspaceRoot}/packages/vx/config/src/lib/yaml-config.ts",
         {
           "externalDependencies": [
             "@vercel/og",

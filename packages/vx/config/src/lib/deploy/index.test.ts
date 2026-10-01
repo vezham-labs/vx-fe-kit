@@ -8,6 +8,7 @@ import {
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
+import { stringify } from 'yaml'
 
 import { generateDeployConfig } from './index'
 
@@ -21,12 +22,12 @@ const createProject = (deployConfig: object) => {
   mkdirSync(projectRoot, { recursive: true })
   writeFileSync(path.join(workspaceRoot, 'nx.json'), '{}')
   writeFileSync(
-    path.join(projectRoot, 'vx.app.json'),
-    JSON.stringify({ core: { id: 'example' } })
+    path.join(projectRoot, 'vx.app.yaml'),
+    stringify({ core: { id: 'example' } })
   )
   writeFileSync(
-    path.join(projectRoot, 'vx.deploy.json'),
-    JSON.stringify(deployConfig)
+    path.join(projectRoot, 'vx.deploy.yaml'),
+    stringify(deployConfig)
   )
 
   return { projectRoot, workspaceRoot }

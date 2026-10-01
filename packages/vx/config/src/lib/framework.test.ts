@@ -10,7 +10,7 @@ it.each([undefined, null, '', 'unknown'])(
   'rejects invalid framework %s',
   value => {
     expect(() => validateFramework(value)).toThrow(
-      'vx.app.json framework must be'
+      'vx.app.yaml framework must be'
     )
   }
 )

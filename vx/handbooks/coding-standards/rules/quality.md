@@ -39,7 +39,7 @@ This rule does not check class strings in JSX or Tailwind utilities.
 - Reuse shared testing utilities where possible.
 
 The root Vitest config supplies common defaults with a Node environment.
-App test presets are selected from the required `framework` in `vx.app.json`.
+App test presets are selected from the required `framework` in `vx.app.yaml`.
 Use an app-local `vitest.config.ts` only for additional overrides. Packages
 without app metadata can select `@vx/config/vitest/vite`, `/next`, or `/docs`
 explicitly; otherwise tests use the Node environment.

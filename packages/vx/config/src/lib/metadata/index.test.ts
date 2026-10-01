@@ -2,6 +2,7 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { stringify } from 'yaml'
 
 import { generateMetadata, getMetadataFiles } from './index.ts'
 
@@ -114,10 +115,7 @@ describe('metadata output ownership', () => {
   it('preserves app-owned edits during generation', () => {
     const projectRoot = mkdtempSync(path.join(tmpdir(), 'vx-metadata-'))
     try {
-      writeFileSync(
-        path.join(projectRoot, 'vx.app.json'),
-        JSON.stringify(config)
-      )
+      writeFileSync(path.join(projectRoot, 'vx.app.yaml'), stringify(config))
       writeFileSync(path.join(projectRoot, '.env'), 'PORT=4321\n')
       writeFileSync(
         path.join(projectRoot, 'index.html'),

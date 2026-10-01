@@ -8,6 +8,7 @@ import {
 import path from 'node:path'
 
 import { validateFramework } from '../framework.ts'
+import { readYamlConfig } from '../yaml-config.ts'
 import { getVxEnv, syncEnvContent } from './env.ts'
 import { syncIndexHtmlContent } from './html.ts'
 import { getPublicMetadataFiles } from './public.ts'
@@ -18,22 +19,19 @@ import {
   type VxConfig
 } from './types.ts'
 
-const readJson = <T>(file: string): T =>
-  JSON.parse(readFileSync(file, 'utf8')) as T
-
 const writeMetadataFile = ({ path: file, content }: MetadataFile) => {
   mkdirSync(path.dirname(file), { recursive: true })
   writeFileSync(file, content)
 }
 
 export const loadVxAppConfig = (projectRoot = process.cwd()) => {
-  const configFile = path.resolve(projectRoot, 'vx.app.json')
+  const configFile = path.resolve(projectRoot, 'vx.app.yaml')
 
   if (!existsSync(configFile)) {
-    throw new Error(`Missing vx.app.json at ${configFile}`)
+    throw new Error(`Missing vx.app.yaml at ${configFile}`)
   }
 
-  const config = readJson<VxConfig>(configFile)
+  const config = readYamlConfig<VxConfig>(configFile)
   validateFramework(config.framework)
   return config
 }
@@ -86,7 +84,7 @@ export const generateMetadata = (options: GenerateMetadataOptions = {}) => {
 
 export const watchMetadata = (options: GenerateMetadataOptions = {}) => {
   const projectRoot = path.resolve(options.projectRoot ?? process.cwd())
-  const configFile = path.join(projectRoot, 'vx.app.json')
+  const configFile = path.join(projectRoot, 'vx.app.yaml')
   const regenerate = () => {
     const files = generateMetadata(options)
 

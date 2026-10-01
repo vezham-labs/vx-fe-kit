@@ -1,7 +1,7 @@
-import fs from 'node:fs'
 import path from 'node:path'
 
 import { type I18nConfig, resolveI18n } from '../../i18n.ts'
+import { readYamlConfig } from '../../yaml-config.ts'
 import { type RouteInput } from './types.ts'
 
 export type { I18nConfig } from '../../i18n.ts'
@@ -47,8 +47,8 @@ export const resolveDocsConfig = (config: DocsConfig = {}) => {
 }
 
 export const loadVxDocsConfig = (projectRoot = process.cwd()) => {
-  const configFile = path.join(projectRoot, 'vx.app.json')
-  const config = JSON.parse(fs.readFileSync(configFile, 'utf8')) as VxDocsConfig
+  const configFile = path.join(projectRoot, 'vx.app.yaml')
+  const config = readYamlConfig<VxDocsConfig>(configFile)
 
   return {
     config,

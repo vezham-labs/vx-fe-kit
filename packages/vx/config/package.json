@@ -70,5 +70,8 @@
       "import": "./src/lib/deploy/index.ts",
       "default": "./src/lib/deploy/index.ts"
     }
+  },
+  "dependencies": {
+    "yaml": "catalog:"
   }
 }

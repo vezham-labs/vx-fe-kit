@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { loadConfigFromFile, mergeConfig } from 'vite'
+import { parse } from 'yaml'
 
 import { type ViteConfig, getProjectPackageName } from '@vx/config/vite'
 import {
@@ -47,11 +48,11 @@ export default defineConfig(async env => {
     }
   } satisfies ViteConfig
 
-  const appConfigFile = path.resolve(process.cwd(), 'vx.app.json')
+  const appConfigFile = path.resolve(process.cwd(), 'vx.app.yaml')
   let defaults: ViteConfig = baseConfig
   if (existsSync(appConfigFile)) {
     const framework = validateFramework(
-      JSON.parse(readFileSync(appConfigFile, 'utf8')).framework
+      parse(readFileSync(appConfigFile, 'utf8')).framework
     )
     const preset = defineFrameworkTestConfig(framework)
     const resolved =
