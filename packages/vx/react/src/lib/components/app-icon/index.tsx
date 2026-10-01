@@ -251,6 +251,7 @@ const icons = {
     weight: 'filled'
   },
   'vx:palette': { component: PaletteIcon, weight: 'outline' },
+  'vx:palette-filled': { component: PaletteIcon, weight: 'filled' },
   'vx:palette-round': {
     component: PaletteRoundIcon,
     weight: 'outline'

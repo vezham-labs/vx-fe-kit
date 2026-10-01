@@ -21,8 +21,8 @@ import { Route as TabsIndexRouteImport } from './routes/tabs/index'
 import { Route as WorkspaceIndexRouteImport } from './routes/workspace/index'
 
 const AcademicRouteLazyRouteImport = createFileRoute('/academic')()
+const CanvasLazyRouteImport = createFileRoute('/canvas')()
 const ProLazyRouteImport = createFileRoute('/pro')()
-const SidebarLazyRouteImport = createFileRoute('/sidebar')()
 const TabsRouteLazyRouteImport = createFileRoute('/tabs')()
 const WorkspaceRouteLazyRouteImport = createFileRoute('/workspace')()
 const TabsSplatLazyRouteImport = createFileRoute('/tabs/$')()
@@ -45,16 +45,16 @@ const AcademicRouteLazyRoute = AcademicRouteLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/academic/route.lazy').then((d) => d.Route),
 )
+const CanvasLazyRoute = CanvasLazyRouteImport.update({
+  id: '/canvas',
+  path: '/canvas',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/canvas.lazy').then((d) => d.Route))
 const ProLazyRoute = ProLazyRouteImport.update({
   id: '/pro',
   path: '/pro',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/pro.lazy').then((d) => d.Route))
-const SidebarLazyRoute = SidebarLazyRouteImport.update({
-  id: '/sidebar',
-  path: '/sidebar',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/sidebar.lazy').then((d) => d.Route))
 const TabsRouteLazyRoute = TabsRouteLazyRouteImport.update({
   id: '/tabs',
   path: '/tabs',
@@ -114,8 +114,8 @@ export interface FileRoutesByFullPath {
   '/academic': typeof AcademicRouteLazyRouteWithChildren
   '/tabs': typeof TabsRouteLazyRouteWithChildren
   '/workspace': typeof WorkspaceRouteLazyRouteWithChildren
+  '/canvas': typeof CanvasLazyRoute
   '/pro': typeof ProLazyRoute
-  '/sidebar': typeof SidebarLazyRoute
   '/api/heartbeat': typeof ApiHeartbeatRouteRoute
   '/api/pulse': typeof ApiPulseRouteRoute
   '/academic/$': typeof AcademicSplatRoute
@@ -128,8 +128,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/canvas': typeof CanvasLazyRoute
   '/pro': typeof ProLazyRoute
-  '/sidebar': typeof SidebarLazyRoute
   '/api/heartbeat': typeof ApiHeartbeatRouteRoute
   '/api/pulse': typeof ApiPulseRouteRoute
   '/academic/$': typeof AcademicSplatRoute
@@ -146,8 +146,8 @@ export interface FileRoutesById {
   '/academic': typeof AcademicRouteLazyRouteWithChildren
   '/tabs': typeof TabsRouteLazyRouteWithChildren
   '/workspace': typeof WorkspaceRouteLazyRouteWithChildren
+  '/canvas': typeof CanvasLazyRoute
   '/pro': typeof ProLazyRoute
-  '/sidebar': typeof SidebarLazyRoute
   '/api/heartbeat': typeof ApiHeartbeatRouteRoute
   '/api/pulse': typeof ApiPulseRouteRoute
   '/academic/$': typeof AcademicSplatRoute
@@ -165,8 +165,8 @@ export interface FileRouteTypes {
     | '/academic'
     | '/tabs'
     | '/workspace'
+    | '/canvas'
     | '/pro'
-    | '/sidebar'
     | '/api/heartbeat'
     | '/api/pulse'
     | '/academic/$'
@@ -179,8 +179,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$'
+    | '/canvas'
     | '/pro'
-    | '/sidebar'
     | '/api/heartbeat'
     | '/api/pulse'
     | '/academic/$'
@@ -196,8 +196,8 @@ export interface FileRouteTypes {
     | '/academic'
     | '/tabs'
     | '/workspace'
+    | '/canvas'
     | '/pro'
-    | '/sidebar'
     | '/api/heartbeat'
     | '/api/pulse'
     | '/academic/$'
@@ -214,8 +214,8 @@ export interface RootRouteChildren {
   AcademicRouteLazyRoute: typeof AcademicRouteLazyRouteWithChildren
   TabsRouteLazyRoute: typeof TabsRouteLazyRouteWithChildren
   WorkspaceRouteLazyRoute: typeof WorkspaceRouteLazyRouteWithChildren
+  CanvasLazyRoute: typeof CanvasLazyRoute
   ProLazyRoute: typeof ProLazyRoute
-  SidebarLazyRoute: typeof SidebarLazyRoute
   ApiHeartbeatRouteRoute: typeof ApiHeartbeatRouteRoute
   ApiPulseRouteRoute: typeof ApiPulseRouteRoute
 }
@@ -243,18 +243,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademicRouteLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/canvas': {
+      id: '/canvas'
+      path: '/canvas'
+      fullPath: '/canvas'
+      preLoaderRoute: typeof CanvasLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pro': {
       id: '/pro'
       path: '/pro'
       fullPath: '/pro'
       preLoaderRoute: typeof ProLazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sidebar': {
-      id: '/sidebar'
-      path: '/sidebar'
-      fullPath: '/sidebar'
-      preLoaderRoute: typeof SidebarLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tabs': {
@@ -376,8 +376,8 @@ const rootRouteChildren: RootRouteChildren = {
   AcademicRouteLazyRoute: AcademicRouteLazyRouteWithChildren,
   TabsRouteLazyRoute: TabsRouteLazyRouteWithChildren,
   WorkspaceRouteLazyRoute: WorkspaceRouteLazyRouteWithChildren,
+  CanvasLazyRoute: CanvasLazyRoute,
   ProLazyRoute: ProLazyRoute,
-  SidebarLazyRoute: SidebarLazyRoute,
   ApiHeartbeatRouteRoute: ApiHeartbeatRouteRoute,
   ApiPulseRouteRoute: ApiPulseRouteRoute,
 }

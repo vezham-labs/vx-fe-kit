@@ -17,11 +17,11 @@ export const navigationItems = [
     "title": "Pro"
   },
   {
-    "key": "sidebar",
-    "icon": "vx:library",
-    "iconActive": "vx:library-filled",
-    "href": "/sidebar",
-    "title": "Sidebar"
+    "key": "canvas",
+    "icon": "vx:palette",
+    "iconActive": "vx:palette-filled",
+    "href": "/canvas",
+    "title": "Canvas"
   },
   {
     "key": "tabs",
