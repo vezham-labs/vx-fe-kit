@@ -22,6 +22,433 @@ export const navigationItems = [
     "iconActive": "vx:library-filled",
     "href": "/sidebar",
     "title": "Sidebar"
+  },
+  {
+    "key": "tabs",
+    "title": "Tabs",
+    "icon": "vx:library",
+    "iconActive": "vx:library-filled",
+    "href": "/tabs/overview",
+    "children": [
+      {
+        "key": "overview",
+        "title": "Overview",
+        "href": "/tabs/overview"
+      },
+      {
+        "key": "activity",
+        "title": "Activity",
+        "href": "/tabs/activity"
+      }
+    ]
+  },
+  {
+    "key": "workspace",
+    "title": "Workspace",
+    "icon": "vx:library",
+    "iconActive": "vx:library-filled",
+    "href": "/workspace/projects/overview",
+    "children": [
+      {
+        "key": "projects",
+        "title": "Projects",
+        "href": "/workspace/projects/overview",
+        "children": [
+          {
+            "key": "overview",
+            "title": "Overview",
+            "href": "/workspace/projects/overview"
+          },
+          {
+            "key": "activity",
+            "title": "Activity",
+            "href": "/workspace/projects/activity"
+          }
+        ]
+      },
+      {
+        "key": "team",
+        "title": "Team",
+        "href": "/workspace/team/members",
+        "children": [
+          {
+            "key": "members",
+            "title": "Members",
+            "href": "/workspace/team/members"
+          },
+          {
+            "key": "roles",
+            "title": "Roles",
+            "href": "/workspace/team/roles"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "academic",
+    "icon": "vx:library",
+    "iconActive": "vx:library-filled",
+    "href": "/academic",
+    "title": "Academic",
+    "children": [
+      {
+        "key": "classes",
+        "title": "Classes",
+        "href": "/academic/classes",
+        "icon": "vx:book-open",
+        "children": [
+          {
+            "key": "allclasses",
+            "title": "All Classes",
+            "href": "/academic/classes/allclasses",
+            "icon": "vx:list"
+          },
+          {
+            "key": "schedule",
+            "title": "Schedule",
+            "href": "/academic/classes/schedule",
+            "icon": "vx:calendar-clock"
+          }
+        ]
+      },
+      {
+        "key": "classroom",
+        "title": "Class Room",
+        "href": "/academic/classroom",
+        "icon": "vx:grid"
+      },
+      {
+        "key": "classroutine",
+        "title": "Class Routine",
+        "href": "/academic/class-routine",
+        "icon": "vx:calendar-days"
+      },
+      {
+        "key": "section",
+        "title": "Section",
+        "href": "/academic/section",
+        "icon": "vx:sidebar"
+      },
+      {
+        "key": "subject",
+        "title": "Subject",
+        "href": "/academic/subject",
+        "icon": "vx:book"
+      },
+      {
+        "key": "syllabus",
+        "title": "Syllabus",
+        "href": "/academic/syllabus",
+        "icon": "vx:file-text"
+      },
+      {
+        "key": "timetable",
+        "title": "Time Table",
+        "href": "/academic/timetable",
+        "icon": "vx:clock"
+      },
+      {
+        "key": "homework",
+        "title": "Home Work",
+        "href": "/academic/homework",
+        "icon": "vx:clipboard-list"
+      },
+      {
+        "key": "examinations",
+        "title": "Examinations",
+        "href": "/academic/examinations",
+        "icon": "vx:academic-cap",
+        "children": [
+          {
+            "key": "exam",
+            "title": "Exam",
+            "href": "/academic/examinations/exam",
+            "icon": "vx:document-edit"
+          },
+          {
+            "key": "exam-schedule",
+            "title": "Exam Schedule",
+            "href": "/academic/examinations/exam-schedule",
+            "icon": "vx:calendar-check"
+          },
+          {
+            "key": "grades",
+            "title": "Grades",
+            "href": "/academic/examinations/grades",
+            "icon": "vx:verified"
+          },
+          {
+            "key": "exam-attendance",
+            "title": "Exam Attendance",
+            "href": "/academic/examinations/exam-attendance",
+            "icon": "vx:user-check"
+          },
+          {
+            "key": "exam-results",
+            "title": "Exam Results",
+            "href": "/academic/examinations/exam-results",
+            "icon": "vx:chart"
+          }
+        ]
+      },
+      {
+        "key": "reasons",
+        "title": "Reasons",
+        "href": "/academic/reasons",
+        "icon": "vx:help"
+      }
+    ]
+  },
+  {
+    "key": "operations",
+    "icon": "vx:box",
+    "iconActive": "vx:box-filled",
+    "href": "/operations",
+    "title": "Operations",
+    "children": [
+      {
+        "key": "fees",
+        "title": "Fees Collections",
+        "href": "/operations/fees",
+        "icon": "vx:calendar-check",
+        "children": [
+          {
+            "key": "fees-group",
+            "title": "Fees Group",
+            "href": "/operations/fees/fees-group",
+            "icon": "vx:report"
+          },
+          {
+            "key": "fees-type",
+            "title": "Fees Type",
+            "href": "/operations/fees/fees-type",
+            "icon": "vx:user-round-check"
+          },
+          {
+            "key": "fees-master",
+            "title": "Fees Master",
+            "href": "/operations/fees/fees-master",
+            "icon": "vx:calendar-days"
+          },
+          {
+            "key": "fees-assign",
+            "title": "Fees Assign",
+            "href": "/operations/fees/fees-assign",
+            "icon": "vx:user"
+          },
+          {
+            "key": "collect-fees",
+            "title": "Collect Fees",
+            "href": "/operations/fees/collect-fees",
+            "icon": "vx:academic-cap"
+          }
+        ]
+      },
+      {
+        "key": "library",
+        "title": "Library",
+        "href": "/operations/library",
+        "icon": "vx:school",
+        "children": [
+          {
+            "key": "members",
+            "title": "Library Members",
+            "href": "/operations/library/members",
+            "icon": "vx:report"
+          },
+          {
+            "key": "books",
+            "title": "Books",
+            "href": "/operations/library/books",
+            "icon": "vx:user-round-check"
+          },
+          {
+            "key": "issue-book",
+            "title": "Issue Book",
+            "href": "/operations/library/issue-book",
+            "icon": "vx:calendar-days"
+          },
+          {
+            "key": "return",
+            "title": "Return",
+            "href": "/operations/library/return",
+            "icon": "vx:user"
+          }
+        ]
+      },
+      {
+        "key": "sports",
+        "title": "Sports",
+        "href": "/operations/sports",
+        "icon": "vx:users"
+      },
+      {
+        "key": "players",
+        "title": "Players",
+        "href": "/operations/players",
+        "icon": "vx:users"
+      },
+      {
+        "key": "hostel",
+        "title": "Hostel",
+        "href": "/operations/hostel",
+        "icon": "vx:verified",
+        "children": [
+          {
+            "key": "hostel-list",
+            "title": "Hostel List",
+            "href": "/operations/hostel/hostel-list",
+            "icon": "vx:report"
+          },
+          {
+            "key": "hostel-room",
+            "title": "Hostel Room",
+            "href": "/operations/hostel/hostel-room",
+            "icon": "vx:user-round-check"
+          },
+          {
+            "key": "room-type",
+            "title": "Room Type",
+            "href": "/operations/hostel/room-type",
+            "icon": "vx:calendar-days"
+          }
+        ]
+      },
+      {
+        "key": "transport",
+        "title": "Transport",
+        "href": "/operations/transport",
+        "icon": "vx:calendar-minus",
+        "children": [
+          {
+            "key": "routes",
+            "title": "Routes",
+            "href": "/operations/transport/routes",
+            "icon": "vx:report"
+          },
+          {
+            "key": "pickup-points",
+            "title": "Pickup points",
+            "href": "/operations/transport/pickup-points",
+            "icon": "vx:user-round-check"
+          },
+          {
+            "key": "vehicle-drivers",
+            "title": "Vehicle Drivers",
+            "href": "/operations/transport/vehicle-drivers",
+            "icon": "vx:calendar-days"
+          },
+          {
+            "key": "vehicles",
+            "title": "Vehicles",
+            "href": "/operations/transport/vehicles",
+            "icon": "vx:user-round-check"
+          },
+          {
+            "key": "assign",
+            "title": "Assign Vehicles",
+            "href": "/operations/transport/assign",
+            "icon": "vx:calendar-days"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "reports",
+    "icon": "vx:chart",
+    "iconActive": "vx:chart-filled",
+    "href": "/reports",
+    "title": "Reports",
+    "children": [
+      {
+        "key": "attendance",
+        "title": "Attendance Reports",
+        "href": "/reports/attendance",
+        "icon": "vx:calendar-check",
+        "children": [
+          {
+            "key": "attendance-report",
+            "title": "Attendance Report",
+            "href": "/reports/attendance/attendance-report",
+            "icon": "vx:report"
+          },
+          {
+            "key": "students-attendance-type",
+            "title": "Students Attendance Type",
+            "href": "/reports/attendance/students-attendance-type",
+            "icon": "vx:user-round-check"
+          },
+          {
+            "key": "daily-attendance",
+            "title": "Daily Attendance",
+            "href": "/reports/attendance/daily-attendance",
+            "icon": "vx:calendar-days"
+          },
+          {
+            "key": "student-day-wise",
+            "title": "Student Day Wise",
+            "href": "/reports/attendance/student-day-wise",
+            "icon": "vx:user"
+          },
+          {
+            "key": "teacher-day-wise",
+            "title": "Teacher Day Wise",
+            "href": "/reports/attendance/teacher-day-wise",
+            "icon": "vx:academic-cap"
+          },
+          {
+            "key": "staff-day-wise",
+            "title": "Staff Day Wise",
+            "href": "/reports/attendance/staff-day-wise",
+            "icon": "vx:briefcase"
+          },
+          {
+            "key": "teacher-report",
+            "title": "Teacher Report",
+            "href": "/reports/attendance/teacher-report",
+            "icon": "vx:clipboard-list"
+          },
+          {
+            "key": "staff-report",
+            "title": "Staff Report",
+            "href": "/reports/attendance/staff-report",
+            "icon": "vx:clipboard-list"
+          }
+        ]
+      },
+      {
+        "key": "class",
+        "title": "Class Reports",
+        "href": "/reports/class",
+        "icon": "vx:school"
+      },
+      {
+        "key": "student",
+        "title": "Student Reports",
+        "href": "/reports/student",
+        "icon": "vx:users"
+      },
+      {
+        "key": "grade",
+        "title": "Grade Reports",
+        "href": "/reports/grade",
+        "icon": "vx:verified"
+      },
+      {
+        "key": "leave",
+        "title": "Leave Reports",
+        "href": "/reports/leave",
+        "icon": "vx:calendar-minus"
+      },
+      {
+        "key": "fees",
+        "title": "Fees Reports",
+        "href": "/reports/fees",
+        "icon": "vx:receipt"
+      }
+    ]
   }
 ] satisfies AppNavigationItem[]
 

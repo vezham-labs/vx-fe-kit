@@ -70,7 +70,11 @@ const MenuDrawer = ({
                     )}>
                     {item.icon && (
                       <AppIcon
-                        icon={item.icon}
+                        icon={
+                          selectedKey === item.key
+                            ? item.iconActive || item.icon
+                            : item.icon
+                        }
                         className="h-6 w-6"
                         size="1em"
                         aria-hidden="true"

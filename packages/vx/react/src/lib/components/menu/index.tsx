@@ -9,6 +9,7 @@ import {
 } from '@vezham/icons-react'
 import { Button, useOverlayState } from '@vezham/react-v3'
 
+import { getSelectedMenuKey } from '../../navigation'
 import { AppIcon } from '../app-icon'
 import { MenuDrawer } from './drawer'
 import { BottomNavbarProps, SidebarItem, SidebarItemType } from './types'
@@ -53,6 +54,8 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
   const location = useLocation()
 
   const flatItems = useMemo(() => flattenMenuItems(items), [items])
+  const activeKey =
+    getSelectedMenuKey(location.pathname, flatItems) ?? selectedKey
 
   const { isOpen, open: onOpen, close: onClose } = useOverlayState()
   const [mainVisibleCount, setMainVisibleCount] = useState(flatItems.length)
@@ -110,15 +113,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
         })} cursor-pointer justify-between`}>
         <div className={getNavbarMenuContainerClasses({ isDarkMode })}>
           {mainItems.map(item => {
-            const activeItem = flatItems.find(
-              i =>
-                location.pathname === i.href ||
-                (i.href !== '/' && location.pathname.startsWith(i.href ?? ''))
-            )
-
-            const isActive = activeItem
-              ? activeItem.key === item.key
-              : item.key === flatItems[0]?.key
+            const isActive = activeKey === item.key
 
             const iconName = isActive ? item.iconActive || item.icon : item.icon
 
@@ -183,7 +178,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
 
       <MenuDrawer
         items={moreItems}
-        selectedKey={selectedKey}
+        selectedKey={activeKey}
         onItemSelect={handleItemSelect}
         isOpen={isOpen}
         onClose={onClose}

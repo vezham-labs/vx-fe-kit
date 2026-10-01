@@ -19,6 +19,7 @@ import {
 import { Menu } from '../../components/panel/menu'
 import { useWorkspaceNavigation } from '../../components/workspace-navigation'
 import type { AppNavigationItem } from '../../navigation'
+import { getSelectedMenuKey } from '../../navigation'
 import { useUser } from '../../store/users/useUserStore'
 import { HomeNavigationBubble } from './home-navigation-bubble'
 
@@ -200,25 +201,6 @@ const CollapsedNavigation = ({
       <Header compact users={headerUsers} onOpenNavigation={onExpandModule} />
     </Surface>
   )
-}
-
-const getSelectedMenuKey = (pathname: string, items: AppNavigationItem[]) => {
-  const activeItem = items
-    .flatMap(item => [item, ...(item.submenu ?? [])])
-    .filter(
-      item =>
-        item.href &&
-        (pathname === item.href || pathname.startsWith(`${item.href}/`))
-    )
-    .sort((a, b) => (b.href?.length ?? 0) - (a.href?.length ?? 0))[0]
-
-  const parentItem = items.find(
-    item =>
-      item.key === activeItem?.key ||
-      item.submenu?.some(subItem => subItem.key === activeItem?.key)
-  )
-
-  return parentItem?.key ?? items[0]?.key
 }
 
 export { MenuMD }
