@@ -114,16 +114,6 @@ export const getSubjectColor = (subject: string): TimetableEvent['color'] => {
   return colorMap[subject] ?? 'blue'
 }
 
-export const getInitials = (name: string) => {
-  return name
-    .split(' ')
-    .filter(Boolean)
-    .map(part => part[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase()
-}
-
 export const isValidEvent = (
   event: TimetableEvent | undefined
 ): event is TimetableEvent => {

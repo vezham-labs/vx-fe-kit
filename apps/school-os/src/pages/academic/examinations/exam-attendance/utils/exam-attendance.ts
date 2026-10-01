@@ -8,7 +8,6 @@ import {
   getEntityDrawerTitle,
   getNextEntityId
 } from '@pages/academic/shared/entity-utils'
-import { getStudentInitials } from '@pages/academic/shared/student-name-cell'
 
 export { getPaginationSummary } from '@pages/academic/shared/entity-utils'
 
@@ -46,8 +45,6 @@ export const getStudentSecondaryText = (row: AttendanceRow) => {
 
   return [row.classes, row.section].filter(Boolean).join(' - ')
 }
-
-export const getInitials = getStudentInitials
 
 export const getDrawerTitle = (row: AttendanceRow) => getEntityDrawerTitle(row)
 

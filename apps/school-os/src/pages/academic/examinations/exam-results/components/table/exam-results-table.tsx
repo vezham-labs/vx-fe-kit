@@ -14,10 +14,7 @@ import {
   getTableRowClassName
 } from '@pages/academic/examinations/exam-results/variants'
 import { createAcademicEntityTable } from '@pages/academic/shared/entity-table'
-import {
-  StudentNameCell as SharedStudentNameCell,
-  getStudentInitials
-} from '@pages/academic/shared/student-name-cell'
+import { StudentNameCell as SharedStudentNameCell } from '@pages/academic/shared/student-name-cell'
 
 export const ExamResultsTable = createAcademicEntityTable<
   ClassRow,
@@ -56,7 +53,6 @@ function StudentNameCell({ row }: { row: ClassRow }) {
     <SharedStudentNameCell
       avatar={row.avatar}
       classes={classNames}
-      initials={getStudentInitials(row.name)}
       name={row.name}
       secondaryText={getStudentSecondaryText(row)}
     />

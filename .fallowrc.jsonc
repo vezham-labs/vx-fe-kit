@@ -124,7 +124,7 @@
   "duplicates": {
     "ignore": [
       // vx-bot/NOTE: CLI app Vite configs stay local so generated apps are self-contained.
-      "apps/*/vite.config.ts",
+      "apps*/*/vite.config.ts",
       // vx-bot/NOTE: CLI template pages are copied into each app with its own routes.
       "apps*/**/src/pages/{home,pro}/index.tsx"
     ]

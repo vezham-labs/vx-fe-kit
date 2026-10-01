@@ -1,5 +1,7 @@
 import { Avatar } from '@vezham/react-v3'
 
+import { getInitials } from '@vx/system-utils/name'
+
 import { homeworkColumnOptions } from '@pages/academic/homework/data'
 import type { ClassRow } from '@pages/academic/homework/types'
 import { getPaginationSummary } from '@pages/academic/homework/utils/homework'
@@ -66,14 +68,4 @@ function CreatedByCell({ row }: { row: ClassRow }) {
       </div>
     </div>
   )
-}
-
-function getInitials(name: string) {
-  return name
-    .split(' ')
-    .filter(Boolean)
-    .map(part => part.charAt(0))
-    .join('')
-    .slice(0, 2)
-    .toUpperCase()
 }

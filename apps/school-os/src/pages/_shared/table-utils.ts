@@ -210,14 +210,6 @@ const formatISODate = (value: string) =>
 export const formatDateRangeLabel = (range: DateRangeFilter) =>
   `${formatISODate(range.start)} - ${formatISODate(range.end)}`
 
-export const getInitials = (name: string) =>
-  name
-    .split(' ')
-    .map(part => part[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase()
-
 export const getPaginationSummary = (
   page: number,
   pageSize: number,

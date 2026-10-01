@@ -1,12 +1,6 @@
 import { Avatar } from '@vezham/react-v3'
 
-export const getStudentInitials = (name: string) =>
-  name
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map(part => part[0]?.toUpperCase())
-    .join('')
+import { getInitials } from '@vx/system-utils/name'
 
 type Classes = {
   studentNameAvatar: string
@@ -19,7 +13,6 @@ type Classes = {
 type Props = {
   avatar?: string
   classes: Classes
-  initials: string
   name: string
   secondaryText?: string
 }
@@ -27,14 +20,13 @@ type Props = {
 export const StudentNameCell = ({
   avatar,
   classes,
-  initials,
   name,
   secondaryText
 }: Props) => (
   <div className={classes.studentNameCell}>
     <Avatar className={classes.studentNameAvatar} size="sm">
       {avatar && <Avatar.Image src={avatar} alt={name} />}
-      <Avatar.Fallback>{initials}</Avatar.Fallback>
+      <Avatar.Fallback>{getInitials(name)}</Avatar.Fallback>
     </Avatar>
     <div className={classes.studentNameText}>
       <div className={classes.studentNamePrimary}>{name}</div>

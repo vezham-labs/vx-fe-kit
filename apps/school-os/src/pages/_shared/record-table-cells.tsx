@@ -1,7 +1,7 @@
 import { Inbox as InboxIcon } from '@vezham/icons-react'
 import { Avatar } from '@vezham/react-v3'
 
-import { getInitials } from '@pages/_shared/table-utils'
+import { getInitials } from '@vx/system-utils/name'
 
 type PersonClasses = {
   personCell: string

@@ -57,6 +57,9 @@
       "path": "../../packages/vx/start/tsconfig.lib.json"
     },
     {
+      "path": "../../packages/vx/system-utils/tsconfig.lib.json"
+    },
+    {
       "path": "../../packages/vx/env/tsconfig.lib.json"
     }
   ]

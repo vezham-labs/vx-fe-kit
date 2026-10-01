@@ -8,7 +8,6 @@ import type {
   AttendanceStatus
 } from '@pages/academic/examinations/exam-attendance/types'
 import {
-  getInitials,
   getPaginationSummary,
   getStudentSecondaryText
 } from '@pages/academic/examinations/exam-attendance/utils/exam-attendance'
@@ -51,7 +50,6 @@ function StudentNameCell({ row }: { row: AttendanceRow }) {
     <SharedStudentNameCell
       avatar={row.avatar}
       classes={classNames}
-      initials={getInitials(row.name)}
       name={row.name}
       secondaryText={getStudentSecondaryText(row)}
     />

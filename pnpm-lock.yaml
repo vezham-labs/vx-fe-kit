@@ -582,6 +582,9 @@ importers:
       '@vx/react':
         specifier: workspace:*
         version: link:../../packages/vx/react
+      '@vx/system-utils':
+        specifier: workspace:*
+        version: link:../../packages/vx/system-utils
       '@vx/template':
         specifier: workspace:*
         version: link:../../packages/vx/template
