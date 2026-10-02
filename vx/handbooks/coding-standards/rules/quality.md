@@ -48,6 +48,11 @@ Shared jsdom presets run test files sequentially within each project. Nx owns
 parallelism across projects, avoiding a separate worker pool per test file
 while multiple applications load their route trees.
 
+Router-based app tests use an async `renderApp(path = '/')` helper. Create a
+memory-history router, await `router.load()`, then render `RouterProvider`.
+Await `renderApp()` in each test so initial route loading finishes before
+assertions. Component tests stay synchronous unless they await async behavior.
+
 App E2E suites import `test` and `expect` from `@vx/config/playwright/test`.
 Its automatic fixture checks console and runtime errors after each scenario,
 allowing only the resource error associated with an actual main-document 404.

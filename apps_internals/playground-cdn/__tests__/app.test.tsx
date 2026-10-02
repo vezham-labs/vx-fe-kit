@@ -15,13 +15,15 @@ vi.mock('@vx/start/vite', async importOriginal => ({
   defineConfig
 }))
 
-const renderApp = (path = '/') => {
+const renderApp = async (path = '/') => {
   const router = createRouter({
     history: createMemoryHistory({
       initialEntries: [path]
     }),
     routeTree
   })
+
+  await router.load()
 
   return render(
     <Provider strict={false}>
@@ -40,13 +42,13 @@ describe('App', () => {
   })
 
   it('should render successfully', async () => {
-    const { baseElement } = renderApp()
+    const { baseElement } = await renderApp()
 
     await waitFor(() => expect(baseElement).toBeTruthy())
   })
 
   it('should mount app shell container', async () => {
-    const { baseElement } = renderApp()
+    const { baseElement } = await renderApp()
 
     await waitFor(() =>
       expect(baseElement.querySelector('.vx-app')).toBeTruthy()
