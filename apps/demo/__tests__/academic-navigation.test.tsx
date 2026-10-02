@@ -11,7 +11,7 @@ import { createRouter } from '@vx/start/router/tanstack'
 
 import { routeTree } from '../src/routeTree.gen'
 
-const renderApp = (path = '/') => {
+const renderApp = async (path = '/') => {
   const router = createRouter({
     history: createMemoryHistory({
       initialEntries: [path]
@@ -19,6 +19,7 @@ const renderApp = (path = '/') => {
     routeTree
   })
 
+  await router.load()
   return render(<RouterProvider router={router} />)
 }
 
@@ -28,7 +29,7 @@ describe('Academic navigation', () => {
   })
 
   it('opens Academic and switches between grouped and standalone pages', async () => {
-    renderApp('/academic')
+    await renderApp('/academic')
     const sidebar = await screen.findByRole('navigation', {
       name: 'Academic sections'
     })
@@ -76,7 +77,7 @@ describe('Academic navigation', () => {
   })
 
   it('loads an Academic tab directly', async () => {
-    renderApp('/academic/examinations/grades')
+    await renderApp('/academic/examinations/grades')
     const grades = await screen.findByRole('tab', { name: 'Grades' })
     expect(grades.getAttribute('aria-selected')).toBe('true')
     expect(screen.getByRole('tabpanel').textContent).toContain(
@@ -85,7 +86,7 @@ describe('Academic navigation', () => {
   })
 
   it('shows and hides the mobile sidebar with its shortcut', async () => {
-    renderApp('/academic/classes/allclasses')
+    await renderApp('/academic/classes/allclasses')
     await screen.findByRole('tab', { name: 'All Classes' })
     const toggle = () => {
       fireEvent.keyDown(document, { key: 's', code: 'KeyS', metaKey: true })

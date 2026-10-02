@@ -25,7 +25,7 @@ export const defineTestConfig = (
     return mergeConfig(
       {
         plugins,
-        test: { environment: 'jsdom', setupFiles }
+        test: { environment: 'jsdom', setupFiles, fileParallelism: false }
       },
       config
     )

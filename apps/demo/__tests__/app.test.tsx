@@ -12,7 +12,7 @@ import { createRouter } from '@vx/start/router/tanstack'
 import { vxI18n } from '../src/generated/vx'
 import { routeTree } from '../src/routeTree.gen'
 
-const renderApp = (path = '/') => {
+const renderApp = async (path = '/') => {
   const router = createRouter({
     history: createMemoryHistory({
       initialEntries: [path]
@@ -20,6 +20,7 @@ const renderApp = (path = '/') => {
     routeTree
   })
 
+  await router.load()
   return render(<RouterProvider router={router} />)
 }
 
@@ -29,7 +30,7 @@ describe('App', () => {
   })
 
   it('uses the configured default language for the document', async () => {
-    renderApp()
+    await renderApp()
 
     await waitFor(() =>
       expect(document.documentElement.lang).toBe(vxI18n.defaultLanguage)
@@ -37,13 +38,13 @@ describe('App', () => {
   })
 
   it('should render successfully', async () => {
-    const { baseElement } = renderApp()
+    const { baseElement } = await renderApp()
 
     await waitFor(() => expect(baseElement).toBeTruthy())
   })
 
   it('should mount app shell container', async () => {
-    const { baseElement } = renderApp()
+    const { baseElement } = await renderApp()
 
     await waitFor(() =>
       expect(baseElement.querySelector('.vx-app')).toBeTruthy()
@@ -51,7 +52,7 @@ describe('App', () => {
   })
 
   it('loads child menus as tabs and navigates between them', async () => {
-    renderApp('/tabs/overview')
+    await renderApp('/tabs/overview')
 
     const activity = await screen.findByRole('tab', { name: 'Activity' })
     fireEvent.click(activity)
@@ -63,7 +64,7 @@ describe('App', () => {
   })
 
   it('loads sidebar sections with their own route tabs', async () => {
-    renderApp('/workspace/projects/activity')
+    await renderApp('/workspace/projects/activity')
 
     const sidebar = await screen.findByRole('navigation', {
       name: 'Workspace sections'
@@ -86,7 +87,7 @@ describe('App', () => {
   })
 
   it('keeps navigation collapsed while changing child routes', async () => {
-    renderApp('/workspace/projects/overview')
+    await renderApp('/workspace/projects/overview')
     await screen.findByRole('navigation', { name: 'Workspace sections' })
     fireEvent.click(
       screen
@@ -116,7 +117,7 @@ describe('App', () => {
   })
 
   it('opens section navigation in a drawer and closes it after selecting a section', async () => {
-    renderApp('/workspace/projects/overview')
+    await renderApp('/workspace/projects/overview')
     fireEvent.click(
       (await screen.findAllByRole('button', { name: 'Show Sidebar' })).find(
         button =>
@@ -136,7 +137,7 @@ describe('App', () => {
     ['/tabs', '/tabs/overview'],
     ['/workspace', '/workspace/projects/overview']
   ])('opens the default child at %s', async (path, title) => {
-    renderApp(path)
+    await renderApp(path)
     await waitFor(() =>
       expect(screen.getByRole('tabpanel').textContent).toContain(title)
     )

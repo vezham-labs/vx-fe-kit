@@ -158,15 +158,13 @@ const DynamicHeader = ({
 
           {otherActions.length > 0 && (
             <Dropdown>
-              <Dropdown.Trigger>
-                <Button aria-label="More actions" isIconOnly variant="ghost">
-                  <MenuDotsIcon
-                    size="1em"
-                    style={{ transform: 'rotate(90deg)' }}
-                    aria-hidden="true"
-                  />
-                </Button>
-              </Dropdown.Trigger>
+              <Button aria-label="More actions" isIconOnly variant="ghost">
+                <MenuDotsIcon
+                  size="1em"
+                  style={{ transform: 'rotate(90deg)' }}
+                  aria-hidden="true"
+                />
+              </Button>
 
               <Dropdown.Popover>
                 <Dropdown.Menu>

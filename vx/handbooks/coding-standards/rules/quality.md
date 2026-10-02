@@ -44,6 +44,10 @@ Use an app-local `vitest.config.ts` only for additional overrides. Packages
 without app metadata can select `@vx/config/vitest/vite`, `/next`, or `/docs`
 explicitly; otherwise tests use the Node environment.
 
+Shared jsdom presets run test files sequentially within each project. Nx owns
+parallelism across projects, avoiding a separate worker pool per test file
+while multiple applications load their route trees.
+
 App E2E suites import `test` and `expect` from `@vx/config/playwright/test`.
 Its automatic fixture checks console and runtime errors after each scenario,
 allowing only the resource error associated with an actual main-document 404.

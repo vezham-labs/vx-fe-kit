@@ -71,20 +71,18 @@ const Header = ({
           </button>
 
           <Dropdown isOpen={open} onOpenChange={setOpen}>
-            <Dropdown.Trigger>
-              <Button
-                variant="ghost"
-                isIconOnly
-                aria-label="Open application menu"
-                className="h-full min-w-0 p-0">
-                <span className="sr-only">Application menu</span>
-                <AltArrowDownIcon
-                  size={12}
-                  className="text-muted-foreground"
-                  aria-hidden="true"
-                />
-              </Button>
-            </Dropdown.Trigger>
+            <Button
+              variant="ghost"
+              isIconOnly
+              aria-label="Open application menu"
+              className="h-full min-w-0 p-0">
+              <span className="sr-only">Application menu</span>
+              <AltArrowDownIcon
+                size={12}
+                className="text-muted-foreground"
+                aria-hidden="true"
+              />
+            </Button>
 
             <HeaderApplicationMenuContent
               onClose={() => setOpen(false)}
@@ -147,21 +145,19 @@ const Header = ({
         className={`flex flex-row items-center gap-3 md:flex-col md:gap-6 ${className ?? ''}`}
         data-vx="header">
         <Dropdown isOpen={open} onOpenChange={setOpen}>
-          <Dropdown.Trigger>
-            <Button
-              variant="ghost"
-              className="flex h-12 items-center gap-2 px-2 transition-transform duration-300"
-              aria-label="Open application menu"
-              onPress={() => onAvatarClick?.(users)}>
-              <HeaderAvatar user={users} />
-              <span className="sr-only">Application menu</span>
-              <AltArrowDownIcon
-                size={12}
-                className="text-muted-foreground"
-                aria-hidden="true"
-              />
-            </Button>
-          </Dropdown.Trigger>
+          <Button
+            variant="ghost"
+            className="flex h-12 items-center gap-2 px-2 transition-transform duration-300"
+            aria-label="Open application menu"
+            onPress={() => onAvatarClick?.(users)}>
+            <HeaderAvatar user={users} />
+            <span className="sr-only">Application menu</span>
+            <AltArrowDownIcon
+              size={12}
+              className="text-muted-foreground"
+              aria-hidden="true"
+            />
+          </Button>
 
           <HeaderApplicationMenuContent
             onClose={() => setOpen(false)}

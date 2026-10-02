@@ -81,7 +81,7 @@ describe('Shared compact navigation header', () => {
         screen.getByRole('button', { name: 'Open application menu' })
       )
       expect(
-        await screen.findByRole('menu', { name: /Application menu/ })
+        await screen.findByRole('menu', { name: /application menu/i })
       ).toBeTruthy()
       fireEvent.click(screen.getByRole('menuitem', { name: /Hide Dock/ }))
       expect(collapse).toHaveBeenCalledOnce()

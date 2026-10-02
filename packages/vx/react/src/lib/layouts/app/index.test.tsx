@@ -5,7 +5,7 @@ import {
   createRoute,
   createRouter
 } from '@tanstack/react-router'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -49,6 +49,7 @@ it('dispatches app menu actions to the active page and reports unhandled actions
     history: createMemoryHistory({ initialEntries: ['/records'] })
   })
   try {
+    await router.load()
     render(<RouterProvider router={router} />)
     fireEvent.click(await screen.findByRole('button', { name: 'New record' }))
     expect(handler).toHaveBeenCalledWith({
@@ -57,7 +58,7 @@ it('dispatches app menu actions to the active page and reports unhandled actions
       pathname: '/records'
     })
     expect(notice).not.toHaveBeenCalled()
-    await router.navigate({ to: '/other' })
+    await act(() => router.navigate({ to: '/other' }))
     await waitFor(() => expect(router.state.location.pathname).toBe('/other'))
     fireEvent.click(screen.getByRole('button', { name: 'New record' }))
     expect(handler).toHaveBeenCalledOnce()

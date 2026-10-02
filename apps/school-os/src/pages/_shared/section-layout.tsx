@@ -301,22 +301,21 @@ function MoreActions({
     )
   return (
     <Dropdown>
-      <Dropdown.Trigger>
-        <HeaderIconTooltip label="More">
-          <Button
-            {...getIconButtonProps({
-              key: 'more',
-              label: 'More',
-              icon: 'vx:menu-vertical'
-            })}>
-            <AppIcon
-              {...getButtonIconProps('vx:menu-vertical')}
-              size="1em"
-              aria-hidden="true"
-            />
-          </Button>
-        </HeaderIconTooltip>
-      </Dropdown.Trigger>
+      <HeaderIconTooltip label="More">
+        <Button
+          {...getIconButtonProps({
+            key: 'more',
+            label: 'More',
+            icon: 'vx:menu-vertical'
+          })}>
+          <AppIcon
+            {...getButtonIconProps('vx:menu-vertical')}
+            size="1em"
+            aria-hidden="true"
+          />
+        </Button>
+      </HeaderIconTooltip>
+
       <Dropdown.Popover>
         <Dropdown.Menu>{renderItems(actions)}</Dropdown.Menu>
       </Dropdown.Popover>

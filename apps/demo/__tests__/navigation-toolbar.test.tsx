@@ -7,11 +7,12 @@ import { createRouter } from '@vx/start/router/tanstack'
 
 import { routeTree } from '../src/routeTree.gen'
 
-const renderApp = (path = '/') => {
+const renderApp = async (path = '/') => {
   const router = createRouter({
     history: createMemoryHistory({ initialEntries: [path] }),
     routeTree
   })
+  await router.load()
   render(<RouterProvider router={router} />)
   return router
 }
@@ -22,7 +23,7 @@ describe('Navigation toolbar', () => {
   })
 
   it('uses page-specific Add actions in the School OS toolbar order', async () => {
-    renderApp('/academic/classes/allclasses')
+    await renderApp('/academic/classes/allclasses')
     const create = await screen.findByRole('button', { name: 'Add Class' })
     const notice = vi.spyOn(toast, 'info').mockReturnValue('create-notice')
     try {
@@ -48,7 +49,7 @@ describe('Navigation toolbar', () => {
   })
 
   it('shows the Sync placeholder without refreshing and hides Add on result pages', async () => {
-    const router = renderApp('/academic/examinations/exam-results')
+    const router = await renderApp('/academic/examinations/exam-results')
     await screen.findByRole('tab', { name: 'Exam Results' })
     const actions = screen.getByRole('group', { name: 'Toolbar actions' })
     expect(within(actions).queryByRole('button', { name: /^Add / })).toBeNull()
