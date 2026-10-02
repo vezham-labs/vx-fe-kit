@@ -16,7 +16,7 @@ const HomeNavigationBubble = ({
       role="group"
       aria-label="Home navigation"
       className="border-default-200 bg-background/90 fixed top-3 left-3 z-40 flex h-[60px] w-fit items-center rounded-full border px-2 py-1 shadow-[0_14px_28px_rgba(15,23,42,0.14)] backdrop-blur-xl">
-      <Header compact users={users} onOpenNavigation={onExpand} />
+      <Header compact users={users} onShowDock={onExpand} />
     </Surface>
   )
 }

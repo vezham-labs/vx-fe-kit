@@ -51,3 +51,27 @@ export const getSelectedMenuKey = (
   }
   return selectedKey
 }
+
+export const getNavigationPageKey = (
+  items: AppNavigationItem[],
+  pathname: string
+) => {
+  let key = ''
+  let matchLength = -1
+  const visit = (entries: AppNavigationItem[]) => {
+    for (const item of entries) {
+      if (
+        item.href &&
+        (pathname === item.href ||
+          (item.href !== '/' && pathname.startsWith(`${item.href}/`))) &&
+        item.href.length >= matchLength
+      ) {
+        key = item.key
+        matchLength = item.href.length
+      }
+      visit(item.children ?? [])
+    }
+  }
+  visit(items)
+  return key
+}

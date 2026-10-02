@@ -1,6 +1,7 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { AppMenuProvider } from '../../app-menu'
 import { Header } from './index'
 
 const actions = vi.hoisted(() => ({ openCommand: vi.fn(), expand: vi.fn() }))
@@ -21,7 +22,7 @@ describe('Shared compact navigation header', () => {
       <Header compact users={{ id: '1', name: 'School' }} />
     )
 
-    for (const name of ['Show Sidebar', 'Open command palette']) {
+    for (const name of ['Show Dock', 'Open command palette']) {
       const button = screen.getByRole('button', { name })
       expect(button).toHaveClass(
         'button--icon-only',
@@ -51,15 +52,79 @@ describe('Shared compact navigation header', () => {
       <Header
         compact
         users={{ id: '1', name: 'School' }}
-        onOpenNavigation={actions.expand}
+        onShowDock={actions.expand}
       />
     )
-    fireEvent.click(screen.getByRole('button', { name: 'Show Sidebar' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Show Dock' }))
     fireEvent.click(
       screen.getByRole('button', { name: 'Open command palette' })
     )
 
     expect(actions.expand).toHaveBeenCalledOnce()
     expect(actions.openCommand).toHaveBeenCalledOnce()
+  })
+
+  it.each([true, false])(
+    'uses an accessible application menu (compact=%s)',
+    async compact => {
+      const collapse = vi.fn()
+      render(
+        <Header
+          compact={compact}
+          users={{ id: '1', name: 'School' }}
+          onHideDock={collapse}
+        />
+      )
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Open application menu' })
+      )
+      expect(
+        await screen.findByRole('menu', { name: /Application menu/ })
+      ).toBeTruthy()
+      fireEvent.click(screen.getByRole('menuitem', { name: /Hide Dock/ }))
+      expect(collapse).toHaveBeenCalledOnce()
+      await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Open application menu' })
+      )
+      fireEvent.click(
+        await screen.findByRole('menuitem', { name: 'Open command palette' })
+      )
+      expect(actions.openCommand).toHaveBeenCalledOnce()
+      await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+    }
+  )
+
+  it('opens the File submenu with the keyboard and dispatches configured actions', async () => {
+    const notice = vi.fn()
+    render(
+      <AppMenuProvider
+        items={[
+          {
+            key: 'file',
+            label: 'File',
+            groups: [[{ key: 'file.new', label: 'New…', shortcut: 'Mod N' }]]
+          }
+        ]}
+        onAction={notice}>
+        <Header compact users={{ id: '1', name: 'School' }} />
+      </AppMenuProvider>
+    )
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Open application menu' })
+    )
+    const file = await screen.findByRole('menuitem', { name: 'File' })
+    file.focus()
+    fireEvent.keyDown(file, { key: 'ArrowRight', code: 'ArrowRight' })
+    const newItem = await screen.findByRole('menuitem', { name: /New…/ })
+    expect(newItem).not.toHaveAttribute('aria-disabled', 'true')
+    fireEvent.click(newItem)
+    expect(notice).toHaveBeenCalledWith({
+      key: 'file.new',
+      label: 'New…',
+      shortcut: 'Mod N'
+    })
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
   })
 })

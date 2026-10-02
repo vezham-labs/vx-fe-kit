@@ -41,8 +41,11 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
   const [controlsOpen, setControlsOpen] = useState(false)
   const { openInfoPanel, closeInfoPanel } = useInfoPanel()
   const { closeCommand } = useCommand()
-  const { expandNavigation, isNavigationCollapsed: isWorkspaceCollapsed } =
-    useWorkspaceNavigation()
+  const {
+    collapseNavigation,
+    expandNavigation,
+    isNavigationCollapsed: isWorkspaceCollapsed
+  } = useWorkspaceNavigation()
   // vx-bot/NOTE: Home collapse state is independent from module sidebars.
   const [isHomeCollapsed, setIsHomeCollapsed] = useState(false)
   const isHome = location.pathname === (items[0]?.href ?? '/')
@@ -50,10 +53,14 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
   // vx-bot/NOTE: Preserve the Home gutter while its floating bubble is visible.
   const navigationWidth = isHome || !isNavigationCollapsed ? 'w-[106px]' : 'w-0'
 
-  const collapseHomeNavigation = () => {
-    setIsHomeCollapsed(true)
-    closeInfoPanel()
-    closeCommand()
+  const hideDock = () => {
+    if (isHome) {
+      setIsHomeCollapsed(true)
+      closeInfoPanel()
+      closeCommand()
+    } else {
+      collapseNavigation()
+    }
     setOpenSettings(false)
     setNotificationsOpen(false)
     setControlsOpen(false)
@@ -61,7 +68,7 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
 
   useSidebarShortcut(() => {
     if (isHomeCollapsed) setIsHomeCollapsed(false)
-    else collapseHomeNavigation()
+    else hideDock()
   }, isHome)
 
   const selectedKey = getSelectedMenuKey(location.pathname, items)
@@ -83,7 +90,7 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
         navigationWidth={navigationWidth}
         selectedKey={selectedKey}
         onAI={() => openInfoPanel('ai')}
-        onCollapse={isHome ? collapseHomeNavigation : undefined}
+        onCollapse={hideDock}
         onControlCenter={() => setControlsOpen(true)}
         onNotifications={() => setNotificationsOpen(true)}
         onUser={entryPoint => {
@@ -164,7 +171,7 @@ const NavigationPanel = ({
           showSearch
           showBookamarks
           showDisk
-          onCollapseNavigation={onCollapse}
+          onHideDock={onCollapse}
         />
         <Menu collapsed={false} items={items} selectedKey={selectedKey} />
         <Footer
@@ -206,7 +213,7 @@ const CollapsedNavigation = ({
     <Surface
       variant="transparent"
       className="border-default-200 bg-background/90 fixed top-3 left-3 z-40 flex h-[60px] w-fit items-center rounded-full border px-2 py-1 shadow-[0_14px_28px_rgba(15,23,42,0.14)] backdrop-blur-xl">
-      <Header compact users={headerUsers} onOpenNavigation={onExpandModule} />
+      <Header compact users={headerUsers} onShowDock={onExpandModule} />
     </Surface>
   )
 }

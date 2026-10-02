@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs'
 import path from 'node:path'
 
 import { readYamlConfig } from '../yaml-config.ts'
+import { validateAppMenu } from './app-menu.ts'
 import { validateToolbar } from './toolbar.ts'
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
@@ -41,10 +42,15 @@ export const getNavigationFiles = (projectRoot: string) => {
   const file = path.join(projectRoot, 'vx.nav.yaml')
   if (!existsSync(file)) return []
   const config = readYamlConfig<unknown>(file)
-  if (!isObject(config) || Object.keys(config).some(key => key !== 'items')) {
-    throw new Error(`${file} must contain only an items array`)
+  if (
+    !isObject(config) ||
+    Object.keys(config).some(key => !['items', 'appMenu'].includes(key))
+  ) {
+    throw new Error(`${file} must contain items and optional appMenu arrays`)
   }
   validateItems(config.items, file)
+  if (config.appMenu !== undefined)
+    validateAppMenu(config.appMenu, `${file}.appMenu`)
   const helpers = `
 export const getNavigationChildren = (key: string) => {
   const item = navigationItems.find(item => item.key === key)
@@ -57,7 +63,7 @@ export const getNavigationChildren = (key: string) => {
   return [
     {
       path: path.join(projectRoot, 'src/generated/navigation.ts'),
-      content: `// Generated from vx.nav.yaml. DO NOT EDIT.\nimport type { AppNavigationItem } from '@vx/react'\n\nexport const navigationItems = ${JSON.stringify(config.items, null, 2)} satisfies AppNavigationItem[]\n${helpers}`
+      content: `// Generated from vx.nav.yaml. DO NOT EDIT.\nimport type { AppNavigationItem, AppMenuItem } from '@vx/react'\n\nexport const navigationItems = ${JSON.stringify(config.items, null, 2)} satisfies AppNavigationItem[]\n\nexport const appMenu = ${JSON.stringify(config.appMenu ?? [], null, 2)} satisfies AppMenuItem[]\n${helpers}`
     }
   ]
 }

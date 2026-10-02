@@ -1,4 +1,8 @@
-import { type AppNavigationItem, getSelectedMenuKey } from './navigation'
+import {
+  type AppNavigationItem,
+  getNavigationPageKey,
+  getSelectedMenuKey
+} from './navigation'
 
 const items: AppNavigationItem[] = [
   { key: 'home', title: 'Home', href: '/' },
@@ -70,5 +74,18 @@ describe('menu selection', () => {
         }
       ])
     ).toBe('settings')
+  })
+})
+
+describe('application menu action scope', () => {
+  it.each([
+    ['/', 'home'],
+    ['/tabs/overview', 'overview'],
+    ['/tabs/activity', 'activity'],
+    ['/workspace/team/roles/editor', 'roles'],
+    ['/tabs/activity-other', ''],
+    ['/unknown', '']
+  ])('uses the deepest matching page for %s', (pathname, key) => {
+    expect(getNavigationPageKey(items, pathname)).toBe(key)
   })
 })

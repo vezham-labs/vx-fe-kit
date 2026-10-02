@@ -49,6 +49,74 @@ describe('navigation generation', () => {
     expect(() => lookup('missing')).toThrow('Unknown navigation key: missing')
     expect(() => lookup('toString')).toThrow('Unknown navigation key: toString')
   })
+  it('generates app menu metadata without executable behavior', () => {
+    const root = project()
+    const appMenu = [
+      {
+        key: 'file',
+        label: 'File',
+        groups: [
+          [
+            {
+              key: 'file.new',
+              label: 'New…',
+              icon: 'vx:plus',
+              shortcut: 'Mod N'
+            }
+          ]
+        ]
+      }
+    ]
+    writeFileSync(
+      path.join(root, 'vx.nav.yaml'),
+      stringify({ items: [], appMenu })
+    )
+    const exports: { appMenu?: unknown } = {}
+    runInNewContext(
+      transpile(getNavigationFiles(root)[0].content, {
+        module: ModuleKind.CommonJS
+      }),
+      { exports }
+    )
+    expect(exports.appMenu).toEqual(appMenu)
+  })
+
+  it.each([
+    null,
+    [{ key: 'file', label: 'File', groups: [] }],
+    [
+      {
+        key: 'file',
+        label: 'File',
+        groups: [[{ key: 'file.new', label: 'New', onPress: 'callback' }]]
+      }
+    ],
+    [
+      {
+        key: 'file',
+        label: 'File',
+        groups: [
+          [{ key: 'file.new', label: 'New' }],
+          [{ key: 'file.new', label: 'Again' }]
+        ]
+      }
+    ],
+    [
+      {
+        key: 'file',
+        label: 'File',
+        groups: [[{ key: 'file.new', label: 'New', shortcut: 42 }]]
+      }
+    ]
+  ])('rejects invalid app menus: %j', appMenu => {
+    const root = project()
+    writeFileSync(
+      path.join(root, 'vx.nav.yaml'),
+      stringify({ items: [], appMenu })
+    )
+    expect(() => getNavigationFiles(root)).toThrow()
+  })
+
   it('is optional for apps without shell navigation', () => {
     expect(getNavigationFiles(project())).toEqual([])
   })

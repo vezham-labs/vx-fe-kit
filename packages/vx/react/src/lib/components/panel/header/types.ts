@@ -22,7 +22,7 @@ export interface HeaderActionsProps {
   className?: string
   compact?: boolean
   hideSeparator?: boolean
-  onOpenNavigation?: () => void
-  onCollapseNavigation?: () => void
+  onShowDock?: () => void
+  onHideDock?: () => void
   extraActions?: ReactNode
 }

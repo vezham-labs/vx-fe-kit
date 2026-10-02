@@ -21,6 +21,31 @@ Items require `key` and `title`. Optional fields are `href`, `icon`,
 `iconActive`, and recursive `children`. Keys must be unique among siblings.
 Array order determines presentation order. A group may omit `href`.
 
+## Application menu
+
+`appMenu` is a top-level array, separate from route `items` and toolbar actions.
+Each menu has a `key`, `label`, optional `icon`, and `groups` of actions. Each
+non-empty group is separated visually. Actions have a globally unique `key`,
+`label`, optional `icon`, and optional `shortcut` display string.
+
+```yaml
+appMenu:
+  - key: file
+    label: File
+    groups:
+      - - key: file.new
+          label: New…
+          shortcut: Mod N
+```
+
+Generation exports `appMenu` alongside `navigationItems`. Pass both to
+`AppLayout`. The shared header emits configured action keys with the active
+page key and pathname through the same app-scoped dispatcher as toolbars.
+Register handlers with `useToolbarAction('file.new', handler, { pageKey })`.
+Unhandled actions show a TODO toast. Shortcut strings describe the menu and
+are not automatically registered as hotkeys; app code owns keyboard bindings.
+Shell controls (Home, Search, Sidebar) remain runtime controls.
+
 ## Toolbar configuration
 
 Navigation items may define a serializable `toolbar`. Put shared defaults on
@@ -138,8 +163,16 @@ Use macOS menu terminology: **Show Sidebar** and **Hide Sidebar**. Sidebar
 controls show a shortcut tooltip and use ⌘S. Section toolbars also support ⌘←
 for Back, ⌘→ for Forward, and ⌘R for Sync. Register sidebar actions with
 `useSidebarShortcut` so the active layout handles the shortcut once, including
-the mobile drawer and the independent Home sidebar.
+the mobile drawer.
 
 For shortcuts that accept either platform modifier, pass `Mod` to `ShortcutKey`
 or `ShortcutTooltipLabel` (for example, `Mod K`). It displays ⌘ on macOS and
 Ctrl on Windows/Linux. Keep explicit modifiers for bindings that require them.
+
+## Dock controls
+
+The application menu/taskbar is the **Dock**, distinct from a section sidebar.
+Its header uses **Show Dock** / **Hide Dock**, with `onShowDock` / `onHideDock`
+callbacks. Hide Dock is available on every desktop destination. The Home dock has independent collapse state. Existing workspace
+collapse state still controls the dock alongside section navigation outside
+Home. Keep section sidebar controls labeled **Show Sidebar** / **Hide Sidebar**.

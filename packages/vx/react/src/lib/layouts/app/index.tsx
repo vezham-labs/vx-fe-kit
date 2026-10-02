@@ -1,11 +1,21 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react'
+import { useLocation } from '@tanstack/react-router'
+import {
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+  useCallback
+} from 'react'
 
-import { Surface, cn } from '@vezham/react-v3'
+import { Surface, cn, toast } from '@vezham/react-v3'
 
+import { type AppMenuItem, AppMenuProvider } from '../../components/app-menu'
 import { CommandProvider } from '../../components/command'
 import { InfoPanelProvider } from '../../components/panel/info-panel'
-import { ToolbarActionsProvider } from '../../components/toolbar-actions'
+import {
+  ToolbarActionsProvider,
+  useToolbarActions
+} from '../../components/toolbar-actions'
 import { WorkspaceNavigationProvider } from '../../components/workspace-navigation'
+import { getNavigationPageKey } from '../../navigation'
 import type { AppNavigationItem } from '../../navigation'
 import { type User, UserProvider } from '../../store/users/useUserStore'
 import { MenuLayout } from '../menu-layout'
@@ -47,31 +57,64 @@ const AppFrame = ({
 
 export type AppLayoutProps = Omit<AppFrameProps, 'navigation'> & {
   navigationItems: AppNavigationItem[]
+  appMenu?: AppMenuItem[]
   user?: User | null
 }
 
 const AppLayout = ({
   children,
   navigationItems,
+  appMenu = [],
   user,
   ...frameProps
 }: AppLayoutProps) => {
   return (
     <ToolbarActionsProvider>
-      <UserProvider initialUser={user}>
-        <CommandProvider items={navigationItems}>
-          <InfoPanelProvider>
-            <WorkspaceNavigationProvider>
-              <AppFrame
-                {...frameProps}
-                navigation={<MenuLayout items={navigationItems} />}>
-                {children}
-              </AppFrame>
-            </WorkspaceNavigationProvider>
-          </InfoPanelProvider>
-        </CommandProvider>
-      </UserProvider>
+      <AppMenuShell items={appMenu} navigationItems={navigationItems}>
+        <UserProvider initialUser={user}>
+          <CommandProvider items={navigationItems}>
+            <InfoPanelProvider>
+              <WorkspaceNavigationProvider>
+                <AppFrame
+                  {...frameProps}
+                  navigation={<MenuLayout items={navigationItems} />}>
+                  {children}
+                </AppFrame>
+              </WorkspaceNavigationProvider>
+            </InfoPanelProvider>
+          </CommandProvider>
+        </UserProvider>
+      </AppMenuShell>
     </ToolbarActionsProvider>
+  )
+}
+
+const AppMenuShell = ({
+  items,
+  navigationItems,
+  children
+}: {
+  items: AppMenuItem[]
+  navigationItems: AppNavigationItem[]
+  children: ReactNode
+}) => {
+  const { pathname } = useLocation()
+  const { emit } = useToolbarActions()
+  const pageKey = getNavigationPageKey(navigationItems, pathname)
+  const onAction = useCallback(
+    (action: AppMenuItem['groups'][number][number]) => {
+      if (!emit({ actionKey: action.key, pageKey, pathname })) {
+        toast.info(
+          `TODO: ${action.label.replace(/…$/, '')} is not implemented yet.`
+        )
+      }
+    },
+    [emit, pageKey, pathname]
+  )
+  return (
+    <AppMenuProvider items={items} onAction={onAction}>
+      {children}
+    </AppMenuProvider>
   )
 }
 

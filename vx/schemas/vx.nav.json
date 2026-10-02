@@ -11,6 +11,12 @@
       "items": {
         "$ref": "#/definitions/item"
       }
+    },
+    "appMenu": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/appMenu"
+      }
     }
   },
   "definitions": {
@@ -115,6 +121,59 @@
               "$ref": "#/definitions/action"
             }
           ]
+        }
+      }
+    },
+    "appMenuAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label"],
+      "properties": {
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "icon": {
+          "type": "string",
+          "minLength": 1
+        },
+        "shortcut": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "appMenu": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "groups"],
+      "properties": {
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "icon": {
+          "type": "string",
+          "minLength": 1
+        },
+        "groups": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/definitions/appMenuAction"
+            }
+          }
         }
       }
     }

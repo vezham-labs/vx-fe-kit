@@ -1,5 +1,5 @@
 // Generated from vx.nav.yaml. DO NOT EDIT.
-import type { AppNavigationItem } from '@vx/react'
+import type { AppNavigationItem, AppMenuItem } from '@vx/react'
 
 export const navigationItems = [
   {
@@ -893,6 +893,158 @@ export const navigationItems = [
     ]
   }
 ] satisfies AppNavigationItem[]
+
+export const appMenu = [
+  {
+    "key": "file",
+    "label": "File",
+    "groups": [
+      [
+        {
+          "key": "file.new",
+          "label": "New…",
+          "shortcut": "Mod N"
+        },
+        {
+          "key": "file.open",
+          "label": "Open…",
+          "shortcut": "Mod O"
+        }
+      ],
+      [
+        {
+          "key": "file.save",
+          "label": "Save",
+          "shortcut": "Mod S"
+        },
+        {
+          "key": "file.save-as",
+          "label": "Save As…",
+          "shortcut": "⇧ Mod S"
+        }
+      ],
+      [
+        {
+          "key": "file.import",
+          "label": "Import…"
+        },
+        {
+          "key": "file.export",
+          "label": "Export…"
+        }
+      ],
+      [
+        {
+          "key": "file.print",
+          "label": "Print…",
+          "shortcut": "Mod P"
+        }
+      ]
+    ]
+  },
+  {
+    "key": "edit",
+    "label": "Edit",
+    "groups": [
+      [
+        {
+          "key": "edit.undo",
+          "label": "Undo",
+          "shortcut": "Mod Z"
+        },
+        {
+          "key": "edit.redo",
+          "label": "Redo",
+          "shortcut": "⇧ Mod Z"
+        }
+      ],
+      [
+        {
+          "key": "edit.cut",
+          "label": "Cut",
+          "shortcut": "Mod X"
+        },
+        {
+          "key": "edit.copy",
+          "label": "Copy",
+          "shortcut": "Mod C"
+        },
+        {
+          "key": "edit.paste",
+          "label": "Paste",
+          "shortcut": "Mod V"
+        },
+        {
+          "key": "edit.select-all",
+          "label": "Select All",
+          "shortcut": "Mod A"
+        }
+      ],
+      [
+        {
+          "key": "edit.find",
+          "label": "Find…",
+          "shortcut": "Mod F"
+        }
+      ]
+    ]
+  },
+  {
+    "key": "view",
+    "label": "View",
+    "groups": [
+      [
+        {
+          "key": "view.zoom-in",
+          "label": "Zoom In",
+          "shortcut": "Mod +"
+        },
+        {
+          "key": "view.zoom-out",
+          "label": "Zoom Out",
+          "shortcut": "Mod -"
+        },
+        {
+          "key": "view.actual-size",
+          "label": "Actual Size",
+          "shortcut": "Mod 0"
+        }
+      ],
+      [
+        {
+          "key": "view.full-screen",
+          "label": "Enter Full Screen"
+        }
+      ]
+    ]
+  },
+  {
+    "key": "help",
+    "label": "Help",
+    "groups": [
+      [
+        {
+          "key": "help.app-help",
+          "label": "App Help"
+        },
+        {
+          "key": "help.keyboard-shortcuts",
+          "label": "Keyboard Shortcuts"
+        }
+      ],
+      [
+        {
+          "key": "help.report-issue",
+          "label": "Report an Issue…"
+        },
+        {
+          "key": "help.send-feedback",
+          "label": "Send Feedback…"
+        }
+      ]
+    ]
+  }
+] satisfies AppMenuItem[]
 
 export const getNavigationChildren = (key: string) => {
   const item = navigationItems.find(item => item.key === key)

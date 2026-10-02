@@ -1,7 +1,71 @@
+import {
+  RouterProvider,
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter
+} from '@tanstack/react-router'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
-import { AppFrame } from './index'
+import { toast } from '@vezham/react-v3'
+
+import { useAppMenu } from '../../components/app-menu'
+import { useToolbarAction } from '../../components/toolbar-actions'
+import { AppFrame, AppLayout } from './index'
+
+vi.mock('../menu-layout', () => ({ MenuLayout: () => null }))
+
+it('dispatches app menu actions to the active page and reports unhandled actions', async () => {
+  const handler = vi.fn()
+  const notice = vi.spyOn(toast, 'info').mockReturnValue('app-menu-notice')
+  const action = { key: 'file.new', label: 'New…' }
+  const Consumer = () => {
+    const menu = useAppMenu()!
+    useToolbarAction('file.new', handler, { pageKey: 'records' })
+    return (
+      <button onClick={() => menu.onAction(menu.items[0].groups[0][0])}>
+        New record
+      </button>
+    )
+  }
+  const root = createRootRoute({
+    component: () => (
+      <AppLayout
+        navigationItems={[
+          { key: 'records', title: 'Records', href: '/records' },
+          { key: 'other', title: 'Other', href: '/other' }
+        ]}
+        appMenu={[{ key: 'file', label: 'File', groups: [[action]] }]}>
+        <Consumer />
+      </AppLayout>
+    )
+  })
+  const records = createRoute({ getParentRoute: () => root, path: '/records' })
+  const other = createRoute({ getParentRoute: () => root, path: '/other' })
+  const router = createRouter({
+    routeTree: root.addChildren([records, other]),
+    history: createMemoryHistory({ initialEntries: ['/records'] })
+  })
+  try {
+    render(<RouterProvider router={router} />)
+    fireEvent.click(await screen.findByRole('button', { name: 'New record' }))
+    expect(handler).toHaveBeenCalledWith({
+      actionKey: 'file.new',
+      pageKey: 'records',
+      pathname: '/records'
+    })
+    expect(notice).not.toHaveBeenCalled()
+    await router.navigate({ to: '/other' })
+    await waitFor(() => expect(router.state.location.pathname).toBe('/other'))
+    fireEvent.click(screen.getByRole('button', { name: 'New record' }))
+    expect(handler).toHaveBeenCalledOnce()
+    expect(notice).toHaveBeenCalledWith('TODO: New is not implemented yet.')
+  } finally {
+    notice.mockRestore()
+  }
+})
 
 describe('AppFrame', () => {
   it('renders navigation and content in the shared app frame', () => {
