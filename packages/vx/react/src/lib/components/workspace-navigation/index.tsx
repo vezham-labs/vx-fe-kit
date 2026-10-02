@@ -15,8 +15,6 @@ import { useInfoPanel } from '../panel/info-panel'
 
 type WorkspaceNavigationContextValue = {
   isNavigationCollapsed: boolean
-  collapseNavigation: () => void
-  expandNavigation: () => void
   toggleNavigation: () => void
   registerSidebarShortcut: (handler: () => void) => () => void
 }
@@ -42,16 +40,6 @@ const WorkspaceNavigationProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [])
 
-  const collapseNavigation = useCallback(() => {
-    setIsNavigationCollapsed(true)
-    closeInfoPanel()
-    closeCommand()
-  }, [closeCommand, closeInfoPanel])
-
-  const expandNavigation = useCallback(() => {
-    setIsNavigationCollapsed(false)
-  }, [])
-
   const toggleNavigation = useCallback(() => {
     setIsNavigationCollapsed(isCollapsed => !isCollapsed)
     closeInfoPanel()
@@ -67,18 +55,10 @@ const WorkspaceNavigationProvider = ({ children }: { children: ReactNode }) => {
   const value = useMemo(
     () => ({
       isNavigationCollapsed,
-      collapseNavigation,
-      expandNavigation,
       toggleNavigation,
       registerSidebarShortcut
     }),
-    [
-      collapseNavigation,
-      expandNavigation,
-      isNavigationCollapsed,
-      toggleNavigation,
-      registerSidebarShortcut
-    ]
+    [isNavigationCollapsed, toggleNavigation, registerSidebarShortcut]
   )
 
   return (

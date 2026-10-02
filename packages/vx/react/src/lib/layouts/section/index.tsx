@@ -73,13 +73,14 @@ const SectionLayout = ({
     tabs.find(tab => matchesPath(pathname, tab.href)) ?? tabs[0]
   const hasSidebar = sidebarItems.length > 0
   const sidebarId = useId()
-  useSidebarShortcut(() => {
+  const toggleSidebar = () => {
     if (hasSidebar && !window.matchMedia('(min-width: 768px)').matches) {
       setIsDrawerOpen(open => !open)
     } else {
       toggleNavigation()
     }
-  })
+  }
+  useSidebarShortcut(toggleSidebar)
   useHotkey('Meta+ArrowLeft', () => router.history.back())
   useHotkey('Meta+ArrowRight', () => router.history.forward())
   useHotkey(
@@ -157,7 +158,7 @@ const SectionLayout = ({
                 shortcut="⌘ S"
                 aria-keyshortcuts="Meta+S"
                 aria-expanded={isDrawerOpen}
-                onPress={() => setIsDrawerOpen(open => !open)}>
+                onPress={toggleSidebar}>
                 <AppIcon icon="vx:sidebar" size={18} aria-hidden="true" />
               </ShortcutButton>
             )}

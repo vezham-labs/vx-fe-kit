@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { useState } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { AppMenuProvider } from '../../app-menu'
@@ -19,7 +20,7 @@ describe('Shared compact navigation header', () => {
 
   it('matches the small ghost action buttons without extra spacing', () => {
     const { container } = render(
-      <Header compact users={{ id: '1', name: 'School' }} />
+      <Header compact isDockHidden users={{ id: '1', name: 'School' }} />
     )
 
     for (const name of ['Show Dock', 'Open command palette']) {
@@ -51,8 +52,9 @@ describe('Shared compact navigation header', () => {
     render(
       <Header
         compact
+        isDockHidden
         users={{ id: '1', name: 'School' }}
-        onShowDock={actions.expand}
+        onToggleDock={actions.expand}
       />
     )
     fireEvent.click(screen.getByRole('button', { name: 'Show Dock' }))
@@ -72,7 +74,7 @@ describe('Shared compact navigation header', () => {
         <Header
           compact={compact}
           users={{ id: '1', name: 'School' }}
-          onHideDock={collapse}
+          onToggleDock={collapse}
         />
       )
       fireEvent.click(
@@ -96,6 +98,36 @@ describe('Shared compact navigation header', () => {
     }
   )
 
+  it('uses the same callback for both dock menu states', async () => {
+    const Dock = () => {
+      const [hidden, setHidden] = useState(false)
+      return (
+        <Header
+          users={{ id: '1', name: 'School' }}
+          isDockHidden={hidden}
+          onToggleDock={() => setHidden(value => !value)}
+        />
+      )
+    }
+    render(<Dock />)
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Open application menu' })
+    )
+    fireEvent.click(await screen.findByRole('menuitem', { name: /Hide Dock/ }))
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Open application menu' })
+    )
+    fireEvent.click(await screen.findByRole('menuitem', { name: /Show Dock/ }))
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Open application menu' })
+    )
+    expect(
+      await screen.findByRole('menuitem', { name: /Hide Dock/ })
+    ).toBeTruthy()
+  })
+
   it('opens the File submenu with the keyboard and dispatches configured actions', async () => {
     const notice = vi.fn()
     render(
@@ -108,7 +140,7 @@ describe('Shared compact navigation header', () => {
           }
         ]}
         onAction={notice}>
-        <Header compact users={{ id: '1', name: 'School' }} />
+        <Header compact isDockHidden users={{ id: '1', name: 'School' }} />
       </AppMenuProvider>
     )
     fireEvent.click(

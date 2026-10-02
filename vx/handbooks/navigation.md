@@ -159,6 +159,10 @@ outlets display only the current URL; domain page content is added separately.
 
 ## Sidebar controls
 
+UI controls and shortcuts use one toggle callback; preserve explicit close
+actions for dismissing drawers after navigation. The shared workspace provider
+exposes `toggleNavigation`, not separate expand/collapse methods.
+
 Use macOS menu terminology: **Show Sidebar** and **Hide Sidebar**. Sidebar
 controls show a shortcut tooltip and use ⌘S. Section toolbars also support ⌘←
 for Back, ⌘→ for Forward, and ⌘R for Sync. Register sidebar actions with
@@ -172,7 +176,8 @@ Ctrl on Windows/Linux. Keep explicit modifiers for bindings that require them.
 ## Dock controls
 
 The application menu/taskbar is the **Dock**, distinct from a section sidebar.
-Its header uses **Show Dock** / **Hide Dock**, with `onShowDock` / `onHideDock`
-callbacks. Hide Dock is available on every desktop destination. The Home dock has independent collapse state. Existing workspace
+Its header uses **Show Dock** / **Hide Dock**, with a single `onToggleDock`
+callback and `isDockHidden` state. Hide Dock is available on every desktop
+destination. The Home dock has independent collapse state. Existing workspace
 collapse state still controls the dock alongside section navigation outside
 Home. Keep section sidebar controls labeled **Show Sidebar** / **Hide Sidebar**.

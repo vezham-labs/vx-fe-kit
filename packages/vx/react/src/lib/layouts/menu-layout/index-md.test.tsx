@@ -16,8 +16,7 @@ const items: AppNavigationItem[] = [
 const state = vi.hoisted(() => ({
   pathname: '/',
   isNavigationCollapsed: false,
-  expandNavigation: vi.fn(),
-  collapseNavigation: vi.fn(),
+  toggleNavigation: vi.fn(),
   closeInfoPanel: vi.fn(),
   openCommand: vi.fn(),
   closeCommand: vi.fn()
@@ -41,16 +40,16 @@ vi.mock('../../store/users/useUserStore', () => ({
   useUser: () => ({ user: null })
 }))
 vi.mock('../../components/panel/header', () => ({
-  Header: vi.fn(({ compact, onShowDock, onHideDock }: HeaderActionsProps) =>
+  Header: vi.fn(({ compact, onToggleDock }: HeaderActionsProps) =>
     compact ? (
       <div>
-        <button onClick={onShowDock}>Show Dock</button>
+        <button onClick={onToggleDock}>Show Dock</button>
         <button onClick={state.openCommand}>Open command palette</button>
       </div>
     ) : (
       <div>
         Application menu
-        {onHideDock && <button onClick={onHideDock}>Hide Dock</button>}
+        {onToggleDock && <button onClick={onToggleDock}>Hide Dock</button>}
       </div>
     )
   )
@@ -102,7 +101,7 @@ describe('Home desktop navigation', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Show Dock' }))
     expect(screen.getByText('Application menu')).toBeTruthy()
-    expect(state.expandNavigation).not.toHaveBeenCalled()
+    expect(state.toggleNavigation).not.toHaveBeenCalled()
   })
 
   it('opens search from the bubble without expanding the rail', () => {
@@ -136,12 +135,12 @@ describe('Home desktop navigation', () => {
       state.pathname = pathname
       const { rerender } = render(<MenuMD items={items} />)
       fireEvent.click(screen.getByRole('button', { name: 'Hide Dock' }))
-      expect(state.collapseNavigation).toHaveBeenCalledOnce()
+      expect(state.toggleNavigation).toHaveBeenCalledOnce()
       state.isNavigationCollapsed = true
       rerender(<MenuMD items={items} />)
       expect(screen.queryByText('Application menu')).toBeNull()
       fireEvent.click(screen.getByRole('button', { name: 'Show Dock' }))
-      expect(state.expandNavigation).toHaveBeenCalledOnce()
+      expect(state.toggleNavigation).toHaveBeenCalledTimes(2)
     }
   )
 
@@ -153,7 +152,7 @@ describe('Home desktop navigation', () => {
     state.pathname = '/reports/grade'
     rerender(<MenuMD items={items} />)
     fireEvent.click(screen.getByRole('button', { name: 'Show Dock' }))
-    expect(state.expandNavigation).toHaveBeenCalledOnce()
+    expect(state.toggleNavigation).toHaveBeenCalledOnce()
     expect(screen.queryByRole('group', { name: 'Home navigation' })).toBeNull()
   })
 

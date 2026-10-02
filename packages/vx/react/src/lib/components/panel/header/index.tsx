@@ -30,8 +30,8 @@ const Header = ({
   showDisk = false,
   onAvatarClick,
   onSearchClick,
-  onShowDock,
-  onHideDock,
+  isDockHidden = false,
+  onToggleDock,
   extraActions,
   className,
   compact = false,
@@ -89,7 +89,8 @@ const Header = ({
             <HeaderApplicationMenuContent
               onClose={() => setOpen(false)}
               onSearch={handleMenuSearch}
-              onHideDock={onHideDock}
+              isDockHidden={isDockHidden}
+              onToggleDock={onToggleDock}
             />
           </Dropdown>
         </div>
@@ -97,13 +98,13 @@ const Header = ({
         <Tooltip delay={0}>
           <Tooltip.Trigger>
             <Button
-              aria-label="Show Dock"
+              aria-label={isDockHidden ? 'Show Dock' : 'Hide Dock'}
               aria-keyshortcuts="Meta+S"
               isIconOnly
               size="sm"
               variant="ghost"
               className="text-muted hover:text-foreground"
-              onPress={onShowDock}>
+              onPress={onToggleDock}>
               <SidebarMinimalisticIcon
                 size={16}
                 className="size-4"
@@ -112,7 +113,10 @@ const Header = ({
             </Button>
           </Tooltip.Trigger>
           <Tooltip.Content placement="right">
-            <ShortcutTooltipLabel label="Show Dock" shortcut="⌘ S" />
+            <ShortcutTooltipLabel
+              label={isDockHidden ? 'Show Dock' : 'Hide Dock'}
+              shortcut="⌘ S"
+            />
           </Tooltip.Content>
         </Tooltip>
 
@@ -162,7 +166,8 @@ const Header = ({
           <HeaderApplicationMenuContent
             onClose={() => setOpen(false)}
             onSearch={handleMenuSearch}
-            onHideDock={onHideDock}
+            isDockHidden={isDockHidden}
+            onToggleDock={onToggleDock}
           />
         </Dropdown>
 
@@ -207,11 +212,13 @@ const HeaderAvatar = ({ user }: { user: HeaderActionsProps['users'] }) => (
 const HeaderApplicationMenuContent = ({
   onClose,
   onSearch,
-  onHideDock
+  isDockHidden,
+  onToggleDock
 }: {
   onClose: () => void
   onSearch: () => void
-  onHideDock?: () => void
+  isDockHidden: boolean
+  onToggleDock?: () => void
 }) => {
   const appMenu = useAppMenu()
   return (
@@ -220,17 +227,17 @@ const HeaderApplicationMenuContent = ({
         <Dropdown.Item id="home" textValue="Back to home" onPress={onClose}>
           <Label>Back to home</Label>
         </Dropdown.Item>
-        {onHideDock && (
+        {onToggleDock && (
           <Dropdown.Item
-            id="hide-dock"
-            textValue="Hide Dock"
+            id="toggle-dock"
+            textValue={isDockHidden ? 'Show Dock' : 'Hide Dock'}
             aria-keyshortcuts="Meta+S"
             onPress={() => {
               onClose()
-              onHideDock()
+              onToggleDock()
             }}>
             <SidebarMinimalisticIcon size={18} aria-hidden="true" />
-            <Label>Hide Dock</Label>
+            <Label>{isDockHidden ? 'Show Dock' : 'Hide Dock'}</Label>
             <ShortcutKey className="ms-auto" shortcut="⌘ S" />
           </Dropdown.Item>
         )}
