@@ -17,7 +17,7 @@ skill and handbook relevant to the task instead of loading every linked file.
 - `vx/` contains workspace tooling, binaries, tests, and handbooks.
 - `@vx/*` identifies private workspace packages; `@vezham/*` identifies public
   packages and external developer-facing APIs.
-- `vx.app.json` is the app metadata and route source of truth. Treat generated
+- `vx.app.yaml` is the app metadata and route source of truth. Treat generated
   notices as ownership boundaries: edit the source config or generator, then
   regenerate the output.
 
