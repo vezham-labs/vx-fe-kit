@@ -1,7 +1,16 @@
 import { Outlet } from '@tanstack/react-router'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import { RootDocument, createRootComponent, defineConfig } from './index'
+
+vi.mock('@vx/env/vite', () => ({
+  APP_ID: 'test-app',
+  APP_NAME: 'Test App',
+  APP_VER: '27.0.0',
+  APP_ENV: 'local',
+  __DEV__: false,
+  __DEBUG__: false
+}))
 
 describe('TanStack root component', () => {
   it('renders the router outlet by default', () => {

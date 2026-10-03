@@ -85,6 +85,15 @@ Regional deployer identities are not required unless future security/operations 
 
 ---
 
+| Identity | Responsibility |
+|---|---|
+| **`code@vezham.com`** | Code ownership, repository administration, maintainership |
+| **`deployer@vezham.com`** | Package publishing, deployments, cloud/infra accounts |
+| **`security@vezham.com`** | Security contact / vulnerability reports |
+| **`support@vezham.com`** | Product/user support |
+
+---
+
 # 3. Repository Naming Philosophy
 
 Engineering infrastructure and collections use the `vx-*` convention.
@@ -922,18 +931,29 @@ The release channel can be controlled through environment/configuration and feat
 Example:
 
 ```text
-APP_ENV=production
-RELEASE_CHANNEL=beta
+V_APP_ENV=production
+V_RELEASE_CHANNEL=beta
 ```
 
 Later:
 
 ```text
-APP_ENV=production
-RELEASE_CHANNEL=stable
+V_APP_ENV=production
+V_RELEASE_CHANNEL=stable
 ```
 
 This means Beta does not require a separate infrastructure environment.
+
+`@vx/env/vite` and `@vx/env/next` expose these settings as `APP_ENV` and
+`RELEASE_CHANNEL`. Omit `V_APP_ENV` for local development and set `V_APP_ENV=dev`
+for deployed development infrastructure. Build mode remains independent:
+`__DEV__` and `__PRODUCTION__` describe the build, while `APP_ENV` describes the
+deployment. Set `V_APP_ENV=qa` or `V_APP_ENV=preview` explicitly for those
+deployments. Absent or empty `V_APP_ENV` defaults to `local`, including for local
+production builds. Checked-in app configs omit it; deployment pipelines must
+supply and validate their target environment. `V_APP_ID`, `V_APP_NAME`, and `V_APP_VER` are required
+and supplied from `vx.app.yaml` by metadata generation. `V_RELEASE_CHANNEL` is
+the only release-channel input and defaults to `stable`.
 
 ---
 

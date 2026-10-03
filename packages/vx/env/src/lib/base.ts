@@ -1,18 +1,20 @@
 export type BaseApiMode = 'api' | 'mock' | 'local'
-type Environment = 'development' | 'production' | 'preview' | 'qa' | 'unknown'
+const environments = ['local', 'dev', 'qa', 'preview', 'production'] as const
+const releaseChannels = ['canary', 'beta', 'stable'] as const
+
+export type Environment = (typeof environments)[number]
+export type ReleaseChannel = (typeof releaseChannels)[number]
 
 type Props = {
   MODE?: string
-
-  V_IS_QA?: string
-  V_IS_PREVIEW?: string
+  V_APP_ENV?: string
+  V_RELEASE_CHANNEL?: string
 
   V_APP_ID?: string
   V_APP_NAME?: string
   V_APP_VER?: string
 
   V_IS_DEBUG?: string
-  V_IS_BETA?: string
 
   V_BASE_API_MODE?: BaseApiMode
   V_MOCK_LOCAL_API_URL?: string
@@ -20,32 +22,49 @@ type Props = {
   V_APP_API_URL?: string
 }
 
-export const createEnv = (__ENV__: Partial<Props>) => {
-  // vx-bot/NOTE: run env/sandbox By Stages - dev, qa, preview (alpha + beta), live (production)
-  const __DEV__ = __ENV__.MODE === 'development'
-  const __QA__ = __ENV__.V_IS_QA === 'true'
-  const __PREVIEW__ = __ENV__.V_IS_PREVIEW === 'true'
-  const __PRODUCTION__ = __ENV__.MODE === 'production'
-  let APP_ENV: Environment = 'unknown'
-
-  if (__DEV__) {
-    APP_ENV = 'development'
-  } else if (__QA__) {
-    APP_ENV = 'qa'
-  } else if (__PREVIEW__) {
-    APP_ENV = 'preview'
-  } else if (__PRODUCTION__) {
-    APP_ENV = 'production'
+const parseSetting = <T extends string>(
+  name: string,
+  value: string,
+  allowed: readonly T[]
+): T => {
+  const setting = allowed.find(option => option === value)
+  if (setting === undefined) {
+    throw new Error(`${name} must be one of: ${allowed.join(', ')}`)
   }
 
+  return setting
+}
+
+const requireSetting = (name: string, value: string | undefined): string => {
+  if (value === undefined || value.trim() === '') {
+    throw new Error(`${name} is required`)
+  }
+
+  return value
+}
+
+export const createEnv = (__ENV__: Props) => {
+  // vx-bot/NOTE: A production build can run in any deployment environment.
+  const __DEV__ = __ENV__.MODE === 'development'
+  const __PRODUCTION__ = __ENV__.MODE === 'production'
+  const APP_ENV: Environment = parseSetting(
+    'V_APP_ENV',
+    __ENV__.V_APP_ENV || 'local',
+    environments
+  )
+  const RELEASE_CHANNEL: ReleaseChannel = parseSetting(
+    'V_RELEASE_CHANNEL',
+    __ENV__.V_RELEASE_CHANNEL || 'stable',
+    releaseChannels
+  )
+
   // vx-bot/NOTE: app config
-  const APP_ID = __ENV__.V_APP_ID || 'vx-app'
-  const APP_NAME = __ENV__.V_APP_NAME || 'Vx App'
-  const APP_VER = __ENV__.V_APP_VER || '1.0.0.alpha'
+  const APP_ID = requireSetting('V_APP_ID', __ENV__.V_APP_ID)
+  const APP_NAME = requireSetting('V_APP_NAME', __ENV__.V_APP_NAME)
+  const APP_VER = requireSetting('V_APP_VER', __ENV__.V_APP_VER)
 
   // vx-bot/NOTE: app config By env
   const __DEBUG__ = __ENV__.V_IS_DEBUG === 'true'
-  const IS_BETA = __ENV__.V_IS_BETA === 'true'
 
   // vx-bot/NOTE: app - server/api endpoint
   // const BaseApiMode: BaseApiMode = __ENV__.V_BASE_API_MODE || 'api'
@@ -57,18 +76,16 @@ export const createEnv = (__ENV__: Partial<Props>) => {
   return {
     // vx-bot/INFO: @vx/app-env
     __DEV__,
-    __QA__,
-    __PREVIEW__,
     __PRODUCTION__,
     APP_ENV,
+    RELEASE_CHANNEL,
 
     // vx-bot/INFO: @vx/app
     APP_ID,
     APP_NAME,
     APP_VER,
 
-    __DEBUG__,
-    IS_BETA
+    __DEBUG__
 
     // vx-bot/REF: BASE_API_MODE
   }

@@ -29,7 +29,6 @@ const defineConfig = (): Server => {
     port: parsePort(process.env.PORT, 3030), // vx-bot/NOTE: PRE_PORT
     app_id: process.env.V_APP_ID || 'vx-app-mock',
     debug: process.env.V_IS_DEBUG === 'true',
-    // vx-bot/NOTE: beta: process.env.V_IS_BETA === 'true',
     cors_origin: process.env.V_CORS_ORIGIN || '*',
     data_routes: process.env.V_DATA_ROUTES || '../../data/routes.json',
     data_db: process.env.V_DATA_DB || '../../data/db.json'

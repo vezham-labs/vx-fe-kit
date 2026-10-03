@@ -26,14 +26,25 @@ Keep artifact version and runtime behavior separate.
 
 ```env
 V_APP_VER=27.0.0-alpha.1
-V_IS_BETA=false
+V_APP_ENV=production
+V_RELEASE_CHANNEL=stable
 ```
 
 - `V_APP_VER` identifies the artifact.
-- `V_IS_BETA` controls runtime/hosting behavior.
+- `V_APP_ENV` identifies deployment: `local`, `dev`, `qa`, `preview`, or `production`.
+- `V_RELEASE_CHANNEL` selects the independent runtime channel: `canary`, `beta`, or `stable`.
 
-Do not infer `V_IS_BETA` from the version string. A beta host can run a stable
-artifact, and a production host can temporarily run a prerelease artifact.
+`V_APP_ID`, `V_APP_NAME`, and `V_APP_VER` are required by `@vx/env`.
+Metadata generation supplies identity and version from `vx.app.yaml`.
+`V_APP_ENV` defaults to `local` when absent or empty, independently of build mode.
+Reference app configs omit it; deployments must explicitly set and validate their
+target environment.
+
+Do not infer the release channel from the version string. A beta rollout can run
+a stable artifact, and a production deployment can temporarily run a prerelease
+artifact. Use `RELEASE_CHANNEL === 'beta'` for beta-channel behavior.
+`V_RELEASE_CHANNEL` is the only release-channel input; when absent or empty,
+it defaults to `stable`.
 
 ## App Version Sync
 
