@@ -72,7 +72,7 @@ vi.mock('../../components/panel/footer/ai', () => ({ aiPanel: {} }))
 vi.mock('../../components/panel/header/bookmarks', () => ({
   bookmarksPanel: {}
 }))
-vi.mock('../../components/panel/header/disc', () => ({ discPanel: {} }))
+vi.mock('../../components/panel/header/storage', () => ({ storagePanel: {} }))
 vi.mock('../../components/panel/footer/control-center', () => ({
   ControlCenterDrawer: () => null
 }))
@@ -114,7 +114,7 @@ describe('Home desktop navigation', () => {
     expect(vi.mocked(Header).mock.lastCall?.[0]).toMatchObject({
       compact: true,
       showBookamarks: true,
-      showDisk: true
+      showStorage: true
     })
 
     fireEvent.click(screen.getByRole('button', { name: 'Show Dock' }))
@@ -164,7 +164,7 @@ describe('Home desktop navigation', () => {
       expect(vi.mocked(Header).mock.lastCall?.[0]).toMatchObject({
         compact: true,
         showBookamarks: true,
-        showDisk: true
+        showStorage: true
       })
       fireEvent.click(
         screen.getByRole('button', { name: 'Open command palette' })

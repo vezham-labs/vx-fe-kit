@@ -11,7 +11,7 @@ export interface HeaderActionsProps {
 
   showSearch?: boolean
   showBookamarks?: boolean
-  showDisk?: boolean
+  showStorage?: boolean
 
   favoritesCount?: number
   archiveCount?: number

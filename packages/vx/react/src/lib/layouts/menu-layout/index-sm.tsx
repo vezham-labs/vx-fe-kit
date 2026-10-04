@@ -10,7 +10,7 @@ import { NotificationDrawer } from '../../components/panel/footer/notification-c
 import { UserInfoModal } from '../../components/panel/footer/preferences/modal'
 import { Header } from '../../components/panel/header'
 import { bookmarksPanel } from '../../components/panel/header/bookmarks'
-import { discPanel } from '../../components/panel/header/disc'
+import { storagePanel } from '../../components/panel/header/storage'
 import {
   InfoPanelContainer,
   useInfoPanel
@@ -55,7 +55,7 @@ const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
             className="flex-shrink-0"
             users={users}
             showBookamarks
-            showDisk
+            showStorage
             isSidebarOpen={mobileSidebar?.isOpen}
             onToggleSidebar={mobileSidebar?.onToggle}
           />
@@ -107,7 +107,7 @@ const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
       <InfoPanelContainer
         panels={{
           bookmarks: bookmarksPanel,
-          disc: discPanel,
+          storage: storagePanel,
           ai: aiPanel
         }}
       />

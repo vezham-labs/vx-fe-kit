@@ -23,14 +23,14 @@ import { useCommand } from '../../command'
 import { ShortcutKey, ShortcutTooltipLabel } from '../../shortcut-key'
 import { useInfoPanel } from '../info-panel'
 import { BookmarksTrigger } from './bookmarks'
-import { DiscTrigger } from './disc'
+import { StorageTrigger } from './storage'
 import { HeaderActionsProps } from './types'
 
 const Header = ({
   users,
   showSearch = false,
   showBookamarks = false,
-  showDisk = false,
+  showStorage = false,
   onAvatarClick,
   onSearchClick,
   isDockHidden = false,
@@ -106,7 +106,7 @@ const Header = ({
               onToggleNavigation={onToggleNavigation}
               showMenuUtilities={showMenuUtilities}
               showBookamarks={showBookamarks}
-              showDisk={showDisk}
+              showStorage={showStorage}
             />
           </Dropdown>
         </div>
@@ -166,7 +166,7 @@ const Header = ({
             onToggleNavigation={onToggleNavigation}
             showMenuUtilities={showMenuUtilities}
             showBookamarks={false}
-            showDisk={false}
+            showStorage={false}
           />
         </Dropdown>
 
@@ -192,7 +192,7 @@ const Header = ({
           </Tooltip>
         )}
         {showBookamarks && <BookmarksTrigger />}
-        {showDisk && <DiscTrigger />}
+        {showStorage && <StorageTrigger />}
         {extraActions}
       </Surface>
 
@@ -215,7 +215,7 @@ const HeaderApplicationMenuContent = ({
   onToggleNavigation,
   showMenuUtilities,
   showBookamarks,
-  showDisk
+  showStorage
 }: {
   onClose: () => void
   onSearch: () => void
@@ -223,7 +223,7 @@ const HeaderApplicationMenuContent = ({
   onToggleNavigation?: () => void
   showMenuUtilities: boolean
   showBookamarks: boolean
-  showDisk: boolean
+  showStorage: boolean
 }) => {
   const appMenu = useAppMenu()
   return (
@@ -261,14 +261,14 @@ const HeaderApplicationMenuContent = ({
             </Dropdown.Item>
           </>
         )}
-        {(showBookamarks || showDisk) && (
+        {(showBookamarks || showStorage) && (
           <HeaderPanelMenuItems
             showBookamarks={showBookamarks}
-            showDisk={showDisk}
+            showStorage={showStorage}
             onClose={onClose}
           />
         )}
-        {(showMenuUtilities || showBookamarks || showDisk) && <Separator />}
+        {(showMenuUtilities || showBookamarks || showStorage) && <Separator />}
         {appMenu?.items.map(menu => (
           <Dropdown.SubmenuTrigger key={menu.key}>
             <Dropdown.Item id={menu.key} textValue={menu.label}>
@@ -321,11 +321,11 @@ const HeaderApplicationMenuContent = ({
 
 const HeaderPanelMenuItems = ({
   showBookamarks,
-  showDisk,
+  showStorage,
   onClose
 }: {
   showBookamarks: boolean
-  showDisk: boolean
+  showStorage: boolean
   onClose: () => void
 }) => {
   const { toggleInfoPanel } = useInfoPanel()
@@ -336,24 +336,30 @@ const HeaderPanelMenuItems = ({
         <Dropdown.Item
           id="bookmarks"
           textValue="Bookmarks"
+          aria-label="Bookmarks"
+          aria-keyshortcuts="Meta+Shift+B Control+Shift+B"
           onPress={() => {
             onClose()
             toggleInfoPanel('bookmarks')
           }}>
           <StarIcon size={18} aria-hidden="true" />
           <Label>Bookmarks</Label>
+          <ShortcutKey className="ms-auto" shortcut="Mod ⇧ B" />
         </Dropdown.Item>
       )}
-      {showDisk && (
+      {showStorage && (
         <Dropdown.Item
-          id="disc"
-          textValue="Disc"
+          id="storage"
+          textValue="Storage"
+          aria-label="Storage"
+          aria-keyshortcuts="Meta+Shift+S Control+Shift+S"
           onPress={() => {
             onClose()
-            toggleInfoPanel('disc')
+            toggleInfoPanel('storage')
           }}>
           <ArchiveIcon size={18} aria-hidden="true" />
-          <Label>Disc</Label>
+          <Label>Storage</Label>
+          <ShortcutKey className="ms-auto" shortcut="Mod ⇧ S" />
         </Dropdown.Item>
       )}
     </>

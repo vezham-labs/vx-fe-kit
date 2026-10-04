@@ -12,7 +12,7 @@ type Action = {
   onPress: () => void
 }
 
-export const DiscHistoryActions = ({
+export const StorageHistoryActions = ({
   visible,
   actions,
   barProps

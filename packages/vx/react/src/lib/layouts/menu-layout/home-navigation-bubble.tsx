@@ -21,7 +21,7 @@ const HomeNavigationBubble = ({
         users={users}
         isDockHidden
         showBookamarks
-        showDisk
+        showStorage
         onToggleDock={onToggleDock}
       />
     </Surface>

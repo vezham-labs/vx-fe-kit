@@ -96,7 +96,7 @@ describe('Shared compact navigation header', () => {
   })
 
   it.each([true, false])(
-    'opens the Bookmarks and Disc panels from the bubble menu (utilities=%s)',
+    'opens the Bookmarks and Storage panels from the bubble menu (utilities=%s)',
     async showMenuUtilities => {
       render(
         <Header
@@ -104,12 +104,12 @@ describe('Shared compact navigation header', () => {
           showMenuUtilities={showMenuUtilities}
           users={{ id: '1', name: 'School' }}
           showBookamarks
-          showDisk
+          showStorage
         />
       )
 
       expect(screen.queryByLabelText('Bookmarks')).toBeNull()
-      expect(screen.queryByLabelText('Disc')).toBeNull()
+      expect(screen.queryByLabelText('Storage')).toBeNull()
 
       fireEvent.click(
         screen.getByRole('button', { name: 'Open application menu' })
@@ -123,27 +123,27 @@ describe('Shared compact navigation header', () => {
       fireEvent.click(
         screen.getByRole('button', { name: 'Open application menu' })
       )
-      fireEvent.click(await screen.findByRole('menuitem', { name: 'Disc' }))
-      expect(actions.toggleInfoPanel).toHaveBeenCalledWith('disc')
+      fireEvent.click(await screen.findByRole('menuitem', { name: 'Storage' }))
+      expect(actions.toggleInfoPanel).toHaveBeenCalledWith('storage')
       await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
     }
   )
 
   it.each([true, false])(
-    'keeps Bookmarks and Disc in the regular menu layout (utilities=%s)',
+    'keeps Bookmarks and Storage in the regular menu layout (utilities=%s)',
     async showMenuUtilities => {
       render(
         <Header
           showMenuUtilities={showMenuUtilities}
           users={{ id: '1', name: 'School' }}
           showBookamarks
-          showDisk
+          showStorage
         />
       )
 
       for (const [label, panel] of [
         ['Bookmarks', 'bookmarks'],
-        ['Disc', 'disc']
+        ['Storage', 'storage']
       ]) {
         const icon = screen.getByLabelText(label).querySelector('svg')
         expect(icon).not.toBeNull()
@@ -156,7 +156,7 @@ describe('Shared compact navigation header', () => {
       )
       await screen.findByRole('menu', { name: /application menu/i })
       expect(screen.queryByRole('menuitem', { name: 'Bookmarks' })).toBeNull()
-      expect(screen.queryByRole('menuitem', { name: 'Disc' })).toBeNull()
+      expect(screen.queryByRole('menuitem', { name: 'Storage' })).toBeNull()
     }
   )
 

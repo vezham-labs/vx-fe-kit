@@ -15,10 +15,10 @@ export interface TrashItemRendererProps {
   onAction?: (action: string, item: TrashItem) => void
 }
 
-type DiscProps = ReturnType<typeof useProps>
+type StorageProps = ReturnType<typeof useProps>
 
 export interface TrashProps extends Pick<
-  DiscProps,
+  StorageProps,
   | 'getSearchInputProps'
   | 'getActionsBarProps'
   | 'getRestoreAllButtonProps'

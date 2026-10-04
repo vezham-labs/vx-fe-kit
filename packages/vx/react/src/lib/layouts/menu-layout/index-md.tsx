@@ -11,7 +11,7 @@ import { NotificationDrawer } from '../../components/panel/footer/notification-c
 import { UserInfoModal } from '../../components/panel/footer/preferences/modal'
 import { Header } from '../../components/panel/header'
 import { bookmarksPanel } from '../../components/panel/header/bookmarks'
-import { discPanel } from '../../components/panel/header/disc'
+import { storagePanel } from '../../components/panel/header/storage'
 import {
   InfoPanelContainer,
   useInfoPanel
@@ -113,7 +113,7 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
       <InfoPanelContainer
         panels={{
           bookmarks: bookmarksPanel,
-          disc: discPanel,
+          storage: storagePanel,
           ai: aiPanel
         }}
       />
@@ -163,7 +163,7 @@ const NavigationPanel = ({
           users={headerUsers}
           showSearch
           showBookamarks
-          showDisk
+          showStorage
           onToggleDock={onToggleDock}
         />
         <Menu collapsed={false} items={items} selectedKey={selectedKey} />
@@ -211,7 +211,7 @@ const CollapsedNavigation = ({
         users={headerUsers}
         isDockHidden
         showBookamarks
-        showDisk
+        showStorage
         onToggleDock={onToggleDock}
       />
     </Surface>

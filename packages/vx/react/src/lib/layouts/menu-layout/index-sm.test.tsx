@@ -58,7 +58,7 @@ vi.mock('../../components/panel/footer/ai', () => ({ aiPanel: {} }))
 vi.mock('../../components/panel/header/bookmarks', () => ({
   bookmarksPanel: {}
 }))
-vi.mock('../../components/panel/header/disc', () => ({ discPanel: {} }))
+vi.mock('../../components/panel/header/storage', () => ({ storagePanel: {} }))
 vi.mock('../../components/panel/footer/control-center', () => ({
   ControlCenterDrawer: () => null
 }))
@@ -83,7 +83,7 @@ describe('Small-screen navigation', () => {
 
   it.each([
     { label: 'Bookmarks', panel: 'bookmarks' },
-    { label: 'Disc', panel: 'disc' }
+    { label: 'Storage', panel: 'storage' }
   ])(
     'opens $label from the bubble while retaining the bottom navigation',
     async ({ label, panel }) => {
@@ -93,7 +93,7 @@ describe('Small-screen navigation', () => {
         name: 'Mobile navigation controls'
       })
       expect(within(bubble).queryByLabelText('Bookmarks')).toBeNull()
-      expect(within(bubble).queryByLabelText('Disc')).toBeNull()
+      expect(within(bubble).queryByLabelText('Storage')).toBeNull()
 
       fireEvent.click(
         within(bubble).getByRole('button', { name: 'Open application menu' })

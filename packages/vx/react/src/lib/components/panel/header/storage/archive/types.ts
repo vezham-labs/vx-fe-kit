@@ -15,10 +15,10 @@ export interface ArchiveItemRendererProps {
   onAction?: (action: string, item: ArchiveItem) => void
 }
 
-type DiscProps = ReturnType<typeof useProps>
+type StorageProps = ReturnType<typeof useProps>
 
 export interface ArchiveProps extends Pick<
-  DiscProps,
+  StorageProps,
   | 'getSearchInputProps'
   | 'getActionsBarProps'
   | 'getClearAllButtonProps'

@@ -7,10 +7,10 @@ import {
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Button, Input } from '@vezham/react-v3'
 
-import { DiscHistoryActions } from '../history-actions'
-import { DiscHistoryDateGroup } from '../history-date-group'
-import { DiscHistoryItemContent } from '../history-item-content'
-import { DiscHistoryShell } from '../history-shell'
+import { StorageHistoryActions } from '../history-actions'
+import { StorageHistoryDateGroup } from '../history-date-group'
+import { StorageHistoryItemContent } from '../history-item-content'
+import { StorageHistoryShell } from '../history-shell'
 import { filterHistoryItems, groupHistoryItemsByDate } from '../history-utils'
 import { TrashProps } from './types'
 import { trashActions } from './variants'
@@ -114,7 +114,7 @@ const Trash = (props: TrashProps) => {
     return (
       <div {...getItemsContainerProps()}>
         {Object.entries(trashByDate).map(([date, items]) => (
-          <DiscHistoryDateGroup
+          <StorageHistoryDateGroup
             key={date}
             date={date}
             getDateGroupProps={getDateGroupProps}
@@ -135,7 +135,7 @@ const Trash = (props: TrashProps) => {
 
               return (
                 <div key={item.id} {...getItemProps()}>
-                  <DiscHistoryItemContent
+                  <StorageHistoryItemContent
                     item={item}
                     getItemFaviconProps={getItemFaviconProps}
                     getItemFallbackIconProps={getItemFallbackIconProps}
@@ -175,7 +175,7 @@ const Trash = (props: TrashProps) => {
                 </div>
               )
             })}
-          </DiscHistoryDateGroup>
+          </StorageHistoryDateGroup>
         ))}
       </div>
     )
@@ -192,7 +192,7 @@ const Trash = (props: TrashProps) => {
   }))
 
   return (
-    <DiscHistoryShell
+    <StorageHistoryShell
       containerProps={getContainerProps()}
       search={
         <SearchInput
@@ -204,14 +204,14 @@ const Trash = (props: TrashProps) => {
         />
       }
       actions={
-        <DiscHistoryActions
+        <StorageHistoryActions
           visible={hasTrashItems}
           actions={actions}
           barProps={getActionsBarProps(true)}
         />
       }>
       {renderTrashContent()}
-    </DiscHistoryShell>
+    </StorageHistoryShell>
   )
 }
 

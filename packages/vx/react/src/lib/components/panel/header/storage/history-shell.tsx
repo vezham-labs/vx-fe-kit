@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from 'react'
 
 import { ScrollShadow } from '@vezham/react-v3'
 
-export const DiscHistoryShell = ({
+export const StorageHistoryShell = ({
   search,
   actions,
   containerProps,

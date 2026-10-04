@@ -10,10 +10,10 @@ import { EmptyState } from '@vezham/react-pro-v3/empty-state'
 import { Button, Input } from '@vezham/react-v3'
 
 import { getAppPath, getOpenUrl } from '../../../../../utils/url'
-import { DiscHistoryActions } from '../history-actions'
-import { DiscHistoryDateGroup } from '../history-date-group'
-import { DiscHistoryItemContent } from '../history-item-content'
-import { DiscHistoryShell } from '../history-shell'
+import { StorageHistoryActions } from '../history-actions'
+import { StorageHistoryDateGroup } from '../history-date-group'
+import { StorageHistoryItemContent } from '../history-item-content'
+import { StorageHistoryShell } from '../history-shell'
 import { filterHistoryItems, groupHistoryItemsByDate } from '../history-utils'
 import { ArchiveProps } from './types'
 import { archiveActions } from './variants'
@@ -123,7 +123,7 @@ const Archive = (props: ArchiveProps) => {
     return (
       <div {...getItemsContainerProps()}>
         {Object.entries(archiveByDate).map(([date, items]) => (
-          <DiscHistoryDateGroup
+          <StorageHistoryDateGroup
             key={date}
             date={date}
             getDateGroupProps={getDateGroupProps}
@@ -148,7 +148,7 @@ const Archive = (props: ArchiveProps) => {
                     type="button"
                     className="flex min-w-0 flex-1 items-center gap-3 text-left"
                     onClick={() => handleItemClick(item.url)}>
-                    <DiscHistoryItemContent
+                    <StorageHistoryItemContent
                       item={item}
                       getItemFaviconProps={getItemFaviconProps}
                       getItemFallbackIconProps={getItemFallbackIconProps}
@@ -189,7 +189,7 @@ const Archive = (props: ArchiveProps) => {
                 </div>
               )
             })}
-          </DiscHistoryDateGroup>
+          </StorageHistoryDateGroup>
         ))}
       </div>
     )
@@ -202,7 +202,7 @@ const Archive = (props: ArchiveProps) => {
   }))
 
   return (
-    <DiscHistoryShell
+    <StorageHistoryShell
       containerProps={getContainerProps()}
       search={
         <SearchInput
@@ -214,14 +214,14 @@ const Archive = (props: ArchiveProps) => {
         />
       }
       actions={
-        <DiscHistoryActions
+        <StorageHistoryActions
           visible={hasArchiveItems}
           actions={actions}
           barProps={getActionsBarProps(false)}
         />
       }>
       {renderArchiveContent()}
-    </DiscHistoryShell>
+    </StorageHistoryShell>
   )
 }
 
