@@ -43,19 +43,22 @@ export type SectionLayoutProps = {
   children: ReactNode
 }
 
+const EMPTY_SIDEBAR_ITEMS: AppNavigationItem[] = []
+const EMPTY_MENU_ACTIONS: SectionAction[] = []
+
 const matchesPath = (pathname: string, href?: string) =>
   Boolean(href && (pathname === href || pathname.startsWith(`${href}/`)))
 
 const SectionLayout = ({
   title,
   navigationLabel = `${title} sections`,
-  sidebarItems = [],
+  sidebarItems = EMPTY_SIDEBAR_ITEMS,
   tabs,
   toolbar,
   search,
   sync = true,
   onSync,
-  menuActions = [],
+  menuActions = EMPTY_MENU_ACTIONS,
   primaryAction,
   children
 }: SectionLayoutProps) => {
