@@ -25,5 +25,7 @@ export interface HeaderActionsProps {
   showMenuUtilities?: boolean
   isDockHidden?: boolean
   onToggleDock?: () => void
+  isSidebarOpen?: boolean
+  onToggleSidebar?: () => void
   extraActions?: ReactNode
 }

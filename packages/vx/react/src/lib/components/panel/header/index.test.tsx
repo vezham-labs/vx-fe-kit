@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useState } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -75,7 +75,7 @@ describe('Shared compact navigation header', () => {
     expect(actions.openCommand).toHaveBeenCalledOnce()
   })
 
-  it('omits duplicate dock and search actions from module menus', async () => {
+  it('can explicitly hide dock and search menu actions', async () => {
     render(
       <Header
         users={{ id: '1', name: 'School' }}
@@ -87,7 +87,7 @@ describe('Shared compact navigation header', () => {
     fireEvent.click(
       screen.getByRole('button', { name: 'Open application menu' })
     )
-    await screen.findByRole('menu', { name: 'Application menu' })
+    await screen.findByRole('menu', { name: /application menu/i })
 
     expect(screen.queryByRole('menuitem', { name: /Hide Dock/ })).toBeNull()
     expect(
@@ -95,29 +95,70 @@ describe('Shared compact navigation header', () => {
     ).toBeNull()
   })
 
-  it('moves Bookmarks and Disc into the application menu with their panel actions', async () => {
-    render(
-      <Header
-        compact
-        users={{ id: '1', name: 'School' }}
-        showBookamarks
-        showDisk
-      />
-    )
+  it.each([true, false])(
+    'opens the Bookmarks and Disc panels from the bubble menu (utilities=%s)',
+    async showMenuUtilities => {
+      render(
+        <Header
+          compact
+          showMenuUtilities={showMenuUtilities}
+          users={{ id: '1', name: 'School' }}
+          showBookamarks
+          showDisk
+        />
+      )
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Open application menu' })
-    )
-    fireEvent.click(await screen.findByRole('menuitem', { name: 'Bookmarks' }))
-    expect(actions.toggleInfoPanel).toHaveBeenCalledWith('bookmarks')
-    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+      expect(screen.queryByLabelText('Bookmarks')).toBeNull()
+      expect(screen.queryByLabelText('Disc')).toBeNull()
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Open application menu' })
-    )
-    fireEvent.click(await screen.findByRole('menuitem', { name: 'Disc' }))
-    expect(actions.toggleInfoPanel).toHaveBeenCalledWith('disc')
-  })
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Open application menu' })
+      )
+      fireEvent.click(
+        await screen.findByRole('menuitem', { name: 'Bookmarks' })
+      )
+      expect(actions.toggleInfoPanel).toHaveBeenCalledWith('bookmarks')
+      await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Open application menu' })
+      )
+      fireEvent.click(await screen.findByRole('menuitem', { name: 'Disc' }))
+      expect(actions.toggleInfoPanel).toHaveBeenCalledWith('disc')
+      await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+    }
+  )
+
+  it.each([true, false])(
+    'keeps Bookmarks and Disc in the regular menu layout (utilities=%s)',
+    async showMenuUtilities => {
+      render(
+        <Header
+          showMenuUtilities={showMenuUtilities}
+          users={{ id: '1', name: 'School' }}
+          showBookamarks
+          showDisk
+        />
+      )
+
+      for (const [label, panel] of [
+        ['Bookmarks', 'bookmarks'],
+        ['Disc', 'disc']
+      ]) {
+        const icon = screen.getByLabelText(label).querySelector('svg')
+        expect(icon).not.toBeNull()
+        if (icon) fireEvent.click(icon)
+        expect(actions.toggleInfoPanel).toHaveBeenCalledWith(panel)
+      }
+
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Open application menu' })
+      )
+      await screen.findByRole('menu', { name: /application menu/i })
+      expect(screen.queryByRole('menuitem', { name: 'Bookmarks' })).toBeNull()
+      expect(screen.queryByRole('menuitem', { name: 'Disc' })).toBeNull()
+    }
+  )
 
   it.each([true, false])(
     'uses an accessible application menu (compact=%s)',
@@ -200,7 +241,7 @@ describe('Shared compact navigation header', () => {
       screen.getByRole('button', { name: 'Open application menu' })
     )
     const file = await screen.findByRole('menuitem', { name: 'File' })
-    file.focus()
+    act(() => file.focus())
     fireEvent.keyDown(file, { key: 'ArrowRight', code: 'ArrowRight' })
     const newItem = await screen.findByRole('menuitem', { name: /New…/ })
     expect(newItem).not.toHaveAttribute('aria-disabled', 'true')

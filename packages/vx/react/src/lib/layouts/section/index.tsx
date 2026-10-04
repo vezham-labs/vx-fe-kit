@@ -5,7 +5,14 @@ import {
   useNavigate,
   useRouter
 } from '@tanstack/react-router'
-import { type ReactNode, useId, useRef, useState } from 'react'
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState
+} from 'react'
 
 import { Drawer, Surface, Tabs } from '@vezham/react-v3'
 
@@ -55,7 +62,8 @@ const SectionLayout = ({
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const router = useRouter()
-  const { isNavigationCollapsed, toggleNavigation } = useWorkspaceNavigation()
+  const { isNavigationCollapsed, toggleNavigation, registerMobileSidebar } =
+    useWorkspaceNavigation()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const searchInput = useRef<HTMLInputElement>(null)
@@ -72,10 +80,23 @@ const SectionLayout = ({
   const selectedTab =
     tabs.find(tab => matchesPath(pathname, tab.href)) ?? tabs[0]
   const hasSidebar = sidebarItems.length > 0
+  const toggleMobileSidebar = useCallback(
+    () => setIsDrawerOpen(open => !open),
+    []
+  )
+  useEffect(() => {
+    if (hasSidebar) {
+      return registerMobileSidebar({
+        isOpen: isDrawerOpen,
+        onToggle: toggleMobileSidebar
+      })
+    }
+    return undefined
+  }, [hasSidebar, isDrawerOpen, registerMobileSidebar, toggleMobileSidebar])
   const sidebarId = useId()
   const toggleSidebar = () => {
     if (hasSidebar && !window.matchMedia('(min-width: 768px)').matches) {
-      setIsDrawerOpen(open => !open)
+      toggleMobileSidebar()
     } else {
       toggleNavigation()
     }
@@ -138,11 +159,7 @@ const SectionLayout = ({
         navigationControls={
           <>
             <ShortcutButton
-              className={
-                hasSidebar
-                  ? 'hidden h-9 w-9 min-w-9 p-0 md:flex'
-                  : 'h-9 w-9 min-w-9 p-0'
-              }
+              className="h-9 w-9 min-w-9 p-0"
               label={isNavigationCollapsed ? 'Show Sidebar' : 'Hide Sidebar'}
               shortcut="⌘ S"
               aria-keyshortcuts="Meta+S"
@@ -151,17 +168,6 @@ const SectionLayout = ({
               onPress={toggleNavigation}>
               <AppIcon icon="vx:sidebar" size={18} aria-hidden="true" />
             </ShortcutButton>
-            {hasSidebar && (
-              <ShortcutButton
-                className="h-9 w-9 min-w-9 p-0 md:hidden"
-                label={isDrawerOpen ? 'Hide Sidebar' : 'Show Sidebar'}
-                shortcut="⌘ S"
-                aria-keyshortcuts="Meta+S"
-                aria-expanded={isDrawerOpen}
-                onPress={toggleSidebar}>
-                <AppIcon icon="vx:sidebar" size={18} aria-hidden="true" />
-              </ShortcutButton>
-            )}
             <ShortcutButton
               className="h-9 w-9 min-w-9 p-0"
               label="Back"

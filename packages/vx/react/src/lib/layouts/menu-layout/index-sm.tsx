@@ -15,6 +15,7 @@ import {
   InfoPanelContainer,
   useInfoPanel
 } from '../../components/panel/info-panel'
+import { useWorkspaceNavigation } from '../../components/workspace-navigation'
 import type { AppNavigationItem } from '../../navigation'
 import { useUser } from '../../store/users/useUserStore'
 
@@ -25,6 +26,7 @@ const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [controlsOpen, setControlsOpen] = useState(false)
   const { openInfoPanel } = useInfoPanel()
+  const { mobileSidebar } = useWorkspaceNavigation()
 
   const handleItemSelect = (key: string) => {
     setSelectedKey(key)
@@ -49,12 +51,13 @@ const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
           aria-label="Mobile navigation controls"
           className="border-default-200 bg-background/90 pointer-events-auto flex h-12 shrink-0 items-center rounded-full border px-2 shadow-[0_14px_28px_rgba(15,23,42,0.14)] backdrop-blur-xl">
           <Header
+            compact
             className="flex-shrink-0"
             users={users}
             showBookamarks
             showDisk
-            onAvatarClick={user => console.log('Avatar clicked:', user)}
-            onSearchClick={() => console.log('Search clicked')}
+            isSidebarOpen={mobileSidebar?.isOpen}
+            onToggleSidebar={mobileSidebar?.onToggle}
           />
         </Surface>
 

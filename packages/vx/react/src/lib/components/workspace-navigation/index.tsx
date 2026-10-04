@@ -13,10 +13,17 @@ import {
 import { useCommand } from '../command'
 import { useInfoPanel } from '../panel/info-panel'
 
+type MobileSidebarControl = {
+  isOpen: boolean
+  onToggle: () => void
+}
+
 type WorkspaceNavigationContextValue = {
   isNavigationCollapsed: boolean
   toggleNavigation: () => void
   registerSidebarShortcut: (handler: () => void) => () => void
+  mobileSidebar: MobileSidebarControl | null
+  registerMobileSidebar: (sidebar: MobileSidebarControl) => () => void
 }
 
 const WorkspaceNavigationContext =
@@ -32,6 +39,15 @@ const WorkspaceNavigationProvider = ({ children }: { children: ReactNode }) => {
   const { closeInfoPanel } = useInfoPanel()
   const { closeCommand } = useCommand()
   const sidebarShortcutHandlers = useRef(new Set<() => void>())
+  const [mobileSidebar, setMobileSidebar] =
+    useState<MobileSidebarControl | null>(null)
+
+  const registerMobileSidebar = useCallback((sidebar: MobileSidebarControl) => {
+    setMobileSidebar(sidebar)
+    return () => {
+      setMobileSidebar(current => (current === sidebar ? null : current))
+    }
+  }, [])
 
   const registerSidebarShortcut = useCallback((handler: () => void) => {
     sidebarShortcutHandlers.current.add(handler)
@@ -56,9 +72,17 @@ const WorkspaceNavigationProvider = ({ children }: { children: ReactNode }) => {
     () => ({
       isNavigationCollapsed,
       toggleNavigation,
-      registerSidebarShortcut
+      registerSidebarShortcut,
+      mobileSidebar,
+      registerMobileSidebar
     }),
-    [isNavigationCollapsed, toggleNavigation, registerSidebarShortcut]
+    [
+      isNavigationCollapsed,
+      toggleNavigation,
+      registerSidebarShortcut,
+      mobileSidebar,
+      registerMobileSidebar
+    ]
   )
 
   return (

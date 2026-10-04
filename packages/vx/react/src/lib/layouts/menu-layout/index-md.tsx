@@ -80,7 +80,6 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
       <NavigationPanel
         collapsed={isNavigationCollapsed}
         footerUser={footerUser}
-        isHome={isHome}
         items={items}
         navigationWidth={navigationWidth}
         selectedKey={selectedKey}
@@ -130,7 +129,6 @@ type Props = {
     avatar?: string
     isOnline?: boolean
   }
-  isHome: boolean
   items: AppNavigationItem[]
   navigationWidth: string
   selectedKey?: string
@@ -144,7 +142,6 @@ type Props = {
 const NavigationPanel = ({
   collapsed,
   footerUser,
-  isHome,
   items,
   navigationWidth,
   selectedKey,
@@ -167,7 +164,6 @@ const NavigationPanel = ({
           showSearch
           showBookamarks
           showDisk
-          showMenuUtilities={isHome}
           onToggleDock={onToggleDock}
         />
         <Menu collapsed={false} items={items} selectedKey={selectedKey} />
@@ -214,7 +210,8 @@ const CollapsedNavigation = ({
         compact
         users={headerUsers}
         isDockHidden
-        showMenuUtilities={false}
+        showBookamarks
+        showDisk
         onToggleDock={onToggleDock}
       />
     </Surface>
