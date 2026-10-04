@@ -35,7 +35,7 @@ jobs:
     needs: run_if
     if: ${{ needs.run_if.outputs.all == 'true' || needs.run_if.outputs.deploy == 'true' }}
     name: playground-docs | ${{ github.ref_name }}
-    uses: vezham/vx-deployer/.github/workflows/playground-docs.yml@timeline
+    uses: vezham/vx-fe-deployer/.github/workflows/playground-docs.yml@timeline
     secrets: inherit
     with:
       CALLER: ${{ github.ref_name }}
