@@ -6,6 +6,7 @@ import {
   waitFor,
   within
 } from '@testing-library/react'
+import { vi } from 'vitest'
 
 import { createRouter } from '@vx/start/router/tanstack'
 
@@ -25,6 +26,8 @@ const renderApp = async (path = '/') => {
 }
 
 describe('App', () => {
+  afterEach(() => vi.restoreAllMocks())
+
   beforeAll(() => {
     Element.prototype.getAnimations = () => []
   })
@@ -117,13 +120,17 @@ describe('App', () => {
   })
 
   it('opens section navigation in a drawer and closes it after selecting a section', async () => {
+    const matchMedia = window.matchMedia.bind(window)
+    vi.spyOn(window, 'matchMedia').mockImplementation(query => ({
+      ...matchMedia(query),
+      matches: query === '(max-width: 767px)'
+    }))
     await renderApp('/workspace/projects/overview')
+    const bubble = await screen.findByRole('group', {
+      name: 'Mobile navigation controls'
+    })
     fireEvent.click(
-      (await screen.findAllByRole('button', { name: 'Show Sidebar' })).find(
-        button =>
-          button.hasAttribute('aria-expanded') &&
-          !button.hasAttribute('aria-controls')
-      )!
+      await within(bubble).findByRole('button', { name: 'Show Sidebar' })
     )
     const drawer = await screen.findByRole('dialog', { name: 'Projects' })
     fireEvent.click(within(drawer).getByRole('link', { name: 'Team' }))
