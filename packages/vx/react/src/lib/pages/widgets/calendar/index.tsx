@@ -1,0 +1,116 @@
+import { m } from 'framer-motion'
+import React from 'react'
+
+import {
+  AddCircle as AddCircleIcon,
+  Bell as BellIcon,
+  Calendar as CalendarIcon,
+  Dumbbell as DumbbellIcon,
+  UsersGroupRounded as UsersIcon
+} from '@vezham/icons-react'
+import { Chip, ScrollShadow } from '@vezham/react-v3'
+
+import { AppView } from '../../../components/app-view'
+import { dates, events, today } from './data'
+import type { CalendarAppProps } from './types'
+import { getDateKey, getShortWeekday } from './util'
+
+const eventIconColor = {
+  accent: 'text-accent',
+  success: 'text-success',
+  warning: 'text-warning'
+} as const
+
+export const CalendarApp = ({ isOpen, onClose }: CalendarAppProps) => {
+  const [selectedDate, setSelectedDate] = React.useState(today)
+
+  return (
+    <AppView isOpen={isOpen} onClose={onClose} title="Calendar">
+      <ScrollShadow className="h-full">
+        <div className="flex flex-col gap-4 p-4">
+          <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-2">
+            {dates.map((date, index) => (
+              <m.button
+                type="button"
+                key={getDateKey(date)}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                onClick={() => setSelectedDate(date)}
+                className={`flex min-w-[3rem] flex-col items-center rounded-xl p-2 ${
+                  getDateKey(selectedDate) === getDateKey(date)
+                    ? 'bg-accent text-accent-foreground'
+                    : 'bg-white/5'
+                }`}>
+                <span className="text-muted text-xs">
+                  {getShortWeekday(date)}
+                </span>
+                <span className="text-lg font-bold">{date.getDate()}</span>
+              </m.button>
+            ))}
+          </div>
+
+          <div className="space-y-3">
+            {events.map((event, index) => (
+              <m.div
+                key={event.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 + index * 0.1 }}
+                className="rounded-lg bg-white/5 p-3">
+                <div className="mb-2 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    {event.type === 'meeting' ? (
+                      <UsersIcon
+                        className={`h-4 w-4 ${eventIconColor[event.color]}`}
+                        aria-hidden="true"
+                      />
+                    ) : event.type === 'workout' ? (
+                      <DumbbellIcon
+                        className={`h-4 w-4 ${eventIconColor[event.color]}`}
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <BellIcon
+                        className={`h-4 w-4 ${eventIconColor[event.color]}`}
+                        aria-hidden="true"
+                      />
+                    )}
+                    <span className="text-sm font-medium">{event.title}</span>
+                  </div>
+                  <Chip size="sm" color={event.color} variant="soft">
+                    {event.time}
+                  </Chip>
+                </div>
+              </m.div>
+            ))}
+          </div>
+
+          <div className="mt-4">
+            <h4 className="text-muted mb-2 text-sm font-medium">
+              Quick Actions
+            </h4>
+            <div className="grid grid-cols-2 gap-2">
+              <button className="flex items-center gap-2 rounded-lg bg-white/5 p-3 hover:bg-white/10">
+                <AddCircleIcon
+                  className="text-accent h-5 w-5"
+                  size="1em"
+                  aria-hidden="true"
+                />
+                <span className="text-sm">New Event</span>
+              </button>
+              <button className="flex items-center gap-2 rounded-lg bg-white/5 p-3 hover:bg-white/10">
+                <CalendarIcon
+                  className="text-accent h-5 w-5"
+                  size="1em"
+                  aria-hidden="true"
+                />
+                <span className="text-sm">View Month</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </ScrollShadow>
+    </AppView>
+  )
+}

@@ -1,3 +1,5 @@
-import EmptyState from '@pages/home/empty-state'
+import { Pro } from '@vx/template/pages'
 
-export default () => <EmptyState />
+const Page = () => <Pro />
+
+export default Page

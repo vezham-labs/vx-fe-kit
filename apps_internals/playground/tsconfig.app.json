@@ -15,10 +15,13 @@
     "paths": {
       "@/*": ["./*"],
       "@src/*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
       "@pages/*": ["./src/pages/*"],
       "@components/*": ["./src/components/*"],
-      "@store/*": ["./src/store/*"]
-    }
+      "@store/*": ["./src/store/*"],
+      "@generated/*": ["./src/generated/*"]
+    },
+    "ignoreDeprecations": "6.0"
   },
   "exclude": [
     "out-tsc",
@@ -42,7 +45,13 @@
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
-      "path": "../../packages/vx/system-utils/tsconfig.lib.json"
+      "path": "../../packages/vx/config/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/vx/template/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/vx/env/tsconfig.lib.json"
     },
     {
       "path": "../../packages/vx/start/tsconfig.lib.json"

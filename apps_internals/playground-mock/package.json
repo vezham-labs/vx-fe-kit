@@ -1,6 +1,6 @@
 {
   "name": "playground-mock",
-  "version": "0.0.1",
+  "version": "26.0.0-alpha.1",
   "private": true,
   "description": "Mock API server for playground",
   "type": "module",

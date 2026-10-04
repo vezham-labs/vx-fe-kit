@@ -6,7 +6,7 @@ import { loadDB } from './lib/utils.ts'
 
 const NAMESPACE = 'Mock/gen-data'
 
-// Set seed for consistent data generation
+// vx-bot/NOTE: Set seed for consistent data generation
 faker.seed(123)
 
 interface User {
@@ -155,8 +155,8 @@ interface Settings {
   }
 }
 
-// Generate users
-function generateUsers(count = 10): User[] {
+// vx-bot/NOTE: Generate users
+const generateUsers = (count = 10): User[] => {
   const users: User[] = []
   for (let i = 1; i <= count; i++) {
     users.push({
@@ -166,7 +166,7 @@ function generateUsers(count = 10): User[] {
       avatar: faker.image.avatar(),
       role: faker.helpers.arrayElement(['admin', 'user', 'moderator']),
       created_at: faker.date.past({ years: 2 }).toISOString(),
-      is_active: faker.datatype.boolean(0.8), // 80% chance of being active
+      is_active: faker.datatype.boolean(0.8), // vx-bot/NOTE: 80% chance of being active
       bio: faker.person.bio(),
       phone: faker.phone.number(),
       address: {
@@ -186,8 +186,8 @@ function generateUsers(count = 10): User[] {
   return users
 }
 
-// Generate posts
-function generatePosts(count = 25, userIds: number[]): Post[] {
+// vx-bot/NOTE: Generate posts
+const generatePosts = (count = 25, userIds: number[]): Post[] => {
   const posts: Post[] = []
   const categories = [
     'Technology',
@@ -202,7 +202,7 @@ function generatePosts(count = 25, userIds: number[]): Post[] {
 
   for (let i = 1; i <= count; i++) {
     const publishedAt = faker.date.past({ years: 1 })
-    const is_published = faker.datatype.boolean(0.7) // 70% published
+    const is_published = faker.datatype.boolean(0.7) // vx-bot/NOTE: 70% published
 
     posts.push({
       id: i,
@@ -232,7 +232,7 @@ function generatePosts(count = 25, userIds: number[]): Post[] {
         .between({ from: publishedAt, to: new Date() })
         .toISOString(),
       is_published,
-      is_featured: faker.datatype.boolean(0.2), // 20% featured
+      is_featured: faker.datatype.boolean(0.2), // vx-bot/NOTE: 20% featured
       likes: faker.number.int({ min: 0, max: 500 }),
       views: faker.number.int({ min: 0, max: 10000 }),
       read_time: faker.number.int({ min: 1, max: 15 }),
@@ -244,12 +244,12 @@ function generatePosts(count = 25, userIds: number[]): Post[] {
   return posts
 }
 
-// Generate comments
-function generateComments(
+// vx-bot/NOTE: Generate comments
+const generateComments = (
   count = 50,
   postIds: number[],
   userIds: number[]
-): Comment[] {
+): Comment[] => {
   const comments: Comment[] = []
   for (let i = 1; i <= count; i++) {
     const createdAt = faker.date.past({ years: 1 })
@@ -263,18 +263,18 @@ function generateComments(
       updated_at: faker.date
         .between({ from: createdAt, to: new Date() })
         .toISOString(),
-      is_approved: faker.datatype.boolean(0.9), // 90% approved
+      is_approved: faker.datatype.boolean(0.9), // vx-bot/NOTE: 90% approved
       likes: faker.number.int({ min: 0, max: 50 }),
       parent_id: faker.datatype.boolean(0.2)
         ? faker.helpers.arrayElement([1, 2, 3, 4, 5])
-        : null // 20% are replies
+        : null // vx-bot/NOTE: 20% are replies
     })
   }
   return comments
 }
 
-// Generate categories
-function generateCategories(): Category[] {
+// vx-bot/NOTE: Generate categories
+const generateCategories = (): Category[] => {
   const categoryNames = [
     'Technology',
     'Design',
@@ -312,8 +312,8 @@ function generateCategories(): Category[] {
   }))
 }
 
-// Generate products (for e-commerce scenarios)
-function generateProducts(count = 20): Product[] {
+// vx-bot/NOTE: Generate products (for e-commerce scenarios)
+const generateProducts = (count = 20): Product[] => {
   const products: Product[] = []
   for (let i = 1; i <= count; i++) {
     products.push({
@@ -347,12 +347,12 @@ function generateProducts(count = 20): Product[] {
   return products
 }
 
-// Generate orders (for e-commerce scenarios)
-function generateOrders(
+// vx-bot/NOTE: Generate orders (for e-commerce scenarios)
+const generateOrders = (
   count = 30,
   userIds: number[],
   productIds: number[]
-): Order[] {
+): Order[] => {
   const orders: Order[] = []
   const statuses: Order['status'][] = [
     'pending',
@@ -400,8 +400,8 @@ function generateOrders(
   return orders
 }
 
-// Generate settings
-function generateSettings(): Settings {
+// vx-bot/NOTE: Generate settings
+const generateSettings = (): Settings => {
   return {
     site_name: 'playground',
     site_description: faker.lorem.sentence({ min: 10, max: 20 }),
@@ -439,8 +439,8 @@ function generateSettings(): Settings {
   }
 }
 
-// Generate all data
-export function generateDatabase() {
+// vx-bot/NOTE: Generate all data
+export const generateDatabase = () => {
   useLogger.log(NAMESPACE, '🎭 Generating realistic mock data with Faker.js...')
 
   const users = generateUsers(15)
@@ -479,7 +479,7 @@ export function generateDatabase() {
   return database
 }
 
-// Run if called directly
+// vx-bot/NOTE: Run if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {
   generateDatabase()
 }

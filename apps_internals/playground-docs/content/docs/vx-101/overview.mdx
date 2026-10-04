@@ -1,0 +1,1240 @@
+---
+title: Overview
+description: This provides a overview on Vx 101 by vezham.
+icon: document-text
+---
+
+# Vezham — GitHub, Repository & Package Organization
+
+## 1. GitHub Organizations
+
+Vezham uses exactly **three GitHub organizations**.
+
+| Organization  | Purpose                                                     | Description                                                |
+| ------------- | ----------------------------------------------------------- | ---------------------------------------------------------- |
+| `vezham`      | Production engineering, products, platforms, infrastructure | **Building software for people and businesses. 🚀**        |
+| `vezham-labs` | Experiments, templates, POCs, references, evolving tooling  | **Exploring ideas, experiments, and new technologies. 🧪** |
+| `vezham-oss`  | Open-source projects and maintained forks                   | **Open-source software maintained by Vezham. 🧩**          |
+
+### Classification rule
+
+- `vezham` → official production Vezham engineering
+- `vezham-labs` → experimental/evolving/reference projects
+- `vezham-oss` → maintained OSS projects and forks
+- An OSS fork remains under `vezham-oss` even when used in production.
+- A completely new Vezham implementation/rewrite can live under `vezham`.
+
+---
+
+# 2. Company-Controlled GitHub Identities
+
+## Source Code
+
+```text
+Username:     vezham-code
+Display:      Vezham Code
+Email:        code@vezham.com
+```
+
+Used for source-code and repository ownership/automation.
+
+It should **not** be the sole organization owner.
+
+## Deployment
+
+```text
+Username:     vezham-deployer
+Display:      Vezham Deployer
+Email:        deployer@vezham.com
+```
+
+Responsible for:
+
+- frontend releases
+- backend releases
+- mobile releases
+- desktop releases
+- SDK releases
+- MCP releases
+- Skills releases
+- CI/CD
+- cloud providers
+- CDN/edge hosting
+- production releases
+- regional data-center deployments
+
+## Regional Data Centers
+
+```text
+us-dc@vezham.com
+eu-dc@vezham.com
+in-dc@vezham.com
+au-dc@vezham.com
+sg-dc@vezham.com
+```
+
+Convention:
+
+```text
+<region>-dc@vezham.com
+```
+
+`deployer@vezham.com` remains the global deployment/release identity.
+
+Regional deployer identities are not required unless future security/operations requirements justify them.
+
+---
+
+| Identity | Responsibility |
+|---|---|
+| **`code@vezham.com`** | Code ownership, repository administration, maintainership |
+| **`deployer@vezham.com`** | Package publishing, deployments, cloud/infra accounts |
+| **`security@vezham.com`** | Security contact / vulnerability reports |
+| **`support@vezham.com`** | Product/user support |
+
+---
+
+# 3. Repository Naming Philosophy
+
+Engineering infrastructure and collections use the `vx-*` convention.
+
+```text
+vx-fe-*
+vx-rn-*
+vx-be-*
+vx-sdks-*
+vx-mcp
+vx-skills
+vx-desktop-*
+vx-deployer
+```
+
+The `vx` namespace represents Vezham's engineering/platform ecosystem.
+
+---
+
+# 4. Frontend Applications
+
+## General / Cross-Context Applications
+
+Repository:
+
+```text
+vezham/vx-fe-apps
+```
+
+Purpose:
+
+> General applications that can operate across personal and business contexts.
+
+Examples:
+
+```text
+Notes
+Chat
+Drive
+Contacts
+Calendar
+Tasks
+...
+```
+
+Structure:
+
+```text
+vx-fe-apps/
+├── products/
+│   ├── notes/
+│   ├── chat/
+│   ├── drive/
+│   ├── contacts/
+│   ├── calendar/
+│   ├── tasks/
+│   └── ...
+├── packages/
+├── e2e/
+├── mocks/
+├── docs/
+├── pocs/
+└── tooling/
+```
+
+## Business Applications
+
+Repository:
+
+```text
+vezham/vx-fe-apps-business
+```
+
+Purpose:
+
+> Applications whose primary responsibility is business/organizational functionality.
+
+Examples:
+
+```text
+SchoolOS
+Books
+Invoice
+Inventory
+Payroll
+CRM
+...
+```
+
+Structure:
+
+```text
+vx-fe-apps-business/
+├── products/
+│   ├── school-os/
+│   ├── books/
+│   ├── invoice/
+│   ├── inventory/
+│   ├── payroll/
+│   ├── crm/
+│   └── ...
+├── packages/
+├── e2e/
+├── mocks/
+├── docs/
+└── tooling/
+```
+
+### Boundary
+
+The split is based on **application/domain responsibility**, not workspace membership.
+
+A general application such as Notes can still operate inside a business workspace.
+
+---
+
+# 5. Other Frontend Collections
+
+```text
+vezham/vx-fe-apps-cdns
+vezham/vx-fe-apps-internals
+vezham/vx-fe-apps-platforms
+vezham/vx-fe-apps-pods
+vezham/vx-fe-apps-widgets
+```
+
+These are separated according to infrastructure, platform, internal, pod, or reusable-widget responsibilities.
+
+---
+
+# 6. Frontend Packages
+
+Production frontend packages:
+
+```text
+vezham/vx-fe-pkgs
+```
+
+Purpose:
+
+> Canonical Vezham frontend packages published to npm and consumed across Vezham applications and clients.
+
+Structure:
+
+```text
+vx-fe-pkgs/
+├── packages/
+│   ├── ui/
+│   ├── layouts/
+│   ├── templates/
+│   ├── navigation/
+│   ├── auth/
+│   ├── workspace/
+│   ├── context/
+│   ├── local-first/
+│   ├── storage/
+│   ├── sync/
+│   └── ...
+└── tooling/
+```
+
+Potential packages:
+
+```text
+@vezham/ui
+@vezham/layouts
+@vezham/templates
+@vezham/navigation
+@vezham/auth
+@vezham/workspace
+@vezham/context
+@vezham/local-first
+@vezham/storage
+@vezham/sync
+```
+
+---
+
+# 7. Frontend Kit
+
+## Playground / Reference
+
+```text
+vezham-labs/vx-fe-kit
+```
+
+Used for:
+
+- playgrounds
+- reference implementations
+- configuration tests
+- implementation tests
+- integration experiments
+- template validation
+
+## Starter
+
+```text
+vezham-labs/vx-fe-kit-starter
+```
+
+Canonical reusable frontend workspace starter intended to be forked/copied for new Vezham projects.
+
+The canonical name is:
+
+```text
+vx-fe-kit-starter
+```
+
+---
+
+# 8. React Native
+
+Repository:
+
+```text
+vezham/vx-rn-apps
+```
+
+Typical structure:
+
+```text
+vx-rn-apps/
+├── apps/
+├── packages/
+├── e2e/
+├── mocks/
+├── docs/
+└── tooling/
+```
+
+Technology:
+
+- React Native
+- Expo
+- HeroUI Native
+- native Swift/Kotlin escape hatches where required
+
+---
+
+# 9. Desktop Applications
+
+Repository:
+
+```text
+vezham/vx-desktop-apps
+```
+
+Desktop applications remain separate from web applications because they involve:
+
+- native APIs
+- filesystem access
+- packaging
+- signing
+- notarization
+- installers
+- auto-update
+- desktop-specific CI/CD
+- runtime concerns
+
+Possible runtimes:
+
+```text
+Tauri
+Electron
+Go/native
+```
+
+### Build responsibility
+
+```text
+Frontend repositories
+        ↓
+Web UI + web build
+        ↓
+CI artifact
+        ↓
+vx-desktop-apps
+        ↓
+Desktop packaging
+        ↓
+Signing / notarization
+        ↓
+Release
+```
+
+`dist/` and installers are generated artifacts and should not be committed.
+
+---
+
+# 10. Backend
+
+Vezham uses service-oriented backend repositories where meaningful boundaries exist.
+
+Examples:
+
+```text
+vezham/vx-be-api
+vezham/vx-be-auth
+vezham/vx-be-billing
+vezham/vx-be-notifications
+...
+```
+
+Typical stack:
+
+```text
+Go
+PostgreSQL / Neon
+Nx orchestration where useful
+```
+
+Repository separation should be based on:
+
+- runtime boundaries
+- database ownership
+- security boundaries
+- deployment lifecycle
+- team ownership
+- release cadence
+- operational responsibility
+
+Not every backend component needs to become a separate repository.
+
+---
+
+# 11. SDKs
+
+SDKs are separated by language.
+
+```text
+vezham/vx-sdks-ts
+vezham/vx-sdks-go
+vezham/vx-sdks-ruby
+```
+
+Potential future SDKs:
+
+```text
+Python
+Java
+Kotlin
+Swift
+...
+```
+
+There is no requirement for one universal SDK repository.
+
+CLI:
+
+```text
+vezham-labs/vx-sdk-cli
+```
+
+Package:
+
+```text
+@vx-cli/sdks
+```
+
+---
+
+# 12. MCP
+
+Repository:
+
+```text
+vezham/vx-mcp
+```
+
+Structure:
+
+```text
+vx-mcp/
+├── servers/
+│   ├── notes/
+│   ├── chat/
+│   ├── drive/
+│   ├── school-os/
+│   └── ...
+├── packages/
+│   ├── core/
+│   └── auth/
+├── examples/
+└── tooling/
+```
+
+MCP is treated as a first-class engineering collection.
+
+CLI:
+
+```text
+vezham-labs/vx-mcp-cli
+```
+
+Package:
+
+```text
+@vx-cli/mcp
+```
+
+---
+
+# 13. Skills
+
+Repository:
+
+```text
+vezham/vx-skills
+```
+
+Skills remain separate from MCP.
+
+Conceptually:
+
+```text
+Skill = workflow / instructions / capability
+MCP   = tools / resources / actions
+```
+
+A future CLI can be:
+
+```text
+vezham-labs/vx-skills-cli
+```
+
+Package:
+
+```text
+@vx-cli/skills
+```
+
+---
+
+# 14. CLI Architecture
+
+Each major engineering domain has its own CLI.
+
+| Repository      | npm package            |
+| --------------- | ---------------------- |
+| `vx-fe-cli`     | `@vx-cli/react`        |
+| `vx-rn-cli`     | `@vx-cli/react-native` |
+| `vx-sdk-cli`    | `@vx-cli/sdks`         |
+| `vx-mcp-cli`    | `@vx-cli/mcp`          |
+| `vx-be-cli`     | `@vx-cli/server`       |
+| `vx-skills-cli` | `@vx-cli/skills`       |
+
+These can remain in `vezham-labs` while evolving and move to `vezham` when they become official production infrastructure.
+
+The separation exists because each CLI has different:
+
+- runtimes
+- dependencies
+- generators
+- workflows
+- release cadence
+
+---
+
+# 15. Deployment Architecture
+
+## Core Deployment Platform
+
+```text
+vezham/vx-deployer
+```
+
+`vx-deployer` provides reusable:
+
+- deployment primitives
+- CI actions
+- release orchestration
+- provider integrations
+- environment handling
+- artifact management
+- credential abstractions
+- deployment workflows
+- regional deployment primitives
+
+## Domain Deployers
+
+```text
+vezham/vx-fe-deployer
+vezham/vx-be-deployer
+vezham/vx-rn-deployer
+vezham/vx-desktop-deployer
+vezham/vx-sdk-deployer
+vezham/vx-mcp-deployer
+vezham/vx-skills-deployer
+```
+
+Domain deployers use `vx-deployer` primitives and contain only domain-specific workflows.
+
+All official deployers live under:
+
+```text
+vezham
+```
+
+Experimental deployment tooling can live under:
+
+```text
+vezham-labs
+```
+
+---
+
+# 16. Local-First Workspace Architecture
+
+The application is the **product boundary**.
+
+The workspace is the **data/access boundary**.
+
+Conceptually:
+
+```text
+User
+ └── App
+      ├── Local Workspace
+      ├── Personal Workspace
+      ├── Personal — Invited Workspace
+      └── Business — Invited Workspace
+```
+
+A workspace can contain:
+
+```text
+workspace_id
+owner
+membership
+permissions
+context
+storage_mode
+sync_state
+local_state
+remote_state
+organization_relationship
+```
+
+Potential shared packages:
+
+```text
+@vezham/workspace
+@vezham/context
+@vezham/local-first
+@vezham/storage
+@vezham/sync
+```
+
+This infrastructure should be shared across general and business applications.
+
+---
+
+# 17. npm Package Strategy
+
+## Vezham-owned
+
+```text
+@vezham/*
+```
+
+Used when Vezham owns the public abstraction/API boundary.
+
+Examples:
+
+```text
+@vezham/ui
+@vezham/workspace
+@vezham/context
+@vezham/local-first
+```
+
+## CLI
+
+```text
+@vx-cli/*
+```
+
+Used for Vezham engineering CLIs.
+
+## Experimental
+
+```text
+@vx-labs/*
+```
+
+Used for evolving/experimental packages where appropriate.
+
+## Maintained OSS
+
+```text
+@vx-oss/*
+```
+
+Used for maintained forks and OSS projects.
+
+---
+
+# 18. Dependency Ownership Rules
+
+### Rule 1 — Direct upstream
+
+Use upstream packages directly when Vezham does not need to own the API boundary.
+
+Examples:
+
+```text
+@tanstack/*
+react
+tailwindcss
+...
+```
+
+### Rule 2 — Maintained OSS fork
+
+Use:
+
+```text
+@vx-oss/*
+```
+
+when Vezham maintains a fork.
+
+Examples:
+
+```text
+@vx-oss/payload
+@vx-oss/heroui
+@vx-oss/fumadocs-*
+```
+
+### Rule 3 — Vezham abstraction
+
+Use:
+
+```text
+@vezham/*
+```
+
+when Vezham needs its own stable abstraction, extensions, integrations, theme, tokens, or API boundary.
+
+Do not rename/alias everything simply for branding.
+
+---
+
+# 19. HeroUI Architecture
+
+HeroUI has a special layered architecture.
+
+```text
+vezham-oss/heroui
+        ↓
+@vx-oss/heroui
+        ↓
+@vezham/react-v3
+        ↓
+Vezham applications
+```
+
+Responsibilities:
+
+### `@vx-oss/heroui`
+
+HeroUI-compatible OSS fork layer.
+
+Changes belonging to the maintained fork go here.
+
+### `@vezham/react-v3`
+
+Vezham-facing abstraction layer.
+
+May contain:
+
+- Vezham-specific components
+- extensions
+- extra features
+- Vezham theme
+- Vezham design tokens
+- compatibility abstractions
+
+Vezham applications should generally consume:
+
+```text
+@vezham/react-v3
+```
+
+once this abstraction is established.
+
+---
+
+# 20. Fumadocs Architecture
+
+If Vezham maintains a Fumadocs fork:
+
+```text
+vezham-oss/fumadocs
+```
+
+with packages such as:
+
+```text
+@vx-oss/fumadocs-*
+```
+
+If Fumadocs becomes strategic Vezham documentation infrastructure:
+
+```text
+@vx-oss/fumadocs-*
+        ↓
+@vezham/docs-*
+        ↓
+Vezham documentation
+```
+
+This allows Vezham to extend or replace the underlying implementation without changing the application's dependency boundary.
+
+---
+
+# 21. Git Branch Strategy
+
+The default branch is:
+
+```text
+timeline
+```
+
+Branch conventions:
+
+```text
+feat/*
+fix/*
+refactor/*
+perf/*
+docs/*
+chore/*
+test/*
+build/*
+ci/*
+release/*
+hotfix/*
+```
+
+Example:
+
+```text
+feat/workspace-sync
+fix/auth-redirect
+refactor/context-provider
+perf/notes-indexing
+docs/api-auth
+```
+
+---
+
+# 22. Environment Architecture
+
+Vezham uses five primary deployment environments:
+
+```text
+local → dev → qa → preview → production
+```
+
+| Environment  | Purpose                                                                                   |
+| ------------ | ----------------------------------------------------------------------------------------- |
+| `local`      | Developer machine and local development                                                   |
+| `dev`        | Active development                                                                        |
+| `qa`         | Integration and QA validation                                                             |
+| `preview`    | Production-like validation, security auditing, realistic/snapshot data, and V1/V2 testing |
+| `production` | Live production infrastructure                                                            |
+
+### Environment URLs
+
+```text
+play.vezham.local
+play.dev.vezham.com
+play.qa.vezham.com
+play.preview.vezham.com
+play.vezham.app
+```
+
+---
+
+# 23. Preview Environment
+
+`preview` is intentionally a real deployment environment.
+
+It is used for:
+
+- production-like validation
+- realistic/snapshot data
+- V1/V2 comparison
+- UI validation
+- integration validation
+- security audits
+- pre-production security verification
+- production configuration validation
+- release candidate verification
+
+Preview should normally use **production-like data**, not unrestricted direct read/write access to the live production database.
+
+Preferred model:
+
+```text
+Production DB
+      │
+      ├── sanitized snapshot
+      │
+      ├── replica
+      │
+      └── controlled read-only access
+                ↓
+             Preview
+```
+
+The exact mechanism depends on the data/security requirements of the application.
+
+---
+
+# 24. Release Channels
+
+Release channels are separate from deployment environments.
+
+```text
+canary → beta → stable
+```
+
+| Channel  | Purpose                         |
+| -------- | ------------------------------- |
+| `canary` | Very limited production rollout |
+| `beta`   | Controlled early-access rollout |
+| `stable` | General production release      |
+
+The release channel can be controlled through environment/configuration and feature flags.
+
+Example:
+
+```text
+V_APP_ENV=production
+V_RELEASE_CHANNEL=beta
+```
+
+Later:
+
+```text
+V_APP_ENV=production
+V_RELEASE_CHANNEL=stable
+```
+
+This means Beta does not require a separate infrastructure environment.
+
+`@vx/env/vite` and `@vx/env/next` expose these settings as `APP_ENV` and
+`RELEASE_CHANNEL`. Omit `V_APP_ENV` for local development and set `V_APP_ENV=dev`
+for deployed development infrastructure. Build mode remains independent:
+`__DEV__` and `__PRODUCTION__` describe the build, while `APP_ENV` describes the
+deployment. Set `V_APP_ENV=qa` or `V_APP_ENV=preview` explicitly for those
+deployments. Absent or empty `V_APP_ENV` defaults to `local`, including for local
+production builds. Checked-in app configs omit it; deployment pipelines must
+supply and validate their target environment. `V_APP_ID`, `V_APP_NAME`, and `V_APP_VER` are required
+and supplied from `vx.app.yaml` by metadata generation. `V_RELEASE_CHANNEL` is
+the only release-channel input and defaults to `stable`.
+
+---
+
+# 25. Environment vs Release Channel
+
+The core rule is:
+
+> **Environment describes where/how software runs. Release channel describes which release users receive.**
+
+Therefore:
+
+```text
+Environments
+local
+dev
+qa
+preview
+production
+```
+
+and:
+
+```text
+Release channels
+canary
+beta
+stable
+```
+
+can evolve independently.
+
+Conceptually:
+
+```text
+                         ┌── canary
+production ──────────────┼── beta
+                         └── stable
+```
+
+Preview remains a separate pre-production validation environment.
+
+---
+
+# 26. V1 / V2 Release Example
+
+Development may contain multiple versions:
+
+```text
+dev
+├── V1
+└── V2
+```
+
+V2 can then be deployed to Preview:
+
+```text
+V2
+ ↓
+preview
+ ↓
+production-like data/context
+ ↓
+UI + integration + security validation
+```
+
+After validation:
+
+```text
+preview
+   ↓
+production
+   ↓
+canary
+   ↓
+beta
+   ↓
+stable
+```
+
+This allows Vezham to test new releases against realistic production conditions before exposing them broadly.
+
+---
+
+# 27. Overall Repository Map
+
+## `vezham`
+
+```text
+vezham/
+├── vx-fe-apps
+├── vx-fe-apps-business
+├── vx-fe-apps-cdns
+├── vx-fe-apps-internals
+├── vx-fe-apps-suites
+├── vx-fe-apps-platforms
+├── vx-fe-apps-pods
+├── vx-fe-apps-widgets
+│
+├── vx-fe-pkgs
+│
+├── vx-rn-apps
+├── vx-desktop-apps
+│
+├── vx-sdks-ts
+├── vx-sdks-go
+├── vx-sdks-ruby
+├── ...
+│
+├── vx-mcp
+├── vx-skills
+│
+├── vx-deployer
+├── vx-fe-deployer
+├── vx-be-deployer
+├── vx-rn-deployer
+├── vx-desktop-deployer
+├── vx-sdk-deployer
+├── vx-mcp-deployer
+├── vx-skills-deployer
+│
+├── vx-docs
+│
+└── vx-be-*
+```
+
+## `vezham-labs`
+
+```text
+vezham-labs/
+├── vx-fe-kit
+├── vx-fe-kit-starter
+│
+├── vx-fe-cli
+├── vx-rn-cli
+├── vx-sdk-cli
+├── vx-mcp-cli
+├── vx-be-cli
+├── vx-skills-cli
+│
+└── experiments / POCs / references
+```
+
+## `vezham-oss`
+
+```text
+vezham-oss/
+├── heroui
+├── payload
+├── reicon
+├── fumadocs
+└── ...
+```
+
+---
+
+# 28. Core Architecture Principles
+
+### 1. Application = Product Boundary
+
+A repository should primarily represent an application/domain/product responsibility.
+
+### 2. Workspace = Data/Access Boundary
+
+A workspace determines:
+
+- ownership
+- membership
+- permissions
+- context
+- storage
+- synchronization
+- organization relationship
+
+### 3. Environment ≠ Release Channel
+
+```text
+Environment → where/how it runs
+Channel     → who receives the release
+```
+
+### 4. Production-like Testing Before Production
+
+`preview` exists specifically so Vezham can validate releases against realistic conditions, including **security auditing**, before production exposure.
+
+### 5. Canary/Beta Do Not Require Separate Infrastructure
+
+They can be implemented through:
+
+- release configuration
+- feature flags
+- user targeting
+- organization targeting
+- traffic allocation
+- progressive rollout
+
+### 6. Own Abstractions Only When Necessary
+
+Use:
+
+```text
+upstream → when appropriate
+@vx-oss/* → maintained OSS fork
+@vezham/* → strategic Vezham abstraction
+```
+
+### 7. Official Infrastructure Belongs in `vezham`
+
+Production deployment infrastructure belongs under:
+
+```text
+vezham
+```
+
+while experiments and evolving tooling belong under:
+
+```text
+vezham-labs
+```
+
+### 8. OSS Forks Stay OSS
+
+A maintained OSS fork remains under:
+
+```text
+vezham-oss
+```
+
+even when Vezham consumes it internally or in production.
+
+---
+
+# 29. Final Vezham Engineering Model
+
+```text
+                         VEZHAM
+                            │
+          ┌─────────────────┼─────────────────┐
+          │                 │                 │
+       vezham          vezham-labs       vezham-oss
+          │                 │                 │
+      Production         Research          OSS/Forks
+      Engineering        Experiments
+          │
+   ┌──────┼─────────────────────────────────────┐
+   │      │             │          │            │
+  FE     RN           BE         SDKs         AI
+   │      │             │          │            │
+ Apps   Apps         Services   Language      MCP/Skills
+ Packages             APIs       SDKs
+   │
+   ├── General Apps
+   └── Business Apps
+
+                  Deployment
+                       │
+                 vx-deployer
+                       │
+       ┌───────────────┼────────────────┐
+       │               │                │
+      FE              BE             Desktop
+   deployer        deployer         deployer
+```
+
+### Final release architecture
+
+```text
+Environments
+
+local
+  ↓
+dev
+  ↓
+qa
+  ↓
+preview
+  ↓
+production
+  │
+  ├── canary
+  ├── beta
+  └── stable
+```
+
+This is the canonical Vezham GitHub, repository, package, deployment, environment, and release-channel structure.

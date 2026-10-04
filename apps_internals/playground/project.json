@@ -4,7 +4,16 @@
   "projectType": "application",
   "sourceRoot": "apps_internals/playground/src",
   "targets": {
+    "build": {
+      "dependsOn": ["metadata:generate", "deploy:generate", "^build"]
+    },
+    "dev": {
+      "dependsOn": ["metadata:watch"]
+    },
     "hosts:setup": {},
+    "deploy:generate": {},
+    "metadata:generate": {},
+    "metadata:watch": {},
     "routes:tanstack": {}
   },
   "tags": ["category:internal"]

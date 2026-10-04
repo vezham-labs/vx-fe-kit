@@ -7,25 +7,22 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "cwd": "apps_internals/playground-mock",
-        "commands": ["pnpm serve"],
-        "parallel": false
+        "cwd": "{projectRoot}",
+        "command": "pnpm serve"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "cwd": "apps_internals/playground-mock",
-        "commands": ["pnpm build"],
-        "parallel": false
+        "cwd": "{projectRoot}",
+        "command": "pnpm build"
       }
     },
     "generate": {
       "executor": "nx:run-commands",
       "options": {
-        "cwd": "apps_internals/playground-mock",
-        "commands": ["pnpm generate"],
-        "parallel": false
+        "cwd": "{projectRoot}",
+        "command": "pnpm generate"
       }
     }
   },

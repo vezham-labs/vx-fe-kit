@@ -1,0 +1,54 @@
+import { m } from 'framer-motion'
+
+import { Avatar, ScrollShadow } from '@vezham/react-v3'
+
+import { AppView } from '../../../components/app-view'
+import { messages } from './data'
+import type { MessagesAppProps } from './types'
+
+const MessagesApp = ({ isOpen, onClose }: MessagesAppProps) => {
+  return (
+    <AppView isOpen={isOpen} onClose={onClose} title="Messages">
+      <ScrollShadow className="h-full">
+        {messages.map((message, index) => (
+          <m.div
+            key={message.id}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="mx-2 flex cursor-pointer items-center gap-3 rounded-lg p-2 hover:bg-white/10">
+            <div className="relative">
+              <Avatar size="sm">
+                <Avatar.Image src={message.avatar} alt={message.name} />
+                <Avatar.Fallback>{message.name[0]}</Avatar.Fallback>
+              </Avatar>
+
+              {message.unread && (
+                <m.div
+                  className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-blue-500"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: index * 0.1 + 0.3 }}
+                />
+              )}
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium">{message.name}</p>
+
+                <span className="text-xs text-gray-400">{message.time}</span>
+              </div>
+
+              <p className="truncate text-xs text-gray-400">
+                {message.message}
+              </p>
+            </div>
+          </m.div>
+        ))}
+      </ScrollShadow>
+    </AppView>
+  )
+}
+
+export { MessagesApp }
