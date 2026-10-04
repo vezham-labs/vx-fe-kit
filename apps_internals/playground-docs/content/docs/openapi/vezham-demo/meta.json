@@ -1,7 +1,0 @@
-{
-  "root": true,
-  "title": "Vezham Demo",
-  "description": "Handbook on OpenAPI",
-  "icon": "globe",
-  "pages": ["auth", "overview", "...(generated)"]
-}

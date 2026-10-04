@@ -1,7 +1,0 @@
-{
-  "root": true,
-  "title": "Vx 101",
-  "description": "Class on Vx 101",
-  "icon": "text-format",
-  "pages": ["overview", "..."]
-}

@@ -50,7 +50,7 @@ Vx-specific conventions in the linked handbooks.
 | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | [Coding standards](../../../vx/handbooks/coding-standards/index.md) | Generating, modifying, or reviewing repository code                                          |
 | [Brand](../../../vx/handbooks/brand.md)                             | Choosing Vezham/Vx names, package scopes, config names, or runtime attributes                |
-| [Vx config](../../../vx/handbooks/vx-config.md)                     | Changing `vx.app.json`, metadata, routes, docs, OpenAPI, PWA, or generated deployment config |
+| [Vx config](../../../vx/handbooks/vx-config.md)                     | Changing `vx.app.yaml`, metadata, routes, docs, OpenAPI, PWA, or generated deployment config |
 | [Release](../../../vx/handbooks/release.md)                         | Changing versions, release commands, prerelease trains, or version synchronization           |
 
 Explicit user instructions and `AGENTS.md` take precedence. Handbooks describe
