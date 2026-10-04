@@ -293,7 +293,7 @@ const generateCategories = (): Category[] => {
     name,
     slug: name.toLowerCase(),
     description: faker.lorem.sentence({ min: 5, max: 15 }),
-    color: faker.internet.color(),
+    color: faker.color.rgb(),
     icon: faker.helpers.arrayElement([
       '📱',
       '🎨',
