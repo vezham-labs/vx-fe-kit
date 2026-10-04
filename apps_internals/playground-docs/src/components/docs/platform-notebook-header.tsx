@@ -46,7 +46,7 @@ export const PlatformNotebookHeader = ({
               lang: locale === i18n.defaultLanguage ? undefined : locale
             }}
             className="inline-flex items-center gap-2 font-semibold">
-            <VezhamLogo size={24} />
+            <VezhamLogo size={20} />
             Developer
           </Link>
           <VersionSelector platform={platform} />

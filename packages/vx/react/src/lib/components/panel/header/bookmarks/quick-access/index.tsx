@@ -62,7 +62,7 @@ const QuickAccess = ({
               key={item.id}
               onClick={() => onFavoriteClick(item.url, item)}
               className="hover:bg-default-100 focus-visible:ring-primary flex w-full cursor-pointer items-center gap-4 rounded-xl px-3 py-3 text-left transition-colors duration-200 outline-none focus-visible:ring-2">
-              <Avatar className="h-6 w-6 shrink-0">
+              <Avatar className="h-5 w-5 shrink-0">
                 {item.avatar ? (
                   <Avatar.Image src={item.avatar} alt={item.name} />
                 ) : item.backgroundImage ? (

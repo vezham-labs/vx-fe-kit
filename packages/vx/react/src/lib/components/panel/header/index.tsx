@@ -35,7 +35,8 @@ const Header = ({
   extraActions,
   className,
   compact = false,
-  hideSeparator = false
+  hideSeparator = false,
+  showMenuUtilities = true
 }: HeaderActionsProps) => {
   const [open, setOpen] = useState(false)
 
@@ -61,7 +62,7 @@ const Header = ({
           role="group"
           aria-label="Application controls"
           data-hovered={open || undefined}
-          className="button button--ghost flex h-12 items-center gap-2 px-2 transition-transform duration-300">
+          className="button button--ghost flex h-8 items-center gap-0 px-1 transition-transform duration-300">
           <button
             type="button"
             aria-label="Application"
@@ -75,10 +76,11 @@ const Header = ({
               variant="ghost"
               isIconOnly
               aria-label="Open application menu"
-              className="h-full min-w-0 p-0">
+              size="sm"
+              className="h-6 w-6 min-w-0 p-0">
               <span className="sr-only">Application menu</span>
               <AltArrowDownIcon
-                size={12}
+                size={8}
                 className="text-muted-foreground"
                 aria-hidden="true"
               />
@@ -89,6 +91,7 @@ const Header = ({
               onSearch={handleMenuSearch}
               isDockHidden={isDockHidden}
               onToggleDock={onToggleDock}
+              showMenuUtilities={showMenuUtilities}
             />
           </Dropdown>
         </div>
@@ -117,23 +120,6 @@ const Header = ({
             />
           </Tooltip.Content>
         </Tooltip>
-
-        <Tooltip delay={0}>
-          <Tooltip.Trigger>
-            <Button
-              aria-label="Open command palette"
-              isIconOnly
-              size="sm"
-              variant="ghost"
-              className="text-muted hover:text-foreground"
-              onPress={handleSearch}>
-              <MagnifierIcon size={16} className="size-4" aria-hidden="true" />
-            </Button>
-          </Tooltip.Trigger>
-          <Tooltip.Content placement="right">
-            <ShortcutTooltipLabel label="Search" shortcut="Mod K" />
-          </Tooltip.Content>
-        </Tooltip>
       </Surface>
     )
   }
@@ -142,18 +128,18 @@ const Header = ({
     <>
       <Surface
         variant="transparent"
-        className={`flex flex-row items-center gap-3 md:flex-col md:gap-6 ${className ?? ''}`}
+        className={`flex flex-row items-center gap-1 md:flex-col md:gap-3 ${className ?? ''}`}
         data-vx="header">
         <Dropdown isOpen={open} onOpenChange={setOpen}>
           <Button
             variant="ghost"
-            className="flex h-12 items-center gap-2 px-2 transition-transform duration-300"
+            className="flex h-10 items-center gap-2 px-2 transition-transform duration-300"
             aria-label="Open application menu"
             onPress={() => onAvatarClick?.(users)}>
             <HeaderAvatar user={users} />
             <span className="sr-only">Application menu</span>
             <AltArrowDownIcon
-              size={12}
+              size={8}
               className="text-muted-foreground"
               aria-hidden="true"
             />
@@ -164,20 +150,21 @@ const Header = ({
             onSearch={handleMenuSearch}
             isDockHidden={isDockHidden}
             onToggleDock={onToggleDock}
+            showMenuUtilities={showMenuUtilities}
           />
         </Dropdown>
 
         {showSearch && (
           <Tooltip delay={0}>
-            <Tooltip.Trigger className="mt-2 md:mt-0">
+            <Tooltip.Trigger className="size-5 leading-none">
               <button
                 type="button"
                 aria-label="Open command palette"
-                className="inline-flex bg-transparent p-0"
+                className="inline-flex size-5 items-center justify-center bg-transparent p-0"
                 onClick={handleSearch}>
                 <MagnifierIcon
                   className="text-muted cursor-pointer"
-                  size={24}
+                  size={20}
                   aria-hidden="true"
                 />
               </button>
@@ -199,7 +186,7 @@ const Header = ({
 }
 
 const HeaderAvatar = ({ user }: { user: HeaderActionsProps['users'] }) => (
-  <Avatar className="h-6 w-6">
+  <Avatar className="h-5 w-5">
     {user.avatar && <Avatar.Image src={user.avatar} alt={user.name} />}
     <Avatar.Fallback>{user.name?.[0]?.toUpperCase()}</Avatar.Fallback>
   </Avatar>
@@ -209,12 +196,14 @@ const HeaderApplicationMenuContent = ({
   onClose,
   onSearch,
   isDockHidden,
-  onToggleDock
+  onToggleDock,
+  showMenuUtilities
 }: {
   onClose: () => void
   onSearch: () => void
   isDockHidden: boolean
   onToggleDock?: () => void
+  showMenuUtilities: boolean
 }) => {
   const appMenu = useAppMenu()
   return (
@@ -223,7 +212,8 @@ const HeaderApplicationMenuContent = ({
         <Dropdown.Item id="home" textValue="Back to home" onPress={onClose}>
           <Label>Back to home</Label>
         </Dropdown.Item>
-        {onToggleDock && (
+        {!showMenuUtilities && <Separator />}
+        {showMenuUtilities && onToggleDock && (
           <Dropdown.Item
             id="toggle-dock"
             textValue={isDockHidden ? 'Show Dock' : 'Hide Dock'}
@@ -237,17 +227,21 @@ const HeaderApplicationMenuContent = ({
             <ShortcutKey className="ms-auto" shortcut="⌘ S" />
           </Dropdown.Item>
         )}
-        <Separator />
-        <Dropdown.Item
-          id="search"
-          textValue="Search"
-          aria-label="Open command palette"
-          onPress={onSearch}>
-          <AppIcon icon="vx:search" size={18} aria-hidden="true" />
-          <Label>Search</Label>
-          <ShortcutKey className="ms-auto" shortcut="Mod K" />
-        </Dropdown.Item>
-        <Separator />
+        {showMenuUtilities && (
+          <>
+            <Separator />
+            <Dropdown.Item
+              id="search"
+              textValue="Search"
+              aria-label="Open command palette"
+              onPress={onSearch}>
+              <AppIcon icon="vx:search" size={18} aria-hidden="true" />
+              <Label>Search</Label>
+              <ShortcutKey className="ms-auto" shortcut="Mod K" />
+            </Dropdown.Item>
+            <Separator />
+          </>
+        )}
         {appMenu?.items.map(menu => (
           <Dropdown.SubmenuTrigger key={menu.key}>
             <Dropdown.Item id={menu.key} textValue={menu.label}>

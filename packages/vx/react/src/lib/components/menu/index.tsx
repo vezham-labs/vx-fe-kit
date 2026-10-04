@@ -11,6 +11,7 @@ import { Button, useOverlayState } from '@vezham/react-v3'
 
 import { getSelectedMenuKey } from '../../navigation'
 import { AppIcon } from '../app-icon'
+import { useCommand } from '../command'
 import { MenuDrawer } from './drawer'
 import { BottomNavbarProps, SidebarItem, SidebarItemType } from './types'
 import {
@@ -52,6 +53,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
 }) => {
   const navigate = useNavigate()
   const location = useLocation()
+  const { openCommand } = useCommand()
 
   const flatItems = useMemo(() => flattenMenuItems(items), [items])
   const activeKey =
@@ -129,7 +131,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
                 })}>
                 {iconName && (
                   <AppIcon
-                    size={24}
+                    size={20}
                     icon={iconName}
                     className={getNavbarIconClasses({
                       isSelected: isActive,
@@ -153,7 +155,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
                 textColorClass
               })}>
               <MenuDotsIcon
-                size={24}
+                size={20}
                 className={getNavbarIconClasses({ isDarkMode })}
                 aria-hidden="true"
               />
@@ -166,9 +168,10 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
           <Button
             aria-label="Search"
             className={getSearchButtonClasses({ isDarkMode })}
-            variant="ghost">
+            variant="ghost"
+            onPress={openCommand}>
             <MagnifierIcon
-              className="m-auto h-6 w-6"
+              className="m-auto h-5 w-5"
               size="1em"
               aria-hidden="true"
             />

@@ -42,20 +42,28 @@ const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
     <Surface
       variant="transparent"
       className="bg-background relative z-20 flex min-h-0 shrink-0 flex-col">
-      <div className="bg-background sticky top-0 z-20 w-full shadow-md">
-        <div className="flex w-full items-center justify-between px-3 py-2">
+      <div className="pointer-events-none fixed top-3 right-3 left-3 z-40 flex items-center justify-between gap-2">
+        <Surface
+          variant="transparent"
+          role="group"
+          aria-label="Mobile navigation controls"
+          className="border-default-200 bg-background/90 pointer-events-auto flex h-12 shrink-0 items-center rounded-full border px-2 shadow-[0_14px_28px_rgba(15,23,42,0.14)] backdrop-blur-xl">
           <Header
             className="flex-shrink-0"
             users={users}
-            showSearch
             showBookamarks
             showDisk
             onAvatarClick={user => console.log('Avatar clicked:', user)}
             onSearchClick={() => console.log('Search clicked')}
           />
+        </Surface>
 
+        <Surface
+          variant="transparent"
+          role="group"
+          aria-label="Mobile account actions"
+          className="border-default-200 bg-background/90 pointer-events-auto flex h-12 shrink-0 items-center rounded-full border px-2 shadow-[0_14px_28px_rgba(15,23,42,0.14)] backdrop-blur-xl">
           <Footer
-            className="ml-auto flex-shrink-0"
             user={{
               id: user?.id ?? '',
               name: user
@@ -76,22 +84,22 @@ const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
               setOpenSettings(true)
             }}
           />
-        </div>
-
-        <UserInfoModal
-          open={openSettings}
-          onClose={() => setOpenSettings(false)}
-          defaultActiveTab={settingsEntryPoint}
-        />
-        <ControlCenterDrawer
-          isOpen={controlsOpen}
-          onClose={() => setControlsOpen(false)}
-        />
-        <NotificationDrawer
-          isOpen={notificationsOpen}
-          onClose={() => setNotificationsOpen(false)}
-        />
+        </Surface>
       </div>
+
+      <UserInfoModal
+        open={openSettings}
+        onClose={() => setOpenSettings(false)}
+        defaultActiveTab={settingsEntryPoint}
+      />
+      <ControlCenterDrawer
+        isOpen={controlsOpen}
+        onClose={() => setControlsOpen(false)}
+      />
+      <NotificationDrawer
+        isOpen={notificationsOpen}
+        onClose={() => setNotificationsOpen(false)}
+      />
 
       <InfoPanelContainer
         panels={{

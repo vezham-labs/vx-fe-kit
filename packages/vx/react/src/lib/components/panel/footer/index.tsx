@@ -28,12 +28,13 @@ type Props = {
 const FooterAction = ({ children, label, onPress }: Props) => {
   return (
     <Tooltip delay={0}>
-      <Tooltip.Trigger>
+      <Tooltip.Trigger className="size-5 leading-none">
         <Button
           aria-label={label}
           isIconOnly
           variant="ghost"
-          className="text-muted hover:text-foreground"
+          size="sm"
+          className="text-muted hover:text-foreground h-5 w-5"
           onPress={onPress}>
           {children}
         </Button>
@@ -57,7 +58,7 @@ const CompactActions = ({
       <Dropdown.Trigger
         aria-label="Open footer actions"
         className="button button--ghost flex h-10 w-10 items-center justify-center rounded-lg">
-        <MenuDotsIcon size={24} aria-hidden="true" />
+        <MenuDotsIcon size={20} aria-hidden="true" />
       </Dropdown.Trigger>
       <Dropdown.Popover>
         <Dropdown.Menu aria-label="Footer actions">
@@ -112,17 +113,17 @@ const Footer = ({
       <Separator className="hidden md:block" />
       <Surface
         variant="transparent"
-        className={`flex items-center justify-center gap-3 md:flex-col md:gap-6 ${className ?? ''}`}>
-        <div className="hidden min-[500px]:contents">
+        className={`flex items-center justify-center gap-2 md:flex-col md:gap-3 ${className ?? ''}`}>
+        <div className="hidden min-[420px]:contents">
           {showAI ? (
             <FooterAction label="AI" onPress={onAI}>
-              <QuestionIcon size={24} aria-hidden="true" />
+              <QuestionIcon size={20} aria-hidden="true" />
             </FooterAction>
           ) : null}
 
           {showControlCenter ? (
             <FooterAction label="Control Center" onPress={onControlCenterClick}>
-              <SettingsIcon size={24} aria-hidden="true" />
+              <SettingsIcon size={20} aria-hidden="true" />
             </FooterAction>
           ) : null}
 
@@ -131,7 +132,7 @@ const Footer = ({
               <FooterAction
                 label="Notifications"
                 onPress={onNotificationsClick}>
-                <BellIcon size={24} aria-hidden="true" />
+                <BellIcon size={20} aria-hidden="true" />
               </FooterAction>
               {notificationCount > 0 ? (
                 <span className="bg-danger text-danger-foreground pointer-events-none absolute -top-1 -right-1 min-w-4 rounded-full px-1 text-center text-[10px] leading-4">
@@ -142,7 +143,7 @@ const Footer = ({
           ) : null}
         </div>
 
-        <div className="min-[500px]:hidden">
+        <div className="min-[420px]:hidden">
           <CompactActions
             showAI={showAI}
             showControlCenter={showControlCenter}

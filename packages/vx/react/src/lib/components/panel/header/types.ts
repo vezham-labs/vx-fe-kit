@@ -22,6 +22,7 @@ export interface HeaderActionsProps {
   className?: string
   compact?: boolean
   hideSeparator?: boolean
+  showMenuUtilities?: boolean
   isDockHidden?: boolean
   onToggleDock?: () => void
   extraActions?: ReactNode

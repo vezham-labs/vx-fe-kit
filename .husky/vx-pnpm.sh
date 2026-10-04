@@ -6,6 +6,11 @@ path_add() {
   fi
 }
 
+vx_active_node_bin=""
+if command -v node >/dev/null 2>&1; then
+  vx_active_node_bin=$(dirname "$(command -v node)")
+fi
+
 path_add_from_windows_env() {
   if command -v cygpath >/dev/null 2>&1 && [ -n "$1" ]; then
     path_add "$(cygpath -u "$1" 2>/dev/null)/npm"
@@ -25,6 +30,7 @@ path_add "$HOME/.volta/bin"
 path_add "$HOME/Library/pnpm"
 path_add "$HOME/.local/share/pnpm"
 path_add "$PNPM_HOME"
+path_add "$vx_active_node_bin"
 
 export PATH
 

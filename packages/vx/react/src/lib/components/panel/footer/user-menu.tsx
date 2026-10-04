@@ -68,7 +68,7 @@ const UserMenu = ({ user, onLogout, onProfile, onPreferences }: Props) => {
             aria-label={`Open ${user.name || 'user'} menu`}
             className="button button--ghost relative flex h-12 w-12 items-center justify-center rounded-xl">
             <Badge.Anchor>
-              <Avatar size="sm" className="rounded-xl">
+              <Avatar size="sm" className="h-6 w-6 rounded-md">
                 {user.avatar ? (
                   <Avatar.Image src={user.avatar} alt={user.name} />
                 ) : null}

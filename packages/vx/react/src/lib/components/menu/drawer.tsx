@@ -75,7 +75,7 @@ const MenuDrawer = ({
                             ? item.iconActive || item.icon
                             : item.icon
                         }
-                        className="h-6 w-6"
+                        className="h-5 w-5"
                         size="1em"
                         aria-hidden="true"
                       />

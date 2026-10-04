@@ -15,8 +15,8 @@ import {
   useToolbarActions
 } from '../../components/toolbar-actions'
 import { WorkspaceNavigationProvider } from '../../components/workspace-navigation'
-import { getNavigationPageKey } from '../../navigation'
 import type { AppNavigationItem } from '../../navigation'
+import { getNavigationPageKey } from '../../navigation'
 import { type User, UserProvider } from '../../store/users/useUserStore'
 import { MenuLayout } from '../menu-layout'
 
@@ -46,7 +46,7 @@ const AppFrame = ({
       <main
         data-slot="app-layout-content"
         className={cn(
-          'min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto transition-[width,transform] duration-300 ease-out',
+          'min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto pt-18 pb-32 transition-[width,transform] duration-300 ease-out md:p-0',
           contentClassName
         )}>
         {children}

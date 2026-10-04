@@ -125,7 +125,7 @@ export const TimetableDrawer = ({
                   aria-label="Toggle drawer"
                   variant="ghost"
                   onPress={onClose}>
-                  <DoubleAltArrowRightIcon size={24} aria-hidden="true" />
+                  <DoubleAltArrowRightIcon size={20} aria-hidden="true" />
                 </Button>
               </Tooltip.Trigger>
               <Tooltip.Content>

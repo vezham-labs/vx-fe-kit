@@ -32,17 +32,17 @@ const tva = tv({
     size: {
       sm: {
         icon_wrapper: 'h-[24px] w-[24px]',
-        icon: 'w-5',
+        icon: 'h-5 w-5',
         label: 'text-xs'
       },
       md: {
         icon_wrapper: 'h-[28px] w-[28px]',
-        icon: 'w-6',
+        icon: 'h-5 w-5',
         label: 'text-sm'
       },
       lg: {
         icon_wrapper: 'h-[32px] w-[32px]',
-        icon: 'w-7',
+        icon: 'h-5 w-5',
         label: 'text-base'
       }
     },
@@ -52,7 +52,7 @@ const tva = tv({
         item: 'mb-0'
       },
       normal: {
-        container: 'gap-4',
+        container: 'gap-2',
         item: 'mb-1'
       },
       spacious: {
@@ -62,7 +62,7 @@ const tva = tv({
     },
     collapsed: {
       true: {
-        container: 'gap-4',
+        container: 'gap-2',
         label: 'hidden'
       },
       false: {

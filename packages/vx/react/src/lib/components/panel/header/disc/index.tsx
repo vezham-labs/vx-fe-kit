@@ -101,7 +101,7 @@ const DiscTrigger = () => {
           <ArchiveIcon
             className={isActive ? 'text-muted' : ''}
             weight={isActive ? 'filled' : 'outline'}
-            size={24}
+            size={20}
             onClick={() => toggleInfoPanel('disc')}
             aria-hidden="true"
           />

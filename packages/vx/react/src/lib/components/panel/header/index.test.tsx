@@ -5,14 +5,15 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AppMenuProvider } from '../../app-menu'
 import { Header } from './index'
 
-const actions = vi.hoisted(() => ({ openCommand: vi.fn(), expand: vi.fn() }))
+const actions = vi.hoisted(() => ({
+  openCommand: vi.fn(),
+  expand: vi.fn(),
+  toggleInfoPanel: vi.fn()
+}))
 
 vi.mock('../../command', () => ({ useCommand: () => actions }))
-vi.mock('./bookmarks', () => ({
-  BookmarksTrigger: () => null
-}))
-vi.mock('./disc', () => ({
-  DiscTrigger: () => null
+vi.mock('../info-panel', () => ({
+  useInfoPanel: () => ({ toggleInfoPanel: actions.toggleInfoPanel })
 }))
 
 describe('Shared compact navigation header', () => {
@@ -20,10 +21,15 @@ describe('Shared compact navigation header', () => {
 
   it('matches the small ghost action buttons without extra spacing', () => {
     const { container } = render(
-      <Header compact isDockHidden users={{ id: '1', name: 'School' }} />
+      <Header
+        compact
+        isDockHidden
+        users={{ id: '1', name: 'School' }}
+        onToggleDock={actions.expand}
+      />
     )
 
-    for (const name of ['Show Dock', 'Open command palette']) {
+    for (const name of ['Show Dock']) {
       const button = screen.getByRole('button', { name })
       expect(button).toHaveClass(
         'button--icon-only',
@@ -42,13 +48,13 @@ describe('Shared compact navigation header', () => {
     expect(header).not.toHaveClass('justify-between')
     expect(
       screen.getByRole('group', { name: 'Application controls' })
-    ).toHaveClass('h-12')
+    ).toHaveClass('h-8')
     expect(
       screen.getByRole('button', { name: 'Open application menu' })
     ).toBeTruthy()
   })
 
-  it('preserves expand and search actions', () => {
+  it('preserves expand and search actions', async () => {
     render(
       <Header
         compact
@@ -59,11 +65,58 @@ describe('Shared compact navigation header', () => {
     )
     fireEvent.click(screen.getByRole('button', { name: 'Show Dock' }))
     fireEvent.click(
-      screen.getByRole('button', { name: 'Open command palette' })
+      screen.getByRole('button', { name: 'Open application menu' })
+    )
+    fireEvent.click(
+      await screen.findByRole('menuitem', { name: 'Open command palette' })
     )
 
     expect(actions.expand).toHaveBeenCalledOnce()
     expect(actions.openCommand).toHaveBeenCalledOnce()
+  })
+
+  it('omits duplicate dock and search actions from module menus', async () => {
+    render(
+      <Header
+        users={{ id: '1', name: 'School' }}
+        showMenuUtilities={false}
+        onToggleDock={actions.expand}
+      />
+    )
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Open application menu' })
+    )
+    await screen.findByRole('menu', { name: 'Application menu' })
+
+    expect(screen.queryByRole('menuitem', { name: /Hide Dock/ })).toBeNull()
+    expect(
+      screen.queryByRole('menuitem', { name: 'Open command palette' })
+    ).toBeNull()
+  })
+
+  it('moves Bookmarks and Disc into the application menu with their panel actions', async () => {
+    render(
+      <Header
+        compact
+        users={{ id: '1', name: 'School' }}
+        showBookamarks
+        showDisk
+      />
+    )
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Open application menu' })
+    )
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Bookmarks' }))
+    expect(actions.toggleInfoPanel).toHaveBeenCalledWith('bookmarks')
+    await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Open application menu' })
+    )
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Disc' }))
+    expect(actions.toggleInfoPanel).toHaveBeenCalledWith('disc')
   })
 
   it.each([true, false])(

@@ -15,7 +15,7 @@ export const DrawerToggle = ({ onPress }: Props) => (
         aria-label="Toggle drawer"
         variant="ghost"
         onPress={onPress}>
-        <DoubleAltArrowRightIcon size={24} aria-hidden="true" />
+        <DoubleAltArrowRightIcon size={20} aria-hidden="true" />
       </Button>
     </Tooltip.Trigger>
     <Tooltip.Content>

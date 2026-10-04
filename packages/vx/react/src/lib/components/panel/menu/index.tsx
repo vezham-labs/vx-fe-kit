@@ -145,7 +145,7 @@ const Menu = forwardRef<HTMLDivElement, Props>((props, ref) => {
                           {iconName ? (
                             <AppIcon
                               icon={iconName}
-                              size={24}
+                              size={20}
                               className={iconProps.className}
                               data-active={iconProps['data-active']}
                               aria-hidden="true"

@@ -193,19 +193,6 @@ const SectionLayout = ({
             ) : null}
           </Surface>
         </Surface>
-
-        {activeTabs.length ? (
-          <Surface {...controls.getHeaderTabsMobileProps()}>
-            <HeaderTabs
-              tabs={activeTabs}
-              selectedKey={headerProps.selectedTabKey}
-              onSelectionChange={headerProps.onTabSelectionChange}
-              getTabsScrollerProps={controls.getTabsScrollerProps}
-              getTabsListProps={controls.getTabsListProps}
-              getTabsTabProps={controls.getTabsTabProps}
-            />
-          </Surface>
-        ) : null}
       </Surface>
 
       <Surface {...controls.getShellProps()}>
@@ -219,6 +206,19 @@ const SectionLayout = ({
           </Surface>
         </Surface>
       </Surface>
+
+      {activeTabs.length ? (
+        <Surface {...controls.getHeaderTabsMobileProps()}>
+          <HeaderTabs
+            tabs={activeTabs}
+            selectedKey={headerProps.selectedTabKey}
+            onSelectionChange={headerProps.onTabSelectionChange}
+            getTabsScrollerProps={controls.getTabsScrollerProps}
+            getTabsListProps={controls.getTabsListProps}
+            getTabsTabProps={controls.getTabsTabProps}
+          />
+        </Surface>
+      ) : null}
 
       <Drawer {...drawerProps.root}>
         <Drawer.Content placement="left">

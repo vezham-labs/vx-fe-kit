@@ -209,7 +209,7 @@ const BookmarkFileTree = ({
 
           onBookmarkRemove(String(item.key))
         }}>
-        <TrashBinTrashIcon size={24} aria-hidden="true" />
+        <TrashBinTrashIcon size={20} aria-hidden="true" />
       </Button>
     </div>
   )

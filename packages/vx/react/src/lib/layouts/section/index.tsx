@@ -238,5 +238,5 @@ const SectionLayout = ({
   )
 }
 
-export { SectionLayout }
 export type { SectionAction, SectionSearch } from './toolbar'
+export { SectionLayout }

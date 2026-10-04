@@ -170,15 +170,15 @@ describe('Home desktop navigation', () => {
   it('keeps the Home gutter on collapse but still releases it on module pages', () => {
     const { container, rerender } = render(<MenuMD items={items} />)
     const rail = container.querySelector('[data-vx="menu-layout"]')
-    expect(rail).toHaveClass('w-[106px]')
+    expect(rail).toHaveClass('w-[105px]')
 
     fireEvent.click(screen.getByRole('button', { name: 'Hide Dock' }))
-    expect(rail).toHaveClass('w-[106px]', 'p-0', 'border-0')
+    expect(rail).toHaveClass('w-[105px]', 'p-0', 'border-0')
     expect(rail).not.toHaveClass('w-0')
     expect(rail).toBeEmptyDOMElement()
 
     fireEvent.click(screen.getByRole('button', { name: 'Show Dock' }))
-    expect(rail).toHaveClass('w-[106px]')
+    expect(rail).toHaveClass('w-[105px]')
 
     state.pathname = '/academic'
     state.isNavigationCollapsed = true

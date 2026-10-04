@@ -36,6 +36,17 @@ describe('panel menu props', () => {
     }
   })
 
+  it.each(['sm', 'md', 'lg'] as const)(
+    'keeps menu icons at 20px for %s size',
+    size => {
+      const { result } = renderHook(() => useProps({ items: [], size }))
+
+      expect(
+        result.current.getIconProps({ isActive: false }).className
+      ).toContain('h-5 w-5')
+    }
+  )
+
   it('preserves DOM props, refs, and slot class overrides', () => {
     const ref = createRef<HTMLDivElement>()
     const { result } = renderHook(() =>

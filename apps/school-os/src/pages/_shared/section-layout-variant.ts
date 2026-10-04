@@ -3,14 +3,15 @@ import { tv } from '@vezham/react-v3'
 export const createSectionLayoutVariant = (sidebarWidth: 'w-56' | 'w-64') =>
   tv({
     slots: {
-      base: 'bg-background flex min-h-screen min-w-0 flex-1 flex-col',
+      base: 'bg-background flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden',
       header:
-        'border-default-200 bg-background sticky top-0 z-30 px-3 py-2 sm:px-4',
+        'border-default-200 bg-background sticky top-0 z-30 hidden px-3 py-2 md:block md:px-4',
       header_inner: 'flex min-h-12 items-center justify-between gap-3',
       header_left: 'flex min-w-0 flex-1 items-center gap-1',
-      header_tabs_desktop: 'hidden min-w-0 flex-1 sm:block',
-      header_right: 'flex shrink-0 items-center gap-1 sm:gap-2',
-      header_tabs_mobile: 'flex min-w-0 justify-center pt-2 sm:hidden',
+      header_tabs_desktop: 'hidden min-w-0 flex-1 md:block',
+      header_right: 'flex shrink-0 items-center gap-1 md:gap-2',
+      header_tabs_mobile:
+        'border-default-200 bg-background/90 mb-3 flex w-fit max-w-[calc(100vw-2rem)] shrink-0 justify-center self-center rounded-full border px-1 py-1 shadow-[0_14px_28px_rgba(15,23,42,0.14)] backdrop-blur-xl md:hidden',
       shell: 'flex min-h-0 flex-1',
       separator: 'my-2',
       sidebar_rail:
@@ -20,7 +21,7 @@ export const createSectionLayoutVariant = (sidebarWidth: 'w-56' | 'w-64') =>
       sidebar_rail_closed: 'w-0 border-r-0',
       sidebar_rail_compact:
         'border-default-200/60 w-16 overflow-visible border-r',
-      content: 'min-w-0 flex-1 overflow-auto p-4',
+      content: 'min-w-0 flex-1 overflow-auto p-4 md:p-4',
       content_surface: 'min-h-full rounded-lg p-4 sm:p-5',
       drawer_dialog: 'bg-background w-[min(20rem,calc(100vw-2rem))]',
       drawer_header: 'border-default-200 flex items-center justify-between',

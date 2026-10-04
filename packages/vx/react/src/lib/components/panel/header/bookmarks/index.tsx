@@ -542,7 +542,7 @@ const BookmarksTrigger = () => {
           <StarIcon
             className={isActive ? 'text-muted' : ''}
             weight={isActive ? 'filled' : 'outline'}
-            size={24}
+            size={20}
             onClick={() => toggleInfoPanel('bookmarks')}
             aria-hidden="true"
           />
