@@ -35,7 +35,7 @@ jobs:
     needs: run_if
     if: ${{ needs.run_if.outputs.all == 'true' || needs.run_if.outputs.deploy == 'true' }}
     name: playground-app | ${{ github.ref_name }}
-    uses: vezham/vx-fe-deployer/.github/workflows/playground-app.yml@timeline
+    uses: vezham/vx-fe-deployer/.github/workflows/playground-app.yml@labs
     # secrets: inherit
     # Pass secrets explicitly to the reusable workflow in the vezham organization.
     secrets:
