@@ -1,5 +1,0 @@
-{
-  "title": "System",
-  "description": "System health and general API information",
-  "pages": ["hello__get", "pong_ping_get"]
-}

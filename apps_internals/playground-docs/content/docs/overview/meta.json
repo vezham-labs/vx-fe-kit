@@ -1,8 +1,0 @@
-{
-  "root": true,
-  "title": "Overview",
-  "description": "Handbook for Developers",
-  "icon": "book-bookmark",
-  "iconColor": "#d97757",
-  "pages": ["index"]
-}
