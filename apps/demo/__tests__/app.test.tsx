@@ -92,11 +92,11 @@ describe('App', () => {
   it('keeps navigation collapsed while changing child routes', async () => {
     await renderApp('/workspace/projects/overview')
     await screen.findByRole('navigation', { name: 'Workspace sections' })
-    fireEvent.click(
-      screen
-        .getAllByRole('button', { name: 'Hide Sidebar' })
-        .find(button => button.hasAttribute('aria-controls'))!
-    )
+    const hideSidebar = screen
+      .getAllByRole('button', { name: 'Hide Sidebar' })
+      .find(button => button.hasAttribute('aria-controls'))
+    if (!hideSidebar) throw new Error('Hide Sidebar control was not found')
+    fireEvent.click(hideSidebar)
     expect(
       screen.queryByRole('navigation', { name: 'Workspace sections' })
     ).toBeNull()
@@ -109,11 +109,11 @@ describe('App', () => {
     expect(
       screen.queryByRole('navigation', { name: 'Workspace sections' })
     ).toBeNull()
-    fireEvent.click(
-      screen
-        .getAllByRole('button', { name: 'Show Sidebar' })
-        .find(button => button.hasAttribute('aria-controls'))!
-    )
+    const showSidebar = screen
+      .getAllByRole('button', { name: 'Show Sidebar' })
+      .find(button => button.hasAttribute('aria-controls'))
+    if (!showSidebar) throw new Error('Show Sidebar control was not found')
+    fireEvent.click(showSidebar)
     expect(
       screen.getByRole('navigation', { name: 'Workspace sections' })
     ).toBeTruthy()
