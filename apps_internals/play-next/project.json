@@ -5,7 +5,12 @@
   "sourceRoot": "apps_internals/play-next/src",
   "targets": {
     "build": {
-      "dependsOn": ["metadata:generate", "deploy:generate", "^build"]
+      "dependsOn": [
+        "metadata:generate",
+        "deploy:generate",
+        "^build",
+        "^typecheck"
+      ]
     },
     "dev": {
       "dependsOn": ["metadata:watch"]
