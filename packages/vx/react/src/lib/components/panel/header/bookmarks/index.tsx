@@ -6,6 +6,7 @@ import { ScrollShadow, Tooltip, Typography } from '@vezham/react-v3'
 
 import { useBookmarks } from '../../../../store/useBookmarks'
 import { getAppPath, getOpenUrl } from '../../../../utils/url'
+import { ShortcutTooltipLabel } from '../../../shortcut-key'
 import { InfoPanelDefinition, useInfoPanel } from '../../info-panel'
 import { BookmarkFileTree } from './bookmark-file-tree'
 import {
@@ -548,7 +549,9 @@ const BookmarksTrigger = () => {
           />
         </span>
       </Tooltip.Trigger>
-      <Tooltip.Content placement="right">Bookmarks</Tooltip.Content>
+      <Tooltip.Content placement="right">
+        <ShortcutTooltipLabel label="Bookmarks" shortcut="Mod ⇧ B" />
+      </Tooltip.Content>
     </Tooltip>
   )
 }

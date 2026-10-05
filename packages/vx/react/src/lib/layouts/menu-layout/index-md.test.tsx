@@ -40,18 +40,30 @@ vi.mock('../../store/users/useUserStore', () => ({
   useUser: () => ({ user: null })
 }))
 vi.mock('../../components/panel/header', () => ({
-  Header: vi.fn(({ compact, onToggleDock }: HeaderActionsProps) =>
-    compact ? (
-      <div>
-        <button onClick={onToggleDock}>Show Dock</button>
-        <button onClick={state.openCommand}>Open command palette</button>
-      </div>
-    ) : (
-      <div>
-        Application menu
-        {onToggleDock && <button onClick={onToggleDock}>Hide Dock</button>}
-      </div>
-    )
+  Header: vi.fn(
+    ({
+      compact,
+      onToggleDock,
+      showMenuUtilities = true
+    }: HeaderActionsProps) =>
+      compact ? (
+        <div>
+          <button onClick={onToggleDock}>Show Dock</button>
+          {showMenuUtilities && (
+            <button onClick={state.openCommand}>Open command palette</button>
+          )}
+        </div>
+      ) : (
+        <div>
+          Application menu
+          {showMenuUtilities && onToggleDock && (
+            <button onClick={onToggleDock}>Hide Dock</button>
+          )}
+          {showMenuUtilities && (
+            <button onClick={state.openCommand}>Open command palette</button>
+          )}
+        </div>
+      )
   )
 }))
 vi.mock('../../components/panel/menu', () => ({ Menu: () => null }))
@@ -60,7 +72,7 @@ vi.mock('../../components/panel/footer/ai', () => ({ aiPanel: {} }))
 vi.mock('../../components/panel/header/bookmarks', () => ({
   bookmarksPanel: {}
 }))
-vi.mock('../../components/panel/header/disc', () => ({ discPanel: {} }))
+vi.mock('../../components/panel/header/storage', () => ({ storagePanel: {} }))
 vi.mock('../../components/panel/footer/control-center', () => ({
   ControlCenterDrawer: () => null
 }))
@@ -99,6 +111,12 @@ describe('Home desktop navigation', () => {
     expect(state.closeCommand).toHaveBeenCalledOnce()
     expect(screen.queryByText('Application menu')).toBeNull()
 
+    expect(vi.mocked(Header).mock.lastCall?.[0]).toMatchObject({
+      compact: true,
+      showBookamarks: true,
+      showStorage: true
+    })
+
     fireEvent.click(screen.getByRole('button', { name: 'Show Dock' }))
     expect(screen.getByText('Application menu')).toBeTruthy()
     expect(state.toggleNavigation).not.toHaveBeenCalled()
@@ -130,15 +148,28 @@ describe('Home desktop navigation', () => {
   })
 
   it.each(['/academic', '/reports/grade'])(
-    'offers Hide Dock on %s and restores it from the compact header',
+    'keeps dock and search actions on %s in expanded and bubble modes',
     pathname => {
       state.pathname = pathname
       const { rerender } = render(<MenuMD items={items} />)
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Open command palette' })
+      )
+      expect(state.openCommand).toHaveBeenCalledOnce()
       fireEvent.click(screen.getByRole('button', { name: 'Hide Dock' }))
       expect(state.toggleNavigation).toHaveBeenCalledOnce()
       state.isNavigationCollapsed = true
       rerender(<MenuMD items={items} />)
       expect(screen.queryByText('Application menu')).toBeNull()
+      expect(vi.mocked(Header).mock.lastCall?.[0]).toMatchObject({
+        compact: true,
+        showBookamarks: true,
+        showStorage: true
+      })
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Open command palette' })
+      )
+      expect(state.openCommand).toHaveBeenCalledTimes(2)
       fireEvent.click(screen.getByRole('button', { name: 'Show Dock' }))
       expect(state.toggleNavigation).toHaveBeenCalledTimes(2)
     }

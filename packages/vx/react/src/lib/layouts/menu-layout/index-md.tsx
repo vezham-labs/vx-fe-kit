@@ -11,7 +11,7 @@ import { NotificationDrawer } from '../../components/panel/footer/notification-c
 import { UserInfoModal } from '../../components/panel/footer/preferences/modal'
 import { Header } from '../../components/panel/header'
 import { bookmarksPanel } from '../../components/panel/header/bookmarks'
-import { discPanel } from '../../components/panel/header/disc'
+import { storagePanel } from '../../components/panel/header/storage'
 import {
   InfoPanelContainer,
   useInfoPanel
@@ -80,7 +80,6 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
       <NavigationPanel
         collapsed={isNavigationCollapsed}
         footerUser={footerUser}
-        isHome={isHome}
         items={items}
         navigationWidth={navigationWidth}
         selectedKey={selectedKey}
@@ -114,7 +113,7 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
       <InfoPanelContainer
         panels={{
           bookmarks: bookmarksPanel,
-          disc: discPanel,
+          storage: storagePanel,
           ai: aiPanel
         }}
       />
@@ -130,7 +129,6 @@ type Props = {
     avatar?: string
     isOnline?: boolean
   }
-  isHome: boolean
   items: AppNavigationItem[]
   navigationWidth: string
   selectedKey?: string
@@ -144,7 +142,6 @@ type Props = {
 const NavigationPanel = ({
   collapsed,
   footerUser,
-  isHome,
   items,
   navigationWidth,
   selectedKey,
@@ -166,8 +163,7 @@ const NavigationPanel = ({
           users={headerUsers}
           showSearch
           showBookamarks
-          showDisk
-          showMenuUtilities={isHome}
+          showStorage
           onToggleDock={onToggleDock}
         />
         <Menu collapsed={false} items={items} selectedKey={selectedKey} />
@@ -214,7 +210,8 @@ const CollapsedNavigation = ({
         compact
         users={headerUsers}
         isDockHidden
-        showMenuUtilities={false}
+        showBookamarks
+        showStorage
         onToggleDock={onToggleDock}
       />
     </Surface>

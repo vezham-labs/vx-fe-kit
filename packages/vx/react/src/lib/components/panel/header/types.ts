@@ -11,7 +11,7 @@ export interface HeaderActionsProps {
 
   showSearch?: boolean
   showBookamarks?: boolean
-  showDisk?: boolean
+  showStorage?: boolean
 
   favoritesCount?: number
   archiveCount?: number
@@ -25,5 +25,7 @@ export interface HeaderActionsProps {
   showMenuUtilities?: boolean
   isDockHidden?: boolean
   onToggleDock?: () => void
+  isSidebarOpen?: boolean
+  onToggleSidebar?: () => void
   extraActions?: ReactNode
 }

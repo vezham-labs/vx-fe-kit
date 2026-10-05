@@ -1,4 +1,4 @@
-export type RQDisc = Record<string, never>
+export type RQStorage = Record<string, never>
 
 export interface ArchiveItem {
   id: string
@@ -16,7 +16,7 @@ export interface TrashItem {
   favicon?: string
 }
 
-export type DiscResponse = {
+export type StorageResponse = {
   archiveItems: ArchiveItem[]
   trashItems: TrashItem[]
 }

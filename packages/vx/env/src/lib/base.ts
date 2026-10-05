@@ -2,8 +2,8 @@ export type BaseApiMode = 'api' | 'mock' | 'local'
 const environments = ['local', 'dev', 'qa', 'preview', 'production'] as const
 const releaseChannels = ['canary', 'beta', 'stable'] as const
 
-export type Environment = (typeof environments)[number]
-export type ReleaseChannel = (typeof releaseChannels)[number]
+type Environment = (typeof environments)[number]
+type ReleaseChannel = (typeof releaseChannels)[number]
 
 type Props = {
   MODE?: string

@@ -17,7 +17,7 @@ type Props = Pick<
   children: ReactNode
 }
 
-export const DiscHistoryDateGroup = ({
+export const StorageHistoryDateGroup = ({
   date,
   children,
   getDateGroupProps,

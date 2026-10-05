@@ -1,15 +1,18 @@
+const MENU_FIELDS = new Set(['key', 'label', 'icon', 'groups'])
+const ACTION_FIELDS = new Set(['key', 'label', 'icon', 'shortcut'])
+
 const object = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
 
 const validateEntry = (
   value: unknown,
-  fields: string[],
+  fields: ReadonlySet<string>,
   location: string,
   keys: Set<string>
 ) => {
   if (!object(value)) throw new Error(`${location} must be an object`)
   for (const field of Object.keys(value)) {
-    if (!fields.includes(field))
+    if (!fields.has(field))
       throw new Error(`Unknown field: ${location}.${field}`)
   }
   for (const field of ['key', 'label', 'icon', 'shortcut']) {
@@ -30,12 +33,7 @@ export const validateAppMenu = (value: unknown, location: string) => {
   const menuKeys = new Set<string>()
   const actionKeys = new Set<string>()
   for (const entry of value) {
-    const menu = validateEntry(
-      entry,
-      ['key', 'label', 'icon', 'groups'],
-      location,
-      menuKeys
-    )
+    const menu = validateEntry(entry, MENU_FIELDS, location, menuKeys)
     if (!Array.isArray(menu.groups) || !menu.groups.length)
       throw new Error(
         `${location}.${menu.key}.groups must be a non-empty array`
@@ -48,7 +46,7 @@ export const validateAppMenu = (value: unknown, location: string) => {
       for (const action of group)
         validateEntry(
           action,
-          ['key', 'label', 'icon', 'shortcut'],
+          ACTION_FIELDS,
           `${location}.${menu.key}`,
           actionKeys
         )
