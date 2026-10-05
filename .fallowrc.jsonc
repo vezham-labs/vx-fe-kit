@@ -119,7 +119,26 @@
   "ignoreDependencyOverrides": [
     // vx-bot/NOTE: These transitive peer aliases resolve to the forks in pnpm-lock.yaml.
     { "package": "fumadocs-core", "source": "pnpm-workspace.yaml" },
-    { "package": "fumadocs-ui", "source": "pnpm-workspace.yaml" }
+    { "package": "fumadocs-ui", "source": "pnpm-workspace.yaml" },
+    // vx-bot/NOTE: Fallow 3.25 reads only the first document of pnpm 12's lockfile.
+    // These security override targets are resolved in the second document.
+    // vx-bot/TODO: Remove these exceptions when Fallow supports multi-document lockfiles;
+    // keep each security override until pnpm audit confirms it is no longer needed.
+    { "package": "sharp", "source": "pnpm-workspace.yaml" },
+    { "package": "uuid", "source": "pnpm-workspace.yaml" },
+    { "package": "qs", "source": "pnpm-workspace.yaml" },
+    { "package": "undici", "source": "pnpm-workspace.yaml" },
+    { "package": "js-yaml", "source": "pnpm-workspace.yaml" },
+    { "package": "smol-toml", "source": "pnpm-workspace.yaml" },
+    {
+      "package": "brace-expansion",
+      "source": "pnpm-workspace.yaml"
+    },
+    { "package": "figlet", "source": "pnpm-workspace.yaml" },
+    {
+      "package": "serialize-javascript",
+      "source": "pnpm-workspace.yaml"
+    }
   ],
   "duplicates": {
     "ignore": [

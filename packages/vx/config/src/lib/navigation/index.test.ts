@@ -40,10 +40,13 @@ describe('navigation generation', () => {
     runInNewContext(transpile(file.content, { module: ModuleKind.CommonJS }), {
       exports
     })
-    const lookup = exports.getNavigationChildren!
+    const lookup = exports.getNavigationChildren
+    if (!lookup) throw new Error('Generated navigation lookup was not exported')
     expect(lookup('school')).toEqual(children)
     const updatedChildren = [{ key: 'teachers', title: 'Teachers' }]
-    exports.navigationItems![0].children = updatedChildren
+    const school = exports.navigationItems?.[0]
+    if (!school) throw new Error('Generated navigation items were not exported')
+    school.children = updatedChildren
     expect(lookup('school')).toBe(updatedChildren)
     expect(lookup('home')).toEqual([])
     expect(() => lookup('missing')).toThrow('Unknown navigation key: missing')

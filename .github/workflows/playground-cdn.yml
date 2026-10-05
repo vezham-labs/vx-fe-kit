@@ -35,7 +35,15 @@ jobs:
     needs: run_if
     if: ${{ needs.run_if.outputs.all == 'true' || needs.run_if.outputs.deploy == 'true' }}
     name: playground-cdn | ${{ github.ref_name }}
-    uses: vezham/vx-fe-deployer/.github/workflows/playground-cdn.yml@timeline
-    secrets: inherit
+    uses: vezham/vx-fe-deployer/.github/workflows/playground-cdn.yml@labs
+    # secrets: inherit
+    # Pass secrets explicitly to the reusable workflow in the vezham organization.
+    secrets:
+      HEROUI_AUTH_TOKEN: ${{ secrets.HEROUI_AUTH_TOKEN }}
+      PLAYGROUND_DOCS_TVA_GCP_SA_KEY: ${{ secrets.PLAYGROUND_TVA_GCP_SA_KEY }}
+      PLAYGROUND_CDN_DEV_GCP_SA_KEY: ${{ secrets.PLAYGROUND_TVA_GCP_SA_KEY }}
+      PLAYGROUND_CDN_QA_GCP_SA_KEY: ${{ secrets.PLAYGROUND_TVA_GCP_SA_KEY }}
+      PLAYGROUND_CDN_PREVIEW_GCP_SA_KEY: ${{ secrets.PLAYGROUND_TVA_GCP_SA_KEY }}
+      PLAYGROUND_CDN_LIVE_GCP_SA_KEY: ${{ secrets.PLAYGROUND_TVA_GCP_SA_KEY }}
     with:
       CALLER: ${{ github.ref_name }}

@@ -14,6 +14,7 @@ expect.extend(matchers)
 
 beforeEach(() => {
   window.scrollTo = vi.fn()
+  Element.prototype.scrollTo = vi.fn()
 })
 
 if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {

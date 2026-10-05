@@ -14,7 +14,7 @@ type Props = Pick<
   item: { favicon?: string; title: string; url: string }
 }
 
-export const DiscHistoryItemContent = ({
+export const StorageHistoryItemContent = ({
   item,
   getItemFaviconProps,
   getItemFallbackIconProps,

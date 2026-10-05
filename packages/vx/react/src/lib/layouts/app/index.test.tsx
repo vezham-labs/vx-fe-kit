@@ -22,8 +22,9 @@ it('dispatches app menu actions to the active page and reports unhandled actions
   const notice = vi.spyOn(toast, 'info').mockReturnValue('app-menu-notice')
   const action = { key: 'file.new', label: 'New…' }
   const Consumer = () => {
-    const menu = useAppMenu()!
+    const menu = useAppMenu()
     useToolbarAction('file.new', handler, { pageKey: 'records' })
+    if (!menu) throw new Error('App menu context was not provided')
     return (
       <button onClick={() => menu.onAction(menu.items[0].groups[0][0])}>
         New record

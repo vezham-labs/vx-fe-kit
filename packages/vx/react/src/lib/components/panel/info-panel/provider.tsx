@@ -1,3 +1,4 @@
+import { useHotkey } from '@tanstack/react-hotkeys'
 import {
   createContext,
   useCallback,
@@ -13,7 +14,7 @@ const InfoPanelContext = createContext<InfoPanelContextValue | null>(null)
 const STORAGE_KEY = 'vx-app:info-panel'
 const VALID_INFO_PANELS: Array<Exclude<ActiveInfoPanel, null>> = [
   'bookmarks',
-  'disc',
+  'storage',
   'ai'
 ]
 
@@ -39,9 +40,9 @@ const readStoredInfoPanelState = (): StoredInfoPanelState => {
     }
 
     const parsedValue = JSON.parse(storedValue) as Partial<StoredInfoPanelState>
-    const activeInfoPanel = isInfoPanel(parsedValue.activeInfoPanel)
-      ? parsedValue.activeInfoPanel
-      : null
+    const storedPanel: unknown = parsedValue.activeInfoPanel
+    const migratedPanel = storedPanel === 'disc' ? 'storage' : storedPanel
+    const activeInfoPanel = isInfoPanel(migratedPanel) ? migratedPanel : null
 
     return {
       activeInfoPanel,
@@ -89,6 +90,16 @@ const InfoPanelProvider = ({ children }: { children: React.ReactNode }) => {
     },
     []
   )
+
+  useHotkey('Mod+Shift+B', () => toggleInfoPanel('bookmarks'), {
+    preventDefault: true,
+    ignoreInputs: true
+  })
+
+  useHotkey('Mod+Shift+S', () => toggleInfoPanel('storage'), {
+    preventDefault: true,
+    ignoreInputs: true
+  })
 
   const value = useMemo(
     () => ({

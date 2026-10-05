@@ -1,4 +1,4 @@
-import type { ArchiveItem, DiscResponse, TrashItem } from './types'
+import type { ArchiveItem, StorageResponse, TrashItem } from './types'
 
 const sampleArchiveItems: ArchiveItem[] = [
   {
@@ -186,7 +186,7 @@ const sampleTrashItems: TrashItem[] = [
   }
 ]
 
-export const discData: DiscResponse = {
+export const storageData: StorageResponse = {
   archiveItems: sampleArchiveItems,
   trashItems: sampleTrashItems
 }

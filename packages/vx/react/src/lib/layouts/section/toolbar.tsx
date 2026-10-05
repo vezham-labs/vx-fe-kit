@@ -147,7 +147,7 @@ const SectionToolbar = ({
   <header className="bg-background sticky top-0 z-30 shrink-0 px-3 py-2 sm:px-4">
     <div className="grid min-h-12 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 sm:flex sm:justify-between">
       <div className="contents sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:gap-1">
-        <div className="col-start-1 row-start-1 flex min-w-0 items-center gap-1">
+        <div className="col-start-1 row-start-1 hidden min-w-0 items-center gap-1 md:flex">
           {navigationControls}
         </div>
         {tabs.length > 0 && (

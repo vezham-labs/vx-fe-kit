@@ -2,8 +2,10 @@ import { useCallback, useState } from 'react'
 
 import {
   AltArrowDown as AltArrowDownIcon,
+  Archive as ArchiveIcon,
   Magnifier as MagnifierIcon,
-  SidebarMinimalistic as SidebarMinimalisticIcon
+  SidebarMinimalistic as SidebarMinimalisticIcon,
+  Star as StarIcon
 } from '@vezham/icons-react'
 import {
   Avatar,
@@ -19,19 +21,22 @@ import { AppIcon } from '../../app-icon'
 import { useAppMenu } from '../../app-menu'
 import { useCommand } from '../../command'
 import { ShortcutKey, ShortcutTooltipLabel } from '../../shortcut-key'
+import { useInfoPanel } from '../info-panel'
 import { BookmarksTrigger } from './bookmarks'
-import { DiscTrigger } from './disc'
+import { StorageTrigger } from './storage'
 import { HeaderActionsProps } from './types'
 
 const Header = ({
   users,
   showSearch = false,
   showBookamarks = false,
-  showDisk = false,
+  showStorage = false,
   onAvatarClick,
   onSearchClick,
   isDockHidden = false,
   onToggleDock,
+  isSidebarOpen = false,
+  onToggleSidebar,
   extraActions,
   className,
   compact = false,
@@ -41,6 +46,14 @@ const Header = ({
   const [open, setOpen] = useState(false)
 
   const { openCommand } = useCommand()
+  const onToggleNavigation = onToggleSidebar ?? onToggleDock
+  const navigationLabel = onToggleSidebar
+    ? isSidebarOpen
+      ? 'Hide Sidebar'
+      : 'Show Sidebar'
+    : isDockHidden
+      ? 'Show Dock'
+      : 'Hide Dock'
 
   const handleSearch = useCallback(() => {
     onSearchClick?.()
@@ -89,37 +102,38 @@ const Header = ({
             <HeaderApplicationMenuContent
               onClose={() => setOpen(false)}
               onSearch={handleMenuSearch}
-              isDockHidden={isDockHidden}
-              onToggleDock={onToggleDock}
+              navigationLabel={navigationLabel}
+              onToggleNavigation={onToggleNavigation}
               showMenuUtilities={showMenuUtilities}
+              showBookamarks={showBookamarks}
+              showStorage={showStorage}
             />
           </Dropdown>
         </div>
 
-        <Tooltip delay={0}>
-          <Tooltip.Trigger>
-            <Button
-              aria-label={isDockHidden ? 'Show Dock' : 'Hide Dock'}
-              aria-keyshortcuts="Meta+S"
-              isIconOnly
-              size="sm"
-              variant="ghost"
-              className="text-muted hover:text-foreground"
-              onPress={onToggleDock}>
-              <SidebarMinimalisticIcon
-                size={16}
-                className="size-4"
-                aria-hidden="true"
-              />
-            </Button>
-          </Tooltip.Trigger>
-          <Tooltip.Content placement="right">
-            <ShortcutTooltipLabel
-              label={isDockHidden ? 'Show Dock' : 'Hide Dock'}
-              shortcut="⌘ S"
-            />
-          </Tooltip.Content>
-        </Tooltip>
+        {onToggleNavigation && (
+          <Tooltip delay={0}>
+            <Tooltip.Trigger>
+              <Button
+                aria-label={navigationLabel}
+                aria-keyshortcuts="Meta+S"
+                isIconOnly
+                size="sm"
+                variant="ghost"
+                className="text-muted hover:text-foreground"
+                onPress={onToggleNavigation}>
+                <SidebarMinimalisticIcon
+                  size={16}
+                  className="size-4"
+                  aria-hidden="true"
+                />
+              </Button>
+            </Tooltip.Trigger>
+            <Tooltip.Content placement="right">
+              <ShortcutTooltipLabel label={navigationLabel} shortcut="⌘ S" />
+            </Tooltip.Content>
+          </Tooltip>
+        )}
       </Surface>
     )
   }
@@ -148,9 +162,11 @@ const Header = ({
           <HeaderApplicationMenuContent
             onClose={() => setOpen(false)}
             onSearch={handleMenuSearch}
-            isDockHidden={isDockHidden}
-            onToggleDock={onToggleDock}
+            navigationLabel={navigationLabel}
+            onToggleNavigation={onToggleNavigation}
             showMenuUtilities={showMenuUtilities}
+            showBookamarks={false}
+            showStorage={false}
           />
         </Dropdown>
 
@@ -176,7 +192,7 @@ const Header = ({
           </Tooltip>
         )}
         {showBookamarks && <BookmarksTrigger />}
-        {showDisk && <DiscTrigger />}
+        {showStorage && <StorageTrigger />}
         {extraActions}
       </Surface>
 
@@ -195,15 +211,19 @@ const HeaderAvatar = ({ user }: { user: HeaderActionsProps['users'] }) => (
 const HeaderApplicationMenuContent = ({
   onClose,
   onSearch,
-  isDockHidden,
-  onToggleDock,
-  showMenuUtilities
+  navigationLabel,
+  onToggleNavigation,
+  showMenuUtilities,
+  showBookamarks,
+  showStorage
 }: {
   onClose: () => void
   onSearch: () => void
-  isDockHidden: boolean
-  onToggleDock?: () => void
+  navigationLabel: string
+  onToggleNavigation?: () => void
   showMenuUtilities: boolean
+  showBookamarks: boolean
+  showStorage: boolean
 }) => {
   const appMenu = useAppMenu()
   return (
@@ -213,17 +233,17 @@ const HeaderApplicationMenuContent = ({
           <Label>Back to home</Label>
         </Dropdown.Item>
         {!showMenuUtilities && <Separator />}
-        {showMenuUtilities && onToggleDock && (
+        {showMenuUtilities && onToggleNavigation && (
           <Dropdown.Item
-            id="toggle-dock"
-            textValue={isDockHidden ? 'Show Dock' : 'Hide Dock'}
+            id="toggle-navigation"
+            textValue={navigationLabel}
             aria-keyshortcuts="Meta+S"
             onPress={() => {
               onClose()
-              onToggleDock()
+              onToggleNavigation()
             }}>
             <SidebarMinimalisticIcon size={18} aria-hidden="true" />
-            <Label>{isDockHidden ? 'Show Dock' : 'Hide Dock'}</Label>
+            <Label>{navigationLabel}</Label>
             <ShortcutKey className="ms-auto" shortcut="⌘ S" />
           </Dropdown.Item>
         )}
@@ -239,9 +259,16 @@ const HeaderApplicationMenuContent = ({
               <Label>Search</Label>
               <ShortcutKey className="ms-auto" shortcut="Mod K" />
             </Dropdown.Item>
-            <Separator />
           </>
         )}
+        {(showBookamarks || showStorage) && (
+          <HeaderPanelMenuItems
+            showBookamarks={showBookamarks}
+            showStorage={showStorage}
+            onClose={onClose}
+          />
+        )}
+        {(showMenuUtilities || showBookamarks || showStorage) && <Separator />}
         {appMenu?.items.map(menu => (
           <Dropdown.SubmenuTrigger key={menu.key}>
             <Dropdown.Item id={menu.key} textValue={menu.label}>
@@ -289,6 +316,53 @@ const HeaderApplicationMenuContent = ({
         ))}
       </Dropdown.Menu>
     </Dropdown.Popover>
+  )
+}
+
+const HeaderPanelMenuItems = ({
+  showBookamarks,
+  showStorage,
+  onClose
+}: {
+  showBookamarks: boolean
+  showStorage: boolean
+  onClose: () => void
+}) => {
+  const { toggleInfoPanel } = useInfoPanel()
+
+  return (
+    <>
+      {showBookamarks && (
+        <Dropdown.Item
+          id="bookmarks"
+          textValue="Bookmarks"
+          aria-label="Bookmarks"
+          aria-keyshortcuts="Meta+Shift+B Control+Shift+B"
+          onPress={() => {
+            onClose()
+            toggleInfoPanel('bookmarks')
+          }}>
+          <StarIcon size={18} aria-hidden="true" />
+          <Label>Bookmarks</Label>
+          <ShortcutKey className="ms-auto" shortcut="Mod ⇧ B" />
+        </Dropdown.Item>
+      )}
+      {showStorage && (
+        <Dropdown.Item
+          id="storage"
+          textValue="Storage"
+          aria-label="Storage"
+          aria-keyshortcuts="Meta+Shift+S Control+Shift+S"
+          onPress={() => {
+            onClose()
+            toggleInfoPanel('storage')
+          }}>
+          <ArchiveIcon size={18} aria-hidden="true" />
+          <Label>Storage</Label>
+          <ShortcutKey className="ms-auto" shortcut="Mod ⇧ S" />
+        </Dropdown.Item>
+      )}
+    </>
   )
 }
 
