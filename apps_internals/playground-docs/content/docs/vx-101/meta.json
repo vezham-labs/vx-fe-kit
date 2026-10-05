@@ -3,5 +3,5 @@
   "title": "Vx 101",
   "description": "Class on Vx 101",
   "icon": "text-format",
-  "pages": ["overview", "..."]
+  "pages": ["overview", "overview-updated", "url"]
 }

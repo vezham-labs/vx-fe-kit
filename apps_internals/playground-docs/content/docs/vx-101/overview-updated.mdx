@@ -5,6 +5,7 @@ icon: document-text
 ---
 
 # Vezham Engineering Architecture
+
 ## Canonical GitHub, Repository, Package, Documentation & Deployment Baseline
 
 **Company:** Vezham Technologies Private Limited  
@@ -60,11 +61,11 @@ Vezham follows a domain-oriented engineering architecture across three GitHub or
 
 Exactly three GitHub organizations are used.
 
-| Organization | Purpose | Description |
-|---|---|---|
-| `vezham` | Production engineering/products/platform/infrastructure | **Building software for people and businesses. 🚀** |
-| `vezham-labs` | Experiments/templates/playgrounds/POCs/references | **Exploring ideas, experiments, and new technologies. 🧪** |
-| `vezham-oss` | OSS projects and maintained forks | **Open-source software maintained by Vezham. 🧩** |
+| Organization  | Purpose                                                 | Description                                                |
+| ------------- | ------------------------------------------------------- | ---------------------------------------------------------- |
+| `vezham`      | Production engineering/products/platform/infrastructure | **Building software for people and businesses. 🚀**        |
+| `vezham-labs` | Experiments/templates/playgrounds/POCs/references       | **Exploring ideas, experiments, and new technologies. 🧪** |
+| `vezham-oss`  | OSS projects and maintained forks                       | **Open-source software maintained by Vezham. 🧩**          |
 
 ### Classification
 
@@ -511,14 +512,14 @@ vezham-labs/vx-skills-cli
 
 Each engineering domain has its own CLI.
 
-| Repository | Package |
-|---|---|
-| `vx-fe-cli` | `@vx-cli/react` |
-| `vx-rn-cli` | `@vx-cli/react-native` |
-| `vx-sdk-cli` | `@vx-cli/sdks` |
-| `vx-mcp-cli` | `@vx-cli/mcp` |
-| `vx-be-cli` | `@vx-cli/server` |
-| `vx-skills-cli` | `@vx-cli/skills` |
+| Repository      | Package                |
+| --------------- | ---------------------- |
+| `vx-fe-cli`     | `@vx-cli/react`        |
+| `vx-rn-cli`     | `@vx-cli/react-native` |
+| `vx-sdk-cli`    | `@vx-cli/sdks`         |
+| `vx-mcp-cli`    | `@vx-cli/mcp`          |
+| `vx-be-cli`     | `@vx-cli/server`       |
+| `vx-skills-cli` | `@vx-cli/skills`       |
 
 Reason:
 
@@ -746,13 +747,13 @@ The environment lifecycle is:
 local → dev → qa → preview → production
 ```
 
-| Environment | Purpose |
-|---|---|
-| `local` | Developer machine/local development |
-| `dev` | Active development |
-| `qa` | Integration and QA validation |
-| `preview` | Production-like validation |
-| `production` | Live production infrastructure |
+| Environment  | Purpose                             |
+| ------------ | ----------------------------------- |
+| `local`      | Developer machine/local development |
+| `dev`        | Active development                  |
+| `qa`         | Integration and QA validation       |
+| `preview`    | Production-like validation          |
+| `production` | Live production infrastructure      |
 
 URLs:
 
@@ -983,11 +984,11 @@ Production has release channels:
 canary → beta → stable
 ```
 
-| Channel | Purpose |
-|---|---|
+| Channel  | Purpose                         |
+| -------- | ------------------------------- |
 | `canary` | Very limited production rollout |
-| `beta` | Controlled early-access rollout |
-| `stable` | General production release |
+| `beta`   | Controlled early-access rollout |
+| `stable` | General production release      |
 
 Channels are not separate environments.
 

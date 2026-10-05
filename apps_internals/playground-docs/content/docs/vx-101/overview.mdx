@@ -10,11 +10,11 @@ icon: document-text
 
 Vezham uses exactly **three GitHub organizations**.
 
-| Organization | Purpose | Description |
-|---|---|---|
-| `vezham` | Production engineering, products, platforms, infrastructure | **Building software for people and businesses. 🚀** |
-| `vezham-labs` | Experiments, templates, POCs, references, evolving tooling | **Exploring ideas, experiments, and new technologies. 🧪** |
-| `vezham-oss` | Open-source projects and maintained forks | **Open-source software maintained by Vezham. 🧩** |
+| Organization  | Purpose                                                     | Description                                                |
+| ------------- | ----------------------------------------------------------- | ---------------------------------------------------------- |
+| `vezham`      | Production engineering, products, platforms, infrastructure | **Building software for people and businesses. 🚀**        |
+| `vezham-labs` | Experiments, templates, POCs, references, evolving tooling  | **Exploring ideas, experiments, and new technologies. 🧪** |
+| `vezham-oss`  | Open-source projects and maintained forks                   | **Open-source software maintained by Vezham. 🧩**          |
 
 ### Classification rule
 
@@ -85,12 +85,12 @@ Regional deployer identities are not required unless future security/operations 
 
 ---
 
-| Identity | Responsibility |
-|---|---|
-| **`code@vezham.com`** | Code ownership, repository administration, maintainership |
-| **`deployer@vezham.com`** | Package publishing, deployments, cloud/infra accounts |
-| **`security@vezham.com`** | Security contact / vulnerability reports |
-| **`support@vezham.com`** | Product/user support |
+| Identity                  | Responsibility                                            |
+| ------------------------- | --------------------------------------------------------- |
+| **`code@vezham.com`**     | Code ownership, repository administration, maintainership |
+| **`deployer@vezham.com`** | Package publishing, deployments, cloud/infra accounts     |
+| **`security@vezham.com`** | Security contact / vulnerability reports                  |
+| **`support@vezham.com`**  | Product/user support                                      |
 
 ---
 
@@ -532,14 +532,14 @@ Package:
 
 Each major engineering domain has its own CLI.
 
-| Repository | npm package |
-|---|---|
-| `vx-fe-cli` | `@vx-cli/react` |
-| `vx-rn-cli` | `@vx-cli/react-native` |
-| `vx-sdk-cli` | `@vx-cli/sdks` |
-| `vx-mcp-cli` | `@vx-cli/mcp` |
-| `vx-be-cli` | `@vx-cli/server` |
-| `vx-skills-cli` | `@vx-cli/skills` |
+| Repository      | npm package            |
+| --------------- | ---------------------- |
+| `vx-fe-cli`     | `@vx-cli/react`        |
+| `vx-rn-cli`     | `@vx-cli/react-native` |
+| `vx-sdk-cli`    | `@vx-cli/sdks`         |
+| `vx-mcp-cli`    | `@vx-cli/mcp`          |
+| `vx-be-cli`     | `@vx-cli/server`       |
+| `vx-skills-cli` | `@vx-cli/skills`       |
 
 These can remain in `vezham-labs` while evolving and move to `vezham` when they become official production infrastructure.
 
@@ -1070,13 +1070,13 @@ Vezham uses five primary deployment environments:
 local → dev → qa → preview → production
 ```
 
-| Environment | Purpose |
-|---|---|
-| `local` | Developer machine and local development |
-| `dev` | Active development |
-| `qa` | Integration and QA validation |
-| `preview` | Production-like validation, security auditing, realistic/snapshot data, and V1/V2 testing |
-| `production` | Live production infrastructure |
+| Environment  | Purpose                                                                                   |
+| ------------ | ----------------------------------------------------------------------------------------- |
+| `local`      | Developer machine and local development                                                   |
+| `dev`        | Active development                                                                        |
+| `qa`         | Integration and QA validation                                                             |
+| `preview`    | Production-like validation, security auditing, realistic/snapshot data, and V1/V2 testing |
+| `production` | Live production infrastructure                                                            |
 
 ### Environment URLs
 
@@ -1138,11 +1138,11 @@ Release channels are separate from deployment environments.
 canary → beta → stable
 ```
 
-| Channel | Purpose |
-|---|---|
+| Channel  | Purpose                         |
+| -------- | ------------------------------- |
 | `canary` | Very limited production rollout |
-| `beta` | Controlled early-access rollout |
-| `stable` | General production release |
+| `beta`   | Controlled early-access rollout |
+| `stable` | General production release      |
 
 The release channel can be controlled through configuration and feature flags.
 
