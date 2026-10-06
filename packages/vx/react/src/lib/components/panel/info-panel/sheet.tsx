@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { type ReactNode, useState } from 'react'
 
 import { Maximize, Minimize } from '@vezham/icons-react'
 import { Sheet } from '@vezham/react-pro-v3'
@@ -14,16 +14,20 @@ import type { InfoPanelDefinition } from './types'
 
 export const InfoPanelSheet = ({
   panel,
+  heading,
+  isOpen = true,
   onClose
 }: {
   panel: InfoPanelDefinition
+  heading?: ReactNode
+  isOpen?: boolean
   onClose: () => void
 }) => {
   const [expanded, setExpanded] = useState(false)
 
   return (
     <Sheet
-      isOpen
+      isOpen={isOpen}
       onOpenChange={open => !open && onClose()}
       placement="bottom"
       isHandleOnly
@@ -41,7 +45,7 @@ export const InfoPanelSheet = ({
                 <Sheet.Heading
                   className={`${panelHeadingClass} flex flex-1 items-center gap-2`}>
                   {panel.titleIcon}
-                  <span className="truncate">{panel.title}</span>
+                  <span className="truncate">{heading ?? panel.title}</span>
                 </Sheet.Heading>
                 <Tooltip>
                   <Button

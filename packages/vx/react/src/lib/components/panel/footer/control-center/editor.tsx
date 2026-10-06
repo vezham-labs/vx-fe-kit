@@ -1,9 +1,8 @@
 import { type ReactNode, createContext, useContext } from 'react'
 
-import { AltArrowDown, AltArrowUp, Settings } from '@vezham/icons-react'
+import { AltArrowDown, AltArrowUp } from '@vezham/icons-react'
 import { Button, Switch } from '@vezham/react-v3'
 
-import { ActionTile } from './tile'
 import { controlCenterVariants } from './variant'
 
 type EditorState = {
@@ -27,11 +26,15 @@ export const EditorProvider = ({
 }) => <EditorContext.Provider value={value}>{children}</EditorContext.Provider>
 
 export const EditControlsTile = ({ onOpen }: { onOpen: () => void }) => (
-  <ActionTile
-    label="Edit Controls"
-    icon={<Settings size={18} />}
-    onPress={onOpen}
-  />
+  <div className="flex justify-center">
+    <Button
+      size="sm"
+      variant="secondary"
+      className="rounded-full"
+      onPress={onOpen}>
+      Edit Controls
+    </Button>
+  </div>
 )
 
 const styles = controlCenterVariants()

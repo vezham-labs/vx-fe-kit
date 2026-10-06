@@ -76,9 +76,8 @@ const useProps = (originalProps: Props) => {
     className: slots.drawer_footer({ class: classNames?.drawer_footer })
   })
 
-  const getChipProps = () => ({
-    className: slots.chip({ class: classNames?.chip }),
-    onClick: onEdit
+  const getEditButtonProps = () => ({
+    className: slots.chip({ class: classNames?.chip })
   })
 
   return {
@@ -98,7 +97,7 @@ const useProps = (originalProps: Props) => {
     getEmptyStateProps,
     getEmptyStateIconProps,
     getDrawerFooterProps,
-    getChipProps,
+    getEditButtonProps,
     isOpen,
     onClose,
     backdrop,

@@ -5,7 +5,7 @@ export const controlCenterVariants = tv({
     surface:
       'border-border/70 dark:border-border/80 relative w-72 overflow-hidden rounded-[1.75rem] border p-2 shadow-2xl ring-1 ring-white/15 backdrop-blur-2xl',
     triggerIcon: 'text-muted',
-    backdrop: 'bg-overlay/10 backdrop-blur-xs',
+    backdrop: 'bg-overlay/10 z-80 backdrop-blur-xs',
     sheetContent: 'mx-auto max-h-[85dvh] w-full max-w-72',
     sheetHeader: 'px-6 pt-0 pb-2',
     sheetHeading: 'text-base font-semibold',
