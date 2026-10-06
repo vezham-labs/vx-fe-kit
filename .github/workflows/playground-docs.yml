@@ -33,6 +33,8 @@ jobs:
 
   deploy:
     needs: run_if
+    permissions:
+      contents: write # Publish the deployment URLs as a commit comment.
     if: ${{ needs.run_if.outputs.all == 'true' || needs.run_if.outputs.deploy == 'true' }}
     name: playground-docs | ${{ github.ref_name }}
     uses: vezham/vx-fe-deployer/.github/workflows/playground-docs.yml@labs
