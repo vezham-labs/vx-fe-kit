@@ -3,8 +3,8 @@ import { type ReactNode, useState } from 'react'
 import {
   Bell as BellIcon,
   MenuDots as MenuDotsIcon,
-  QuestionCircle as QuestionIcon,
-  Settings as SettingsIcon
+  Settings as SettingsIcon,
+  VezhamTamizhi
 } from '@vezham/icons-react'
 import {
   Badge,
@@ -90,8 +90,8 @@ const CompactActions = ({
           ) : null}
           {showAI ? (
             <Dropdown.Item onPress={onAI}>
-              <QuestionIcon size={20} aria-hidden="true" />
-              AI
+              <VezhamTamizhi size={20} aria-hidden="true" />
+              Tamizhi AI
             </Dropdown.Item>
           ) : null}
         </Dropdown.Menu>
@@ -127,8 +127,8 @@ const Footer = ({
         className={`flex items-center justify-center gap-2 md:flex-col md:gap-3 ${className ?? ''}`}>
         <div className="hidden md:contents">
           {showAI ? (
-            <FooterAction label="AI" onPress={onAI}>
-              <QuestionIcon size={20} aria-hidden="true" />
+            <FooterAction label="Tamizhi AI" onPress={onAI}>
+              <VezhamTamizhi size={20} aria-hidden="true" />
             </FooterAction>
           ) : null}
 

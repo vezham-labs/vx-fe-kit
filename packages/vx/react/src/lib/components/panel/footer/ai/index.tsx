@@ -20,7 +20,7 @@ const AIContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
           <EmptyState.Media>
             <AppIcon {...getIconProps()} size="1em" aria-hidden="true" />
           </EmptyState.Media>
-          <EmptyState.Title>AI is Empty</EmptyState.Title>
+          <EmptyState.Title>Tamizhi AI is Under Dev</EmptyState.Title>
         </EmptyState>
       </div>
     </Component>
@@ -67,6 +67,6 @@ const AIDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
 AIDrawer.displayName = 'AIDrawer'
 
 export const aiPanel: InfoPanelDefinition = {
-  title: 'AI',
+  title: 'Tamizhi AI',
   content: <AIContent isOpen={false} onClose={() => undefined} />
 }

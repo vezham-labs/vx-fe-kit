@@ -1,18 +1,14 @@
 import { useEffect, useEffectEvent } from 'react'
 
-import { Close as CloseIcon } from '@vezham/icons-react'
-import { Button, Drawer, Typography } from '@vezham/react-v3'
+import { Button } from '@vezham/react-v3'
 
 import { AppIcon } from '../app-icon'
+import { MenuSheet } from './sheet'
 import { MenuDrawerProps } from './types'
 import {
-  getDrawerBodyClasses,
   getDrawerButtonClasses,
-  getDrawerCloseButtonClasses,
-  getDrawerContentClasses,
-  getDrawerGridClasses,
-  getDrawerGridItemInnerClasses,
-  getDrawerHeaderClasses
+  getDrawerItemInnerClasses,
+  getDrawerListClasses
 } from './variant'
 
 const MenuDrawer = ({
@@ -35,62 +31,48 @@ const MenuDrawer = ({
   }, [])
 
   return (
-    <Drawer.Backdrop
+    <MenuSheet
+      title="More navigation"
+      hideTitle
+      isDarkMode={isDarkMode}
       isOpen={isOpen}
-      onOpenChange={open => !open && onClose()}
-      variant="blur"
-      className="backdrop-blur-xs">
-      <Drawer.Content placement="bottom">
-        <Drawer.Dialog className={getDrawerContentClasses({ isDarkMode })}>
-          <Drawer.Header className={getDrawerHeaderClasses({ isDarkMode })}>
+      onOpenChange={open => !open && onClose()}>
+      <ul className={getDrawerListClasses()}>
+        {items.map(item => (
+          <li key={item.key} className="min-w-0">
             <Button
               variant="ghost"
-              onPress={onClose}
-              className={getDrawerCloseButtonClasses({ isDarkMode })}>
-              <CloseIcon className="h-4 w-4" size="1em" aria-hidden="true" />
+              aria-current={selectedKey === item.key ? 'page' : undefined}
+              onPress={() => {
+                onItemSelect(item)
+                onClose()
+              }}
+              className={getDrawerButtonClasses({
+                isSelected: selectedKey === item.key,
+                isDarkMode
+              })}>
+              <div className={getDrawerItemInnerClasses(buttonTextColor ?? '')}>
+                {item.icon && (
+                  <AppIcon
+                    icon={
+                      selectedKey === item.key
+                        ? item.iconActive || item.icon
+                        : item.icon
+                    }
+                    className="h-5 w-5 shrink-0"
+                    size="1em"
+                    aria-hidden="true"
+                  />
+                )}
+                <span className="min-w-0 flex-1 wrap-anywhere whitespace-normal">
+                  {item.title}
+                </span>
+              </div>
             </Button>
-          </Drawer.Header>
-          <Drawer.Body className={getDrawerBodyClasses()}>
-            <div className={getDrawerGridClasses()}>
-              {items.map(item => (
-                <Button
-                  variant="ghost"
-                  key={item.key}
-                  onPress={() => {
-                    onItemSelect(item)
-                    onClose()
-                  }}
-                  className={getDrawerButtonClasses({
-                    isSelected: selectedKey === item.key,
-                    isDarkMode
-                  })}>
-                  <div
-                    className={getDrawerGridItemInnerClasses(
-                      buttonTextColor ?? ''
-                    )}>
-                    {item.icon && (
-                      <AppIcon
-                        icon={
-                          selectedKey === item.key
-                            ? item.iconActive || item.icon
-                            : item.icon
-                        }
-                        className="h-5 w-5"
-                        size="1em"
-                        aria-hidden="true"
-                      />
-                    )}
-                    <Typography.Paragraph className="text-center">
-                      {item.title}
-                    </Typography.Paragraph>
-                  </div>
-                </Button>
-              ))}
-            </div>
-          </Drawer.Body>
-        </Drawer.Dialog>
-      </Drawer.Content>
-    </Drawer.Backdrop>
+          </li>
+        ))}
+      </ul>
+    </MenuSheet>
   )
 }
 
