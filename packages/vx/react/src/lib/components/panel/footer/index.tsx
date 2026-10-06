@@ -17,6 +17,7 @@ import {
 } from '@vezham/react-v3'
 
 import { useUser } from '../../../store/users/useUserStore'
+import { ACCOUNT_BUBBLE_MEDIA_QUERY } from '../responsive'
 import { DefaultControlCenter } from './control-center/default'
 import { FooterControlCenterContext } from './control-center/footer-context'
 import type { FooterActionsProps } from './types'
@@ -114,7 +115,7 @@ const Footer = ({
   className
 }: FooterActionsProps) => {
   const { clearUser } = useUser()
-  const compact = useMediaQuery('(width < 768px)', {
+  const compact = useMediaQuery(ACCOUNT_BUBBLE_MEDIA_QUERY, {
     initializeWithValue: false
   })
   const [controlCenterOpen, setControlCenterOpen] = useState(false)

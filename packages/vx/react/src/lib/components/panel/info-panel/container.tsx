@@ -5,9 +5,11 @@ import {
   CloseButton,
   ScrollShadow,
   Surface,
-  Typography
+  Typography,
+  useMediaQuery
 } from '@vezham/react-v3'
 
+import { ACCOUNT_BUBBLE_MEDIA_QUERY } from '../responsive'
 import { useInfoPanel } from './provider'
 import { ActiveInfoPanel, InfoPanelDefinition } from './types'
 
@@ -23,7 +25,15 @@ const InfoPanelContainer = ({
   width?: number
 }) => {
   const { activeInfoPanel, closeInfoPanel, isOpen } = useInfoPanel()
+  const activePanel = activeInfoPanel ? panels[activeInfoPanel] : null
+  const compact = useMediaQuery(ACCOUNT_BUBBLE_MEDIA_QUERY, {
+    initializeWithValue: false
+  })
   const panel = isOpen && activeInfoPanel ? panels[activeInfoPanel] : null
+
+  if (compact && activePanel?.renderCompact) {
+    return activePanel.renderCompact({ isOpen, onClose: closeInfoPanel })
+  }
 
   return (
     <aside
@@ -44,8 +54,14 @@ const InfoPanelContainer = ({
               <Surface
                 data-vx="info-panel"
                 className="border-default-200 bg-background/95 flex h-full flex-col border-r shadow-[8px_0_24px_rgba(15,23,42,0.06)] backdrop-blur-xl">
-                <InfoPanelHeader title={panel.title} onClose={closeInfoPanel} />
-                <InfoPanelContent>{panel.content}</InfoPanelContent>
+                <InfoPanelHeader
+                  title={panel.title}
+                  titleIcon={panel.titleIcon}
+                  onClose={closeInfoPanel}
+                />
+                <InfoPanelContent scrollable={panel.scrollable ?? true}>
+                  {panel.content}
+                </InfoPanelContent>
               </Surface>
             </m.div>
           )}
@@ -57,14 +73,17 @@ const InfoPanelContainer = ({
 
 const InfoPanelHeader = ({
   title,
+  titleIcon,
   onClose
 }: {
   title: string
+  titleIcon?: ReactNode
   onClose?: () => void
 }) => {
   return (
     <div className="flex shrink-0 items-center gap-3 px-4 py-4">
-      <div className="min-w-0 flex-1">
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        {titleIcon}
         <Typography.Heading className="text-foreground truncate text-base font-semibold">
           {title}
         </Typography.Heading>
@@ -75,7 +94,17 @@ const InfoPanelHeader = ({
   )
 }
 
-const InfoPanelContent = ({ children }: { children: ReactNode }) => {
+const InfoPanelContent = ({
+  children,
+  scrollable
+}: {
+  children: ReactNode
+  scrollable: boolean
+}) => {
+  if (!scrollable)
+    return (
+      <div className="min-h-0 flex-1 overflow-hidden px-4 pb-4">{children}</div>
+    )
   return (
     <ScrollShadow className="min-h-0 flex-1 px-4 pb-4" hideScrollBar>
       {children}

@@ -24,3 +24,47 @@ close button, bounded scrolling, safe-area padding, and focus restoration. Only
 the handle can drag the sheet, so menu interactions remain usable. The overlay
 renders above the bottom navigation. The account/footer More menu remains a
 Dropdown; its Control Center entry opens the separate Control Center sheet.
+
+Tamizhi AI uses a bottom Sheet whenever the account/More bubble is shown (below
+768px). The footer and info panel share the same responsive query.
+Expand fills the viewport, and Collapse restores the sheet size without losing
+messages or the composer draft. Above that breakpoint it uses the inline info panel without
+an Expand control. Other info panels retain their existing breakpoints.
+
+The review UI uses HeroUI Pro ChatConversation, ChatMessage, ChatMessageActions,
+ChatAttachment, PromptInput, PromptSuggestion, ChatLoader, TextShimmer, and
+ChainOfThought. It includes a welcome state, sample prompts, attachment previews,
+streamed mock replies, expandable preview progress, copying, feedback, and
+regeneration. Stop and closing the assistant cancel pending replies.
+
+In the desktop AI panel, sub-navigation and the composer stay fixed within the
+panel; only the conversation scrolls. Short conversations align above the
+composer and grow upward; long conversations keep their chronological order
+and scroll to the latest message until the user scrolls back. Sending a new
+prompt returns to the latest messages. The jump button overlays the viewport
+outside its scrolling content. Branch chat copies the conversation through the
+selected reply into a separate thread; continuing it leaves the original intact.
+The footer warns that agent outputs need verification and links the Tamizhi
+logo and name to `https://tamizhi.vezham.com/`. The chat-title dropdown reopens recent
+threads, and New chat starts an empty thread. Changing threads cancels pending
+responses. Chats and drafts are held
+in memory for the current assistant session.
+
+The mock follows the four groups in the
+[HeroUI agent component guide](https://heroui.pro/docs/agents/components):
+sample metrics and a table, information cards, a preferences form, and action
+buttons. These are representative previews, not the entire hosted GenUI catalog.
+The composer model picker supports recommended Auto routing or a manual model
+from the reference catalog. Turning Auto off restores the last manual choice.
+Below 640px, model feature cards are omitted. From 640px upward, hover or focus
+shows a card to the side with the model description, illustrative ratings for
+complex tasks, generated UI, speed and cost, and sample context information.
+These ratings are mock UI data, not provider specifications. The independent
+lightning control toggles Fast mode on or off. Provider marks are embedded
+locally from Lobe Icons with their license; both model rows and the selected
+model control show them. The GPT section contains GPT-6.1 Sol and GPT-6 Astra,
+the two newest entries in this mock catalog. Permission options include their
+reference descriptions and a check for the selected mode. Model, Fast mode, and
+tool-permission selectors change preview state only. Files stay local
+as metadata; voice uses a sample transcript without microphone access. No model,
+hosted agent, upload service, or workspace tool is connected.
