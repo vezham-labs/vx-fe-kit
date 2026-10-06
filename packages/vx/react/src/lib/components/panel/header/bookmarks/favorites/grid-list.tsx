@@ -1,7 +1,6 @@
 import { Button, GridList, GridListItem } from 'react-aria-components'
 
-import { Star as StarIcon } from '@vezham/icons-react'
-import { Avatar, Typography, cn } from '@vezham/react-v3'
+import { Avatar, cn } from '@vezham/react-v3'
 
 import { sampleFavorites } from './data'
 import { type FavoriteGridListProps } from './types'
@@ -53,55 +52,27 @@ const FavoriteGridList = ({
                 />
               )}
 
-              {item.backgroundImage ? (
-                <img
-                  alt={item.name}
-                  className={slots.backgroundImage({
-                    class: classNames?.backgroundImage
-                  })}
-                  src={item.backgroundImage}
-                />
-              ) : (
-                <div
-                  className={slots.backgroundFallback({
-                    class: classNames?.backgroundFallback
-                  })}
-                />
-              )}
-
-              <div className={slots.overlay({ class: classNames?.overlay })} />
-
               <div
+                title={item.name}
                 className={slots.avatarContainer({
                   class: classNames?.avatarContainer
                 })}>
                 <Avatar
                   className={slots.avatar({ class: classNames?.avatar })}
                   size="sm">
-                  {item.avatar && (
-                    <Avatar.Image src={item.avatar} alt={item.name} />
+                  {(item.avatar || item.backgroundImage) && (
+                    <Avatar.Image
+                      src={item.avatar || item.backgroundImage}
+                      alt=""
+                    />
                   )}
                   <Avatar.Fallback
                     className={slots.avatarFallback({
                       class: classNames?.avatarFallback
                     })}>
-                    <StarIcon
-                      className={slots.avatarIcon({
-                        class: classNames?.avatarIcon
-                      })}
-                      size={14}
-                      weight="filled"
-                      aria-hidden="true"
-                    />
+                    {item.name.charAt(0)}
                   </Avatar.Fallback>
                 </Avatar>
-              </div>
-
-              <div className={slots.content({ class: classNames?.content })}>
-                <Typography.Paragraph
-                  className={slots.name({ class: classNames?.name })}>
-                  {item.name}
-                </Typography.Paragraph>
               </div>
             </>
           )}
