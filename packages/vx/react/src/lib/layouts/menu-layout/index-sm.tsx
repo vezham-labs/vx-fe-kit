@@ -39,9 +39,7 @@ const MenuSM = ({ items, controlCenter }: MenuLayoutProps) => {
 
   const { user } = useUser()
   return (
-    <Surface
-      variant="transparent"
-      className="bg-background relative z-20 flex min-h-0 shrink-0 flex-col">
+    <>
       <div className="pointer-events-none fixed top-3 right-3 left-3 z-40 flex items-center justify-between gap-2">
         <Surface
           variant="transparent"
@@ -113,7 +111,7 @@ const MenuSM = ({ items, controlCenter }: MenuLayoutProps) => {
           onSelect={handleItemSelect}
         />
       </div>
-    </Surface>
+    </>
   )
 }
 

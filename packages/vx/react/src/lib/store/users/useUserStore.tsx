@@ -20,9 +20,9 @@ export type User = {
 
 const defaultUser: User = {
   id: '1',
-  firstName: 'Mia',
+  firstName: 'Arya',
   lastName: 'Chan',
-  email: 'mia@vcorp.com',
+  email: 'arya.chan@vcorp.com',
   avatar:
     'https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg',
   isOnline: true

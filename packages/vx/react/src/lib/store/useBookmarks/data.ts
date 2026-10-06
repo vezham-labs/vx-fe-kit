@@ -46,7 +46,7 @@ export const sampleFavorites: FavoriteItem[] = [
   {
     id: '7',
     name: 'Application',
-    url: '/',
+    url: '',
     avatar:
       'https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/purple.jpg'
   },
@@ -56,6 +56,21 @@ export const sampleFavorites: FavoriteItem[] = [
     url: 'https://heroui.pro',
     avatar:
       'https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/red.jpg'
+  },
+  {
+    id: '9',
+    name: 'Design ideas',
+    url: ''
+  },
+  {
+    id: '10',
+    name: 'Reading list',
+    url: ''
+  },
+  {
+    id: '11',
+    name: 'Project notes',
+    url: ''
   }
 ]
 

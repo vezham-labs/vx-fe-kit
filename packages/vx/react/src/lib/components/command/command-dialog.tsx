@@ -2,7 +2,6 @@ import { useNavigate } from '@tanstack/react-router'
 
 import { Magnifier as MagnifierIcon } from '@vezham/icons-react'
 import { Command } from '@vezham/react-pro-v3'
-import { Typography } from '@vezham/react-v3'
 
 import type { AppNavigationItem } from '../../navigation'
 import { AppIcon } from '../app-icon'
@@ -91,6 +90,7 @@ const CommandPaletteDialog = ({
       <Command.Backdrop
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        className="z-80"
         variant="blur">
         <Command.Container size="lg">
           <Command.Dialog>
@@ -179,13 +179,13 @@ const CommandItemContent = ({
       <div className="bg-default-100 text-default-600 flex h-8 w-8 shrink-0 items-center justify-center rounded-md">
         <AppIcon icon={icon} size={18} aria-hidden="true" />
       </div>
-      <div className="min-w-0 flex-1">
-        <Typography.Heading className="text-foreground block truncate text-sm font-medium">
+      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span className="text-foreground block truncate text-sm leading-5 font-medium">
           {label}
-        </Typography.Heading>
-        <Typography.Paragraph className="text-muted block truncate text-xs">
+        </span>
+        <span className="text-muted block truncate text-xs leading-4">
           {description}
-        </Typography.Paragraph>
+        </span>
       </div>
     </div>
   )

@@ -11,6 +11,7 @@ import {
 
 import { ACCOUNT_BUBBLE_MEDIA_QUERY } from '../responsive'
 import { useInfoPanel } from './provider'
+import { InfoPanelSheet } from './sheet'
 import { ActiveInfoPanel, InfoPanelDefinition } from './types'
 
 const INFO_PANEL_WIDTH = 328
@@ -31,8 +32,17 @@ const InfoPanelContainer = ({
   })
   const panel = isOpen && activeInfoPanel ? panels[activeInfoPanel] : null
 
-  if (compact && activePanel?.renderCompact) {
-    return activePanel.renderCompact({ isOpen, onClose: closeInfoPanel })
+  if (compact && activePanel) {
+    if (activePanel.renderCompact) {
+      return activePanel.renderCompact({ isOpen, onClose: closeInfoPanel })
+    }
+    return panel ? (
+      <InfoPanelSheet
+        key={activeInfoPanel}
+        panel={panel}
+        onClose={closeInfoPanel}
+      />
+    ) : null
   }
 
   return (

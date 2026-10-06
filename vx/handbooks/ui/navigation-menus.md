@@ -29,7 +29,12 @@ Tamizhi AI uses a bottom Sheet whenever the account/More bubble is shown (below
 768px). The footer and info panel share the same responsive query.
 Expand fills the viewport, and Collapse restores the sheet size without losing
 messages or the composer draft. Above that breakpoint it uses the inline info panel without
-an Expand control. Other info panels retain their existing breakpoints.
+an Expand control. Storage and Bookmarks follow the same account-bubble breakpoint:
+side panels from 768px upward and bottom Sheets below 768px. Their Sheets open at 75%
+of the viewport height, with Expand and Collapse preserving the current content.
+Their own content scrolls while the Sheet header stays visible.
+The Sheets preserve the page's full width while mobile navigation bubbles and
+the bottom bar are visible.
 
 The review UI uses HeroUI Pro ChatConversation, ChatMessage, ChatMessageActions,
 ChatAttachment, PromptInput, PromptSuggestion, ChatLoader, TextShimmer, and
@@ -68,3 +73,10 @@ reference descriptions and a check for the selected mode. Model, Fast mode, and
 tool-permission selectors change preview state only. Files stay local
 as metadata; voice uses a sample transcript without microphone access. No model,
 hosted agent, upload service, or workspace tool is connected.
+
+The account menu follows the application menu breakpoint: below 640px it uses
+a content-sized Sheet with local detail lists and a Back action; larger screens
+use Dropdown submenus for availability, custom status, and duration. In account
+bubble view the Dropdown opens below the avatar and aligns to its trailing edge;
+in desktop sidebar view it opens beside the avatar. Status choices show the
+current selection, and clearing custom status also clears its duration.

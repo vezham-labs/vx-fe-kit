@@ -23,6 +23,7 @@ import { useAppMenu } from '../../app-menu'
 import { useCommand } from '../../command'
 import { ShortcutKey, ShortcutTooltipLabel } from '../../shortcut-key'
 import { useInfoPanel } from '../info-panel'
+import { APPLICATION_MENU_SHEET_MEDIA_QUERY } from '../responsive'
 import {
   type ApplicationMenuProps,
   ApplicationMenuSheet
@@ -221,7 +222,9 @@ const HeaderApplicationMenu = ({
   isOpen: boolean
   onOpenChange: (open: boolean) => void
 }) => {
-  const small = useMediaQuery('(width < 640px)', { initializeWithValue: false })
+  const small = useMediaQuery(APPLICATION_MENU_SHEET_MEDIA_QUERY, {
+    initializeWithValue: false
+  })
   if (small)
     return (
       <ApplicationMenuSheet

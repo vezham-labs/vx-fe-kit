@@ -56,12 +56,13 @@ const QuickAccess = ({
             </Typography.Heading>
           </div>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-1">
           {quickAccessFavorites.map(item => (
             <button
+              type="button"
               key={item.id}
               onClick={() => onFavoriteClick(item.url, item)}
-              className="hover:bg-default-100 focus-visible:ring-primary flex w-full cursor-pointer items-center gap-4 rounded-xl px-3 py-3 text-left transition-colors duration-200 outline-none focus-visible:ring-2">
+              className="hover:bg-default focus-visible:bg-default focus-visible:ring-focus flex w-full cursor-[var(--cursor-interactive)] items-center gap-3 rounded-2xl px-2 py-2 text-left outline-none focus-visible:ring-2">
               <Avatar className="h-5 w-5 shrink-0">
                 {item.avatar ? (
                   <Avatar.Image src={item.avatar} alt={item.name} />
@@ -77,9 +78,16 @@ const QuickAccess = ({
                   />
                 </Avatar.Fallback>
               </Avatar>
-              <Typography.Paragraph className="font-base min-w-0 flex-1 truncate text-sm text-black">
-                {item.name}
-              </Typography.Paragraph>
+              <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span className="text-foreground block truncate text-sm leading-5 font-medium">
+                  {item.name}
+                </span>
+                {item.url && (
+                  <span className="text-muted block truncate text-xs leading-4">
+                    {item.url}
+                  </span>
+                )}
+              </span>
             </button>
           ))}
         </div>

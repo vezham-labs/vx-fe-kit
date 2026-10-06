@@ -424,7 +424,7 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   }
 
   return (
-    <Component>
+    <Component className="h-full min-h-0">
       <ScrollShadow {...getScrollShadowProps()}>
         {showAllFavoritesMode ? (
           <div {...getContentContainerProps()}>
@@ -562,6 +562,7 @@ const BookmarksPanelContent = () => {
 
 const bookmarksPanel: InfoPanelDefinition = {
   title: 'Bookmarks',
+  scrollable: false,
   content: <BookmarksPanelContent />
 }
 
