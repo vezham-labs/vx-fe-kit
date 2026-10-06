@@ -3,6 +3,7 @@ import path from 'node:path'
 
 import { readYamlConfig } from '../yaml-config.ts'
 import { validateAppMenu } from './app-menu.ts'
+import { validateControlCenter } from './control-center.ts'
 import { validateToolbar } from './toolbar.ts'
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
@@ -44,16 +45,23 @@ export const getNavigationFiles = (projectRoot: string) => {
   const config = readYamlConfig<unknown>(file)
   if (
     !isObject(config) ||
-    Object.keys(config).some(key => !['items', 'appMenu'].includes(key))
+    Object.keys(config).some(
+      key => !['items', 'appMenu', 'controlCenter'].includes(key)
+    )
   ) {
-    throw new Error(`${file} must contain items and optional appMenu arrays`)
+    throw new Error(
+      `${file} must contain items and optional appMenu or controlCenter`
+    )
   }
   validateItems(config.items, file)
   if (config.appMenu !== undefined)
     validateAppMenu(config.appMenu, `${file}.appMenu`)
+  if (config.controlCenter !== undefined)
+    validateControlCenter(config.controlCenter, `${file}.controlCenter`)
   const helpers = `
 export const getNavigationChildren = (key: string) => {
-  const item = navigationItems.find(item => item.key === key)
+  const items: readonly AppNavigationItem[] = navigationItems
+  const item = items.find(item => item.key === key)
   if (!item) {
     throw new Error('Unknown navigation key: ' + key)
   }
@@ -63,7 +71,7 @@ export const getNavigationChildren = (key: string) => {
   return [
     {
       path: path.join(projectRoot, 'src/generated/navigation.ts'),
-      content: `// Generated from vx.nav.yaml. DO NOT EDIT.\nimport type { AppNavigationItem, AppMenuItem } from '@vx/react'\n\nexport const navigationItems = ${JSON.stringify(config.items, null, 2)} satisfies AppNavigationItem[]\n\nexport const appMenu = ${JSON.stringify(config.appMenu ?? [], null, 2)} satisfies AppMenuItem[]\n${helpers}`
+      content: `// Generated from vx.nav.yaml. DO NOT EDIT.\nimport type { AppNavigationItem, AppMenuItem } from '@vx/react'\nimport type { ControlCenterConfig } from '@vx/react/control-center'\n\nexport const navigationItems = ${JSON.stringify(config.items, null, 2)} satisfies AppNavigationItem[]\n\nexport const appMenu = ${JSON.stringify(config.appMenu ?? [], null, 2)} satisfies AppMenuItem[]\n\nexport const controlCenter = ${JSON.stringify(config.controlCenter ?? { tiles: [] }, null, 2)} satisfies ControlCenterConfig\n${helpers}`
     }
   ]
 }

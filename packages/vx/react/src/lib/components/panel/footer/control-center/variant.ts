@@ -1,195 +1,106 @@
-import { VariantProps, tv } from '@vezham/react-v3'
+import { tv } from 'tailwind-variants'
 
-const tva = tv({
+export const controlCenterVariants = tv({
   slots: {
-    drawer_base:
-      'max-w-[440px] rounded-none border-none bg-transparent shadow-none md:translate-x-[106px]',
-    drawer_wrapper: 'z-[50]',
-    drawer_content:
-      'flex justify-end bg-black/5 p-4 shadow-xl backdrop-blur-sm',
-    drawer_header: 'flex shrink-0 justify-end p-0 pb-3',
-    close_button:
-      'text-default-500 shrink-0 bg-transparent hover:bg-transparent data-[hovered=true]:bg-transparent',
-
-    motion_container: 'flex min-h-0 w-full flex-col',
-    empty_state: 'flex min-h-[320px] flex-col items-center justify-center',
-    empty_state_icon: 'text-muted-foreground',
-
-    main_view: 'space-y-4',
-    main_grid: 'grid grid-cols-2 gap-4',
-    main_grid_left: 'space-y-4',
-
-    tile: 'flex cursor-pointer items-center gap-3 rounded-full bg-white/10 p-4 backdrop-blur-md transition hover:bg-white/20',
-    tile_icon_wrapper:
-      'flex h-10 w-10 items-center justify-center rounded-full bg-white',
-    tile_icon: 'text-primary',
-    tile_label: 'text-default-500 text-sm font-semibold',
-    tile_sub: 'text-default-400 text-xs',
-
-    media_tile:
-      'flex flex-col justify-between rounded-2xl bg-white/10 p-4 backdrop-blur-md',
-    media_tile_status: 'text-default-400 text-sm',
-    media_tile_controls: 'mt-6 flex items-center justify-center gap-4',
-    media_tile_icon: 'text-primary',
-
-    circle_action:
-      'flex items-center gap-3 rounded-full bg-white/10 p-4 backdrop-blur-md',
-    circle_action_center: 'justify-center',
-    circle_action_large: 'flex-1',
-    circle_action_icon_wrapper:
-      'flex h-10 w-10 items-center justify-center rounded-full bg-white',
-    circle_action_icon: 'text-primary',
-    circle_action_label: 'text-default-500 text-sm font-semibold',
-    circle_action_sub: 'text-default-400 text-xs',
-
-    slider: 'rounded-2xl bg-white/10 p-4 backdrop-blur-md',
-    slider_header: 'mb-2 flex items-center gap-2 text-sm',
-    slider_icon: 'text-white',
-    slider_label: 'text-default-500',
-    slider_track: 'h-1 w-full rounded-full bg-white/20',
-    slider_progress: 'h-1 rounded-full bg-white',
-
-    subview: 'space-y-4',
-    subview_header: 'flex items-center gap-2',
-    subview_back_button: '',
-    subview_title: 'font-semibold',
-    subview_content: 'space-y-2',
-
-    option:
-      'cursor-pointer rounded-xl bg-white/10 p-3 transition hover:bg-white/20',
-
-    drawer_footer: 'mt-4 flex justify-center',
-    chip: 'cursor-pointer rounded-full bg-white px-4 py-2 text-sm'
+    surface:
+      'border-border/70 dark:border-border/80 relative w-72 overflow-hidden rounded-[1.75rem] border p-2 shadow-2xl ring-1 ring-white/15 backdrop-blur-2xl',
+    triggerIcon: 'text-muted',
+    backdrop: 'bg-overlay/10 backdrop-blur-xs',
+    sheetContent: 'mx-auto max-h-[85dvh] w-full max-w-72',
+    sheetHeader: 'px-6 pt-0 pb-2',
+    sheetHeading: 'text-base font-semibold',
+    content: 'relative',
+    edgeHighlight:
+      'pointer-events-none absolute inset-x-8 top-0 h-px bg-linear-to-r from-transparent via-white/55 to-transparent dark:via-white/25',
+    surfaceHighlight:
+      'pointer-events-none absolute inset-x-0 top-0 h-20 bg-linear-to-b from-white/15 to-transparent dark:from-white/8',
+    panelHeader: 'flex items-center gap-2 px-1 pt-1 pb-2',
+    panelTitle: 'text-sm font-semibold capitalize',
+    panelBody: 'p-1',
+    home: 'grid grid-cols-4 items-center gap-x-2 gap-y-3',
+    tileContainer: 'min-w-0',
+    optionsList: 'flex flex-col gap-1',
+    colorSettings: 'flex flex-col gap-3',
+    colorLabel: 'text-muted text-xs',
+    colorPicker: 'gap-3',
+    colorOption: 'min-h-11 min-w-11',
+    viewport:
+      'max-h-[min(40rem,calc(100dvh-8rem))] overflow-y-auto overscroll-contain',
+    previewNotice: 'text-muted mb-3 px-2 pt-1 text-xs',
+    previewSettings: 'flex flex-col gap-4',
+    previewToggle: 'flex w-full items-center justify-between gap-3 text-sm',
+    previewHint: 'text-muted text-xs',
+    previewTile: 'bg-default-hover flex flex-col gap-3 rounded-2xl p-3',
+    previewHeader: 'flex items-center gap-2 [&>button]:ms-auto',
+    previewTitle: 'text-sm font-medium',
+    mediaControls: 'flex items-center justify-center gap-2',
+    connectionIcon: 'text-muted',
+    editor: 'flex flex-col gap-3',
+    editorRow: 'flex min-w-0 items-center justify-between gap-1',
+    editorToggle: 'flex min-w-0 items-center gap-2',
+    editorLabel: 'truncate text-xs',
+    editorActions: 'flex shrink-0 items-center'
   },
   variants: {
-    variant: {
-      default: {
-        drawer_content: 'bg-black/5',
-        tile: 'bg-white/10 hover:bg-white/20',
-        media_tile: 'bg-white/10',
-        circle_action: 'bg-white/10',
-        slider: 'bg-white/10',
-        option: 'bg-white/10 hover:bg-white/20'
+    active: { true: { connectionIcon: 'text-accent' }, false: {} },
+    span: {
+      compact: {
+        tileContainer:
+          'col-span-1 aspect-square w-full overflow-hidden [&>button]:size-full [&>button>span>span:last-child]:hidden'
       },
-      dark: {
-        drawer_content: 'bg-black/30',
-        tile: 'bg-white/5 hover:bg-white/15',
-        media_tile: 'bg-white/5',
-        circle_action: 'bg-white/5',
-        slider: 'bg-white/5',
-        option: 'bg-white/5 hover:bg-white/15'
-      },
-      light: {
-        drawer_content: 'bg-white/10',
-        tile: 'bg-black/5 hover:bg-black/10',
-        media_tile: 'bg-black/5',
-        circle_action: 'bg-black/5',
-        slider: 'bg-black/5',
-        option: 'bg-black/5 hover:bg-black/10'
-      }
+      standard: { tileContainer: 'col-span-2 min-w-0 [&>button]:w-full' },
+      wide: { tileContainer: 'col-span-3 min-w-0 [&>button]:w-full' },
+      full: { tileContainer: 'col-span-4 min-w-0 [&>button]:w-full' }
     },
-    placement: {
-      left: {
-        drawer_base: 'max-w-[380px] md:translate-x-[106px]'
-      },
-      right: {
-        drawer_base: 'max-w-[380px] md:-translate-x-[106px]'
-      }
-    },
-    size: {
-      sm: {
-        drawer_base: 'max-w-[280px] md:translate-x-[80px]',
-        tile: 'p-3',
-        tile_icon_wrapper: 'h-8 w-8',
-        tile_icon: 'w-4',
-        tile_label: 'text-xs',
-        tile_sub: 'text-[10px]'
-      },
-      md: {
-        drawer_base: 'max-w-[440px] md:translate-x-[106px]',
-        tile: 'p-4',
-        tile_icon_wrapper: 'h-10 w-10',
-        tile_icon: 'w-5',
-        tile_label: 'text-sm',
-        tile_sub: 'text-xs'
-      },
-      lg: {
-        drawer_base: 'max-w-[480px] md:translate-x-[133px]',
-        tile: 'p-5',
-        tile_icon_wrapper: 'h-12 w-12',
-        tile_icon: 'w-6',
-        tile_label: 'text-base',
-        tile_sub: 'text-sm'
-      }
-    },
-    blur: {
-      none: {
-        drawer_content: 'backdrop-blur-none',
-        tile: 'backdrop-blur-none',
-        media_tile: 'backdrop-blur-none',
-        circle_action: 'backdrop-blur-none',
-        slider: 'backdrop-blur-none',
-        option: 'backdrop-blur-none'
-      },
-      sm: {
-        drawer_content: 'backdrop-blur-sm',
-        tile: 'backdrop-blur-sm',
-        media_tile: 'backdrop-blur-sm',
-        circle_action: 'backdrop-blur-sm',
-        slider: 'backdrop-blur-sm',
-        option: 'backdrop-blur-sm'
-      },
-      md: {
-        drawer_content: 'backdrop-blur-md',
-        tile: 'backdrop-blur-md',
-        media_tile: 'backdrop-blur-md',
-        circle_action: 'backdrop-blur-md',
-        slider: 'backdrop-blur-md',
-        option: 'backdrop-blur-md'
-      },
-      lg: {
-        drawer_content: 'backdrop-blur-lg',
-        tile: 'backdrop-blur-lg',
-        media_tile: 'backdrop-blur-lg',
-        circle_action: 'backdrop-blur-lg',
-        slider: 'backdrop-blur-lg',
-        option: 'backdrop-blur-lg'
-      }
-    },
-    animation: {
-      spring: {
-        motion_container: ''
-      },
-      smooth: {
-        motion_container: ''
+    presentation: {
+      popover: { surface: 'bg-transparent' },
+      sheet: {
+        surface:
+          'bg-surface/75 dark:bg-surface/65 flex max-h-[85dvh] w-full flex-col rounded-b-none p-0',
+        content:
+          'min-h-0 overflow-hidden px-6 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]',
+        viewport: 'max-h-[min(40rem,calc(85dvh-7rem))]'
       }
     }
   },
-  compoundVariants: [
-    {
-      placement: 'left',
-      class: {
-        drawer_base: 'left-0'
-      }
-    },
-    {
-      placement: 'right',
-      class: {
-        drawer_base: 'right-0'
-      }
-    }
-  ],
-  defaultVariants: {
-    variant: 'default',
-    placement: 'left',
-    size: 'md',
-    blur: 'sm',
-    animation: 'spring'
-  }
+  defaultVariants: { presentation: 'popover' }
 })
 
-type tvProps = VariantProps<typeof tva>
-type tvSlots = keyof ReturnType<typeof tva>
+export const controlCenterTileVariants = tv({
+  slots: {
+    button: 'bg-default-hover hover:bg-surface rounded-full',
+    content: 'flex min-w-0 items-center gap-2',
+    icon: 'bg-surface flex size-10 shrink-0 items-center justify-center rounded-full border shadow-sm',
+    text: 'flex min-w-0 flex-col',
+    title: 'truncate text-sm font-medium',
+    description: 'text-muted truncate text-xs'
+  },
+  variants: {
+    selected: {
+      true: {
+        button: 'bg-accent/10',
+        icon: 'bg-accent text-accent-foreground'
+      },
+      false: {}
+    },
+    compact: {
+      true: { button: 'size-14 shrink-0' },
+      false: {
+        button:
+          'h-auto min-h-14 items-center justify-between px-3 py-2.5 text-start'
+      }
+    }
+  },
+  defaultVariants: { compact: false }
+})
 
-export { tva }
-export type { tvProps, tvSlots }
+export const optionTileVariants = tv({
+  base: 'h-auto w-full justify-start rounded-lg px-3 py-2 text-start text-sm font-normal transition-colors',
+  variants: {
+    selected: {
+      true: 'bg-primary/10 text-primary',
+      false: 'hover:bg-surface text-muted hover:text-foreground'
+    }
+  },
+  defaultVariants: { selected: false }
+})

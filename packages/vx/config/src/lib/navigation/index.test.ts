@@ -260,3 +260,52 @@ describe('navigation generation', () => {
     expect(() => getNavigationFiles(root)).toThrow()
   })
 })
+
+describe('control center configuration', () => {
+  it('generates the configured tile order and custom action keys', () => {
+    const root = project()
+    const controlCenter = {
+      tiles: [
+        { id: 'language', type: 'language', span: 'wide' },
+        {
+          id: 'workspace',
+          type: 'custom',
+          span: 'full',
+          action: 'workspace.open'
+        }
+      ]
+    }
+    writeFileSync(
+      path.join(root, 'vx.nav.yaml'),
+      stringify({ items: [], controlCenter })
+    )
+    const [file] = getNavigationFiles(root)
+    const generated = {
+      exports: {} as { controlCenter?: typeof controlCenter }
+    }
+    runInNewContext(
+      transpile(file.content, { module: ModuleKind.CommonJS }),
+      generated
+    )
+    expect(generated.exports.controlCenter).toEqual(controlCenter)
+  })
+
+  it.each([
+    [{ id: 'one', type: 'unknown', span: 'wide' }],
+    [{ id: 'one', type: 'theme', span: 'tiny' }],
+    [{ id: 'one', type: 'custom', span: 'wide' }],
+    [{ id: 'one', type: 'theme', span: 'wide', action: 'bad' }],
+    [{ id: 'one', type: 'theme', span: 'wide', surprise: true }],
+    [
+      { id: 'one', type: 'theme', span: 'wide' },
+      { id: 'one', type: 'theme', span: 'wide' }
+    ]
+  ])('rejects invalid tiles %j', (...tiles) => {
+    const root = project()
+    writeFileSync(
+      path.join(root, 'vx.nav.yaml'),
+      stringify({ items: [], controlCenter: { tiles } })
+    )
+    expect(() => getNavigationFiles(root)).toThrow()
+  })
+})

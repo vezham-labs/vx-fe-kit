@@ -1,346 +1,291 @@
-import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
-import { forwardRef, useState } from 'react'
+import { type ComponentType, useContext, useState } from 'react'
 
-import {
-  Airbuds as AirbudsIcon,
-  AltArrowLeft as AltArrowLeftIcon,
-  Bluetooth as BluetoothIcon,
-  Copy as CopyIcon,
-  Moon as MoonIcon,
-  Play as PlayIcon,
-  Settings as SettingsIcon,
-  SkipNext as SkipNextIcon,
-  SkipPrevious as SkipPreviousIcon,
-  Sun as SunIcon,
-  VolumeLoud as VolumeLoudIcon,
-  WiFi as WiFiIcon,
-  Widget2 as Widget2Icon
-} from '@vezham/icons-react'
-import { EmptyState } from '@vezham/react-pro-v3/empty-state'
-import { Button, Chip, CloseButton, Drawer } from '@vezham/react-v3'
+import { AltArrowLeft, Settings } from '@vezham/icons-react'
+import { Sheet } from '@vezham/react-pro-v3'
+import { Button, Popover, ScrollShadow, useMediaQuery } from '@vezham/react-v3'
 
-import { FooterDrawerFrame } from '../drawer-frame'
-import { Props, View, useProps } from './types'
+import { AppearanceProvider } from './appearance'
+import { EditorProvider } from './editor'
+import { FooterControlCenterContext } from './footer-context'
+import { PreviewProvider } from './preview'
+import { ActionTile } from './tile'
+import type { ControlCenterProps, TileDefinition } from './types'
+import { controlCenterVariants } from './variant'
 
-const ControlCenterDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const controls = useProps({
-    ...props,
-    ref
+const styles = controlCenterVariants()
+
+const GlassHighlights = () => (
+  <>
+    <div aria-hidden="true" className={styles.edgeHighlight()} />
+    <div aria-hidden="true" className={styles.surfaceHighlight()} />
+  </>
+)
+
+export const ControlCenter = <Context extends object>({
+  context,
+  tiles,
+  trigger,
+  placement = 'bottom end',
+  onOpenChange,
+  appearance,
+  preview = false
+}: ControlCenterProps<Context>) => {
+  const isCompact = useMediaQuery('(width < 768px)', {
+    initializeWithValue: false
   })
-  const {
-    Component,
-    getDrawerBaseProps,
-    getDrawerWrapperProps,
-    getDrawerContentProps,
-    getDrawerHeaderProps,
-    closeButtonClassName,
-    getMotionContainerProps,
-    getEmptyStateProps,
-    getEmptyStateIconProps,
-    getSubViewProps,
-    getSubViewHeaderProps,
-    getSubViewTitleProps,
-    getSubViewContentProps,
-    getOptionProps,
-    getOptionLabelProps,
-    getDrawerFooterProps,
-    getChipProps,
-    isOpen,
-    onClose,
-    backdrop,
-    placement,
-    initialView,
-    onViewChange,
-    isEmpty
-  } = controls
-  const drawerBaseProps = getDrawerBaseProps()
-
-  const [view, setView] = useState<View>(initialView)
-
-  const goBack = () => {
-    setView('main')
-    onViewChange?.('main')
+  const footer = useContext(FooterControlCenterContext)
+  const [localOpen, setLocalOpen] = useState(false)
+  const isOpen = footer?.isOpen ?? localOpen
+  const setOpen = footer?.onOpenChange ?? setLocalOpen
+  const [panel, setPanel] = useState<string | null>(null)
+  const [order, setOrder] = useState(() => tiles.map(tile => tile.id))
+  const [hidden, setHidden] = useState<readonly string[]>([])
+  const orderedTiles = [
+    ...order.flatMap(id => tiles.filter(tile => tile.id === id)),
+    ...tiles.filter(tile => !order.includes(tile.id))
+  ]
+  const visibleTiles = orderedTiles.filter(tile => !hidden.includes(tile.id))
+  const changeOpen = (nextOpen: boolean) => {
+    setOpen(nextOpen)
+    if (!nextOpen) setPanel(null)
+    onOpenChange?.(nextOpen)
   }
-
-  const handleViewChange = (newView: View) => {
-    setView(newView)
-    onViewChange?.(newView)
-  }
-
-  return (
-    <Component {...drawerBaseProps}>
-      <LazyMotion features={domAnimation}>
-        <FooterDrawerFrame
-          isOpen={isOpen}
-          onClose={onClose}
-          backdrop={backdrop}
-          placement={placement}
-          wrapperClassName={getDrawerWrapperProps().className}
-          contentClassName={drawerBaseProps.className}
-          dialogClassName={getDrawerContentProps().className}>
-          <Drawer.Header {...getDrawerHeaderProps()}>
-            <CloseButton className={closeButtonClassName} onPress={onClose} />
-          </Drawer.Header>
-
-          <m.div {...getMotionContainerProps()}>
-            {isEmpty ? (
-              <div {...getEmptyStateProps()}>
-                <EmptyState className="rounded-2xl">
-                  <EmptyState.Media>
-                    <SettingsIcon
-                      {...getEmptyStateIconProps()}
-                      weight="outline"
-                      aria-hidden="true"
-                    />
-                  </EmptyState.Media>
-                  <EmptyState.Title>Control Center is Empty</EmptyState.Title>
-                </EmptyState>
-              </div>
-            ) : (
-              <AnimatePresence mode="wait">
-                {renderControlCenterMainView(controls, view, handleViewChange)}
-
-                {view === 'wifi' && (
-                  <m.div key="wifi" {...getSubViewProps()}>
-                    <div {...getSubViewHeaderProps()}>
-                      <Button
-                        aria-label="Back to controls"
-                        isIconOnly
-                        onPress={goBack}
-                        variant="ghost">
-                        <AltArrowLeftIcon size="1em" aria-hidden="true" />
-                      </Button>
-                      <div {...getSubViewTitleProps('Wi-Fi')} />
-                    </div>
-
-                    <div {...getSubViewContentProps()}>
-                      <div {...getOptionProps({})}>
-                        <span {...getOptionLabelProps('iPhone')} />
-                      </div>
-                      <div {...getOptionProps({})}>
-                        <span {...getOptionLabelProps('Office WiFi')} />
-                      </div>
-                    </div>
-                  </m.div>
-                )}
-
-                {view === 'airdrop' && (
-                  <m.div key="airdrop" {...getSubViewProps()}>
-                    <div {...getSubViewHeaderProps()}>
-                      <Button
-                        aria-label="Back to controls"
-                        isIconOnly
-                        onPress={goBack}
-                        variant="ghost">
-                        <AltArrowLeftIcon size="1em" aria-hidden="true" />
-                      </Button>
-                      <div {...getSubViewTitleProps('AirDrop')} />
-                    </div>
-
-                    <div {...getSubViewContentProps()}>
-                      <div {...getOptionProps({})}>
-                        <span {...getOptionLabelProps('Contacts Only')} />
-                      </div>
-                      <div {...getOptionProps({})}>
-                        <span {...getOptionLabelProps('Everyone')} />
-                      </div>
-                    </div>
-                  </m.div>
-                )}
-              </AnimatePresence>
-            )}
-
-            {!isEmpty && (
-              <Drawer.Footer {...getDrawerFooterProps()}>
-                <Chip {...getChipProps()}>Edit Controls</Chip>
-              </Drawer.Footer>
-            )}
-          </m.div>
-        </FooterDrawerFrame>
-      </LazyMotion>
-    </Component>
+  const button = trigger ?? (
+    <Button aria-label="Control center" isIconOnly size="sm" variant="ghost">
+      <Settings size={16} className={styles.triggerIcon()} />
+    </Button>
   )
-})
+  const content = (
+    <EditorProvider
+      value={{
+        items: orderedTiles.map(tile => ({
+          id: tile.id,
+          label: tile.label ?? tile.title ?? tile.id.replaceAll('-', ' '),
+          visible: !hidden.includes(tile.id),
+          editable: tile.editable !== false
+        })),
+        onVisibilityChange: (id, visible) => {
+          if (tiles.find(tile => tile.id === id)?.editable === false) return
+          setHidden(previous =>
+            visible
+              ? previous.filter(value => value !== id)
+              : [...previous.filter(value => value !== id), id]
+          )
+        },
+        onMove: (id, offset) => {
+          const ids = orderedTiles.map(tile => tile.id)
+          const index = ids.indexOf(id)
+          const target = index + offset
+          if (index < 0 || target < 0 || target >= ids.length) return
+          const next = [...ids]
+          next.splice(index, 1)
+          next.splice(target, 0, id)
+          setOrder(next)
+        },
+        onReset: () => {
+          setOrder(tiles.map(tile => tile.id))
+          setHidden([])
+        }
+      }}>
+      <ScrollShadow
+        key={panel ?? 'home'}
+        className={styles.viewport({
+          presentation: isCompact ? 'sheet' : 'popover'
+        })}>
+        {preview && (
+          <p className={styles.previewNotice()}>
+            UI preview · Device controls are simulated.
+          </p>
+        )}
+        <PanelOutlet
+          context={context}
+          tiles={visibleTiles}
+          panel={panel}
+          onPanelChange={setPanel}
+        />
+      </ScrollShadow>
+    </EditorProvider>
+  )
 
-const renderControlCenterMainView = (
-  controls: ReturnType<typeof useProps>,
-  view: View,
-  handleViewChange: (view: View) => void
-) => {
-  const {
-    getMainViewProps,
-    getMainGridProps,
-    getMainGridLeftProps,
-    getTileProps,
-    getTileIconWrapperProps,
-    getTileIconProps,
-    getTileLabelProps,
-    getTileSubProps,
-    getMediaTileProps,
-    getMediaTileStatusProps,
-    getMediaTileControlsProps,
-    getMediaTileIconProps,
-    getCircleActionProps,
-    getCircleActionIconWrapperProps,
-    getCircleActionIconProps,
-    getCircleActionLabelProps,
-    getCircleActionSubProps,
-    getSliderProps,
-    getSliderHeaderProps,
-    getSliderIconProps,
-    getSliderLabelProps,
-    getSliderTrackProps,
-    getSliderProgressProps
-  } = controls
-
-  return view === 'main' ? (
-    <m.div
-      key="main"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      {...getMainViewProps()}>
-      <div {...getMainGridProps()}>
-        <div {...getMainGridLeftProps()}>
-          <div
-            {...getTileProps({
-              onClick: () => handleViewChange('wifi')
-            })}>
-            <div {...getTileIconWrapperProps()}>
-              <WiFiIcon
-                {...getTileIconProps()}
-                weight="filled"
-                aria-hidden="true"
-              />
-            </div>
-            <div>
-              <div {...getTileLabelProps('Wi-Fi')} />
-              <div {...getTileSubProps('iPhone')} />
-            </div>
-          </div>
-
-          <div {...getTileProps({})}>
-            <div {...getTileIconWrapperProps()}>
-              <BluetoothIcon
-                {...getTileIconProps()}
-                weight="filled"
-                aria-hidden="true"
-              />
-            </div>
-            <div>
-              <div {...getTileLabelProps('Bluetooth')} />
-              <div {...getTileSubProps('On')} />
-            </div>
-          </div>
-
-          <div
-            {...getTileProps({
-              onClick: () => handleViewChange('airdrop')
-            })}>
-            <div {...getTileIconWrapperProps()}>
-              <AirbudsIcon
-                {...getTileIconProps()}
-                weight="filled"
-                aria-hidden="true"
-              />
-            </div>
-            <div>
-              <div {...getTileLabelProps('AirDrop')} />
-              <div {...getTileSubProps('Contacts Only')} />
-            </div>
-          </div>
-        </div>
-
-        <div {...getMediaTileProps()}>
-          <div {...getMediaTileStatusProps()} />
-          <div {...getMediaTileControlsProps()}>
-            <SkipPreviousIcon
-              {...getMediaTileIconProps(22)}
-              weight="filled"
-              aria-hidden="true"
-            />
-
-            <PlayIcon
-              {...getMediaTileIconProps(28)}
-              weight="filled"
-              aria-hidden="true"
-            />
-            <SkipNextIcon
-              {...getMediaTileIconProps(22)}
-              weight="filled"
-              aria-hidden="true"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="flex gap-4">
-        <div {...getCircleActionProps({})}>
-          <div {...getCircleActionIconWrapperProps()}>
-            <Widget2Icon
-              {...getCircleActionIconProps()}
-              weight="filled"
-              aria-hidden="true"
-            />
-          </div>
-        </div>
-
-        <div {...getCircleActionProps({})}>
-          <div {...getCircleActionIconWrapperProps()}>
-            <CopyIcon
-              {...getCircleActionIconProps()}
-              weight="filled"
-              aria-hidden="true"
-            />
-          </div>
-        </div>
-
-        <div {...getCircleActionProps({ large: true })}>
-          <div {...getCircleActionIconWrapperProps()}>
-            <MoonIcon
-              {...getCircleActionIconProps()}
-              weight="filled"
-              aria-hidden="true"
-            />
-          </div>
-          <div>
-            <div {...getCircleActionLabelProps('Do Not Disturb')} />
-            <div {...getCircleActionSubProps('On')} />
-          </div>
-        </div>
-      </div>
-
-      <div {...getSliderProps()}>
-        <div {...getSliderHeaderProps()}>
-          <SunIcon
-            {...getSliderIconProps()}
-            weight="filled"
-            aria-hidden="true"
-          />
-          <span {...getSliderLabelProps('Display')} />
-        </div>
-        <div {...getSliderTrackProps()}>
-          <div {...getSliderProgressProps(50)} />
-        </div>
-      </div>
-
-      <div {...getSliderProps()}>
-        <div {...getSliderHeaderProps()}>
-          <VolumeLoudIcon
-            {...getSliderIconProps()}
-            weight="filled"
-            aria-hidden="true"
-          />
-          <span {...getSliderLabelProps('Sound')} />
-        </div>
-        <div {...getSliderTrackProps()}>
-          <div {...getSliderProgressProps(75)} />
-        </div>
-      </div>
-    </m.div>
-  ) : null
+  const overlay = isCompact ? (
+    <Sheet
+      isOpen={isOpen}
+      onOpenChange={changeOpen}
+      placement="bottom"
+      isHandleOnly
+      shouldAutoFocus>
+      {footer?.compact ? null : <Sheet.Trigger>{button}</Sheet.Trigger>}
+      <Sheet.Backdrop className={styles.backdrop()} variant="blur">
+        <Sheet.Content className={styles.sheetContent()}>
+          <Sheet.Dialog className={styles.surface({ presentation: 'sheet' })}>
+            <GlassHighlights />
+            <Sheet.Handle />
+            <Sheet.CloseTrigger aria-label="Close Control Center" />
+            <Sheet.Header className={styles.sheetHeader()}>
+              <Sheet.Heading className={styles.sheetHeading()}>
+                Control Center
+              </Sheet.Heading>
+            </Sheet.Header>
+            <Sheet.Body className={styles.content({ presentation: 'sheet' })}>
+              {content}
+            </Sheet.Body>
+          </Sheet.Dialog>
+        </Sheet.Content>
+      </Sheet.Backdrop>
+    </Sheet>
+  ) : (
+    <Popover isOpen={isOpen} onOpenChange={changeOpen}>
+      {footer?.compact ? null : button}
+      <Popover.Content
+        className={styles.surface()}
+        offset={8}
+        placement={placement}>
+        <GlassHighlights />
+        <Popover.Dialog
+          aria-label="Control Center"
+          className={styles.content()}>
+          {content}
+        </Popover.Dialog>
+      </Popover.Content>
+    </Popover>
+  )
+  return (
+    <AppearanceProvider appearance={appearance}>
+      <PreviewProvider enabled={preview}>{overlay}</PreviewProvider>
+    </AppearanceProvider>
+  )
 }
 
-ControlCenterDrawer.displayName = 'ControlCenterDrawer'
+const PanelOutlet = <Context extends object>({
+  context,
+  tiles,
+  panel,
+  onPanelChange
+}: Pick<ControlCenterProps<Context>, 'context' | 'tiles'> & {
+  panel: string | null
+  onPanelChange: (panel: string | null) => void
+}) => {
+  const entry = tiles.find(entry => entry.id === panel)
+  if (entry?.Panel) {
+    const Content = entry.Panel
+    return (
+      <>
+        <div className={styles.panelHeader()}>
+          <Button
+            aria-label="Back to Control Center"
+            isIconOnly
+            size="sm"
+            variant="ghost"
+            onPress={() => onPanelChange(null)}>
+            <AltArrowLeft size={16} />
+          </Button>
+          <span className={styles.panelTitle()}>{entry.title}</span>
+        </div>
+        <div className={styles.panelBody()}>
+          <Content key={panel} {...context} />
+        </div>
+      </>
+    )
+  }
+  return (
+    <div className={styles.home()}>
+      {tiles.map(entry => (
+        <div
+          key={entry.id}
+          className={styles.tileContainer({ span: entry.span })}>
+          <TileContent
+            entry={entry}
+            context={context}
+            onOpen={() => onPanelChange(entry.id)}
+          />
+        </div>
+      ))}
+    </div>
+  )
+}
 
-export { ControlCenterDrawer }
+const TileContent = <Context extends object>({
+  entry,
+  context,
+  onOpen
+}: {
+  entry: TileDefinition<Context>
+  context: Context
+  onOpen: () => void
+}) => {
+  if (entry.onAction) {
+    return (
+      <ActionTile
+        label={entry.label}
+        description={entry.description}
+        icon={entry.icon}
+        compact={entry.span === 'compact'}
+        onPress={() => entry.onAction(context)}
+      />
+    )
+  }
+  if (entry.Panel) {
+    const Tile = entry.Tile
+    return <Tile {...context} onOpen={onOpen} />
+  }
+  const Tile: ComponentType<Context> = entry.Tile
+  return <Tile {...context} />
+}
+
+export type { ControlCenterProps, TileDefinition } from './types'
+export type {
+  AppearanceAdapter,
+  ThemeMode,
+  LanguageAdapter,
+  Option
+} from './types'
+export {
+  ThemeToggle,
+  AppearanceToggle,
+  AppearanceTile,
+  AppearanceSettings
+} from './appearance'
+export { ThemeTile, ThemeSettings } from './theme'
+export {
+  LanguageTile,
+  LanguageSettings,
+  DocumentLanguageTile,
+  DocumentLanguageSettings
+} from './language'
+export { DirectionTile, DirectionSettings } from './direction'
+export { ActionTile } from './tile'
+export { Options } from './options'
+export { EditControlsTile, EditControlsSettings } from './editor'
+export {
+  PreviewWiFiTile,
+  PreviewWiFiSettings,
+  PreviewBluetoothTile,
+  PreviewBluetoothSettings,
+  PreviewAirDropTile,
+  PreviewAirDropSettings,
+  PreviewFocusTile,
+  PreviewStageManagerTile,
+  PreviewMirroringTile,
+  PreviewMirroringSettings,
+  PreviewMediaTile,
+  PreviewDisplayTile,
+  PreviewSoundTile
+} from './preview'
+export {
+  controlCenterTileVariants,
+  controlCenterVariants,
+  optionTileVariants
+} from './variant'
+
+export { ConfiguredControlCenter, resolveTiles } from './configured'
+export type {
+  ConfiguredControlCenterProps,
+  ControlCenterActionEvent
+} from './configured'
+export type {
+  BuiltinTileType,
+  TileConfig,
+  ControlCenterConfig,
+  ControlCenterContext,
+  TileRegistration
+} from './types'

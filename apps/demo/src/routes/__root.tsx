@@ -3,6 +3,7 @@ import { Outlet, createRootRoute } from '@tanstack/react-router'
 import { AppLayout } from '@vx/react/layouts/app'
 import { createRootComponent } from '@vx/start/tanstack'
 
+import { DemoControlCenter } from '@components/control-center'
 import { appMenu, navigationItems } from '@generated/navigation'
 import { tanstackHead, vxI18n } from '@generated/vx'
 
@@ -11,7 +12,10 @@ export const Route = createRootRoute({
   component: createRootComponent({
     lang: vxI18n.defaultLanguage,
     children: (
-      <AppLayout navigationItems={navigationItems} appMenu={appMenu}>
+      <AppLayout
+        navigationItems={navigationItems}
+        appMenu={appMenu}
+        controlCenter={<DemoControlCenter />}>
         <Outlet />
       </AppLayout>
     )

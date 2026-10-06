@@ -1,5 +1,6 @@
 // Generated from vx.nav.yaml. DO NOT EDIT.
 import type { AppNavigationItem, AppMenuItem } from '@vx/react'
+import type { ControlCenterConfig } from '@vx/react/control-center'
 
 export const navigationItems = [
   {
@@ -1046,8 +1047,150 @@ export const appMenu = [
   }
 ] satisfies AppMenuItem[]
 
+export const controlCenter = {
+  "tiles": [
+    {
+      "id": "wifi",
+      "type": "preview-wifi",
+      "span": "wide",
+      "label": "Wi-Fi",
+      "title": "Wi-Fi"
+    },
+    {
+      "id": "bluetooth",
+      "type": "preview-bluetooth",
+      "span": "wide",
+      "title": "Bluetooth"
+    },
+    {
+      "id": "airdrop",
+      "type": "preview-airdrop",
+      "span": "wide",
+      "title": "AirDrop"
+    },
+    {
+      "id": "focus",
+      "type": "preview-focus",
+      "span": "full",
+      "label": "Do Not Disturb"
+    },
+    {
+      "id": "stage-manager",
+      "type": "preview-stage-manager",
+      "span": "wide",
+      "label": "Stage Manager"
+    },
+    {
+      "id": "mirroring",
+      "type": "preview-mirroring",
+      "span": "full",
+      "title": "Screen Mirroring"
+    },
+    {
+      "id": "media",
+      "type": "preview-media",
+      "span": "full",
+      "label": "Media"
+    },
+    {
+      "id": "display",
+      "type": "preview-display",
+      "span": "full",
+      "label": "Display"
+    },
+    {
+      "id": "sound",
+      "type": "preview-sound",
+      "span": "full",
+      "label": "Sound"
+    },
+    {
+      "id": "theme-toggle",
+      "type": "theme-toggle",
+      "span": "compact"
+    },
+    {
+      "id": "appearance",
+      "type": "appearance",
+      "span": "wide",
+      "title": "Appearance"
+    },
+    {
+      "id": "appearance-lite",
+      "type": "theme-toggle",
+      "span": "compact"
+    },
+    {
+      "id": "appearance-toggle",
+      "type": "appearance-toggle",
+      "span": "wide"
+    },
+    {
+      "id": "appearance-lite1",
+      "type": "theme-toggle",
+      "span": "compact"
+    },
+    {
+      "id": "appearance-23",
+      "type": "appearance-toggle",
+      "span": "standard"
+    },
+    {
+      "id": "appearance-12",
+      "type": "appearance-toggle",
+      "span": "full"
+    },
+    {
+      "id": "appearance-lite2",
+      "type": "theme-toggle",
+      "span": "compact"
+    },
+    {
+      "id": "appearance-lite3",
+      "type": "theme-toggle",
+      "span": "compact"
+    },
+    {
+      "id": "appearance-lite4",
+      "type": "theme-toggle",
+      "span": "compact"
+    },
+    {
+      "id": "appearance-lite5",
+      "type": "theme-toggle",
+      "span": "compact"
+    },
+    {
+      "id": "direction",
+      "type": "direction",
+      "span": "wide",
+      "title": "Direction"
+    },
+    {
+      "id": "theme",
+      "type": "theme",
+      "span": "wide",
+      "title": "Theme"
+    },
+    {
+      "id": "language",
+      "type": "language",
+      "span": "wide",
+      "title": "Language"
+    },
+    {
+      "id": "edit-controls",
+      "type": "edit-controls",
+      "span": "full",
+      "title": "Edit Controls",
+      "editable": false
+    }
+  ]
+} satisfies ControlCenterConfig
+
 export const getNavigationChildren = (key: string) => {
-  const item = navigationItems.find(item => item.key === key)
+  const items: readonly AppNavigationItem[] = navigationItems
+  const item = items.find(item => item.key === key)
   if (!item) {
     throw new Error('Unknown navigation key: ' + key)
   }

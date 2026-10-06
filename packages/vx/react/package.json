@@ -9,6 +9,11 @@
       "import": "./src/index.ts",
       "default": "./src/index.ts"
     },
+    "./control-center": {
+      "types": "./src/lib/components/panel/footer/control-center/index.tsx",
+      "import": "./src/lib/components/panel/footer/control-center/index.tsx",
+      "default": "./src/lib/components/panel/footer/control-center/index.tsx"
+    },
     "./actions-header": {
       "types": "./src/lib/components/actions-header/index.tsx",
       "import": "./src/lib/components/actions-header/index.tsx",

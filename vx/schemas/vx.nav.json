@@ -17,6 +17,19 @@
       "items": {
         "$ref": "#/definitions/appMenu"
       }
+    },
+    "controlCenter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tiles"],
+      "properties": {
+        "tiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/controlCenterTile"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -176,6 +189,79 @@
           }
         }
       }
+    },
+    "controlCenterTile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "span"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "enum": [
+            "theme-toggle",
+            "appearance-toggle",
+            "appearance",
+            "theme",
+            "direction",
+            "language",
+            "edit-controls",
+            "preview-wifi",
+            "preview-bluetooth",
+            "preview-airdrop",
+            "preview-focus",
+            "preview-stage-manager",
+            "preview-mirroring",
+            "preview-media",
+            "preview-display",
+            "preview-sound",
+            "custom"
+          ]
+        },
+        "span": {
+          "enum": ["compact", "standard", "wide", "full"]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "editable": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "custom"
+              }
+            }
+          },
+          "then": {
+            "required": ["action"]
+          },
+          "else": {
+            "not": {
+              "required": ["action"]
+            }
+          }
+        }
+      ]
     }
   }
 }

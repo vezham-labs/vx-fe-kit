@@ -1,80 +1,48 @@
-import { useState } from 'react'
+import { useRouter } from '@tanstack/react-router'
 
-import { Settings } from '@vezham/icons-react'
-import { Button, Modal, Popover, useMediaQuery } from '@vezham/react-v3'
+import { useTheme } from '@vezham/docs-react/provider/base'
 
-import { controlCenterVariants } from '@components/docs/control-center.variants'
-import { ControlCenterPanelOutlet } from '@components/docs/control-center/panel-outlet'
-import type {
-  ControlCenterPanelContext,
-  ControlCenterPanelId
-} from '@components/docs/control-center/panels'
+import { ConfiguredControlCenter as SharedControlCenter } from '@vx/react/control-center'
+import { getLanguageDisplayName } from '@vx/start/tanstack-docs'
 
-type Props = ControlCenterPanelContext
+import { i18n } from '@app/docs'
+import { controlCenter } from '@generated/navigation'
+import type { Locale } from '@generated/vx'
 
-const styles = controlCenterVariants()
+type Props = { locale: Locale; page: string; platform: 'web' | 'native' }
 
-const GlassHighlights = () => (
-  <>
-    <div aria-hidden="true" className={styles.edgeHighlight()} />
-    <div aria-hidden="true" className={styles.surfaceHighlight()} />
-  </>
-)
-
-export const ControlCenter = (props: Props) => {
-  const isCompact = useMediaQuery('(width < 768px)', {
-    initializeWithValue: false
+export const ControlCenter = ({ locale, page, platform }: Props) => {
+  const router = useRouter()
+  const { resolvedTheme, setTheme } = useTheme()
+  const languageLocation = (language: Locale) => ({
+    to: '/{-$lang}/ui-notebook-platform/$platform/$' as const,
+    params: {
+      lang: language === i18n.defaultLanguage ? undefined : language,
+      platform,
+      _splat: page
+    }
   })
-  const [isOpen, setOpen] = useState(false)
-  const [panel, setPanel] = useState<ControlCenterPanelId | null>(null)
-
-  const onOpenChange = (open: boolean) => {
-    setOpen(open)
-    if (!open) setPanel(null)
-  }
-  const trigger = (
-    <Button aria-label="Control center" isIconOnly size="sm" variant="ghost">
-      <Settings size={16} className={styles.triggerIcon()} />
-    </Button>
-  )
-  const content = (
-    <ControlCenterPanelOutlet
-      {...props}
-      panel={panel}
-      onPanelChange={setPanel}
+  return (
+    <SharedControlCenter
+      appearance={{
+        isDark: resolvedTheme === 'dark',
+        setDark: dark => setTheme(dark ? 'dark' : 'light')
+      }}
+      context={{
+        language: {
+          value: locale,
+          options: i18n.languages.map(language => ({
+            value: language,
+            label: getLanguageDisplayName(language),
+            href: router.buildLocation(languageLocation(language)).href
+          })),
+          onChange: (value: string) => {
+            const language = i18n.languages.find(language => language === value)
+            if (language) void router.navigate(languageLocation(language))
+          }
+        }
+      }}
+      config={controlCenter}
     />
-  )
-
-  return isCompact ? (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-      {trigger}
-      <Modal.Backdrop className={styles.backdrop()} variant="blur">
-        <Modal.Container placement="top" className={styles.modalContainer()}>
-          <Modal.Dialog
-            aria-label="Control Center"
-            className={styles.surface({ presentation: 'modal' })}>
-            <GlassHighlights />
-            <Modal.Body className={styles.content({ presentation: 'modal' })}>
-              {content}
-            </Modal.Body>
-          </Modal.Dialog>
-        </Modal.Container>
-      </Modal.Backdrop>
-    </Modal>
-  ) : (
-    <Popover isOpen={isOpen} onOpenChange={onOpenChange}>
-      {trigger}
-      <Popover.Content
-        className={styles.surface()}
-        offset={8}
-        placement="bottom end">
-        <GlassHighlights />
-        <Popover.Dialog
-          aria-label="Control Center"
-          className={styles.content()}>
-          {content}
-        </Popover.Dialog>
-      </Popover.Content>
-    </Popover>
   )
 }

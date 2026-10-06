@@ -4,6 +4,149 @@ A Control Center is a compact overlay for frequent preferences. It uses an
 ordered tile registry and a local panel outlet for detail screens. Opening a
 detail screen does not add a browser-history entry; Back returns to home.
 
+The shared implementation is `ControlCenter` in
+`packages/vx/react/src/lib/components/panel/footer/control-center`, exported
+from `@vx/react/control-center`. The package root also exports the main
+`ControlCenter` and `ControlCenterProps`; tile helpers and their types live under
+the dedicated path. It accepts a typed `tiles` registry and current `context`;
+the React package owns the tile UI, options lists, appearance behavior, and
+common detail panels. Apps keep their ordered YAML config and supply app-specific
+actions. The notebook adapter connects shared appearance tiles to its theme
+provider and shared language tiles to its locale routes.
+
+Use `ThemeToggle` for a compact toggle,
+`AppearanceToggle` for a labeled direct toggle, or
+`AppearanceTile` with `AppearanceSettings` for a detail
+panel. Without an `appearance` adapter, `ControlCenter` tracks and changes the
+document root's `dark` class. Apps with a theme provider supply
+`appearance={{ isDark, setDark }}` to keep that provider authoritative.
+
+`AppearanceSettings` adds Light, Dark, and Auto. Auto follows
+`prefers-color-scheme` while the control center is mounted,
+including when its overlay is closed. Manual appearance toggles leave Auto.
+The default implementation records the mode in `html[data-theme-mode]` for the
+current document. A theme provider can additionally supply `themeMode` and
+`setThemeMode`; Auto is available only when its adapter supports it.
+
+`ThemeTile` and `ThemeSettings` select an accent color:
+Blue, Purple, Pink, Red, Orange, Yellow, Green, or Graphite. The shared swatch
+picker updates the root's accent tokens and existing primary HSL tokens without
+changing appearance. The Default action restores the original inline token
+values and priorities, allowing stylesheet themes to take over again. Selection
+is stored in `html[data-vx-theme-color]` for the current document; the tile shows
+the selected name and color. Apps only register the shared tile and panel.
+
+`DirectionTile` and `DirectionSettings` select LTR or
+RTL and update `html[dir]`. `DocumentLanguageTile` and
+`DocumentLanguageSettings` accept `context.languageOptions` and
+update `html[lang]`. This document language control does not translate app copy
+or navigate locale routes; use the app language adapter below for those actions.
+
+`LanguageTile` and `LanguageSettings` receive
+`context.language` with `value`, `options`, and `onChange`. Options include a
+`value`, `label`, and optional `href`; links preserve modified clicks while
+normal selection calls the app's navigation action. The React package does not
+import app-specific providers, generated locales, or route definitions.
+
+The footer accepts a `controlCenter` element alongside `showControlCenter`.
+When enabled without app registration, it opens the shared Control Center with
+Appearance, Theme color, Direction, and Edit Controls. The old drawer and
+`onControlCenterClick` callback have been removed. On small screens (below 768px), Control Center opens from the footer More
+menu. On larger screens, its trigger renders directly in the footer. Both paths
+use the same instance and settings state.
+
+Supply `<ControlCenter context={context} tiles={tiles} placement="right bottom" />`
+to replace that default with an app-specific registry and adapters. The current
+implementation and its props use the canonical `ControlCenter` and
+`ControlCenterProps` names; the temporary `ControlCenter2` names are removed.
+
+`AppLayout` forwards the same `controlCenter` element through both desktop and
+mobile navigation to the footer. The demo supplies `DemoControlCenter` with
+appearance controls plus Direction, Theme, and Language detail panels. Its
+document language options are English (`en`) and Chinese (`zh`).
+
+## UI review controls
+
+The demo passes `preview` to `ControlCenter` and registers shared
+`Preview*` tiles for Wi-Fi, Bluetooth, AirDrop, Do Not Disturb,
+Stage Manager, Screen Mirroring, Media, Display, and Sound. They use fixtures
+and local state, shown with a simulation notice. They do not control hardware,
+system brightness or audio, system notification settings, or play actual media.
+The preview provider owns state across detail screens, overlay closing, and
+responsive presentation changes; apps keep only tile registration.
+
+Register `EditControlsTile` with
+`EditControlsSettings` to hide, show, and reorder the registry.
+Give its descriptor `editable: false` so the editor cannot hide itself. An
+optional descriptor `label` names the item in the editor; otherwise its panel
+title or readable ID is used. Reset Controls restores registry order and shows
+all controls. These preferences last for the mounted Control Center instance.
+The shared viewport scrolls and resets scroll position when changing panels.
+
+## YAML configuration
+
+Configure the app layout under `controlCenter.tiles` in `vx.nav.yaml`. Array
+order determines the initial visual and keyboard order. Each entry has a unique
+`id`, a built-in `type` or `custom`, and a `span`. Optional `title` overrides the
+settings panel heading; `label` names custom action tiles and Edit Controls rows.
+Set `editable: false` to prevent hiding or moving a tile. Edit Controls defaults
+to protected. Reset Controls restores the YAML order.
+
+```yaml
+controlCenter:
+  tiles:
+    - id: appearance
+      type: appearance
+      span: wide
+    - id: language
+      type: language
+      span: standard
+    - id: workspace
+      type: custom
+      action: workspace.open
+      label: Open workspace
+      span: full
+```
+
+Metadata generation exports `controlCenter` from `src/generated/navigation.ts`.
+Pass it to `ConfiguredControlCenter`. Built-in tiles and their panels are resolved
+inside React; the app supplies adapters only when needed. The `language` type
+uses `context.language` for routed languages, or `context.languageOptions` to
+update the HTML language attribute (English by default).
+
+```tsx
+import { ConfiguredControlCenter } from '@vx/react/control-center'
+import { useToolbarAction } from '@vx/react/toolbar-actions'
+
+import { controlCenter } from '@generated/navigation'
+
+export const AppControlCenter = () => {
+  useToolbarAction('workspace.open', () => openWorkspace(), {
+    pageKey: 'control-center'
+  })
+  return <ConfiguredControlCenter config={controlCenter} context={{}} />
+}
+```
+
+Custom clicks use the existing toolbar dispatcher provided by `AppLayout`.
+Events include `actionKey`, `tileId`, `pageKey: 'control-center'`, and the current
+browser `pathname`. Outside `AppLayout`, wrap the app in `ToolbarActionsProvider`
+or pass `onAction` directly to `ConfiguredControlCenter`. A missing custom action
+handler throws an error rather than silently ignoring a click.
+
+For custom visuals, pass `registrations={{ workspace: { Tile: WorkspaceTile } }}`.
+Registrations are keyed by the YAML tile ID. React supplies the app context,
+`onAction` to emit the YAML action, and `onOpen` to open the registered `Panel`
+(or emit the action when no panel exists). A registration may include `Panel`
+and `title`; the app retains these component references in TypeScript.
+
+Supported built-in types: `theme-toggle`, `appearance-toggle`, `appearance`,
+`theme`, `direction`, `language`, `edit-controls`, `preview-wifi`,
+`preview-bluetooth`, `preview-airdrop`, `preview-focus`, `preview-stage-manager`,
+`preview-mirroring`, `preview-media`, `preview-display`, and `preview-sound`.
+Keep `preview` enabled for simulated device controls. Shared behavior stays in
+React; only app-specific handlers, custom components, and adapters stay in apps.
+
 ## Tile registry
 
 Keep every home tile in one ordered registry. Its order is both visual and
@@ -11,8 +154,28 @@ keyboard order. A tile either performs its action directly or opens a detail
 panel. Model those as separate type branches rather than branching on IDs
 elsewhere.
 
+Type the registry as `readonly TileDefinition<Context>[]` so its app context
+stays separate from the internal `onOpen` callback injected into detail tiles.
+Give every entry a unique `id`; it identifies both the React tile and its detail
+panel. Use `ThemeToggle` for compact icon tiles and
+`AppearanceToggle` for labeled standard, wide, or full tiles.
+
 ```tsx
-const tiles = [
+import {
+  ControlCenter,
+  type LanguageAdapter,
+  LanguageSettings,
+  LanguageTile,
+  ThemeToggle,
+  type TileDefinition
+} from '@vx/react/control-center'
+
+type Context = {
+  language: LanguageAdapter
+  openWorkspace: () => void
+}
+
+const tiles: readonly TileDefinition<Context>[] = [
   { id: 'theme', span: 'compact', Tile: ThemeToggle },
   {
     id: 'language',
@@ -22,14 +185,22 @@ const tiles = [
     Panel: LanguageSettings
   },
   {
-    id: 'reading',
+    id: 'custom-action',
     span: 'full',
-    Tile: ReadingTile,
-    title: 'Reading preferences',
-    Panel: ReadingSettings
+    label: 'Open workspace',
+    onAction: context => context.openWorkspace()
   }
 ]
+
+const AppControlCenter = ({ context }: { context: Context }) => (
+  <ControlCenter context={context} tiles={tiles} />
+)
 ```
+
+For custom actions, register `label`, optional `icon` and `description`, and
+`onAction(context)`. The shared component renders the tile and invokes the
+callback with current context; an app does not need to create button markup.
+Custom detail panels can still use `Tile` and `Panel` component references.
 
 Detail tiles receive an `onOpen` callback from the home. The detail panel mounts
 only after that callback runs, so it cannot open itself. Derive the active panel
@@ -49,7 +220,10 @@ controls into earlier empty cells.
 | `wide`     | 3          | Longer labels or grouped controls      |
 | `full`     | 4          | Sliders and full-row settings          |
 
-Compact tiles fill a square cell. Set a panel width that keeps a standard tile's
+The lg popover is the width reference: both popovers and bottom sheets are capped
+at 18rem, with the same 1.5rem inner horizontal inset. Their four-column grids
+retain 0.5rem horizontal and 0.75rem vertical gaps at lg, md, and sm. Compact
+tiles fill a square cell within that bounded grid. Set a panel width that keeps a standard tile's
 icon, padding, label, and status readable. Use separate horizontal and vertical
 gutters when rows need more breathing room.
 
@@ -62,7 +236,7 @@ The overlay owner keeps `isOpen` and `activePanel` state. Render home when
 `activePanel` is `null`; otherwise the outlet resolves the matching entry and
 renders a shared Back header plus that entry's `Panel`.
 
-Use a modal at narrow viewports and an anchored popover at larger widths. Close
+Use a Pro bottom Sheet below 768px and an anchored popover at larger widths. Close
 the overlay and reset `activePanel` together so reopening starts at home.
 
 ## Styling
@@ -87,6 +261,12 @@ Check the following after changing the registry or layout:
 - A direct-action tile works without opening a detail panel.
 - A detail tile opens its panel, Back returns home, and closing then reopening
   starts at home.
-- The popover is anchored to its trigger on larger screens; the modal is usable
+- The popover is anchored to its trigger on larger screens; the bottom sheet is usable
   on small screens.
 - Keyboard focus and accessible names work for every control.
+
+The small-screen sheet has a visible drag handle, a close button, and a bounded
+scrolling viewport with safe-area padding. Dragging is restricted to the handle
+so tile sliders and settings remain usable. Tile detail screens and Back stay
+inside the same sheet. Escape, outside press, close, and handle dismissal use the
+same open-state callback and return focus to the trigger or footer More entry.

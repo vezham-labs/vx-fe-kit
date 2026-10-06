@@ -1,0 +1,28 @@
+import { AlignLeft, AlignRight } from '@vezham/icons-react'
+
+import { useRootAttribute } from './document'
+import { Options } from './options'
+import { ActionTile } from './tile'
+
+const options = [
+  { value: 'ltr', label: 'LTR' },
+  { value: 'rtl', label: 'RTL' }
+] as const
+
+export const DirectionTile = ({ onOpen }: { onOpen: () => void }) => {
+  const { value } = useRootAttribute('dir', 'ltr')
+  const Icon = value === 'rtl' ? AlignRight : AlignLeft
+  return (
+    <ActionTile
+      label="Direction"
+      description={value.toUpperCase()}
+      icon={<Icon size={18} />}
+      onPress={onOpen}
+    />
+  )
+}
+
+export const DirectionSettings = () => {
+  const direction = useRootAttribute('dir', 'ltr')
+  return <Options {...direction} options={options} />
+}

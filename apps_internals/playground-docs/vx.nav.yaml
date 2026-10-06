@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=../../vx/schemas/vx.nav.json
+items: []
+
+controlCenter:
+  tiles:
+    - id: appearance-lite
+      type: theme-toggle
+      span: compact
+    - id: language
+      type: language
+      span: wide
+      title: Language
+    - id: appearance
+      type: appearance-toggle
+      span: wide
+    - id: appearance-lite1
+      type: theme-toggle
+      span: compact
+    - id: appearance-23
+      type: appearance-toggle
+      span: standard
+    - id: appearance-12
+      type: appearance-toggle
+      span: full
+    - id: appearance-lite2
+      type: theme-toggle
+      span: compact
+    - id: appearance-lite3
+      type: theme-toggle
+      span: compact
+    - id: appearance-lite4
+      type: theme-toggle
+      span: compact
+    - id: appearance-lite5
+      type: theme-toggle
+      span: compact

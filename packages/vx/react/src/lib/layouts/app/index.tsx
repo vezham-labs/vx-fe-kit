@@ -18,7 +18,7 @@ import { WorkspaceNavigationProvider } from '../../components/workspace-navigati
 import type { AppNavigationItem } from '../../navigation'
 import { getNavigationPageKey } from '../../navigation'
 import { type User, UserProvider } from '../../store/users/useUserStore'
-import { MenuLayout } from '../menu-layout'
+import { MenuLayout, type MenuLayoutProps } from '../menu-layout'
 
 type AppFrameProps = {
   children: ReactNode
@@ -55,17 +55,19 @@ const AppFrame = ({
   )
 }
 
-export type AppLayoutProps = Omit<AppFrameProps, 'navigation'> & {
-  navigationItems: AppNavigationItem[]
-  appMenu?: AppMenuItem[]
-  user?: User | null
-}
+export type AppLayoutProps = Omit<AppFrameProps, 'navigation'> &
+  Pick<MenuLayoutProps, 'controlCenter'> & {
+    navigationItems: AppNavigationItem[]
+    appMenu?: AppMenuItem[]
+    user?: User | null
+  }
 
 const AppLayout = ({
   children,
   navigationItems,
   appMenu = [],
   user,
+  controlCenter,
   ...frameProps
 }: AppLayoutProps) => {
   return (
@@ -77,7 +79,12 @@ const AppLayout = ({
               <WorkspaceNavigationProvider>
                 <AppFrame
                   {...frameProps}
-                  navigation={<MenuLayout items={navigationItems} />}>
+                  navigation={
+                    <MenuLayout
+                      items={navigationItems}
+                      controlCenter={controlCenter}
+                    />
+                  }>
                   {children}
                 </AppFrame>
               </WorkspaceNavigationProvider>

@@ -741,6 +741,9 @@ importers:
 
   apps_internals/playground-docs:
     dependencies:
+      '@vx/react':
+        specifier: workspace:*
+        version: link:../../packages/vx/react
       '@vx/template':
         specifier: workspace:*
         version: link:../../packages/vx/template

@@ -6,7 +6,6 @@ import { Surface } from '@vezham/react-v3'
 import { useCommand } from '../../components/command'
 import { Footer } from '../../components/panel/footer'
 import { aiPanel } from '../../components/panel/footer/ai'
-import { ControlCenterDrawer } from '../../components/panel/footer/control-center'
 import { NotificationDrawer } from '../../components/panel/footer/notification-center'
 import { UserInfoModal } from '../../components/panel/footer/preferences/modal'
 import { Header } from '../../components/panel/header'
@@ -25,6 +24,7 @@ import type { AppNavigationItem } from '../../navigation'
 import { getSelectedMenuKey } from '../../navigation'
 import { useUser } from '../../store/users/useUserStore'
 import { HomeNavigationBubble } from './home-navigation-bubble'
+import type { MenuLayoutProps } from './index'
 
 const headerUsers = {
   id: '1',
@@ -33,12 +33,11 @@ const headerUsers = {
     'https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/blue.jpg'
 }
 
-const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
+const MenuMD = ({ items, controlCenter }: MenuLayoutProps) => {
   const [openSettings, setOpenSettings] = useState(false)
   const [settingsEntryPoint, setSettingsEntryPoint] = useState('account')
   const location = useLocation()
   const [notificationsOpen, setNotificationsOpen] = useState(false)
-  const [controlsOpen, setControlsOpen] = useState(false)
   const { openInfoPanel, closeInfoPanel } = useInfoPanel()
   const { closeCommand } = useCommand()
   const { toggleNavigation, isNavigationCollapsed: isWorkspaceCollapsed } =
@@ -60,7 +59,6 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
     }
     setOpenSettings(false)
     setNotificationsOpen(false)
-    setControlsOpen(false)
   }
 
   useSidebarShortcut(toggleDock, isHome)
@@ -81,11 +79,11 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
         collapsed={isNavigationCollapsed}
         footerUser={footerUser}
         items={items}
+        controlCenter={controlCenter}
         navigationWidth={navigationWidth}
         selectedKey={selectedKey}
         onAI={() => openInfoPanel('ai')}
         onToggleDock={toggleDock}
-        onControlCenter={() => setControlsOpen(true)}
         onNotifications={() => setNotificationsOpen(true)}
         onUser={entryPoint => {
           setSettingsEntryPoint(entryPoint)
@@ -102,10 +100,6 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
         onClose={() => setOpenSettings(false)}
         defaultActiveTab={settingsEntryPoint}
       />
-      <ControlCenterDrawer
-        isOpen={controlsOpen && !isNavigationCollapsed}
-        onClose={() => setControlsOpen(false)}
-      />
       <NotificationDrawer
         isOpen={notificationsOpen && !isNavigationCollapsed}
         onClose={() => setNotificationsOpen(false)}
@@ -121,7 +115,7 @@ const MenuMD = ({ items }: { items: AppNavigationItem[] }) => {
   )
 }
 
-type Props = {
+type Props = Pick<MenuLayoutProps, 'controlCenter'> & {
   collapsed: boolean
   footerUser: {
     id: string
@@ -134,7 +128,6 @@ type Props = {
   selectedKey?: string
   onAI: () => void
   onToggleDock?: () => void
-  onControlCenter: () => void
   onNotifications: () => void
   onUser: (entryPoint: string) => void
 }
@@ -143,11 +136,11 @@ const NavigationPanel = ({
   collapsed,
   footerUser,
   items,
+  controlCenter,
   navigationWidth,
   selectedKey,
   onAI,
   onToggleDock,
-  onControlCenter,
   onNotifications,
   onUser
 }: Props) => (
@@ -171,10 +164,10 @@ const NavigationPanel = ({
           user={footerUser}
           showAI
           showControlCenter
+          controlCenter={controlCenter}
           showNotifications
           showUserInfo
           onAI={onAI}
-          onControlCenterClick={onControlCenter}
           onNotificationsClick={onNotifications}
           onUserClick={(_user, entryPoint = 'account') => onUser(entryPoint)}
         />

@@ -59,7 +59,7 @@ export const createToolbarActions = () => {
   return { subscribe, emit }
 }
 
-const ToolbarActionsContext = createContext<ReturnType<
+export const ToolbarActionsContext = createContext<ReturnType<
   typeof createToolbarActions
 > | null>(null)
 
