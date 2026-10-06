@@ -80,3 +80,9 @@ use Dropdown submenus for availability, custom status, and duration. In account
 bubble view the Dropdown opens below the avatar and aligns to its trailing edge;
 in desktop sidebar view it opens beside the avatar. Status choices show the
 current selection, and clearing custom status also clears its duration.
+
+Info panels use `Surface variant="transparent"`, matching the menu layout,
+and share layout, header, heading, and body spacing between side and Sheet
+presentations. HeroUI owns surface styling; the Sheet keeps its native dialog
+treatment. Only the outer frame owns borders, corners, and safe-area padding. Storage uses semantic theme tokens for muted text and
+separators; its row action buttons keep transparent hover backgrounds.

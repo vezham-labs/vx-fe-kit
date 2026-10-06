@@ -12,6 +12,12 @@ import {
 import { ACCOUNT_BUBBLE_MEDIA_QUERY } from '../responsive'
 import { useInfoPanel } from './provider'
 import { InfoPanelSheet } from './sheet'
+import {
+  panelBodyClass,
+  panelHeaderClass,
+  panelHeadingClass,
+  panelLayoutClass
+} from './styles'
 import { ActiveInfoPanel, InfoPanelDefinition } from './types'
 
 const INFO_PANEL_WIDTH = 328
@@ -62,8 +68,9 @@ const InfoPanelContainer = ({
               transition={{ duration: 0.18, ease: 'easeOut' }}
               style={{ width }}>
               <Surface
+                variant="transparent"
                 data-vx="info-panel"
-                className="border-default-200 bg-background/95 flex h-full flex-col border-r shadow-[8px_0_24px_rgba(15,23,42,0.06)] backdrop-blur-xl">
+                className={`${panelLayoutClass} border-border border-r`}>
                 <InfoPanelHeader
                   title={panel.title}
                   titleIcon={panel.titleIcon}
@@ -91,10 +98,10 @@ const InfoPanelHeader = ({
   onClose?: () => void
 }) => {
   return (
-    <div className="flex shrink-0 items-center gap-3 px-4 py-4">
+    <div className={panelHeaderClass}>
       <div className="flex min-w-0 flex-1 items-center gap-2">
         {titleIcon}
-        <Typography.Heading className="text-foreground truncate text-base font-semibold">
+        <Typography.Heading className={panelHeadingClass}>
           {title}
         </Typography.Heading>
       </div>
@@ -112,11 +119,9 @@ const InfoPanelContent = ({
   scrollable: boolean
 }) => {
   if (!scrollable)
-    return (
-      <div className="min-h-0 flex-1 overflow-hidden px-4 pb-4">{children}</div>
-    )
+    return <div className={`${panelBodyClass} overflow-hidden`}>{children}</div>
   return (
-    <ScrollShadow className="min-h-0 flex-1 px-4 pb-4" hideScrollBar>
+    <ScrollShadow className={panelBodyClass} hideScrollBar>
       {children}
     </ScrollShadow>
   )

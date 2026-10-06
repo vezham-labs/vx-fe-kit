@@ -55,7 +55,7 @@ const tva = tv({
     bookmark_arrow: 'text-default-400',
     bookmark_delete_button: 'opacity-0 group-hover:opacity-100',
     file_tree:
-      'max-h-[calc(100vh-96px)] w-full min-w-0 gap-0.5 [--file-tree-indent:0.875rem] [--file-tree-item-px:0.25rem] [&_.file-tree__drag-handle]:w-4 [&_.file-tree__icon]:h-4 [&_.file-tree__icon]:w-4 [&_.file-tree__item-content]:min-h-7 [&_.file-tree__item-content]:min-w-0 [&_.file-tree__item-content]:gap-1.5 [&_.file-tree__item-content]:rounded-md [&_.file-tree__item-content]:py-1 [&_.file-tree__item-content]:ps-1.5 [&_.file-tree__item-content]:pe-1 [&_.file-tree__label]:flex [&_.file-tree__label]:min-w-0',
+      'max-h-[calc(100vh-96px)] w-full min-w-0 gap-0.5 p-1 [--file-tree-chevron-offset:0px]! [--file-tree-indent:1rem] [--file-tree-item-px:0.25rem] [&_.file-tree__drag-handle]:sr-only! [&_.file-tree__drag-handle:focus]:not-sr-only! [&_.file-tree__drag-handle:focus]:absolute! [&_.file-tree__drag-handle:focus]:end-8! [&_.file-tree__drag-handle:focus]:opacity-100! [&_.file-tree__icon]:h-4 [&_.file-tree__icon]:w-4 [&_.file-tree__item]:ring-inset [&_.file-tree__item-content]:min-h-7 [&_.file-tree__item-content]:min-w-0 [&_.file-tree__item-content]:gap-2 [&_.file-tree__item-content]:rounded-md [&_.file-tree__item-content]:pe-1 [&_.file-tree__label]:flex [&_.file-tree__label]:min-w-0 [&_.file-tree__label]:flex-1',
     bookmark_tree_empty_state: 'text-default-400 px-3 py-8 text-center text-sm',
 
     folder_section: 'mt-6',

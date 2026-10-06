@@ -106,7 +106,7 @@ const useProps = (originalProps: Props) => {
 
   const getRestoreAllButtonProps = () => ({
     size: 'sm' as const,
-    variant: 'secondary' as const,
+    variant: 'outline' as const,
     className: 'text-success'
   })
 

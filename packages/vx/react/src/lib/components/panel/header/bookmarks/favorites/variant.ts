@@ -2,11 +2,12 @@ import { type VariantProps, tv } from '@vezham/react-v3'
 
 const tva = tv({
   slots: {
-    grid: 'grid grid-cols-4 gap-2 outline-none',
+    grid: '[&_.react-aria-DropIndicator[data-drop-target]]:bg-accent/10 [&_.react-aria-DropIndicator[data-drop-target]]:ring-accent relative grid grid-cols-4 gap-2 outline-none [&_.react-aria-DropIndicator]:absolute [&_.react-aria-DropIndicator[data-drop-target]]:static [&_.react-aria-DropIndicator[data-drop-target]]:h-[var(--favorite-tile-height)] [&_.react-aria-DropIndicator[data-drop-target]]:w-full [&_.react-aria-DropIndicator[data-drop-target]]:rounded-lg [&_.react-aria-DropIndicator[data-drop-target]]:ring-2 [&_.react-aria-DropIndicator[data-drop-target]]:ring-inset',
     item: 'group bg-default/50 hover:bg-default data-[selected]:bg-accent/10 relative flex min-w-0 cursor-grab items-center justify-center rounded-lg outline-none active:cursor-grabbing data-[focus-visible]:ring-2',
-    itemDragging: 'scale-[0.98] opacity-55',
-    itemDropTarget: 'ring-2',
-    dragButton: 'sr-only',
+    itemDragging: 'opacity-40',
+    itemDropTarget: 'bg-accent-soft ring-accent ring-2 ring-inset',
+    dragButton:
+      'focus:outline-focus sr-only focus:not-sr-only focus:absolute focus:inset-0 focus:z-10 focus:rounded-lg focus:outline-2',
     backgroundImage: 'absolute inset-0 h-full w-full object-cover',
     backgroundFallback: 'absolute inset-0 bg-gradient-to-br',
     overlay:
@@ -24,37 +25,40 @@ const tva = tv({
     variant: {
       default: {
         item: 'data-[focus-visible]:ring-focus',
-        itemDropTarget: 'ring-primary',
+        itemDropTarget: 'ring-accent',
         backgroundFallback: 'from-default-200 to-default-300',
         avatarFallback: 'bg-transparent'
       },
       subtle: {
         item: 'bg-default/30 data-[focus-visible]:ring-focus',
-        itemDropTarget: 'ring-default-500',
+        itemDropTarget: 'ring-accent',
         backgroundFallback: 'from-default-100 to-default-300',
         avatarFallback: 'bg-transparent'
       },
       glass: {
         item: 'data-[focus-visible]:ring-focus bg-white/10 hover:bg-white/20',
-        itemDropTarget: 'ring-white/70',
+        itemDropTarget: 'ring-accent',
         backgroundFallback: 'from-white/30 to-white/10',
         avatarFallback: 'bg-transparent'
       }
     },
     size: {
       sm: {
+        grid: '[--favorite-tile-height:2.5rem]',
         item: 'h-10',
         content: 'p-1.5',
         name: 'text-[10px]',
         avatarContainer: ''
       },
       md: {
+        grid: '[--favorite-tile-height:3rem]',
         item: 'h-12',
         content: 'p-2',
         name: 'text-xs',
         avatarContainer: ''
       },
       lg: {
+        grid: '[--favorite-tile-height:3.5rem]',
         item: 'h-14',
         content: 'p-2.5',
         name: 'text-sm',
