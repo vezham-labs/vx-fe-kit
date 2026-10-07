@@ -63,6 +63,11 @@
       "types": "./src/lib/components/mobile-controls/index.tsx",
       "import": "./src/lib/components/mobile-controls/index.tsx",
       "default": "./src/lib/components/mobile-controls/index.tsx"
+    },
+    "./pages/settings": {
+      "types": "./src/lib/pages/settings/index.tsx",
+      "import": "./src/lib/pages/settings/index.tsx",
+      "default": "./src/lib/pages/settings/index.tsx"
     }
   },
   "main": "./src/index.ts",

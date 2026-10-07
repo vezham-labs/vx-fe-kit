@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SplatRouteImport } from './routes/$'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as AcademicIndexRouteImport } from './routes/academic/index'
 import { Route as AcademicSplatRouteImport } from './routes/academic/$'
 import { Route as ApiHeartbeatRouteRouteImport } from './routes/api/heartbeat/route'
@@ -55,6 +56,11 @@ const ProLazyRoute = ProLazyRouteImport.update({
   path: '/pro',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/pro.lazy').then((d) => d.Route))
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TabsRouteLazyRoute = TabsRouteLazyRouteImport.update({
   id: '/tabs',
   path: '/tabs',
@@ -111,6 +117,7 @@ const WorkspaceSplatLazyRoute = WorkspaceSplatLazyRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/settings': typeof SettingsRoute
   '/academic': typeof AcademicRouteLazyRouteWithChildren
   '/tabs': typeof TabsRouteLazyRouteWithChildren
   '/workspace': typeof WorkspaceRouteLazyRouteWithChildren
@@ -128,6 +135,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/settings': typeof SettingsRoute
   '/canvas': typeof CanvasLazyRoute
   '/pro': typeof ProLazyRoute
   '/api/heartbeat': typeof ApiHeartbeatRouteRoute
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/settings': typeof SettingsRoute
   '/academic': typeof AcademicRouteLazyRouteWithChildren
   '/tabs': typeof TabsRouteLazyRouteWithChildren
   '/workspace': typeof WorkspaceRouteLazyRouteWithChildren
@@ -162,6 +171,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$'
+    | '/settings'
     | '/academic'
     | '/tabs'
     | '/workspace'
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$'
+    | '/settings'
     | '/canvas'
     | '/pro'
     | '/api/heartbeat'
@@ -193,6 +204,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$'
+    | '/settings'
     | '/academic'
     | '/tabs'
     | '/workspace'
@@ -211,6 +223,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
+  SettingsRoute: typeof SettingsRoute
   AcademicRouteLazyRoute: typeof AcademicRouteLazyRouteWithChildren
   TabsRouteLazyRoute: typeof TabsRouteLazyRouteWithChildren
   WorkspaceRouteLazyRoute: typeof WorkspaceRouteLazyRouteWithChildren
@@ -255,6 +268,13 @@ declare module '@tanstack/react-router' {
       path: '/pro'
       fullPath: '/pro'
       preLoaderRoute: typeof ProLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tabs': {
@@ -373,6 +393,7 @@ const WorkspaceRouteLazyRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
+  SettingsRoute: SettingsRoute,
   AcademicRouteLazyRoute: AcademicRouteLazyRouteWithChildren,
   TabsRouteLazyRoute: TabsRouteLazyRouteWithChildren,
   WorkspaceRouteLazyRoute: WorkspaceRouteLazyRouteWithChildren,
