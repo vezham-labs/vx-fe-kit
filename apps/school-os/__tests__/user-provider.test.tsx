@@ -1,3 +1,4 @@
+import { Outlet } from '@tanstack/react-router'
 import { fireEvent, render, screen } from '@testing-library/react'
 import type { ComponentType, ReactNode } from 'react'
 import { describe, expect, it, vi } from 'vitest'
@@ -19,10 +20,10 @@ vi.mock('@generated/vx', () => ({
 }))
 
 vi.mock('@vx/react/layouts/app', () => ({
-  AppLayout: ({ children }: { children: ReactNode }) => (
-    <UserProvider>
+  AppLayout: ({ children }: { children?: ReactNode }) => (
+    <UserProvider initialUser={{ firstName: 'Mia' }}>
       <UserProbe />
-      {children}
+      {children === undefined ? <Outlet /> : children}
     </UserProvider>
   )
 }))

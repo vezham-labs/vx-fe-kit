@@ -14,13 +14,13 @@ export type TileDefinition<Context extends object = object> = {
   editable?: boolean
 } & (
   | {
-      Tile: ComponentType<Context & { onOpen: () => void }>
+      Tile: ComponentType<Context & { label?: string; onOpen: () => void }>
       title: string
       Panel: ComponentType<Context>
       onAction?: never
     }
   | {
-      Tile: ComponentType<Context>
+      Tile: ComponentType<Context & { label?: string }>
       title?: never
       Panel?: never
       onAction?: never
@@ -74,7 +74,6 @@ export type BuiltinTileType =
   | 'theme'
   | 'direction'
   | 'language'
-  | 'edit-controls'
   | 'preview-wifi'
   | 'preview-bluetooth'
   | 'preview-airdrop'
@@ -89,7 +88,6 @@ export type TileConfig = {
   id: string
   span: TileDefinition['span']
   label?: string
-  title?: string
   description?: string
   editable?: boolean
 } & (
@@ -97,12 +95,19 @@ export type TileConfig = {
 )
 
 export type ControlCenterConfig = { tiles: readonly TileConfig[] }
+export type ControlCenterI18n = {
+  defaultLanguage: string
+  languages: readonly string[]
+}
+
 export type ControlCenterContext = {
   language?: LanguageAdapter
-  languageOptions?: readonly Option[]
+  i18n?: ControlCenterI18n
 }
 export type TileRegistration<Context extends object> = {
-  Tile: ComponentType<Context & { onOpen: () => void; onAction: () => void }>
+  Tile: ComponentType<
+    Context & { label?: string; onOpen: () => void; onAction: () => void }
+  >
   Panel?: ComponentType<Context>
-  title?: string
+  label?: string
 }

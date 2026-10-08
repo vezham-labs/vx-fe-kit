@@ -1,3 +1,4 @@
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { useId, useState } from 'react'
 
 import {
@@ -21,12 +22,21 @@ import {
 } from '@vezham/react-v3'
 
 import { AppIcon } from '../../components/app-icon'
+import { TileContent } from '../../components/panel/footer/control-center'
+import { AppearanceProvider } from '../../components/panel/footer/control-center/appearance'
+import { resolveTiles } from '../../components/panel/footer/control-center/configured'
+import { useTileEditor } from '../../components/panel/footer/control-center/editor'
+import { PreviewProvider } from '../../components/panel/footer/control-center/preview'
+import type { ControlCenterConfig } from '../../components/panel/footer/control-center/types'
+import { useWidgetTiles } from '../../components/panel/footer/notification-center/widget-tiles'
 import { ShortcutButton } from '../../components/shortcut-key'
 import {
   useSidebarShortcut,
   useWorkspaceNavigation
 } from '../../components/workspace-navigation'
 import { useUser } from '../../store/users/useUserStore'
+import type { SettingsSection } from './navigation'
+import { TileGallery } from './tile-gallery'
 
 const sections = [
   { title: 'General', icon: Settings, keywords: 'language' },
@@ -44,12 +54,60 @@ const sections = [
     title: 'Account',
     icon: UserRounded,
     keywords: 'profile name email'
-  }
+  },
+  {
+    title: 'Edit Widgets',
+    icon: Settings,
+    keywords: 'notification center tiles'
+  },
+  { title: 'Edit Controls', icon: Settings, keywords: 'control center tiles' }
 ] as const
 
-export const SettingsPage = ({ onBack }: { onBack?: () => void }) => {
-  const [active, setActive] =
-    useState<(typeof sections)[number]['title']>('General')
+export const validateSearch = (
+  search: Record<string, unknown>
+): { section: SettingsSection } => ({
+  section: sections.some(section => section.title === search.section)
+    ? (search.section as SettingsSection)
+    : 'General'
+})
+
+export const SettingsRoute = ({
+  controlCenter
+}: {
+  controlCenter?: ControlCenterConfig
+}) => {
+  const navigate = useNavigate()
+  const search = useSearch({ strict: false })
+  const { section } = validateSearch(search)
+  return (
+    <SettingsPage
+      section={section}
+      onSectionChange={next =>
+        navigate({ to: '/settings', search: { section: next } })
+      }
+      controlCenter={controlCenter}
+      onBack={() => navigate({ to: '/' })}
+    />
+  )
+}
+
+export const SettingsPage = ({
+  onBack,
+  section = 'General',
+  onSectionChange,
+  controlCenter
+}: {
+  onBack?: () => void
+  section?: SettingsSection
+  onSectionChange?: (section: SettingsSection) => void
+  controlCenter?: ControlCenterConfig
+}) => {
+  const [localActive, setActive] = useState<SettingsSection>(section)
+  const active = onSectionChange ? section : localActive
+  const widgets = useWidgetTiles()
+  const controls = useTileEditor(
+    controlCenter ? resolveTiles(controlCenter, () => undefined) : []
+  )
   const [query, setQuery] = useState('')
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const sidebarId = useId()
@@ -58,7 +116,10 @@ export const SettingsPage = ({ onBack }: { onBack?: () => void }) => {
     if (window.matchMedia('(min-width: 768px)').matches) toggleNavigation()
     else setIsDrawerOpen(open => !open)
   }
-  useSidebarShortcut(toggleSidebar)
+  useSidebarShortcut(
+    toggleSidebar,
+    active !== 'Edit Widgets' && active !== 'Edit Controls'
+  )
   const [language, setLanguage] = useState(() =>
     typeof document === 'undefined'
       ? 'en'
@@ -72,6 +133,7 @@ export const SettingsPage = ({ onBack }: { onBack?: () => void }) => {
   )
   const openSection = (section: (typeof sections)[number]['title']) => {
     setActive(section)
+    onSectionChange?.(section)
     setIsDrawerOpen(false)
   }
   const [name, setName] = useState(user?.firstName ?? '')
@@ -108,6 +170,71 @@ export const SettingsPage = ({ onBack }: { onBack?: () => void }) => {
     }
     return defaults
   })
+
+  if (active === 'Edit Widgets') {
+    return (
+      <TileGallery
+        key="widgets"
+        title="Edit Widgets"
+        kind="widgets"
+        editor={widgets.editor}
+        tiles={widgets.orderedTiles.map(tile => ({
+          ...tile,
+          shape: tile.size,
+          category: `${tile.size[0].toUpperCase()}${tile.size.slice(1)}`
+        }))}
+        onDone={() => openSection('General')}
+      />
+    )
+  }
+  if (active === 'Edit Controls') {
+    const categoryFor = (id: string) => {
+      const type = controlCenter?.tiles.find(tile => tile.id === id)?.type ?? ''
+      if (type.includes('appearance') || type.includes('theme'))
+        return 'Appearance'
+      if (
+        [
+          'preview-wifi',
+          'preview-bluetooth',
+          'preview-airdrop',
+          'preview-mirroring'
+        ].includes(type)
+      )
+        return 'Connectivity'
+      if (type === 'preview-display') return 'Display & Brightness'
+      if (type === 'preview-media' || type === 'preview-sound')
+        return 'Sound & Media'
+      return 'General'
+    }
+    return (
+      <AppearanceProvider>
+        <PreviewProvider enabled>
+          <TileGallery
+            key="controls"
+            title="Edit Controls"
+            kind="controls"
+            editor={controls.editor}
+            tiles={controls.orderedTiles.map(tile => ({
+              id: tile.id,
+              label:
+                controls.editor.items.find(item => item.id === tile.id)
+                  ?.label ?? tile.id,
+              shape: tile.span,
+              category: categoryFor(tile.id),
+              preview: (
+                <TileContent
+                  entry={tile}
+                  context={{}}
+                  onOpen={() => undefined}
+                />
+              )
+            }))}
+            onDone={() => openSection('General')}
+          />
+        </PreviewProvider>
+      </AppearanceProvider>
+    )
+  }
 
   const sidebar = (
     <div className="px-4 py-2">
@@ -390,3 +517,6 @@ export const SettingsPage = ({ onBack }: { onBack?: () => void }) => {
     </div>
   )
 }
+
+export { SettingsNavigationContext } from './navigation'
+export type { SettingsSection } from './navigation'

@@ -10,11 +10,12 @@ import {
   useMediaQuery
 } from '@vezham/react-v3'
 
+import { useSettingsNavigation } from '../../../../pages/settings/navigation'
 import { InfoPanelSheet } from '../../info-panel/sheet'
 import { ACCOUNT_BUBBLE_MEDIA_QUERY } from '../../responsive'
 import { FooterDrawerFrame } from '../drawer-frame'
 import { Props, useProps } from './types'
-import { WidgetTiles, hasWidgetTiles } from './widget-tiles'
+import { WidgetTiles, useWidgetTiles } from './widget-tiles'
 
 const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const {
@@ -47,7 +48,9 @@ const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
     initializeWithValue: false
   })
 
-  const showEmptyState = isEmpty || !hasWidgetTiles
+  const openSettings = useSettingsNavigation()
+  const { visibleTiles } = useWidgetTiles()
+  const showEmptyState = isEmpty || visibleTiles.length === 0
 
   const content = (
     <ScrollShadow {...getScrollShadowProps()}>
@@ -66,7 +69,10 @@ const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
     </ScrollShadow>
   )
   const handleEdit = () => {
-    if (onEdit) {
+    if (openSettings) {
+      onClose()
+      openSettings('Edit Widgets')
+    } else if (onEdit) {
       onEdit()
     } else {
       onClose()

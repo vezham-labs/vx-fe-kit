@@ -91,7 +91,7 @@ const usePreview = () => {
   return preview
 }
 const styles = controlCenterVariants()
-type Props = { onOpen: () => void }
+type Props = { label?: string; onOpen: () => void }
 const networks = [
   { value: 'office', label: 'Office Wi-Fi' },
   { value: 'iphone', label: 'iPhone' },
@@ -159,11 +159,11 @@ const ConnectionSettings = ({
   </div>
 )
 
-export const PreviewWiFiTile = ({ onOpen }: Props) => {
+export const PreviewWiFiTile = ({ onOpen, label = 'Wi-Fi' }: Props) => {
   const { state } = usePreview()
   return (
     <ActionTile
-      label="Wi-Fi"
+      label={label}
       description={
         state.wifi
           ? networks.find(option => option.value === state.network)?.label
@@ -193,11 +193,14 @@ export const PreviewWiFiSettings = () => {
   )
 }
 
-export const PreviewBluetoothTile = ({ onOpen }: Props) => {
+export const PreviewBluetoothTile = ({
+  onOpen,
+  label = 'Bluetooth'
+}: Props) => {
   const { state } = usePreview()
   return (
     <ActionTile
-      label="Bluetooth"
+      label={label}
       description={
         state.bluetooth
           ? devices.find(option => option.value === state.device)?.label
@@ -227,11 +230,11 @@ export const PreviewBluetoothSettings = () => {
   )
 }
 
-export const PreviewAirDropTile = ({ onOpen }: Props) => {
+export const PreviewAirDropTile = ({ onOpen, label = 'AirDrop' }: Props) => {
   const { state } = usePreview()
   return (
     <ActionTile
-      label="AirDrop"
+      label={label}
       description={
         airdropOptions.find(option => option.value === state.airdrop)?.label
       }
@@ -256,11 +259,15 @@ export const PreviewAirDropSettings = () => {
   )
 }
 
-export const PreviewFocusTile = () => {
+export const PreviewFocusTile = ({
+  label = 'Do Not Disturb'
+}: {
+  label?: string
+}) => {
   const { state, update } = usePreview()
   return (
     <ActionTile
-      label="Do Not Disturb"
+      label={label}
       description={state.focus ? 'On' : 'Off'}
       icon={<Moon size={18} />}
       isSelected={state.focus}
@@ -269,11 +276,15 @@ export const PreviewFocusTile = () => {
   )
 }
 
-export const PreviewStageManagerTile = () => {
+export const PreviewStageManagerTile = ({
+  label = 'Stage Manager'
+}: {
+  label?: string
+}) => {
   const { state, update } = usePreview()
   return (
     <ActionTile
-      label="Stage Manager"
+      label={label}
       description={state.stageManager ? 'On' : 'Off'}
       icon={<Widget2 size={18} />}
       isSelected={state.stageManager}
@@ -282,11 +293,14 @@ export const PreviewStageManagerTile = () => {
   )
 }
 
-export const PreviewMirroringTile = ({ onOpen }: Props) => {
+export const PreviewMirroringTile = ({
+  onOpen,
+  label = 'Screen Mirroring'
+}: Props) => {
   const { state } = usePreview()
   return (
     <ActionTile
-      label="Screen Mirroring"
+      label={label}
       description={
         mirrorOptions.find(option => option.value === state.mirror)?.label
       }
@@ -342,13 +356,17 @@ const PreviewSlider = ({
   </Slider>
 )
 
-export const PreviewDisplayTile = () => {
+export const PreviewDisplayTile = ({
+  label = 'Display'
+}: {
+  label?: string
+}) => {
   const { state, update } = usePreview()
   return (
-    <section aria-label="Display" className={styles.previewTile()}>
+    <section aria-label={label} className={styles.previewTile()}>
       <div className={styles.previewHeader()}>
         <Sun size={18} />
-        <span className={styles.previewTitle()}>Display</span>
+        <span className={styles.previewTitle()}>{label}</span>
       </div>
       <PreviewSlider
         label="Brightness"
@@ -359,14 +377,14 @@ export const PreviewDisplayTile = () => {
   )
 }
 
-export const PreviewSoundTile = () => {
+export const PreviewSoundTile = ({ label = 'Sound' }: { label?: string }) => {
   const { state, update } = usePreview()
   const Icon = state.muted ? VolumeCross : VolumeLoud
   return (
-    <section aria-label="Sound" className={styles.previewTile()}>
+    <section aria-label={label} className={styles.previewTile()}>
       <div className={styles.previewHeader()}>
         <Icon size={18} />
-        <span className={styles.previewTitle()}>Sound</span>
+        <span className={styles.previewTitle()}>{label}</span>
         <Button
           aria-label={state.muted ? 'Unmute sound' : 'Mute sound'}
           aria-pressed={state.muted}
@@ -387,7 +405,7 @@ export const PreviewSoundTile = () => {
 }
 
 const tracks = ['Morning Light', 'Quiet Hours', 'Afterglow']
-export const PreviewMediaTile = () => {
+export const PreviewMediaTile = ({ label = 'Media' }: { label?: string }) => {
   const { state, update } = usePreview()
   const Icon = state.playing ? Pause : Play
   const skip = (offset: number) =>
@@ -396,7 +414,7 @@ export const PreviewMediaTile = () => {
       started: true
     })
   return (
-    <section aria-label="Media" className={styles.previewTile()}>
+    <section aria-label={label} className={styles.previewTile()}>
       <div className={styles.previewHeader()}>
         <MusicNote size={18} />
         <div>

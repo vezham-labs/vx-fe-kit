@@ -197,7 +197,7 @@ const BookmarkFileTree = ({
 
   const renderTitle = (item: (typeof tree.items)[number]) => (
     <div
-      className="group relative flex w-full min-w-0 flex-1 items-center gap-2"
+      className="group relative flex min-h-7 w-full min-w-0 flex-1 items-center gap-2 pe-14"
       onContextMenu={event => handleItemContextMenu(event, item.value)}>
       {item.value.kind === 'folder' ? (
         <button
@@ -223,7 +223,7 @@ const BookmarkFileTree = ({
         aria-label={`Remove ${item.value.title}`}
         variant="ghost"
         size="sm"
-        className="text-muted hover:text-danger hidden size-6 min-w-0 shrink-0 group-focus-within:flex group-hover:flex"
+        className="text-muted hover:text-danger absolute end-0 size-7 min-w-0 shrink-0 opacity-0 group-focus-within:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
         onPress={() => {
           if (item.value.kind === 'folder') {
             onFolderDelete(String(item.key))
@@ -251,7 +251,7 @@ const BookmarkFileTree = ({
 
     return (
       <FileTree.Item
-        className="min-h-9 rounded-lg px-1 py-1 ring-inset [&_.file-tree__chevron]:size-4 [&_.file-tree__item-content]:min-w-0 [&_.file-tree__item-content]:gap-2"
+        className="min-h-9 rounded-lg px-1 py-1 ring-inset [&_[data-slot=file-tree-item-content]]:min-w-0 [&_[data-slot=file-tree-item-content]]:gap-2 [&_[slot=chevron]]:size-4"
         icon={renderBookmarkIcon(item.value)}
         id={item.key}
         onClick={(event: React.MouseEvent) => {

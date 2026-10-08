@@ -1052,57 +1052,47 @@ export const controlCenter = {
     {
       "id": "wifi",
       "type": "preview-wifi",
-      "span": "wide",
-      "label": "Wi-Fi",
-      "title": "Wi-Fi"
+      "span": "wide"
     },
     {
       "id": "bluetooth",
       "type": "preview-bluetooth",
-      "span": "wide",
-      "title": "Bluetooth"
+      "span": "wide"
     },
     {
       "id": "airdrop",
       "type": "preview-airdrop",
-      "span": "wide",
-      "title": "AirDrop"
+      "span": "wide"
     },
     {
       "id": "focus",
       "type": "preview-focus",
-      "span": "full",
-      "label": "Do Not Disturb"
+      "span": "full"
     },
     {
       "id": "stage-manager",
       "type": "preview-stage-manager",
-      "span": "wide",
-      "label": "Stage Manager"
+      "span": "wide"
     },
     {
       "id": "mirroring",
       "type": "preview-mirroring",
-      "span": "full",
-      "title": "Screen Mirroring"
+      "span": "full"
     },
     {
       "id": "media",
       "type": "preview-media",
-      "span": "full",
-      "label": "Media"
+      "span": "full"
     },
     {
       "id": "display",
       "type": "preview-display",
-      "span": "full",
-      "label": "Display"
+      "span": "full"
     },
     {
       "id": "sound",
       "type": "preview-sound",
-      "span": "full",
-      "label": "Sound"
+      "span": "full"
     },
     {
       "id": "theme-toggle",
@@ -1112,8 +1102,7 @@ export const controlCenter = {
     {
       "id": "appearance",
       "type": "appearance",
-      "span": "wide",
-      "title": "Appearance"
+      "span": "wide"
     },
     {
       "id": "appearance-lite",
@@ -1163,27 +1152,17 @@ export const controlCenter = {
     {
       "id": "direction",
       "type": "direction",
-      "span": "wide",
-      "title": "Direction"
+      "span": "wide"
     },
     {
       "id": "theme",
       "type": "theme",
-      "span": "wide",
-      "title": "Theme"
+      "span": "wide"
     },
     {
       "id": "language",
       "type": "language",
-      "span": "wide",
-      "title": "Language"
-    },
-    {
-      "id": "edit-controls",
-      "type": "edit-controls",
-      "span": "full",
-      "title": "Edit Controls",
-      "editable": false
+      "span": "wide"
     }
   ]
 } satisfies ControlCenterConfig

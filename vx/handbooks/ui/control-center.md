@@ -61,9 +61,11 @@ implementation and its props use the canonical `ControlCenter` and
 `ControlCenterProps` names; the temporary `ControlCenter2` names are removed.
 
 `AppLayout` forwards the same `controlCenter` element through both desktop and
-mobile navigation to the footer. The demo supplies `DemoControlCenter` with
-appearance controls plus Direction, Theme, and Language detail panels. Its
-document language options are English (`en`) and Chinese (`zh`).
+mobile navigation to the footer. The demo supplies `ConfiguredControlCenter` directly from its root layout, with
+appearance controls plus Direction, Theme, and Language detail panels. It passes
+`context={{ i18n: vxI18n }}` from generated metadata; `@vx/react` creates the
+language labels and uses the configured default language. No app wrapper or
+hardcoded language options are needed.
 
 ## UI review controls
 
@@ -87,8 +89,7 @@ The shared viewport scrolls and resets scroll position when changing panels.
 
 Configure the app layout under `controlCenter.tiles` in `vx.nav.yaml`. Array
 order determines the initial visual and keyboard order. Each entry has a unique
-`id`, a built-in `type` or `custom`, and a `span`. Optional `title` overrides the
-settings panel heading; `label` names custom action tiles and Edit Controls rows.
+`id`, a built-in `type` or `custom`, and a `span`. Optional `label` overrides the tile name, detail panel heading, and Edit Controls row. Built-in names are used when omitted.
 Set `editable: false` to prevent hiding or moving a tile. Edit Controls defaults
 to protected. Reset Controls restores the YAML order.
 
@@ -138,10 +139,10 @@ For custom visuals, pass `registrations={{ workspace: { Tile: WorkspaceTile } }}
 Registrations are keyed by the YAML tile ID. React supplies the app context,
 `onAction` to emit the YAML action, and `onOpen` to open the registered `Panel`
 (or emit the action when no panel exists). A registration may include `Panel`
-and `title`; the app retains these component references in TypeScript.
+and `label`; the app retains these component references in TypeScript.
 
 Supported built-in types: `theme-toggle`, `appearance-toggle`, `appearance`,
-`theme`, `direction`, `language`, `edit-controls`, `preview-wifi`,
+`theme`, `direction`, `language`, `preview-wifi`,
 `preview-bluetooth`, `preview-airdrop`, `preview-focus`, `preview-stage-manager`,
 `preview-mirroring`, `preview-media`, `preview-display`, and `preview-sound`.
 Keep `preview` enabled for simulated device controls. Shared behavior stays in
@@ -270,3 +271,6 @@ scrolling viewport with safe-area padding. Dragging is restricted to the handle
 so tile sliders and settings remain usable. Tile detail screens and Back stay
 inside the same sheet. Escape, outside press, close, and handle dismissal use the
 same open-state callback and return focus to the trigger or footer More entry.
+
+`Edit Controls` is appended by `@vx/react` as a locked built-in action. Do not
+declare it in `vx.nav.yaml`; the YAML tile list owns only configurable controls.

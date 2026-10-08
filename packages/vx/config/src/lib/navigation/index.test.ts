@@ -293,9 +293,19 @@ describe('control center configuration', () => {
   it.each([
     [{ id: 'one', type: 'unknown', span: 'wide' }],
     [{ id: 'one', type: 'theme', span: 'tiny' }],
+    [{ id: 'one', type: 'edit-controls', span: 'full' }],
+    [
+      {
+        id: 'edit-controls',
+        type: 'custom',
+        action: 'custom.edit',
+        span: 'full'
+      }
+    ],
     [{ id: 'one', type: 'custom', span: 'wide' }],
     [{ id: 'one', type: 'theme', span: 'wide', action: 'bad' }],
     [{ id: 'one', type: 'theme', span: 'wide', surprise: true }],
+    [{ id: 'one', type: 'theme', span: 'wide', title: 'Old heading' }],
     [
       { id: 'one', type: 'theme', span: 'wide' },
       { id: 'one', type: 'theme', span: 'wide' }

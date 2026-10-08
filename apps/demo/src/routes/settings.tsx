@@ -1,12 +1,10 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 
-import { SettingsPage } from '@vx/react/pages/settings'
+import { SettingsRoute, validateSearch } from '@vx/react/pages/settings'
 
-const DemoSettings = () => {
-  const navigate = useNavigate()
-  return <SettingsPage onBack={() => navigate({ to: '/' })} />
-}
+import { controlCenter } from '@generated/navigation'
 
 export const Route = createFileRoute('/settings')({
-  component: DemoSettings
+  validateSearch,
+  component: () => <SettingsRoute controlCenter={controlCenter} />
 })

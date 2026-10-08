@@ -46,73 +46,72 @@ import type {
 
 const ConfiguredLanguageTile = ({
   onOpen,
+  label,
   language,
-  languageOptions = [{ value: 'en', label: 'English' }]
-}: ControlCenterContext & { onOpen: () => void }) =>
+  i18n
+}: ControlCenterContext & { label?: string; onOpen: () => void }) =>
   language ? (
-    <LanguageTile language={language} onOpen={onOpen} />
+    <LanguageTile language={language} label={label} onOpen={onOpen} />
   ) : (
-    <DocumentLanguageTile languageOptions={languageOptions} onOpen={onOpen} />
+    <DocumentLanguageTile i18n={i18n} label={label} onOpen={onOpen} />
   )
 const ConfiguredLanguageSettings = ({
   language,
-  languageOptions = [{ value: 'en', label: 'English' }]
+  i18n
 }: ControlCenterContext) =>
   language ? (
     <LanguageSettings language={language} />
   ) : (
-    <DocumentLanguageSettings languageOptions={languageOptions} />
+    <DocumentLanguageSettings i18n={i18n} />
   )
 
 const builtins: Record<BuiltinTileType, TileRegistration<object>> = {
-  'theme-toggle': { Tile: ThemeToggle },
-  'appearance-toggle': { Tile: AppearanceToggle },
+  'theme-toggle': { Tile: ThemeToggle, label: 'Appearance' },
+  'appearance-toggle': { Tile: AppearanceToggle, label: 'Appearance' },
   appearance: {
     Tile: AppearanceTile,
     Panel: AppearanceSettings,
-    title: 'Appearance'
+    label: 'Appearance'
   },
-  theme: { Tile: ThemeTile, Panel: ThemeSettings, title: 'Theme' },
+  theme: { Tile: ThemeTile, Panel: ThemeSettings, label: 'Theme' },
   direction: {
     Tile: DirectionTile,
     Panel: DirectionSettings,
-    title: 'Direction'
+    label: 'Direction'
   },
   language: {
     Tile: ConfiguredLanguageTile,
     Panel: ConfiguredLanguageSettings,
-    title: 'Language'
-  },
-  'edit-controls': {
-    Tile: EditControlsTile,
-    Panel: EditControlsSettings,
-    title: 'Edit Controls'
+    label: 'Language'
   },
   'preview-wifi': {
     Tile: PreviewWiFiTile,
     Panel: PreviewWiFiSettings,
-    title: 'Wi-Fi'
+    label: 'Wi-Fi'
   },
   'preview-bluetooth': {
     Tile: PreviewBluetoothTile,
     Panel: PreviewBluetoothSettings,
-    title: 'Bluetooth'
+    label: 'Bluetooth'
   },
   'preview-airdrop': {
     Tile: PreviewAirDropTile,
     Panel: PreviewAirDropSettings,
-    title: 'AirDrop'
+    label: 'AirDrop'
   },
-  'preview-focus': { Tile: PreviewFocusTile },
-  'preview-stage-manager': { Tile: PreviewStageManagerTile },
+  'preview-focus': { Tile: PreviewFocusTile, label: 'Do Not Disturb' },
+  'preview-stage-manager': {
+    Tile: PreviewStageManagerTile,
+    label: 'Stage Manager'
+  },
   'preview-mirroring': {
     Tile: PreviewMirroringTile,
     Panel: PreviewMirroringSettings,
-    title: 'Screen Mirroring'
+    label: 'Screen Mirroring'
   },
-  'preview-media': { Tile: PreviewMediaTile },
-  'preview-display': { Tile: PreviewDisplayTile },
-  'preview-sound': { Tile: PreviewSoundTile }
+  'preview-media': { Tile: PreviewMediaTile, label: 'Media' },
+  'preview-display': { Tile: PreviewDisplayTile, label: 'Display' },
+  'preview-sound': { Tile: PreviewSoundTile, label: 'Sound' }
 }
 
 export type ControlCenterActionEvent = ToolbarActionEvent & { tileId: string }
@@ -131,17 +130,17 @@ export const resolveTiles = <Context extends object>(
   config: ControlCenterConfig,
   onAction: (tileId: string, actionKey: string) => void,
   registrations: Readonly<Record<string, TileRegistration<Context>>> = {}
-): readonly TileDefinition<Context>[] =>
-  config.tiles.map(tile => {
+): readonly TileDefinition<Context>[] => [
+  ...config.tiles.map(tile => {
     const { id, span, label, description, editable } = tile
+    const registration =
+      tile.type === 'custom' ? registrations[id] : builtins[tile.type]
     const base = {
       id,
       span,
-      label,
-      editable: editable ?? tile.type !== 'edit-controls'
+      label: label ?? registration?.label ?? id,
+      editable: editable ?? true
     }
-    const registration =
-      tile.type === 'custom' ? registrations[id] : builtins[tile.type]
     const emit = () => {
       if (tile.type === 'custom') onAction(id, tile.action)
     }
@@ -154,20 +153,34 @@ export const resolveTiles = <Context extends object>(
     if (Panel) {
       return {
         ...base,
-        title: tile.title ?? registration.title ?? label ?? id,
+        title: base.label,
         Panel: (props: Context) => <Panel {...props} />,
         Tile: (props: Context & { onOpen: () => void }) => (
-          <Tile {...props} onAction={emit} />
+          <Tile {...props} label={base.label} onAction={emit} />
         )
       }
     }
     return {
       ...base,
       Tile: (props: Context) => (
-        <Tile {...props} onOpen={emit} onAction={emit} />
+        <Tile
+          {...props}
+          label={tile.type === 'theme-toggle' ? label : base.label}
+          onOpen={emit}
+          onAction={emit}
+        />
       )
     }
-  })
+  }),
+  {
+    id: 'edit-controls',
+    span: 'full',
+    editable: false,
+    title: 'Edit Controls',
+    Tile: EditControlsTile,
+    Panel: EditControlsSettings
+  }
+]
 
 export const ConfiguredControlCenter = <Context extends object>({
   config,

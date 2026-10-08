@@ -5,7 +5,6 @@ const TYPES = new Set([
   'theme',
   'direction',
   'language',
-  'edit-controls',
   'preview-wifi',
   'preview-bluetooth',
   'preview-airdrop',
@@ -22,7 +21,6 @@ const FIELDS = new Set([
   'type',
   'span',
   'label',
-  'title',
   'description',
   'editable',
   'action'
@@ -52,6 +50,8 @@ export const validateControlCenter = (value: unknown, location: string) => {
     }
     if (typeof tile.id !== 'string' || !tile.id.trim())
       throw new Error(`${location}.id is required`)
+    if (tile.id === 'edit-controls')
+      throw new Error(`${location}.edit-controls is a reserved built-in action`)
     if (ids.has(tile.id))
       throw new Error(`Duplicate control center tile id: ${tile.id}`)
     ids.add(tile.id)

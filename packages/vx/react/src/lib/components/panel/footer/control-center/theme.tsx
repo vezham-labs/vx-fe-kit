@@ -74,12 +74,18 @@ const applyColor = (id: string) => {
   }
 }
 
-export const ThemeTile = ({ onOpen }: { onOpen: () => void }) => {
+export const ThemeTile = ({
+  onOpen,
+  label = 'Theme'
+}: {
+  label?: string
+  onOpen: () => void
+}) => {
   const { value } = useRootAttribute('data-vx-theme-color', 'default')
   const option = colors.find(color => color.id === value)
   return (
     <ActionTile
-      label="Theme"
+      label={label}
       description={option?.label ?? 'Default'}
       icon={
         option ? (

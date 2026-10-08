@@ -207,7 +207,6 @@
             "theme",
             "direction",
             "language",
-            "edit-controls",
             "preview-wifi",
             "preview-bluetooth",
             "preview-airdrop",
@@ -224,10 +223,6 @@
           "enum": ["compact", "standard", "wide", "full"]
         },
         "label": {
-          "type": "string",
-          "minLength": 1
-        },
-        "title": {
           "type": "string",
           "minLength": 1
         },

@@ -4,8 +4,9 @@ import { AltArrowLeft, Settings } from '@vezham/icons-react'
 import { Sheet } from '@vezham/react-pro-v3'
 import { Button, Popover, ScrollShadow, useMediaQuery } from '@vezham/react-v3'
 
+import { useSettingsNavigation } from '../../../../pages/settings/navigation'
 import { AppearanceProvider } from './appearance'
-import { EditorProvider } from './editor'
+import { EditorProvider, useTileEditor } from './editor'
 import { FooterControlCenterContext } from './footer-context'
 import { PreviewProvider } from './preview'
 import { ActionTile } from './tile'
@@ -38,13 +39,8 @@ export const ControlCenter = <Context extends object>({
   const isOpen = footer?.isOpen ?? localOpen
   const setOpen = footer?.onOpenChange ?? setLocalOpen
   const [panel, setPanel] = useState<string | null>(null)
-  const [order, setOrder] = useState(() => tiles.map(tile => tile.id))
-  const [hidden, setHidden] = useState<readonly string[]>([])
-  const orderedTiles = [
-    ...order.flatMap(id => tiles.filter(tile => tile.id === id)),
-    ...tiles.filter(tile => !order.includes(tile.id))
-  ]
-  const visibleTiles = orderedTiles.filter(tile => !hidden.includes(tile.id))
+  const { editor, visibleTiles } = useTileEditor(tiles)
+  const openSettings = useSettingsNavigation()
   const changeOpen = (nextOpen: boolean) => {
     setOpen(nextOpen)
     if (!nextOpen) setPanel(null)
@@ -56,37 +52,7 @@ export const ControlCenter = <Context extends object>({
     </Button>
   )
   const content = (
-    <EditorProvider
-      value={{
-        items: orderedTiles.map(tile => ({
-          id: tile.id,
-          label: tile.label ?? tile.title ?? tile.id.replaceAll('-', ' '),
-          visible: !hidden.includes(tile.id),
-          editable: tile.editable !== false
-        })),
-        onVisibilityChange: (id, visible) => {
-          if (tiles.find(tile => tile.id === id)?.editable === false) return
-          setHidden(previous =>
-            visible
-              ? previous.filter(value => value !== id)
-              : [...previous.filter(value => value !== id), id]
-          )
-        },
-        onMove: (id, offset) => {
-          const ids = orderedTiles.map(tile => tile.id)
-          const index = ids.indexOf(id)
-          const target = index + offset
-          if (index < 0 || target < 0 || target >= ids.length) return
-          const next = [...ids]
-          next.splice(index, 1)
-          next.splice(target, 0, id)
-          setOrder(next)
-        },
-        onReset: () => {
-          setOrder(tiles.map(tile => tile.id))
-          setHidden([])
-        }
-      }}>
+    <EditorProvider value={editor}>
       <ScrollShadow
         key={panel ?? 'home'}
         className={styles.viewport({
@@ -101,7 +67,16 @@ export const ControlCenter = <Context extends object>({
           context={context}
           tiles={visibleTiles}
           panel={panel}
-          onPanelChange={setPanel}
+          onPanelChange={id => {
+            if (
+              id &&
+              tiles.find(tile => tile.id === id)?.title === 'Edit Controls' &&
+              openSettings
+            ) {
+              changeOpen(false)
+              openSettings('Edit Controls')
+            } else setPanel(id)
+          }}
         />
       </ScrollShadow>
     </EditorProvider>
@@ -204,7 +179,7 @@ const PanelOutlet = <Context extends object>({
   )
 }
 
-const TileContent = <Context extends object>({
+export const TileContent = <Context extends object>({
   entry,
   context,
   onOpen
@@ -287,5 +262,6 @@ export type {
   TileConfig,
   ControlCenterConfig,
   ControlCenterContext,
+  ControlCenterI18n,
   TileRegistration
 } from './types'

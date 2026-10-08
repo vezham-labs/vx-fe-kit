@@ -1,4 +1,4 @@
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { createRootRoute } from '@tanstack/react-router'
 
 import { AppLayout } from '@vx/react/layouts/app'
 import { createRootComponent } from '@vx/start/tanstack'
@@ -10,10 +10,6 @@ export const Route = createRootRoute({
   head: () => tanstackHead,
   component: createRootComponent({
     lang: vxI18n.defaultLanguage,
-    children: (
-      <AppLayout navigationItems={navigationItems} appMenu={appMenu}>
-        <Outlet />
-      </AppLayout>
-    )
+    children: <AppLayout navigationItems={navigationItems} appMenu={appMenu} />
   })
 })

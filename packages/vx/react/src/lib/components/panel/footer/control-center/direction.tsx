@@ -9,12 +9,18 @@ const options = [
   { value: 'rtl', label: 'RTL' }
 ] as const
 
-export const DirectionTile = ({ onOpen }: { onOpen: () => void }) => {
+export const DirectionTile = ({
+  onOpen,
+  label = 'Direction'
+}: {
+  label?: string
+  onOpen: () => void
+}) => {
   const { value } = useRootAttribute('dir', 'ltr')
   const Icon = value === 'rtl' ? AlignRight : AlignLeft
   return (
     <ActionTile
-      label="Direction"
+      label={label}
       description={value.toUpperCase()}
       icon={<Icon size={18} />}
       onPress={onOpen}

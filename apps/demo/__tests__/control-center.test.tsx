@@ -18,8 +18,8 @@ import { vi } from 'vitest'
 
 import { AppLayout } from '@vx/react/layouts/app'
 
-import { DemoControlCenter } from '../src/components/control-center'
-import { navigationItems } from '../src/generated/navigation'
+import { controlCenter, navigationItems } from '../src/generated/navigation'
+import { vxI18n } from '../src/generated/vx'
 
 const renderDemoLayout = async () => {
   // vx-bot/NOTE: Mount the shell without nesting RootDocument's HTML inside a div.
@@ -28,7 +28,8 @@ const renderDemoLayout = async () => {
       <StrictMode>
         <AppLayout
           navigationItems={navigationItems}
-          controlCenter={<DemoControlCenter />}>
+          controlCenter={controlCenter}
+          i18n={vxI18n}>
           Demo
         </AppLayout>
       </StrictMode>
@@ -150,14 +151,20 @@ describe('Demo Control Center', () => {
       fireEvent.click(
         await within(dialog).findByRole('button', { name: 'Language' })
       )
-      const chinese = await within(dialog).findByRole('button', {
-        name: '中文'
+      const languageNames = new Intl.DisplayNames([vxI18n.defaultLanguage], {
+        type: 'language'
       })
-      fireEvent.click(chinese)
-      await waitFor(() => expect(document.documentElement.lang).toBe('zh'))
-      expect(chinese.getAttribute('aria-pressed')).toBe('true')
-      fireEvent.click(within(dialog).getByRole('button', { name: 'English' }))
-      await waitFor(() => expect(document.documentElement.lang).toBe('en'))
+      for (const language of vxI18n.languages) {
+        const option = await within(dialog).findByRole('button', {
+          name: languageNames.of(language) ?? language
+        })
+        document.documentElement.lang = 'und'
+        fireEvent.click(option)
+        await waitFor(() =>
+          expect(document.documentElement.lang).toBe(language)
+        )
+        expect(option.getAttribute('aria-pressed')).toBe('true')
+      }
       fireEvent.click(
         within(dialog).getByRole('button', { name: 'Back to Control Center' })
       )

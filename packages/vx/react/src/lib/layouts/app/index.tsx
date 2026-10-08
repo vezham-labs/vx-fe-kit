@@ -1,6 +1,12 @@
-import { useLocation } from '@tanstack/react-router'
+import {
+  Outlet,
+  useLocation,
+  useMatches,
+  useNavigate
+} from '@tanstack/react-router'
 import {
   type ComponentPropsWithoutRef,
+  type ReactElement,
   type ReactNode,
   useCallback
 } from 'react'
@@ -9,6 +15,11 @@ import { Surface, cn, toast } from '@vezham/react-v3'
 
 import { type AppMenuItem, AppMenuProvider } from '../../components/app-menu'
 import { CommandProvider } from '../../components/command'
+import { ConfiguredControlCenter } from '../../components/panel/footer/control-center/configured'
+import type {
+  ControlCenterConfig,
+  ControlCenterI18n
+} from '../../components/panel/footer/control-center/types'
 import { InfoPanelProvider } from '../../components/panel/info-panel'
 import {
   ToolbarActionsProvider,
@@ -17,8 +28,13 @@ import {
 import { WorkspaceNavigationProvider } from '../../components/workspace-navigation'
 import type { AppNavigationItem } from '../../navigation'
 import { getNavigationPageKey } from '../../navigation'
+import {
+  SettingsNavigationContext,
+  type SettingsSection
+} from '../../pages/settings/navigation'
 import { type User, UserProvider } from '../../store/users/useUserStore'
-import { MenuLayout, type MenuLayoutProps } from '../menu-layout'
+import { MenuLayout } from '../menu-layout'
+import { SettingsLayout } from '../settings'
 
 type AppFrameProps = {
   children: ReactNode
@@ -55,44 +71,113 @@ const AppFrame = ({
   )
 }
 
-export type AppLayoutProps = Omit<AppFrameProps, 'navigation'> &
-  Pick<MenuLayoutProps, 'controlCenter'> & {
-    navigationItems: AppNavigationItem[]
-    appMenu?: AppMenuItem[]
-    user?: User | null
-  }
+export type AppLayoutProps = Omit<AppFrameProps, 'navigation' | 'children'> & {
+  children?: ReactNode
+  navigationItems: AppNavigationItem[]
+  appMenu?: AppMenuItem[]
+  user?: User | null
+  settings?: boolean
+  controlCenter?: ControlCenterConfig
+  controlCenterSlot?: ReactElement
+  i18n?: ControlCenterI18n
+}
+
+type AppLayoutViewProps = Omit<AppFrameProps, 'navigation'> & {
+  navigationItems: AppNavigationItem[]
+  controlCenterSlot?: ReactElement
+}
+
+export const AppLayoutProviders = ({
+  children,
+  navigationItems,
+  appMenu = [],
+  user
+}: Pick<
+  AppLayoutProps,
+  'children' | 'navigationItems' | 'appMenu' | 'user'
+>) => (
+  <ToolbarActionsProvider>
+    <AppMenuShell items={appMenu} navigationItems={navigationItems}>
+      <UserProvider initialUser={user}>
+        <CommandProvider items={navigationItems}>
+          <InfoPanelProvider>
+            <WorkspaceNavigationProvider>
+              {children}
+            </WorkspaceNavigationProvider>
+          </InfoPanelProvider>
+        </CommandProvider>
+      </UserProvider>
+    </AppMenuShell>
+  </ToolbarActionsProvider>
+)
+
+export const AppLayoutView = ({
+  children,
+  navigationItems,
+  controlCenterSlot,
+  ...frameProps
+}: AppLayoutViewProps) => (
+  <AppFrame
+    {...frameProps}
+    navigation={
+      <MenuLayout items={navigationItems} controlCenter={controlCenterSlot} />
+    }>
+    {children}
+  </AppFrame>
+)
 
 const AppLayout = ({
   children,
   navigationItems,
-  appMenu = [],
+  appMenu,
   user,
+  settings = false,
   controlCenter,
+  controlCenterSlot,
+  i18n,
   ...frameProps
 }: AppLayoutProps) => {
+  const navigate = useNavigate()
+  const isSettings = useMatches({
+    select: matches =>
+      settings && matches.some(match => match.routeId === '/settings')
+  })
+  const openSettings = useCallback(
+    (section: SettingsSection) =>
+      navigate({ to: '/settings', search: { section } }),
+    [navigate]
+  )
+  const content = children === undefined ? <Outlet /> : children
+  const center =
+    controlCenterSlot !== undefined ? (
+      controlCenterSlot
+    ) : controlCenter ? (
+      <ConfiguredControlCenter
+        config={controlCenter}
+        context={{ i18n }}
+        placement="right bottom"
+        preview
+      />
+    ) : undefined
   return (
-    <ToolbarActionsProvider>
-      <AppMenuShell items={appMenu} navigationItems={navigationItems}>
-        <UserProvider initialUser={user}>
-          <CommandProvider items={navigationItems}>
-            <InfoPanelProvider>
-              <WorkspaceNavigationProvider>
-                <AppFrame
-                  {...frameProps}
-                  navigation={
-                    <MenuLayout
-                      items={navigationItems}
-                      controlCenter={controlCenter}
-                    />
-                  }>
-                  {children}
-                </AppFrame>
-              </WorkspaceNavigationProvider>
-            </InfoPanelProvider>
-          </CommandProvider>
-        </UserProvider>
-      </AppMenuShell>
-    </ToolbarActionsProvider>
+    <AppLayoutProviders
+      navigationItems={navigationItems}
+      appMenu={appMenu}
+      user={user}>
+      <SettingsNavigationContext.Provider
+        value={settings ? openSettings : null}>
+        {isSettings ? (
+          <SettingsLayout>{content}</SettingsLayout>
+        ) : (
+          <AppLayoutView
+            {...frameProps}
+            navigationItems={navigationItems}
+            controlCenterSlot={center}>
+            {content}
+          </AppLayoutView>
+        )}
+      </SettingsNavigationContext.Provider>
+    </AppLayoutProviders>
   )
 }
 
