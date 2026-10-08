@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { AltArrowDown, Bolt, CheckRead, Stars } from '@vezham/icons-react'
 import {
@@ -51,7 +51,7 @@ export const ModelPicker = ({
 }) => {
   const [open, setOpen] = useState(false)
   const smallScreen = useMediaQuery('(width < 640px)')
-  const [manualModel, setManualModel] = useState(PREVIEW_MODELS[0].name)
+  const manualModel = useRef(PREVIEW_MODELS[0].name)
   const auto = c.model === 'Auto'
   return (
     <Popover isOpen={open} onOpenChange={setOpen}>
@@ -81,8 +81,8 @@ export const ModelPicker = ({
             aria-label="Auto model selection"
             isSelected={auto}
             onChange={enabled => {
-              if (!auto) setManualModel(c.model)
-              c.setModel(enabled ? 'Auto' : manualModel)
+              if (!auto) manualModel.current = c.model
+              c.setModel(enabled ? 'Auto' : manualModel.current)
             }}
             className="bg-surface-secondary w-full rounded-2xl p-3">
             <Switch.Content className="flex w-full flex-row-reverse items-center justify-between gap-3">
@@ -110,7 +110,7 @@ export const ModelPicker = ({
                     aria-pressed={c.model === model.name}
                     onPress={() => {
                       c.setModel(model.name)
-                      setManualModel(model.name)
+                      manualModel.current = model.name
                       setOpen(false)
                     }}>
                     <ModelLogo provider={model.provider} size={16} />

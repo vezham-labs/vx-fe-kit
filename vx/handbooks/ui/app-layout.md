@@ -118,3 +118,12 @@ at the `AppLayout` boundary, `controlCenter` always means configuration.
 
 See [Control Center](./control-center.md) for tile configuration and
 [the CLI baseline](../cli-template-baseline.md) for app ownership conventions.
+
+## Motion
+
+The desktop info panel animates with CSS transforms and opacity. Its width is
+reserved during closing and released when the exit animation ends; width itself
+is not animated. Closing content is inert immediately and unmounted after exit.
+`prefers-reduced-motion` removes movement while retaining lifecycle cleanup.
+Apps using Motion-based components can configure reduced motion at their
+chosen boundary; `AppLayout` does not add a global Motion provider.

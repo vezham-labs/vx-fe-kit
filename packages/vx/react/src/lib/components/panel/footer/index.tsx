@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from 'react'
+import { type ReactNode, useMemo, useState } from 'react'
 
 import {
   Bell as BellIcon,
@@ -119,6 +119,14 @@ const Footer = ({
     initializeWithValue: false
   })
   const [controlCenterOpen, setControlCenterOpen] = useState(false)
+  const controlCenterContext = useMemo(
+    () => ({
+      compact,
+      isOpen: controlCenterOpen,
+      onOpenChange: setControlCenterOpen
+    }),
+    [compact, controlCenterOpen]
+  )
 
   return (
     <>
@@ -150,12 +158,7 @@ const Footer = ({
         </div>
 
         {showControlCenter && (
-          <FooterControlCenterContext.Provider
-            value={{
-              compact,
-              isOpen: controlCenterOpen,
-              onOpenChange: setControlCenterOpen
-            }}>
+          <FooterControlCenterContext.Provider value={controlCenterContext}>
             {controlCenter ?? <DefaultControlCenter placement="right bottom" />}
           </FooterControlCenterContext.Provider>
         )}

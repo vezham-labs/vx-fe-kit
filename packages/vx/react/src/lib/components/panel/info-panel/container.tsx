@@ -1,5 +1,4 @@
-import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
-import { ReactNode } from 'react'
+import { type ReactNode, useState } from 'react'
 
 import {
   CloseButton,
@@ -10,6 +9,7 @@ import {
 } from '@vezham/react-v3'
 
 import { ACCOUNT_BUBBLE_MEDIA_QUERY } from '../responsive'
+import styles from './container.module.css'
 import { useInfoPanel } from './provider'
 import { InfoPanelSheet } from './sheet'
 import {
@@ -52,38 +52,65 @@ const InfoPanelContainer = ({
   }
 
   return (
+    <DesktopInfoPanel
+      panel={activePanel}
+      panelKey={activeInfoPanel}
+      isOpen={isOpen}
+      width={width}
+      className={className}
+      onClose={closeInfoPanel}
+    />
+  )
+}
+
+const DesktopInfoPanel = ({
+  panel: activePanel,
+  panelKey,
+  isOpen,
+  width,
+  className,
+  onClose
+}: {
+  panel: InfoPanelDefinition | null
+  panelKey: ActiveInfoPanel
+  isOpen: boolean
+  width: number
+  className?: string
+  onClose: () => void
+}) => {
+  const [present, setPresent] = useState(isOpen)
+  if (isOpen && !present) setPresent(true)
+  return (
     <aside
-      aria-hidden={!panel}
+      aria-hidden={!isOpen}
       className={`sticky top-0 z-40 shrink-0 overflow-hidden ${className ?? ''}`}
-      style={{ width: panel ? width : 0 }}>
-      <LazyMotion features={domAnimation}>
-        <AnimatePresence mode="wait">
-          {panel && (
-            <m.div
-              key={activeInfoPanel}
-              animate={{ opacity: 1, x: 0 }}
-              className="h-full"
-              exit={{ opacity: 0, x: -16 }}
-              initial={{ opacity: 0, x: -16 }}
-              transition={{ duration: 0.18, ease: 'easeOut' }}
-              style={{ width }}>
-              <Surface
-                variant="transparent"
-                data-vx="info-panel"
-                className={`${panelLayoutClass} border-border border-r`}>
-                <InfoPanelHeader
-                  title={panel.title}
-                  titleIcon={panel.titleIcon}
-                  onClose={closeInfoPanel}
-                />
-                <InfoPanelContent scrollable={panel.scrollable ?? true}>
-                  {panel.content}
-                </InfoPanelContent>
-              </Surface>
-            </m.div>
-          )}
-        </AnimatePresence>
-      </LazyMotion>
+      style={{ width: present && activePanel ? width : 0 }}>
+      {present && activePanel && (
+        <div
+          key={panelKey}
+          className={styles.panel}
+          data-state={isOpen ? 'open' : 'closed'}
+          inert={!isOpen}
+          onAnimationEnd={event => {
+            if (event.target === event.currentTarget && !isOpen)
+              setPresent(false)
+          }}
+          style={{ width }}>
+          <Surface
+            variant="transparent"
+            data-vx="info-panel"
+            className={`${panelLayoutClass} border-border border-r`}>
+            <InfoPanelHeader
+              title={activePanel.title}
+              titleIcon={activePanel.titleIcon}
+              onClose={onClose}
+            />
+            <InfoPanelContent scrollable={activePanel.scrollable ?? true}>
+              {activePanel.content}
+            </InfoPanelContent>
+          </Surface>
+        </div>
+      )}
     </aside>
   )
 }

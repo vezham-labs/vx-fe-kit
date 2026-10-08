@@ -69,7 +69,7 @@ export const MockResult = ({ prompt }: Props) => {
             </thead>
             <tbody>
               {[8, 12, 18].map((count, i) => (
-                <tr key={i}>
+                <tr key={count}>
                   <td className="py-2">Week {i + 1}</td>
                   <td className="text-end">{count}</td>
                 </tr>

@@ -77,7 +77,9 @@ export const ApplicationMenuSheet = ({
               {menu.label}
             </Button>
             {menu.groups.map((group, index) => (
-              <div key={index} className="flex flex-col gap-1">
+              <div
+                key={group.map(action => action.key).join(':')}
+                className="flex flex-col gap-1">
                 {index > 0 && <Separator className="my-1" />}
                 {group.map(action => (
                   <Button

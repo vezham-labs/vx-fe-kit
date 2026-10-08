@@ -2,6 +2,7 @@ import {
   type ReactNode,
   createContext,
   useContext,
+  useMemo,
   useSyncExternalStore
 } from 'react'
 
@@ -64,23 +65,25 @@ export const AppearanceProvider = ({
     getServerAppearance
   )
   const [mode, dark] = snapshot.split(':')
+  const value = useMemo<AppearanceAdapter>(
+    () =>
+      appearance ?? {
+        isDark: dark === 'true',
+        setDark: setRootDark,
+        themeMode:
+          mode === 'auto' ? 'auto' : dark === 'true' ? 'dark' : 'light',
+        setThemeMode: setRootThemeMode
+      },
+    [appearance, mode, dark]
+  )
   return (
-    <AppearanceContext.Provider
-      value={
-        appearance ?? {
-          isDark: dark === 'true',
-          setDark: setRootDark,
-          themeMode:
-            mode === 'auto' ? 'auto' : dark === 'true' ? 'dark' : 'light',
-          setThemeMode: setRootThemeMode
-        }
-      }>
+    <AppearanceContext.Provider value={value}>
       {children}
     </AppearanceContext.Provider>
   )
 }
 
-const useAppearance = () => {
+export const useAppearance = () => {
   const appearance = useContext(AppearanceContext)
   if (!appearance)
     throw new Error('Appearance tiles must be rendered inside ControlCenter')

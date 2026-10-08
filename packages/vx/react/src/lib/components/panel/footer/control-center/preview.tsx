@@ -1,4 +1,11 @@
-import { type ReactNode, createContext, useContext, useState } from 'react'
+import {
+  type ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState
+} from 'react'
 
 import {
   Airbuds,
@@ -68,19 +75,17 @@ export const PreviewProvider = ({
   children: ReactNode
 }) => {
   const [state, setState] = useState(initialState)
+  const update = useCallback(
+    (values: Partial<PreviewState>) =>
+      setState(previous => ({ ...previous, ...values })),
+    []
+  )
+  const value = useMemo(
+    () => (enabled ? { state, update } : null),
+    [enabled, state, update]
+  )
   return (
-    <PreviewContext.Provider
-      value={
-        enabled
-          ? {
-              state,
-              update: values =>
-                setState(previous => ({ ...previous, ...values }))
-            }
-          : null
-      }>
-      {children}
-    </PreviewContext.Provider>
+    <PreviewContext.Provider value={value}>{children}</PreviewContext.Provider>
   )
 }
 

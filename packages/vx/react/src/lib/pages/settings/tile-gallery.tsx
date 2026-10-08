@@ -13,19 +13,15 @@ export type GalleryTile = {
   preview?: ReactNode
 }
 
-export const TileGallery = ({
-  title,
-  kind,
-  tiles,
-  editor,
-  onDone
-}: {
+type Props = {
   title: string
   kind: 'widgets' | 'controls'
   tiles: readonly GalleryTile[]
   editor: EditorState
   onDone: () => void
-}) => {
+}
+
+const useGallery = ({ kind, tiles, editor }: Props) => {
   const dragInstructionsId = useId()
   const [draggedId, setDraggedId] = useState<string | null>(null)
   const [draggedHeight, setDraggedHeight] = useState(0)
@@ -134,160 +130,286 @@ export const TileGallery = ({
       {null}
     </Surface>
   )
-  const preview = (
-    <aside
-      aria-label={`Current ${kind}`}
-      className={`${showPreview ? 'flex' : 'hidden xl:flex'} border-border min-h-0 min-w-0 flex-1 flex-col p-5 xl:w-96 xl:flex-none xl:border-l`}
-      onDragOver={event => {
-        if (
-          !event.dataTransfer.types.includes('application/x-vx-settings-tile')
-        )
-          return
-        event.preventDefault()
-        event.dataTransfer.dropEffect = 'move'
-        setDropTarget('empty')
-      }}
-      onDragLeave={event => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null))
-          setDropTarget(null)
-      }}
-      onDrop={event => dropTile(event)}>
-      <div className="mb-4 flex items-center justify-between gap-3">
-        <h2 className="text-sm font-semibold">
-          {kind === 'widgets' ? 'Notification Center' : 'Control Center'}
-        </h2>
-        <span className="text-muted text-xs">{visible.length} added</span>
-      </div>
-      <div className="@container mx-auto min-h-0 w-full max-w-[352px] flex-1 overflow-y-auto px-2 pt-3 pb-4">
-        {visible.length === 0 && (
-          <p className="text-muted py-8 text-center text-sm">
-            No {kind} added. Choose a tile from the gallery.
-          </p>
-        )}
-        <div
-          className={`grid gap-4 ${kind === 'widgets' ? 'auto-rows-[calc((100cqw-1rem)/2)] grid-cols-2' : 'grid-cols-4 items-start'}`}>
-          {visible.map(tile => {
-            const editable = itemFor(tile.id)?.editable
-            return (
-              <div
-                key={tile.id}
-                data-preview-tile={tile.id}
-                draggable={editable}
-                role="group"
-                aria-label={tile.label}
-                onDragStart={event => startDrag(event, tile.id)}
-                onDragEnd={finishDrag}
-                onDragOver={event => {
-                  if (
-                    !event.dataTransfer.types.includes(
-                      'application/x-vx-settings-tile'
-                    )
-                  )
-                    return
-                  event.preventDefault()
-                  event.stopPropagation()
-                  event.dataTransfer.dropEffect = 'move'
-                  setDropTarget(tile.id === draggedId ? null : tile.id)
-                }}
-                onDragLeave={event => {
-                  if (
-                    !event.currentTarget.contains(
-                      event.relatedTarget as Node | null
-                    )
-                  ) {
-                    setDropTarget(current =>
-                      current === tile.id ? null : current
-                    )
-                  }
-                }}
-                onDrop={event => dropTile(event, tile.id)}
-                data-dragging={draggedId === tile.id || undefined}
-                data-drop-target={dropTarget === tile.id || undefined}
-                className={`group focus-visible:outline-focus data-[drop-target]:bg-accent-soft data-[drop-target]:outline-accent/40 relative min-w-0 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 data-[dragging]:opacity-40 data-[drop-target]:outline data-[drop-target]:outline-offset-2 ${editable ? 'cursor-grab active:cursor-grabbing' : ''} ${tileSpan(tile)}`}>
-                <div
-                  inert
-                  className={
-                    kind === 'widgets'
-                      ? 'pointer-events-none h-full [&>div]:aspect-auto [&>div]:h-full'
-                      : 'pointer-events-none [&>button]:w-full'
-                  }>
-                  {kind === 'widgets' ? blankWidget(tile) : tile.preview}
-                </div>
-                {editable && (
-                  <button
-                    type="button"
-                    aria-label={`Reorder ${tile.label}`}
-                    aria-roledescription="reorderable tile"
-                    aria-describedby={dragInstructionsId}
-                    className="focus-visible:outline-focus absolute inset-0 cursor-grab rounded-[inherit] focus-visible:outline-2 focus-visible:outline-offset-2 active:cursor-grabbing"
-                    onKeyDown={event => {
-                      if (
-                        [
-                          'ArrowUp',
-                          'ArrowLeft',
-                          'ArrowDown',
-                          'ArrowRight'
-                        ].includes(event.key)
-                      ) {
-                        event.preventDefault()
-                        moveTile(
-                          tile.id,
-                          event.key === 'ArrowUp' || event.key === 'ArrowLeft'
-                            ? -1
-                            : 1
-                        )
-                      }
-                    }}
-                  />
-                )}
-                {editable && (
-                  <Tooltip>
-                    <Button
-                      isIconOnly
-                      size="sm"
-                      variant="secondary"
-                      className="text-muted absolute -top-2 -left-2 z-10 size-6 min-w-0 rounded-full p-0"
-                      aria-label={`Remove ${tile.label}`}
-                      onPress={() => editor.onVisibilityChange(tile.id, false)}>
-                      <svg
-                        aria-hidden="true"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 16 16"
-                        fill="none">
-                        <path
-                          d="M4 8h8"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </Button>
-                    <Tooltip.Content>Remove {tile.label}</Tooltip.Content>
-                  </Tooltip>
-                )}
-              </div>
-            )
-          })}
-          {draggedTile && (
+  return {
+    dragInstructionsId,
+    draggedId,
+    draggedHeight,
+    dropTarget,
+    announcement,
+    query,
+    category,
+    showPreview,
+    available,
+    visible,
+    itemFor,
+    finishDrag,
+    startDrag,
+    moveTile,
+    dropTile,
+    search,
+    categoryButtons,
+    tileSpan,
+    draggedTile,
+    blankWidget,
+    setDropTarget,
+    setShowPreview
+  }
+}
+
+type GalleryContext = ReturnType<typeof useGallery> & Props
+const GalleryPreview = ({
+  kind,
+  editor,
+  showPreview,
+  visible,
+  draggedId,
+  draggedHeight,
+  dropTarget,
+  itemFor,
+  startDrag,
+  finishDrag,
+  moveTile,
+  dropTile,
+  tileSpan,
+  blankWidget,
+  dragInstructionsId,
+  draggedTile,
+  setDropTarget
+}: GalleryContext) => (
+  <aside
+    aria-label={`Current ${kind}`}
+    className={`${showPreview ? 'flex' : 'hidden xl:flex'} border-border min-h-0 min-w-0 flex-1 flex-col p-5 xl:w-96 xl:flex-none xl:border-l`}
+    onDragOver={event => {
+      if (!event.dataTransfer.types.includes('application/x-vx-settings-tile'))
+        return
+      event.preventDefault()
+      event.dataTransfer.dropEffect = 'move'
+      setDropTarget('empty')
+    }}
+    onDragLeave={event => {
+      if (!event.currentTarget.contains(event.relatedTarget as Node | null))
+        setDropTarget(null)
+    }}
+    onDrop={event => dropTile(event)}>
+    <div className="mb-4 flex items-center justify-between gap-3">
+      <h2 className="text-sm font-semibold">
+        {kind === 'widgets' ? 'Notification Center' : 'Control Center'}
+      </h2>
+      <span className="text-muted text-xs">{visible.length} added</span>
+    </div>
+    <div className="@container mx-auto min-h-0 w-full max-w-[352px] flex-1 overflow-y-auto px-2 pt-3 pb-4">
+      {visible.length === 0 && (
+        <p className="text-muted py-8 text-center text-sm">
+          No {kind} added. Choose a tile from the gallery.
+        </p>
+      )}
+      <div
+        className={`grid gap-4 ${kind === 'widgets' ? 'auto-rows-[calc((100cqw-1rem)/2)] grid-cols-2' : 'grid-cols-4 items-start'}`}>
+        {visible.map(tile => {
+          const editable = itemFor(tile.id)?.editable
+          return (
             <div
-              data-preview-empty-drop
-              aria-label={`Drop ${draggedTile.label} here`}
-              data-drop-target={dropTarget === 'empty' || undefined}
-              className={`border-border text-muted data-[drop-target]:border-accent/40 data-[drop-target]:bg-accent-soft flex items-center justify-center rounded-2xl border border-dashed text-xs ${tileSpan(draggedTile)}`}
-              style={
-                kind === 'controls' ? { height: draggedHeight } : undefined
-              }>
-              Drop here
+              key={tile.id}
+              data-preview-tile={tile.id}
+              draggable={editable}
+              role="group"
+              aria-label={tile.label}
+              onDragStart={event => startDrag(event, tile.id)}
+              onDragEnd={finishDrag}
+              onDragOver={event => {
+                if (
+                  !event.dataTransfer.types.includes(
+                    'application/x-vx-settings-tile'
+                  )
+                )
+                  return
+                event.preventDefault()
+                event.stopPropagation()
+                event.dataTransfer.dropEffect = 'move'
+                setDropTarget(tile.id === draggedId ? null : tile.id)
+              }}
+              onDragLeave={event => {
+                if (
+                  !event.currentTarget.contains(
+                    event.relatedTarget as Node | null
+                  )
+                ) {
+                  setDropTarget(current =>
+                    current === tile.id ? null : current
+                  )
+                }
+              }}
+              onDrop={event => dropTile(event, tile.id)}
+              data-dragging={draggedId === tile.id || undefined}
+              data-drop-target={dropTarget === tile.id || undefined}
+              className={`group focus-visible:outline-focus data-[drop-target]:bg-accent-soft data-[drop-target]:outline-accent/40 relative min-w-0 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 data-[dragging]:opacity-40 data-[drop-target]:outline data-[drop-target]:outline-offset-2 ${editable ? 'cursor-grab active:cursor-grabbing' : ''} ${tileSpan(tile)}`}>
+              <div
+                inert
+                className={
+                  kind === 'widgets'
+                    ? 'pointer-events-none h-full [&>div]:aspect-auto [&>div]:h-full'
+                    : 'pointer-events-none [&>button]:w-full'
+                }>
+                {kind === 'widgets' ? blankWidget(tile) : tile.preview}
+              </div>
+              {editable && (
+                <button
+                  type="button"
+                  aria-label={`Reorder ${tile.label}`}
+                  aria-roledescription="reorderable tile"
+                  aria-describedby={dragInstructionsId}
+                  className="focus-visible:outline-focus absolute inset-0 cursor-grab rounded-[inherit] focus-visible:outline-2 focus-visible:outline-offset-2 active:cursor-grabbing"
+                  onKeyDown={event => {
+                    if (
+                      [
+                        'ArrowUp',
+                        'ArrowLeft',
+                        'ArrowDown',
+                        'ArrowRight'
+                      ].includes(event.key)
+                    ) {
+                      event.preventDefault()
+                      moveTile(
+                        tile.id,
+                        event.key === 'ArrowUp' || event.key === 'ArrowLeft'
+                          ? -1
+                          : 1
+                      )
+                    }
+                  }}
+                />
+              )}
+              {editable && (
+                <Tooltip>
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    variant="secondary"
+                    className="text-muted absolute -top-2 -left-2 z-10 size-6 min-w-0 rounded-full p-0"
+                    aria-label={`Remove ${tile.label}`}
+                    onPress={() => editor.onVisibilityChange(tile.id, false)}>
+                    <svg
+                      aria-hidden="true"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 16 16"
+                      fill="none">
+                      <path
+                        d="M4 8h8"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </Button>
+                  <Tooltip.Content>Remove {tile.label}</Tooltip.Content>
+                </Tooltip>
+              )}
             </div>
-          )}
-        </div>
+          )
+        })}
+        {draggedTile && (
+          <div
+            data-preview-empty-drop
+            aria-label={`Drop ${draggedTile.label} here`}
+            data-drop-target={dropTarget === 'empty' || undefined}
+            className={`border-border text-muted data-[drop-target]:border-accent/40 data-[drop-target]:bg-accent-soft flex items-center justify-center rounded-2xl border border-dashed text-xs ${tileSpan(draggedTile)}`}
+            style={kind === 'controls' ? { height: draggedHeight } : undefined}>
+            Drop here
+          </div>
+        )}
       </div>
-      <Button size="sm" variant="ghost" onPress={editor.onReset}>
-        Reset {kind}
-      </Button>
-    </aside>
-  )
+    </div>
+    <Button size="sm" variant="ghost" onPress={editor.onReset}>
+      Reset {kind}
+    </Button>
+  </aside>
+)
+
+const GalleryAvailable = ({
+  kind,
+  editor,
+  showPreview,
+  search,
+  categoryButtons,
+  category,
+  available,
+  itemFor,
+  startDrag,
+  finishDrag,
+  blankWidget
+}: GalleryContext) => (
+  <section
+    aria-label={`Available ${kind}`}
+    className={`${showPreview ? 'hidden xl:flex' : 'flex'} min-h-0 min-w-0 flex-1 flex-col p-4 md:p-6`}>
+    <div className="mb-5 space-y-3 lg:hidden">
+      {search}
+      <nav
+        aria-label={`${kind} categories`}
+        className="flex gap-1 overflow-x-auto">
+        {categoryButtons}
+      </nav>
+    </div>
+    <h2 className="mb-1 text-sm font-semibold">
+      {category === 'All' ? 'Suggestions' : category}
+    </h2>
+    <p className="text-muted mb-5 text-xs">
+      Add or drag a tile into your preview. Changes save automatically.
+    </p>
+    <div className="min-h-0 flex-1 overflow-y-auto p-1">
+      {available.length === 0 && (
+        <p role="status" className="text-muted py-8 text-sm">
+          No {kind} found.
+        </p>
+      )}
+      <div className="grid grid-cols-2 items-start gap-4 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        {available.map(tile => {
+          const item = itemFor(tile.id)
+          return (
+            <div
+              key={tile.id}
+              data-gallery-tile={tile.id}
+              draggable={item?.editable}
+              onDragStart={event => startDrag(event, tile.id)}
+              onDragEnd={finishDrag}
+              className={`min-w-0 ${tile.shape === 'medium' || tile.shape === 'large' || tile.shape === 'full' || tile.shape === 'wide' ? 'col-span-2' : ''}`}>
+              <div
+                inert
+                className="pointer-events-none flex min-h-24 items-center justify-center [&>button]:w-full">
+                {kind === 'widgets' ? blankWidget(tile) : tile.preview}
+              </div>
+              <div className="mt-2 flex items-center justify-between gap-2">
+                <p className="min-w-0 truncate text-xs">{tile.label}</p>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  isDisabled={item?.visible || !item?.editable}
+                  aria-label={`Add ${tile.label}`}
+                  onPress={() => editor.onVisibilityChange(tile.id, true)}>
+                  {item?.visible ? 'Added' : 'Add'}
+                </Button>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  </section>
+)
+
+export const TileGallery = (props: Props) => {
+  const context = { ...props, ...useGallery(props) }
+  const {
+    title,
+    onDone,
+    kind,
+    dragInstructionsId,
+    announcement,
+    showPreview,
+    setShowPreview,
+    search,
+    categoryButtons
+  } = context
   return (
     <div className="bg-background flex h-full min-h-0 flex-col">
       <span id={dragInstructionsId} className="sr-only">
@@ -329,65 +451,8 @@ export const TileGallery = ({
             {categoryButtons}
           </nav>
         </aside>
-        <section
-          aria-label={`Available ${kind}`}
-          className={`${showPreview ? 'hidden xl:flex' : 'flex'} min-h-0 min-w-0 flex-1 flex-col p-4 md:p-6`}>
-          <div className="mb-5 space-y-3 lg:hidden">
-            {search}
-            <nav
-              aria-label={`${kind} categories`}
-              className="flex gap-1 overflow-x-auto">
-              {categoryButtons}
-            </nav>
-          </div>
-          <h2 className="mb-1 text-sm font-semibold">
-            {category === 'All' ? 'Suggestions' : category}
-          </h2>
-          <p className="text-muted mb-5 text-xs">
-            Add or drag a tile into your preview. Changes save automatically.
-          </p>
-          <div className="min-h-0 flex-1 overflow-y-auto p-1">
-            {available.length === 0 && (
-              <p role="status" className="text-muted py-8 text-sm">
-                No {kind} found.
-              </p>
-            )}
-            <div className="grid grid-cols-2 items-start gap-4 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-              {available.map(tile => {
-                const item = itemFor(tile.id)
-                return (
-                  <div
-                    key={tile.id}
-                    data-gallery-tile={tile.id}
-                    draggable={item?.editable}
-                    onDragStart={event => startDrag(event, tile.id)}
-                    onDragEnd={finishDrag}
-                    className={`min-w-0 ${tile.shape === 'medium' || tile.shape === 'large' || tile.shape === 'full' || tile.shape === 'wide' ? 'col-span-2' : ''}`}>
-                    <div
-                      inert
-                      className="pointer-events-none flex min-h-24 items-center justify-center [&>button]:w-full">
-                      {kind === 'widgets' ? blankWidget(tile) : tile.preview}
-                    </div>
-                    <div className="mt-2 flex items-center justify-between gap-2">
-                      <p className="min-w-0 truncate text-xs">{tile.label}</p>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        isDisabled={item?.visible || !item?.editable}
-                        aria-label={`Add ${tile.label}`}
-                        onPress={() =>
-                          editor.onVisibilityChange(tile.id, true)
-                        }>
-                        {item?.visible ? 'Added' : 'Add'}
-                      </Button>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-        {preview}
+        <GalleryAvailable {...context} />
+        <GalleryPreview {...context} />
       </div>
     </div>
   )

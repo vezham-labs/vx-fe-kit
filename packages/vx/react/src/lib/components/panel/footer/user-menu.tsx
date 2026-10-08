@@ -52,15 +52,7 @@ const StatusVisual = ({ status }: { status: UserStatusOption }) => {
   return <span className="text-xs">{status.icon}</span>
 }
 
-const UserMenu = ({ user, onLogout, onProfile, onPreferences }: Props) => {
-  const small = useMediaQuery(APPLICATION_MENU_SHEET_MEDIA_QUERY, {
-    initializeWithValue: false
-  })
-  const bubble = useMediaQuery(ACCOUNT_BUBBLE_MEDIA_QUERY, {
-    initializeWithValue: false
-  })
-  const [open, setOpen] = useState(false)
-  const [section, setSection] = useState<string | null>(null)
+const useAccountSections = (user: UserInfo) => {
   const [userStatus, setUserStatus] = useState<UserStatus>('active')
   const [selectedStatus, setSelectedStatus] = useState<SuggestedStatusOption>()
   const [selectedTiming, setSelectedTiming] = useState<StatusTimingOption>()
@@ -149,6 +141,20 @@ const UserMenu = ({ user, onLogout, onProfile, onPreferences }: Props) => {
         ]
       : [])
   ]
+  return { currentStatus, tooltipText, accountSections }
+}
+
+const UserMenu = ({ user, onLogout, onProfile, onPreferences }: Props) => {
+  const small = useMediaQuery(APPLICATION_MENU_SHEET_MEDIA_QUERY, {
+    initializeWithValue: false
+  })
+  const bubble = useMediaQuery(ACCOUNT_BUBBLE_MEDIA_QUERY, {
+    initializeWithValue: false
+  })
+  const [open, setOpen] = useState(false)
+  const [section, setSection] = useState<string | null>(null)
+  const { currentStatus, tooltipText, accountSections } =
+    useAccountSections(user)
   const activeSection = accountSections.find(item => item.id === section)
   const changeOpen = (value: boolean) => {
     setOpen(value)

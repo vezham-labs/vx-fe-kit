@@ -3,7 +3,7 @@ import yargs from 'yargs'
 
 const NS = '[vezham] TOOLS/release'
 
-;(async () => {
+const main = async () => {
   const options = await yargs
     .version(false)
     .option('version', {
@@ -75,4 +75,6 @@ const NS = '[vezham] TOOLS/release'
   process.exit(
     Object.values(publishResult).every(result => result.code === 0) ? 0 : 1
   )
-})()
+}
+
+main()

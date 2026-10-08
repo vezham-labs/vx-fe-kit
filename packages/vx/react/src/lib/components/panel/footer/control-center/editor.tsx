@@ -60,9 +60,15 @@ export const useTileEditor = <Tile extends EditableTile>(
   } catch {
     // vx-bot/NOTE: Invalid saved preferences fall back to the configured tiles.
   }
+  const tilesById = new Map(tiles.map(tile => [tile.id, tile]))
+  const orderedIds = new Set(order)
+  const hiddenIds = new Set(hidden)
   const orderedTiles = [
-    ...order.flatMap(id => tiles.filter(tile => tile.id === id)),
-    ...tiles.filter(tile => !order.includes(tile.id))
+    ...order.flatMap(id => {
+      const tile = tilesById.get(id)
+      return tile ? [tile] : []
+    }),
+    ...tiles.filter(tile => !orderedIds.has(tile.id))
   ]
   const save = (
     nextOrder: readonly string[],
@@ -78,11 +84,11 @@ export const useTileEditor = <Tile extends EditableTile>(
     items: orderedTiles.map(tile => ({
       id: tile.id,
       label: tile.label ?? tile.title ?? tile.id.replaceAll('-', ' '),
-      visible: !hidden.includes(tile.id),
+      visible: !hiddenIds.has(tile.id),
       editable: tile.editable !== false
     })),
     onVisibilityChange: (id, visible) => {
-      if (tiles.find(tile => tile.id === id)?.editable === false) return
+      if (tilesById.get(id)?.editable === false) return
       save(
         order,
         visible
@@ -100,7 +106,7 @@ export const useTileEditor = <Tile extends EditableTile>(
       save(ids, hidden)
     },
     onPlace: (id, target) => {
-      if (!tiles.some(tile => tile.id === id && tile.editable !== false)) return
+      if (!tilesById.has(id) || tilesById.get(id)?.editable === false) return
       const ids = orderedTiles.map(tile => tile.id)
       const from = ids.indexOf(id)
       const to = target ? ids.indexOf(target) : ids.length - 1
@@ -122,7 +128,7 @@ export const useTileEditor = <Tile extends EditableTile>(
   return {
     editor,
     orderedTiles,
-    visibleTiles: orderedTiles.filter(tile => !hidden.includes(tile.id))
+    visibleTiles: orderedTiles.filter(tile => !hiddenIds.has(tile.id))
   }
 }
 
