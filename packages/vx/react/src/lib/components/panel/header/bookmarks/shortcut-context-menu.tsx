@@ -3,6 +3,7 @@ import { type ReactNode, useState } from 'react'
 import { ContextMenu } from '@vezham/react-pro-v3'
 import { Label } from '@vezham/react-v3'
 
+import { panelContextMenuClass } from '../../info-panel/styles'
 import type { FavoriteItem } from './types'
 
 type Props = {
@@ -44,7 +45,7 @@ export const ShortcutContextMenu = ({
           {children}
         </div>
       </ContextMenu.Trigger>
-      <ContextMenu.Popover>
+      <ContextMenu.Popover className={panelContextMenuClass}>
         <ContextMenu.Menu
           aria-label={target ? `${target.name} actions` : 'Item actions'}>
           <ContextMenu.Item

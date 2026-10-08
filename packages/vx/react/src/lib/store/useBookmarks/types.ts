@@ -1,3 +1,5 @@
+export const FAVORITES_LIMIT = 12
+
 export type RQBookmarks = Record<string, never>
 
 export interface FavoriteItem {

@@ -1,7 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { useState } from 'react'
 import { beforeEach, expect, it } from 'vitest'
 
-import { useBookmarkMembership } from '../membership'
+import { getBookmarkShortcuts } from '../membership'
 import { useProps } from '../types'
 import { QuickAccess } from './index'
 
@@ -14,9 +15,13 @@ it('shows all pins and unpins without changing favorites or bookmarks', () => {
     url: ''
   }))
   const App = () => {
-    const membership = useBookmarkMembership({
-      favorites: bookmarks.slice(0, 2),
-      pins: bookmarks
+    const [favorites, setFavorites] = useState(bookmarks.slice(0, 2))
+    const [pins, setPins] = useState(bookmarks)
+    const membership = getBookmarkShortcuts({
+      favorites,
+      pins,
+      onFavoritesChange: setFavorites,
+      onPinsChange: setPins
     })
     const styles = useProps({})
     return (

@@ -38,7 +38,9 @@ describe('menu selection', () => {
     ['/tabs/activity', 'tabs'],
     ['/workspace/team/roles', 'workspace'],
     ['/workspace/team/roles/editor', 'workspace'],
-    ['/tabs/activity-other', 'home']
+    ['/tabs/activity-other', undefined],
+    ['/hello-world', undefined],
+    ['/unknown', undefined]
   ])('selects the owning menu for %s', (pathname, key) => {
     expect(getSelectedMenuKey(pathname, items)).toBe(key)
   })

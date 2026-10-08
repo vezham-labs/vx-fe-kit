@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from '@tanstack/react-router'
+import { Outlet, useChildMatches } from '@tanstack/react-router'
 import { useState } from 'react'
 
 import { toast } from '@vezham/react-v3'
@@ -15,7 +15,22 @@ import { type MenuKey, getNavigationPage } from './navigation'
 type Props = { menuKey: MenuKey }
 
 const NavigationDemoLayout = ({ menuKey }: Props) => {
-  const { pathname } = useLocation()
+  // vx-bot/NOTE: Read the mounted child route, not a destination URL from a navigation in progress.
+  const pathname = useChildMatches({
+    select: matches =>
+      [...matches]
+        .reverse()
+        .find(match => match.pathname.startsWith(`/${menuKey}/`))?.pathname
+  })
+  return pathname ? (
+    <NavigationDemoSection menuKey={menuKey} pathname={pathname} />
+  ) : null
+}
+
+const NavigationDemoSection = ({
+  menuKey,
+  pathname
+}: Props & { pathname: string }) => {
   const { items, section, page, tabs } = getNavigationPage(menuKey, pathname)
 
   const [search, setSearch] = useState('')

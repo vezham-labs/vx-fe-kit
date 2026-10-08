@@ -40,7 +40,7 @@ export const getSelectedMenuKey = (
   pathname: string,
   items: AppNavigationItem[]
 ) => {
-  let selectedKey = items[0]?.key
+  let selectedKey: string | undefined
   let matchLength = 0
   for (const item of items) {
     const length = getMatchLength(pathname, item)

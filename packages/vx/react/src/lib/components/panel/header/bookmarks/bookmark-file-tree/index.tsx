@@ -12,6 +12,7 @@ import { ContextMenu, FileTree, useFileTreeDrag } from '@vezham/react-pro-v3'
 import { Avatar, Button } from '@vezham/react-v3'
 
 import { AppIcon } from '../../../../app-icon'
+import { panelContextMenuClass } from '../../../info-panel/styles'
 import {
   BookmarkContextMenuItems,
   BrowserContextMenuItems
@@ -20,6 +21,7 @@ import {
   type BookmarkContextTarget,
   type FolderTarget
 } from '../context-menu/types'
+import { BookmarkSectionEmptyState } from '../empty-state'
 import { FolderVisualPreview } from '../folder-modal'
 import {
   DEFAULT_FOLDER_COLOR,
@@ -274,8 +276,8 @@ const BookmarkFileTree = ({
 
   return (
     <ContextMenu>
-      <ContextMenu.Trigger className="block min-h-24">
-        <div className="min-h-24" onContextMenu={handleAreaContextMenu}>
+      <ContextMenu.Trigger className="block w-full">
+        <div className="w-full min-w-0" onContextMenu={handleAreaContextMenu}>
           <FileTree
             {...getFileTreeProps()}
             aria-label="Bookmarks file tree"
@@ -283,7 +285,11 @@ const BookmarkFileTree = ({
             expandedKeys={expandedKeys}
             items={tree.items}
             renderEmptyState={() => (
-              <div {...getBookmarkTreeEmptyStateProps()}>No bookmarks</div>
+              <BookmarkSectionEmptyState
+                title="No bookmarks yet."
+                description="Your saved links and folders appear here."
+                {...getBookmarkTreeEmptyStateProps()}
+              />
             )}
             selectedKeys={selectedKeys}
             showGuideLines="hover"
@@ -303,7 +309,7 @@ const BookmarkFileTree = ({
           </FileTree>
         </div>
       </ContextMenu.Trigger>
-      <ContextMenu.Popover>
+      <ContextMenu.Popover className={panelContextMenuClass}>
         <ContextMenu.Menu>
           <BookmarkContextMenuItems
             contextTarget={contextTarget}
@@ -316,7 +322,7 @@ const BookmarkFileTree = ({
           />
         </ContextMenu.Menu>
       </ContextMenu.Popover>
-      <ContextMenu.Popover>
+      <ContextMenu.Popover className={panelContextMenuClass}>
         <ContextMenu.Menu>
           <BrowserContextMenuItems />
         </ContextMenu.Menu>

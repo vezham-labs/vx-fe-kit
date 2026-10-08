@@ -26,6 +26,7 @@ export interface QuickAccessProps {
   }) => ReactNode
   getSectionProps: () => HTMLAttributes<HTMLElement>
   getSectionHeaderProps: () => HTMLAttributes<HTMLDivElement>
+  getSectionIconProps: (className?: string) => ComponentProps<typeof StarIcon>
   getSectionTitleProps: (
     title: string
   ) => ComponentProps<typeof Typography.Heading>

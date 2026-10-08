@@ -4,7 +4,7 @@ import { type ComponentProps, forwardRef, useMemo, useState } from 'react'
 import { Bookmark as BookmarkIcon, Star as StarIcon } from '@vezham/icons-react'
 import { ScrollShadow, Tooltip, Typography } from '@vezham/react-v3'
 
-import { useBookmarks } from '../../../../store/useBookmarks'
+import { FAVORITES_LIMIT, useBookmarks } from '../../../../store/useBookmarks'
 import { getAppPath, getOpenUrl } from '../../../../utils/url'
 import { ShortcutTooltipLabel } from '../../../shortcut-key'
 import { InfoPanelDefinition, useInfoPanel } from '../../info-panel'
@@ -15,7 +15,6 @@ import {
   dedupeTreeItems,
   getBookmarkTreeSignature,
   getExpandableBookmarkKeys,
-  getUniqueTreeId,
   insertFolderItem,
   moveTreeItemToFolder,
   removeTreeItem,
@@ -29,8 +28,9 @@ import {
   DEFAULT_FOLDER_ICON,
   createDefaultFolderForm
 } from './folder-modal/variants'
-import { useBookmarkMembership } from './membership'
+import { getBookmarkShortcuts } from './membership'
 import { QuickAccess } from './quick-access'
+import { bookmarksToTreeItems, treeItemsToBookmarks } from './tree-data'
 import {
   type BookmarkItem,
   type BookmarkTreeItem,
@@ -38,127 +38,6 @@ import {
   type Props,
   useProps
 } from './types'
-
-const getFolderPathFromBookmark = (bookmark: BookmarkItem) => {
-  if (bookmark.folderPath?.length) {
-    return bookmark.folderPath
-  }
-
-  return bookmark.folder?.split('/').filter(Boolean) ?? []
-}
-
-const createBookmarkTreeNode = (
-  bookmark: BookmarkItem,
-  counts: Map<string, number>
-): BookmarkTreeItem => ({
-  id: getUniqueTreeId(`bookmark:${bookmark.id}`, counts),
-  title: bookmark.name,
-  kind: 'bookmark',
-  bookmark: {
-    ...bookmark,
-    kind: 'bookmark',
-    children: undefined
-  }
-})
-
-const bookmarksToTreeItems = (bookmarks: BookmarkItem[]) => {
-  const treeItems: BookmarkTreeItem[] = []
-  const folderByPath = new Map<string, BookmarkTreeItem>()
-  const idCounts = new Map<string, number>()
-
-  const ensureFolder = (path: string[]) => {
-    let children = treeItems
-    let currentFolder: BookmarkTreeItem | undefined
-    let currentPath: string[] = []
-
-    path.forEach(folderName => {
-      currentPath = [...currentPath, folderName]
-      const pathKey = currentPath.join('/')
-      const existingFolder = folderByPath.get(pathKey)
-
-      if (existingFolder) {
-        currentFolder = existingFolder
-        children = existingFolder.children ?? []
-        existingFolder.children = children
-        return
-      }
-
-      const folder: BookmarkTreeItem = {
-        id: getUniqueTreeId(`folder:${pathKey}`, idCounts),
-        title: folderName,
-        kind: 'folder',
-        color: DEFAULT_FOLDER_COLOR,
-        visualType: 'icon',
-        icon: DEFAULT_FOLDER_ICON,
-        children: []
-      }
-
-      children.push(folder)
-      folderByPath.set(pathKey, folder)
-      currentFolder = folder
-      children = folder.children ?? []
-    })
-
-    return currentFolder?.children ?? treeItems
-  }
-
-  const appendBookmark = (
-    bookmark: BookmarkItem,
-    parentPath: string[] = []
-  ) => {
-    const isFolder =
-      bookmark.kind === 'folder' || Boolean(bookmark.children?.length)
-
-    if (isFolder) {
-      const folderPath = [...parentPath, bookmark.name]
-      ensureFolder(folderPath)
-      bookmark.children?.forEach(child => appendBookmark(child, folderPath))
-
-      return
-    }
-
-    const folderPath = [...parentPath, ...getFolderPathFromBookmark(bookmark)]
-    const children = ensureFolder(folderPath)
-    children.push(createBookmarkTreeNode(bookmark, idCounts))
-  }
-
-  bookmarks.forEach(bookmark => appendBookmark(bookmark))
-
-  return treeItems
-}
-
-const treeItemsToBookmarks = (items: BookmarkTreeItem[]) => {
-  const convert = (
-    node: BookmarkTreeItem,
-    folderPath: string[] = []
-  ): BookmarkItem => {
-    if (node.kind === 'bookmark' && node.bookmark) {
-      return {
-        ...node.bookmark,
-        folder: folderPath[folderPath.length - 1],
-        folderPath,
-        children: undefined
-      }
-    }
-
-    const nextPath = [...folderPath, node.title]
-
-    return {
-      id: node.id,
-      name: node.title,
-      kind: 'folder',
-      color: node.color,
-      visualType: node.visualType,
-      emoji: node.emoji,
-      icon: node.icon,
-      folder: folderPath[folderPath.length - 1],
-      folderPath,
-      children: (node.children ?? []).map(child => convert(child, nextPath))
-    }
-  }
-
-  return items.map(item => convert(item))
-}
 
 const useBookmarkItemNavigation = (
   onFavoriteClick: Props['onFavoriteClick'],
@@ -274,15 +153,9 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   )
 
   const bookmarksQuery = useBookmarks.list({})
-  const searchQuery = ''
-  const [internalBookmarks, setInternalBookmarks] = useState<BookmarkItem[]>(
-    () => bookmarksQuery.data?.bookmarks ?? []
-  )
+  const bookmarkActions = useBookmarks.actions({})
   const [showAllPinsMode, setShowAllPinsMode] = useState(false)
   const [isScrollFavoritesOpen, setIsScrollFavoritesOpen] = useState(true)
-  const [bookmarkTreeItems, setBookmarkTreeItems] = useState<
-    BookmarkTreeItem[]
-  >(() => bookmarksToTreeItems(bookmarksQuery.data?.bookmarks ?? []))
   const [folderModalOpen, setFolderModalOpen] = useState(false)
   const [folderModalMode, setFolderModalMode] = useState<'create' | 'edit'>(
     'create'
@@ -292,37 +165,23 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
     createDefaultFolderForm()
   )
 
-  const membership = useBookmarkMembership({
-    favorites: externalFavorites ?? bookmarksQuery.data.favorites,
+  const sourceFavorites = externalFavorites ?? bookmarksQuery.data.favorites
+  const visibleFavorites = useMemo(
+    () => sourceFavorites.slice(0, FAVORITES_LIMIT),
+    [sourceFavorites]
+  )
+  const membership = getBookmarkShortcuts({
+    favorites: visibleFavorites,
     pins: externalPins ?? bookmarksQuery.data.pins,
-    onFavoritesChange,
-    onPinsChange
+    onFavoritesChange: onFavoritesChange ?? bookmarkActions.setFavorites,
+    onPinsChange: onPinsChange ?? bookmarkActions.setPins
   })
   const favorites = membership.favorites
-  const bookmarks = externalBookmarks ?? internalBookmarks
-
-  const filteredFavorites = useMemo(
-    () =>
-      favorites.filter(item =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase())
-      ),
-    [favorites, searchQuery]
-  )
-
-  const filteredBookmarks = useMemo(
-    () =>
-      bookmarks.filter(item =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase())
-      ),
-    [bookmarks, searchQuery]
-  )
+  const bookmarks = externalBookmarks ?? bookmarksQuery.data.bookmarks
 
   const activeBookmarkTreeItems = useMemo(
-    () =>
-      externalBookmarks
-        ? bookmarksToTreeItems(filteredBookmarks)
-        : bookmarkTreeItems,
-    [bookmarkTreeItems, externalBookmarks, filteredBookmarks]
+    () => bookmarksToTreeItems(bookmarks),
+    [bookmarks]
   )
 
   const bookmarkTreeExpandedKeys = useMemo(
@@ -363,10 +222,8 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
     const nextItems = dedupeTreeItems(items)
     const nextBookmarks = treeItemsToBookmarks(nextItems)
 
-    setBookmarkTreeItems(nextItems)
-
     if (!externalBookmarks) {
-      setInternalBookmarks(nextBookmarks)
+      bookmarkActions.setBookmarks(nextBookmarks)
     }
 
     onBookmarksReorder?.(nextBookmarks)
@@ -434,7 +291,7 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
           <div {...getContentContainerProps()}>
             <QuickAccess
               mode="all"
-              favorites={filteredFavorites}
+              favorites={favorites}
               onUnpin={membership.unpin}
               onFavoriteRemove={membership.removeFavorite}
               onFavoritesReorder={items => {
@@ -449,6 +306,7 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
               getSectionProps={getSectionProps}
               getSectionHeaderProps={getSectionHeaderProps}
               getSectionTitleProps={getSectionTitleProps}
+              getSectionIconProps={getSectionIconProps}
               getFavorite2ItemsProps={getFavorite2ItemsProps}
               getFavoriteBackgroundImageProps={getFavoriteBackgroundImageProps}
               getFavoriteBackgroundGradientProps={
@@ -471,7 +329,7 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
           <div {...getContentContainerProps()}>
             <QuickAccess
               mode="sections"
-              favorites={filteredFavorites}
+              favorites={favorites}
               onUnpin={membership.unpin}
               onFavoriteRemove={membership.removeFavorite}
               onFavoritesReorder={items => {
@@ -486,6 +344,7 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
               getSectionProps={getSectionProps}
               getSectionHeaderProps={getSectionHeaderProps}
               getSectionTitleProps={getSectionTitleProps}
+              getSectionIconProps={getSectionIconProps}
               getFavorite2ItemsProps={getFavorite2ItemsProps}
               getFavoriteBackgroundImageProps={getFavoriteBackgroundImageProps}
               getFavoriteBackgroundGradientProps={
@@ -545,14 +404,14 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
 BookmarksContent.displayName = 'BookmarksContent'
 
 const BookmarksTrigger = () => {
-  const { activeInfoPanel, toggleInfoPanel } = useInfoPanel()
-  const isActive = activeInfoPanel === 'bookmarks'
+  const { activeInfoPanel, isOpen, toggleInfoPanel } = useInfoPanel()
+  const isActive = isOpen && activeInfoPanel === 'bookmarks'
 
   return (
     <Tooltip delay={0}>
       <Tooltip.Trigger>
         <span aria-label="Bookmarks">
-          <StarIcon
+          <BookmarkIcon
             className={isActive ? 'text-muted' : ''}
             weight={isActive ? 'filled' : 'outline'}
             size={20}

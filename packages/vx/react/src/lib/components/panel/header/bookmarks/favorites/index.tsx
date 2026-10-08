@@ -1,45 +1,84 @@
-import { useDragAndDrop } from 'react-aria-components/useDragAndDrop'
-import { useListData } from 'react-aria-components/useListData'
+import { useRef, useState } from 'react'
+import { type Key, useDragAndDrop } from 'react-aria-components'
 
 import { sampleFavorites } from './data'
 import { FavoriteGridList } from './grid-list'
 import { type FavoriteGridListProps, type FavoriteItem } from './types'
 
 type Props = Omit<FavoriteGridListProps, 'dragAndDropHooks'>
+type Draft = { source: FavoriteItem[]; items: FavoriteItem[] }
+type Drag = Draft & { keys: Set<Key>; committed: boolean }
+
+const reorder = (
+  items: FavoriteItem[],
+  keys: Set<Key>,
+  target: { key: Key; dropPosition: string }
+) => {
+  if (keys.has(target.key) || target.dropPosition === 'on') return items
+  const moved = items.filter(item => keys.has(item.id))
+  const remaining = items.filter(item => !keys.has(item.id))
+  const index = remaining.findIndex(item => item.id === target.key)
+  if (index < 0 || moved.length === 0) return items
+  remaining.splice(
+    index + (target.dropPosition === 'after' ? 1 : 0),
+    0,
+    ...moved
+  )
+  return remaining.every((item, index) => item.id === items[index].id)
+    ? items
+    : remaining
+}
 
 const ReorderableGridList = (props: Props) => {
-  const list = useListData<FavoriteItem>({
-    initialItems: props.items ?? sampleFavorites
-  })
+  const [internalItems, setInternalItems] = useState(
+    props.items ?? sampleFavorites
+  )
+  const controlled = Boolean(props.items && props.onReorder)
+  const items = controlled ? (props.items ?? internalItems) : internalItems
+  const [draft, setDraft] = useState<Draft | null>(null)
+  const drag = useRef<Drag | null>(null)
+  const displayedItems = draft?.source === items ? draft.items : items
 
-  const items = props.items && props.onReorder ? props.items : list.items
-  const { dragAndDropHooks } = useDragAndDrop({
-    getItems(_keys, items: FavoriteItem[]) {
+  const { dragAndDropHooks } = useDragAndDrop<FavoriteItem>({
+    getAllowedDropOperations: () => ['move'],
+    getItems(_keys, items) {
       return items.map(item => ({
         'text/plain': item.name,
         favorite: JSON.stringify(item)
       }))
     },
+    onDragStart(event) {
+      drag.current = {
+        source: items,
+        items,
+        keys: event.keys,
+        committed: false
+      }
+      setDraft(null)
+    },
+    onDropEnter(event) {
+      const current = drag.current
+      if (!current || event.target.type !== 'item') return
+      const next = reorder(current.items, current.keys, event.target)
+      if (next === current.items) return
+      current.items = next
+      setDraft({ source: current.source, items: next })
+    },
     onReorder(event) {
-      const moved = items.filter(item => event.keys.has(item.id))
-      const remaining = items.filter(item => !event.keys.has(item.id))
-      const target = remaining.findIndex(item => item.id === event.target.key)
-      if (target >= 0) {
-        remaining.splice(
-          target + (event.target.dropPosition === 'after' ? 1 : 0),
-          0,
-          ...moved
-        )
-        props.onReorder?.(remaining)
-      }
-      if (props.items && props.onReorder) return
-      if (event.target.dropPosition === 'before') {
-        list.moveBefore(event.target.key, event.keys)
-        return
-      }
-
-      if (event.target.dropPosition === 'after') {
-        list.moveAfter(event.target.key, event.keys)
+      const current = drag.current
+      const next = reorder(current?.items ?? items, event.keys, event.target)
+      // vx-bot/NOTE: Keep the local order visible while the store notification catches up.
+      setDraft({ source: current?.source ?? items, items: next })
+      if (current) current.committed = true
+      if (!controlled) setInternalItems(next)
+      props.onReorder?.(next)
+    },
+    onDragEnd(event) {
+      if (event.dropOperation !== 'move' || !event.isInternal) {
+        setDraft(null)
+        drag.current = null
+      } else if (drag.current?.committed) {
+        drag.current = null
       }
     }
   })
@@ -47,7 +86,7 @@ const ReorderableGridList = (props: Props) => {
   return (
     <FavoriteGridList
       {...props}
-      items={items}
+      items={displayedItems}
       dragAndDropHooks={dragAndDropHooks}
     />
   )

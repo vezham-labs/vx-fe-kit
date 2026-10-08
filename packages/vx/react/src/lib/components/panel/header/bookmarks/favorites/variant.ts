@@ -2,9 +2,10 @@ import { type VariantProps, tv } from '@vezham/react-v3'
 
 const tva = tv({
   slots: {
-    grid: '[&_.react-aria-DropIndicator[data-drop-target]]:bg-accent/10 [&_.react-aria-DropIndicator[data-drop-target]]:ring-accent relative grid w-full min-w-0 grid-cols-4 gap-2 outline-none [&_.react-aria-DropIndicator]:absolute [&_.react-aria-DropIndicator[data-drop-target]]:static [&_.react-aria-DropIndicator[data-drop-target]]:h-[var(--favorite-tile-height)] [&_.react-aria-DropIndicator[data-drop-target]]:w-full [&_.react-aria-DropIndicator[data-drop-target]]:rounded-lg [&_.react-aria-DropIndicator[data-drop-target]]:ring-2 [&_.react-aria-DropIndicator[data-drop-target]]:ring-inset',
-    item: 'group bg-default/50 hover:bg-default data-[selected]:bg-accent/10 relative flex min-w-0 cursor-grab items-center justify-center rounded-lg outline-none active:cursor-grabbing data-[focus-visible]:ring-2',
-    itemDragging: 'opacity-40',
+    grid: 'relative grid w-full min-w-0 grid-cols-4 gap-2 outline-none data-[empty]:block [&_.react-aria-DropIndicator]:absolute [&_.react-aria-DropIndicator]:size-0 [&_.react-aria-DropIndicator]:overflow-hidden',
+    item: 'group bg-default/50 hover:bg-default data-[selected]:bg-accent/10 relative flex min-w-0 items-center justify-center rounded-lg outline-none data-[focus-visible]:ring-2',
+    itemDragging:
+      'bg-accent/5 ring-accent/40 cursor-grabbing ring-1 ring-inset [&_[data-slot=favorite-tile-content]]:opacity-0',
     itemDropTarget: 'bg-accent-soft ring-accent ring-2 ring-inset',
     dragButton:
       'focus:outline-focus sr-only focus:not-sr-only focus:absolute focus:inset-0 focus:z-10 focus:rounded-lg focus:outline-2',
@@ -13,13 +14,13 @@ const tva = tv({
     overlay:
       'absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent',
     avatarContainer:
-      'flex h-full w-full items-center justify-center overflow-hidden rounded-[inherit]',
+      'pointer-events-none flex h-full w-full items-center justify-center overflow-hidden rounded-[inherit]',
     avatar: 'h-full w-full rounded-lg',
     avatarFallback: 'text-muted bg-transparent text-xs font-medium',
     avatarIcon: 'text-warning',
     content: 'absolute right-0 bottom-0 left-0',
     name: 'line-clamp-2 leading-tight text-white',
-    emptyState: 'text-default-500 text-sm'
+    emptyState: 'col-span-full w-full'
   },
   variants: {
     variant: {
@@ -67,10 +68,10 @@ const tva = tv({
     },
     isInteractive: {
       true: {
-        item: 'cursor-grab active:cursor-grabbing'
+        item: 'cursor-pointer data-[dragging]:cursor-grabbing'
       },
       false: {
-        item: 'cursor-default active:cursor-default'
+        item: 'cursor-default'
       }
     }
   },

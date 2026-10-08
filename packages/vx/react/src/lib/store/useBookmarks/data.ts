@@ -2,6 +2,13 @@ import type { BookmarkItem, BookmarksResponse, FavoriteItem } from './types'
 
 export const sampleFavorites: FavoriteItem[] = [
   {
+    id: 'favorite-all-classes',
+    name: 'All Classes',
+    url: '/academic/classes/allclasses'
+  },
+  { id: 'favorite-operations', name: 'Operations', url: '/operations' },
+  { id: 'favorite-hello-world', name: 'Hello World', url: '/hello-world' },
+  {
     id: '1',
     name: 'HeroUI v3',
     url: 'https://v3.heroui.com',
@@ -86,6 +93,13 @@ export const sampleFavorites: FavoriteItem[] = [
 
 export const samplePins: FavoriteItem[] = [
   {
+    id: 'pin-all-classes',
+    name: 'All Classes',
+    url: '/academic/classes/allclasses'
+  },
+  { id: 'pin-operations', name: 'Operations', url: '/operations' },
+  { id: 'pin-hello-world', name: 'Hello World', url: '/hello-world' },
+  {
     id: 'pin-classes',
     name: 'Classes',
     url: '/academic/classes',
@@ -132,6 +146,13 @@ export const samplePins: FavoriteItem[] = [
 ]
 
 const sampleBookmarks: BookmarkItem[] = [
+  {
+    id: 'bookmark-all-classes',
+    name: 'All Classes',
+    url: '/academic/classes/allclasses'
+  },
+  { id: 'bookmark-operations', name: 'Operations', url: '/operations' },
+  { id: 'bookmark-hello-world', name: 'Hello World', url: '/hello-world' },
   {
     id: 'b1',
     name: 'HeroUI v3 Docs',

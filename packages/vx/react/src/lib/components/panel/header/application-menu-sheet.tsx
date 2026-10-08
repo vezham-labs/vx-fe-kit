@@ -4,8 +4,8 @@ import {
   AltArrowLeft,
   AltArrowRight,
   Archive,
-  SidebarMinimalistic,
-  Star
+  Bookmark,
+  SidebarMinimalistic
 } from '@vezham/icons-react'
 import { Button, Separator } from '@vezham/react-v3'
 
@@ -47,7 +47,7 @@ export const ApplicationMenuSheet = ({
   showStorage
 }: Props) => {
   const appMenu = useAppMenu()
-  const { toggleInfoPanel } = useInfoPanel()
+  const { toggleInfoPanel, activeInfoPanel, isOpen: panelOpen } = useInfoPanel()
   const [menuKey, setMenuKey] = useState<string | null>(null)
   const menu = appMenu?.items.find(item => item.key === menuKey)
   const close = () => {
@@ -157,7 +157,15 @@ export const ApplicationMenuSheet = ({
                   close()
                   toggleInfoPanel('bookmarks')
                 }}>
-                <Star size={18} aria-hidden="true" />
+                <Bookmark
+                  size={18}
+                  weight={
+                    panelOpen && activeInfoPanel === 'bookmarks'
+                      ? 'filled'
+                      : 'outline'
+                  }
+                  aria-hidden="true"
+                />
                 <span className="flex-1">Bookmarks</span>
                 <ShortcutKey shortcut="Mod ⇧ B" />
               </Button>

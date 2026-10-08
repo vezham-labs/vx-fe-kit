@@ -3,10 +3,13 @@ import {
   AltArrowUp as AltArrowUpIcon,
   ArrowLeft as ArrowLeftIcon,
   Eye as EyeIcon,
+  Heart,
+  MinusCircle,
   Pin
 } from '@vezham/icons-react'
 import { Avatar, Button, ScrollShadow, Typography } from '@vezham/react-v3'
 
+import { BookmarkSectionEmptyState } from '../empty-state'
 import { ReorderableGridList } from '../favorites'
 import { ShortcutContextMenu } from '../shortcut-context-menu'
 import { type QuickAccessProps } from './types'
@@ -25,6 +28,7 @@ const QuickAccess = ({
   getSectionProps,
   getSectionHeaderProps,
   getSectionTitleProps,
+  getSectionIconProps,
   getFavorite2ItemsProps,
   getFavoriteBackgroundImageProps,
   getFavoriteBackgroundGradientProps,
@@ -60,15 +64,20 @@ const QuickAccess = ({
           </div>
         </div>
         {pins.length === 0 && (
-          <p className="text-muted text-sm">No pins yet.</p>
+          <BookmarkSectionEmptyState
+            title="No pins yet."
+            description="Keep useful items within easy reach."
+          />
         )}
         <div className="space-y-1">
           {pins.map(item => (
-            <div key={item.id} className="group flex items-center gap-1">
+            <div
+              key={item.id}
+              className="group hover:bg-default has-[:focus-visible]:bg-default relative flex w-full min-w-0 items-center rounded-md">
               <button
                 type="button"
                 onClick={() => onFavoriteClick(item.url, item)}
-                className="hover:bg-default focus-visible:bg-default focus-visible:ring-focus flex w-full cursor-[var(--cursor-interactive)] items-center gap-3 rounded-2xl px-2 py-2 text-left outline-none focus-visible:ring-2">
+                className="focus-visible:ring-focus flex w-full min-w-0 cursor-[var(--cursor-interactive)] items-center gap-3 rounded-md px-2 py-2 text-left outline-none group-hover:pe-10 group-has-[:focus-visible]:pe-10 focus-visible:ring-2 focus-visible:ring-inset [@media(hover:none)]:pe-10">
                 <Avatar className="h-5 w-5 shrink-0">
                   {item.avatar ? (
                     <Avatar.Image src={item.avatar} alt={item.name} />
@@ -99,9 +108,10 @@ const QuickAccess = ({
                 isIconOnly
                 size="sm"
                 variant="ghost"
+                className="text-muted hover:text-danger data-[hovered=true]:text-danger pointer-events-none absolute end-1 size-7 min-w-0 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100 group-has-[:focus-visible]:pointer-events-auto group-has-[:focus-visible]:opacity-100 hover:bg-transparent data-[hovered=true]:bg-transparent [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100"
                 aria-label={`Unpin ${item.name} from Quick Access`}
                 onPress={() => onUnpin(item.id)}>
-                <Pin size={16} aria-hidden="true" />
+                <MinusCircle size={16} aria-hidden="true" />
               </Button>
             </div>
           ))}
@@ -204,6 +214,11 @@ const QuickAccess = ({
     <>
       <section {...getSectionProps()}>
         <div {...getSectionHeaderProps()}>
+          <Heart
+            {...getSectionIconProps('text-primary')}
+            weight="filled"
+            aria-hidden="true"
+          />
           <Typography.Heading {...getSectionTitleProps('Favorites')} />
         </div>
 
@@ -218,37 +233,47 @@ const QuickAccess = ({
       <section {...getSectionProps()}>
         <div {...getSectionHeaderProps()}>
           <div className="flex flex-1 items-center gap-2">
+            <Pin
+              {...getSectionIconProps('text-primary')}
+              weight="filled"
+              aria-hidden="true"
+            />
             <Typography.Heading {...getSectionTitleProps('Quick Access')} />
           </div>
-          <div className="flex items-center gap-2">
-            <Button
-              aria-label={
-                isScrollFavoritesOpen
-                  ? 'Collapse quick access'
-                  : 'Expand quick access'
-              }
-              isIconOnly
-              size="sm"
-              variant="ghost"
-              onPress={onToggleScrollFavorites}
-              className="text-default-400">
-              {isScrollFavoritesOpen ? (
-                <AltArrowUpIcon size={18} aria-hidden="true" />
-              ) : (
-                <AltArrowDownIcon size={18} aria-hidden="true" />
-              )}
-            </Button>
-          </div>
+          {pins.length > 0 && (
+            <div className="flex items-center gap-2">
+              <Button
+                aria-label={
+                  isScrollFavoritesOpen
+                    ? 'Collapse quick access'
+                    : 'Expand quick access'
+                }
+                isIconOnly
+                size="sm"
+                variant="ghost"
+                onPress={onToggleScrollFavorites}
+                className="text-default-400">
+                {isScrollFavoritesOpen ? (
+                  <AltArrowUpIcon size={18} aria-hidden="true" />
+                ) : (
+                  <AltArrowDownIcon size={18} aria-hidden="true" />
+                )}
+              </Button>
+            </div>
+          )}
         </div>
 
-        {isScrollFavoritesOpen && (
+        {(isScrollFavoritesOpen || pins.length === 0) && (
           <ShortcutContextMenu items={pins} kind="pin" onRemove={onUnpin}>
             <ScrollShadow
               orientation="horizontal"
               className="max-w-full overflow-x-auto pb-2"
               hideScrollBar={false}>
               {pins.length === 0 ? (
-                <p className="text-muted py-3 text-sm">No pins yet.</p>
+                <BookmarkSectionEmptyState
+                  title="No pins yet."
+                  description="Keep useful items within easy reach."
+                />
               ) : (
                 renderPinsForScroll()
               )}

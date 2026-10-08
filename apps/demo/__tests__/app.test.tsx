@@ -1,5 +1,6 @@
 import { RouterProvider, createMemoryHistory } from '@tanstack/react-router'
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -22,7 +23,7 @@ const renderApp = async (path = '/') => {
   })
 
   await router.load()
-  return render(<RouterProvider router={router} />)
+  return { ...render(<RouterProvider router={router} />), router }
 }
 
 describe('App', () => {
@@ -52,6 +53,28 @@ describe('App', () => {
     await waitFor(() =>
       expect(baseElement.querySelector('.vx-app')).toBeTruthy()
     )
+  })
+
+  it('keeps the info panel mounted when navigating to an unknown page and back', async () => {
+    window.localStorage.setItem(
+      'vx-app:info-panel',
+      JSON.stringify({ activeInfoPanel: 'bookmarks', isOpen: true })
+    )
+    const { baseElement, router } = await renderApp(
+      '/academic/classes/allclasses'
+    )
+    await screen.findByRole('tab', { name: 'All Classes' })
+    const panel = baseElement.querySelector('[data-vx="info-panel"]')
+    expect(panel).toBeTruthy()
+
+    await act(() => router.navigate({ to: '/operations' }))
+    expect(router.state.location.pathname).toBe('/operations')
+    expect(baseElement.querySelector('[data-vx="info-panel"]')).toBe(panel)
+
+    await act(() => router.navigate({ to: '/academic/classes/allclasses' }))
+    await screen.findByRole('tab', { name: 'All Classes' })
+    expect(baseElement.querySelector('[data-vx="info-panel"]')).toBe(panel)
+    window.localStorage.removeItem('vx-app:info-panel')
   })
 
   it('loads child menus as tabs and navigates between them', async () => {

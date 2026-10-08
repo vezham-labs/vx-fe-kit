@@ -3,9 +3,9 @@ import { type ReactElement, useCallback, useState } from 'react'
 import {
   AltArrowDown as AltArrowDownIcon,
   Archive as ArchiveIcon,
+  Bookmark as BookmarkIcon,
   Magnifier as MagnifierIcon,
-  SidebarMinimalistic as SidebarMinimalisticIcon,
-  Star as StarIcon
+  SidebarMinimalistic as SidebarMinimalisticIcon
 } from '@vezham/icons-react'
 import {
   Avatar,
@@ -354,7 +354,7 @@ const HeaderPanelMenuItems = ({
   showStorage: boolean
   onClose: () => void
 }) => {
-  const { toggleInfoPanel } = useInfoPanel()
+  const { toggleInfoPanel, activeInfoPanel, isOpen } = useInfoPanel()
 
   return (
     <>
@@ -368,7 +368,13 @@ const HeaderPanelMenuItems = ({
             onClose()
             toggleInfoPanel('bookmarks')
           }}>
-          <StarIcon size={18} aria-hidden="true" />
+          <BookmarkIcon
+            size={18}
+            weight={
+              isOpen && activeInfoPanel === 'bookmarks' ? 'filled' : 'outline'
+            }
+            aria-hidden="true"
+          />
           <Label>Bookmarks</Label>
           <ShortcutKey className="ms-auto" shortcut="Mod ⇧ B" />
         </Dropdown.Item>
