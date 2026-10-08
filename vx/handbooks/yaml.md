@@ -15,7 +15,7 @@ Link the editor schema with a first-line comment:
 `&name` names a value; `*name` reuses it later in the same file:
 
 ```yaml
-items:
+navigation:
   - key: academic
     title: Academic
     toolbar: &sectionToolbar

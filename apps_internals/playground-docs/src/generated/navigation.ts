@@ -16,8 +16,7 @@ export const controlCenter = {
     {
       "id": "language",
       "type": "language",
-      "span": "wide",
-      "title": "Language"
+      "span": "wide"
     },
     {
       "id": "appearance",

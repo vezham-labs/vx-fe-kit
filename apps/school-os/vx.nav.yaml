@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=../../vx/schemas/vx.nav.json
-items:
+navigation:
   - key: home
     icon: vx:home
     iconActive: vx:home-filled

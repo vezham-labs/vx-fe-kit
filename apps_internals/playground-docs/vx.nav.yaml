@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=../../vx/schemas/vx.nav.json
-items: []
+navigation: []
 
 controlCenter:
   tiles:
@@ -9,7 +9,6 @@ controlCenter:
     - id: language
       type: language
       span: wide
-      title: Language
     - id: appearance
       type: appearance-toggle
       span: wide

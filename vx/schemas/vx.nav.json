@@ -4,9 +4,9 @@
   "title": "Vx navigation configuration",
   "type": "object",
   "additionalProperties": false,
-  "required": ["items"],
+  "required": ["navigation"],
   "properties": {
-    "items": {
+    "navigation": {
       "type": "array",
       "items": {
         "$ref": "#/definitions/item"

@@ -38,7 +38,7 @@ the selected name and color. Apps only register the shared tile and panel.
 
 `DirectionTile` and `DirectionSettings` select LTR or
 RTL and update `html[dir]`. `DocumentLanguageTile` and
-`DocumentLanguageSettings` accept `context.languageOptions` and
+`DocumentLanguageSettings` accept generated `i18n` configuration and
 update `html[lang]`. This document language control does not translate app copy
 or navigate locale routes; use the app language adapter below for those actions.
 
@@ -60,12 +60,13 @@ to replace that default with an app-specific registry and adapters. The current
 implementation and its props use the canonical `ControlCenter` and
 `ControlCenterProps` names; the temporary `ControlCenter2` names are removed.
 
-`AppLayout` forwards the same `controlCenter` element through both desktop and
-mobile navigation to the footer. The demo supplies `ConfiguredControlCenter` directly from its root layout, with
-appearance controls plus Direction, Theme, and Language detail panels. It passes
-`context={{ i18n: vxI18n }}` from generated metadata; `@vx/react` creates the
-language labels and uses the configured default language. No app wrapper or
-hardcoded language options are needed.
+`AppLayout` accepts generated configuration as `controlCenter={controlCenter}`
+and language configuration as `i18n={vxI18n}`. It creates the shared
+`ConfiguredControlCenter` and forwards it through desktop and mobile navigation.
+Use `controlCenterSlot` when supplying a custom React element. The shared package
+creates language labels and uses the configured default language; no app wrapper
+or hardcoded language options are needed. See [App layout](./app-layout.md) for
+props, Settings routing, and complete app examples.
 
 ## UI review controls
 
@@ -110,9 +111,9 @@ controlCenter:
 ```
 
 Metadata generation exports `controlCenter` from `src/generated/navigation.ts`.
-Pass it to `ConfiguredControlCenter`. Built-in tiles and their panels are resolved
+Pass it to `AppLayout` as `controlCenter`, or to `ConfiguredControlCenter` as `config`. Built-in tiles and their panels are resolved
 inside React; the app supplies adapters only when needed. The `language` type
-uses `context.language` for routed languages, or `context.languageOptions` to
+uses `context.language` for routed languages, or `context.i18n` to
 update the HTML language attribute (English by default).
 
 ```tsx

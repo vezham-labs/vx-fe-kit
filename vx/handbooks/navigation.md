@@ -2,14 +2,16 @@
 
 Each app using the shared shell owns `vx.nav.yaml` at its root. It defines
 ordered menu items and nested sidebar or route-tab destinations. Routes and
-React callbacks remain in application code.
+React callbacks remain in application code. The required top-level `navigation`
+array holds visible destinations; optional `appMenu` and `controlCenter` configure
+the other shell controls. The filename remains `vx.nav.yaml`.
 
 See the [YAML handbook](./yaml.md) for syntax, schema comments, anchors, and
 aliases, including how they differ from navigation inheritance.
 
 ```yaml
 # yaml-language-server: $schema=../../vx/schemas/vx.nav.json
-items:
+navigation:
   - key: home
     title: Home
     href: /
@@ -23,7 +25,7 @@ Array order determines presentation order. A group may omit `href`.
 
 ## Application menu
 
-`appMenu` is a top-level array, separate from route `items` and toolbar actions.
+`appMenu` is a top-level array, separate from `navigation` and toolbar actions.
 Each menu has a `key`, `label`, optional `icon`, and `groups` of actions. Each
 non-empty group is separated visually. Actions have a globally unique `key`,
 `label`, optional `icon`, and optional `shortcut` display string.
@@ -181,3 +183,6 @@ callback and `isDockHidden` state. Hide Dock is available on every desktop
 destination. The Home dock has independent collapse state. Existing workspace
 collapse state still controls the dock alongside section navigation outside
 Home. Keep section sidebar controls labeled **Show Sidebar** / **Hide Sidebar**.
+
+For root shell composition, optional Settings routing, and Control Center props,
+see [App layout](./ui/app-layout.md).

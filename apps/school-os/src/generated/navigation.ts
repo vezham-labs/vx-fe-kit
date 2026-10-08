@@ -1,5 +1,6 @@
 // Generated from vx.nav.yaml. DO NOT EDIT.
 import type { AppNavigationItem, AppMenuItem } from '@vx/react'
+import type { ControlCenterConfig } from '@vx/react/control-center'
 
 export const navigationItems = [
   {
@@ -871,8 +872,13 @@ export const appMenu = [
   }
 ] satisfies AppMenuItem[]
 
+export const controlCenter = {
+  "tiles": []
+} satisfies ControlCenterConfig
+
 export const getNavigationChildren = (key: string) => {
-  const item = navigationItems.find(item => item.key === key)
+  const items: readonly AppNavigationItem[] = navigationItems
+  const item = items.find(item => item.key === key)
   if (!item) {
     throw new Error('Unknown navigation key: ' + key)
   }
