@@ -2,7 +2,7 @@ import { type VariantProps, tv } from '@vezham/react-v3'
 
 const tva = tv({
   slots: {
-    grid: '[&_.react-aria-DropIndicator[data-drop-target]]:bg-accent/10 [&_.react-aria-DropIndicator[data-drop-target]]:ring-accent relative grid grid-cols-4 gap-2 outline-none [&_.react-aria-DropIndicator]:absolute [&_.react-aria-DropIndicator[data-drop-target]]:static [&_.react-aria-DropIndicator[data-drop-target]]:h-[var(--favorite-tile-height)] [&_.react-aria-DropIndicator[data-drop-target]]:w-full [&_.react-aria-DropIndicator[data-drop-target]]:rounded-lg [&_.react-aria-DropIndicator[data-drop-target]]:ring-2 [&_.react-aria-DropIndicator[data-drop-target]]:ring-inset',
+    grid: '[&_.react-aria-DropIndicator[data-drop-target]]:bg-accent/10 [&_.react-aria-DropIndicator[data-drop-target]]:ring-accent relative grid w-full min-w-0 grid-cols-4 gap-2 outline-none [&_.react-aria-DropIndicator]:absolute [&_.react-aria-DropIndicator[data-drop-target]]:static [&_.react-aria-DropIndicator[data-drop-target]]:h-[var(--favorite-tile-height)] [&_.react-aria-DropIndicator[data-drop-target]]:w-full [&_.react-aria-DropIndicator[data-drop-target]]:rounded-lg [&_.react-aria-DropIndicator[data-drop-target]]:ring-2 [&_.react-aria-DropIndicator[data-drop-target]]:ring-inset',
     item: 'group bg-default/50 hover:bg-default data-[selected]:bg-accent/10 relative flex min-w-0 cursor-grab items-center justify-center rounded-lg outline-none active:cursor-grabbing data-[focus-visible]:ring-2',
     itemDragging: 'opacity-40',
     itemDropTarget: 'bg-accent-soft ring-accent ring-2 ring-inset',

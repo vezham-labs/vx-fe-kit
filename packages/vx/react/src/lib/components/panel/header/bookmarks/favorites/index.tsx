@@ -12,6 +12,7 @@ const ReorderableGridList = (props: Props) => {
     initialItems: props.items ?? sampleFavorites
   })
 
+  const items = props.items && props.onReorder ? props.items : list.items
   const { dragAndDropHooks } = useDragAndDrop({
     getItems(_keys, items: FavoriteItem[]) {
       return items.map(item => ({
@@ -20,6 +21,18 @@ const ReorderableGridList = (props: Props) => {
       }))
     },
     onReorder(event) {
+      const moved = items.filter(item => event.keys.has(item.id))
+      const remaining = items.filter(item => !event.keys.has(item.id))
+      const target = remaining.findIndex(item => item.id === event.target.key)
+      if (target >= 0) {
+        remaining.splice(
+          target + (event.target.dropPosition === 'after' ? 1 : 0),
+          0,
+          ...moved
+        )
+        props.onReorder?.(remaining)
+      }
+      if (props.items && props.onReorder) return
       if (event.target.dropPosition === 'before') {
         list.moveBefore(event.target.key, event.keys)
         return
@@ -34,7 +47,7 @@ const ReorderableGridList = (props: Props) => {
   return (
     <FavoriteGridList
       {...props}
-      items={list.items}
+      items={items}
       dragAndDropHooks={dragAndDropHooks}
     />
   )

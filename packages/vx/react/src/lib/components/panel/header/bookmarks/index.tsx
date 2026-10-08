@@ -29,8 +29,8 @@ import {
   DEFAULT_FOLDER_ICON,
   createDefaultFolderForm
 } from './folder-modal/variants'
+import { useBookmarkMembership } from './membership'
 import { QuickAccess } from './quick-access'
-import { getFavoriteIds, orderFavorites } from './quick-access/variants'
 import {
   type BookmarkItem,
   type BookmarkTreeItem,
@@ -255,9 +255,13 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
     getBookmarkTreeEmptyStateProps,
     externalFavorites,
     externalBookmarks,
+    externalPins,
     onFavoriteClick,
     onBookmarkClick,
     renderFavoriteItem,
+    onFavoritesChange,
+    onPinsChange,
+    onFavoritesReorder,
     onBookmarksReorder,
     onFolderReorder
   } = useProps({
@@ -274,7 +278,7 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const [internalBookmarks, setInternalBookmarks] = useState<BookmarkItem[]>(
     () => bookmarksQuery.data?.bookmarks ?? []
   )
-  const [showAllFavoritesMode, setShowAllFavoritesMode] = useState(false)
+  const [showAllPinsMode, setShowAllPinsMode] = useState(false)
   const [isScrollFavoritesOpen, setIsScrollFavoritesOpen] = useState(true)
   const [bookmarkTreeItems, setBookmarkTreeItems] = useState<
     BookmarkTreeItem[]
@@ -288,7 +292,13 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
     createDefaultFolderForm()
   )
 
-  const favorites = externalFavorites ?? bookmarksQuery.data.favorites
+  const membership = useBookmarkMembership({
+    favorites: externalFavorites ?? bookmarksQuery.data.favorites,
+    pins: externalPins ?? bookmarksQuery.data.pins,
+    onFavoritesChange,
+    onPinsChange
+  })
+  const favorites = membership.favorites
   const bookmarks = externalBookmarks ?? internalBookmarks
 
   const filteredFavorites = useMemo(
@@ -325,26 +335,20 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
     [activeBookmarkTreeItems]
   )
 
-  // vx-bot/NOTE: Keep the Favorites grid independent from Quick Access order.
-  const quickAccessOrderIds = getFavoriteIds(favorites)
-  const quickAccessFavorites = orderFavorites(
-    filteredFavorites,
-    quickAccessOrderIds
-  )
-  const scrollFavorites = quickAccessFavorites.slice(0, 6)
-  const hasMoreFavorites = quickAccessFavorites.length > 6
-  const hasFavorites = filteredFavorites.length > 0
+  const pins = membership.pins
+  const visiblePins = pins.slice(0, 6)
+  const hasMorePins = pins.length > 6
   const getFavoriteAvatarIconPropsForIcon =
     getFavoriteAvatarIconProps as unknown as () => ComponentProps<
       typeof StarIcon
     >
 
-  const handleViewAllFavorites = () => {
-    setShowAllFavoritesMode(true)
+  const handleViewAllPins = () => {
+    setShowAllPinsMode(true)
   }
 
   const handleBackToNormalView = () => {
-    setShowAllFavoritesMode(false)
+    setShowAllPinsMode(false)
   }
 
   const toggleScrollFavorites = () => {
@@ -426,13 +430,20 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   return (
     <Component className="h-full min-h-0">
       <ScrollShadow {...getScrollShadowProps()}>
-        {showAllFavoritesMode ? (
+        {showAllPinsMode ? (
           <div {...getContentContainerProps()}>
             <QuickAccess
               mode="all"
-              quickAccessFavorites={quickAccessFavorites}
-              scrollFavorites={scrollFavorites}
-              hasMoreFavorites={hasMoreFavorites}
+              favorites={filteredFavorites}
+              onUnpin={membership.unpin}
+              onFavoriteRemove={membership.removeFavorite}
+              onFavoritesReorder={items => {
+                membership.reorderFavorites(items)
+                onFavoritesReorder?.(items)
+              }}
+              pins={pins}
+              visiblePins={visiblePins}
+              hasMorePins={hasMorePins}
               isScrollFavoritesOpen={isScrollFavoritesOpen}
               renderFavoriteItem={renderFavoriteItem}
               getSectionProps={getSectionProps}
@@ -451,46 +462,47 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
               getFavoriteContentProps={getFavoriteContentProps}
               getFavoriteNameProps={getFavoriteNameProps}
               onFavoriteClick={openFavorite}
-              onViewAllFavorites={handleViewAllFavorites}
+              onViewAllPins={handleViewAllPins}
               onBackToNormalView={handleBackToNormalView}
               onToggleScrollFavorites={toggleScrollFavorites}
             />
           </div>
         ) : (
           <div {...getContentContainerProps()}>
-            {hasFavorites && (
-              <QuickAccess
-                mode="sections"
-                quickAccessFavorites={quickAccessFavorites}
-                scrollFavorites={scrollFavorites}
-                hasMoreFavorites={hasMoreFavorites}
-                isScrollFavoritesOpen={isScrollFavoritesOpen}
-                renderFavoriteItem={renderFavoriteItem}
-                getSectionProps={getSectionProps}
-                getSectionHeaderProps={getSectionHeaderProps}
-                getSectionTitleProps={getSectionTitleProps}
-                getFavorite2ItemsProps={getFavorite2ItemsProps}
-                getFavoriteBackgroundImageProps={
-                  getFavoriteBackgroundImageProps
-                }
-                getFavoriteBackgroundGradientProps={
-                  getFavoriteBackgroundGradientProps
-                }
-                getFavoriteOverlayProps={getFavoriteOverlayProps}
-                getFavoriteAvatarContainerProps={
-                  getFavoriteAvatarContainerProps
-                }
-                getFavoriteAvatarProps={getFavoriteAvatarProps}
-                getFavoriteAvatarIconProps={getFavoriteAvatarIconPropsForIcon}
-                getFavoriteAvatarFallbackProps={getFavoriteAvatarFallbackProps}
-                getFavoriteContentProps={getFavoriteContentProps}
-                getFavoriteNameProps={getFavoriteNameProps}
-                onFavoriteClick={openFavorite}
-                onViewAllFavorites={handleViewAllFavorites}
-                onBackToNormalView={handleBackToNormalView}
-                onToggleScrollFavorites={toggleScrollFavorites}
-              />
-            )}
+            <QuickAccess
+              mode="sections"
+              favorites={filteredFavorites}
+              onUnpin={membership.unpin}
+              onFavoriteRemove={membership.removeFavorite}
+              onFavoritesReorder={items => {
+                membership.reorderFavorites(items)
+                onFavoritesReorder?.(items)
+              }}
+              pins={pins}
+              visiblePins={visiblePins}
+              hasMorePins={hasMorePins}
+              isScrollFavoritesOpen={isScrollFavoritesOpen}
+              renderFavoriteItem={renderFavoriteItem}
+              getSectionProps={getSectionProps}
+              getSectionHeaderProps={getSectionHeaderProps}
+              getSectionTitleProps={getSectionTitleProps}
+              getFavorite2ItemsProps={getFavorite2ItemsProps}
+              getFavoriteBackgroundImageProps={getFavoriteBackgroundImageProps}
+              getFavoriteBackgroundGradientProps={
+                getFavoriteBackgroundGradientProps
+              }
+              getFavoriteOverlayProps={getFavoriteOverlayProps}
+              getFavoriteAvatarContainerProps={getFavoriteAvatarContainerProps}
+              getFavoriteAvatarProps={getFavoriteAvatarProps}
+              getFavoriteAvatarIconProps={getFavoriteAvatarIconPropsForIcon}
+              getFavoriteAvatarFallbackProps={getFavoriteAvatarFallbackProps}
+              getFavoriteContentProps={getFavoriteContentProps}
+              getFavoriteNameProps={getFavoriteNameProps}
+              onFavoriteClick={openFavorite}
+              onViewAllPins={handleViewAllPins}
+              onBackToNormalView={handleBackToNormalView}
+              onToggleScrollFavorites={toggleScrollFavorites}
+            />
             <section {...getSectionProps()}>
               <div {...getSectionHeaderProps()}>
                 <BookmarkIcon

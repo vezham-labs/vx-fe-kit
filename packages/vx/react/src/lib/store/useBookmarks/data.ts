@@ -71,7 +71,64 @@ export const sampleFavorites: FavoriteItem[] = [
     id: '11',
     name: 'Project notes',
     url: ''
+  },
+  {
+    id: '12',
+    name: 'Project notes',
+    url: ''
+  },
+  {
+    id: '13',
+    name: 'Project notes',
+    url: ''
   }
+]
+
+export const samplePins: FavoriteItem[] = [
+  {
+    id: 'pin-classes',
+    name: 'Classes',
+    url: '/academic/classes',
+    backgroundImage:
+      'https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/docs/robot1.jpeg'
+  },
+  {
+    id: 'pin-projects',
+    name: 'Project overview',
+    url: '/workspace/projects/overview',
+    backgroundImage:
+      'https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/docs/avocado.jpeg'
+  },
+  {
+    id: 'pin-board',
+    name: 'Design board',
+    url: 'https://miro.com',
+    backgroundImage:
+      'https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/docs/oranges.jpeg'
+  },
+  {
+    id: 'pin-review',
+    name: 'Design review',
+    url: 'https://figma.com',
+    backgroundImage:
+      'https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/docs/neo1.jpeg'
+  },
+  {
+    id: 'pin-docs',
+    name: 'Reference docs',
+    url: 'https://v3.heroui.com/docs',
+    avatar:
+      'https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/blue.jpg'
+  },
+  {
+    id: 'pin-activity',
+    name: 'Project activity',
+    url: '/workspace/projects/activity',
+    avatar:
+      'https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/green.jpg'
+  },
+  { id: 'pin-notes', name: 'Meeting notes', url: '' },
+  { id: 'pin-reading', name: 'Reading queue', url: '' }
 ]
 
 const sampleBookmarks: BookmarkItem[] = [
@@ -142,5 +199,6 @@ const sampleBookmarks: BookmarkItem[] = [
 
 export const bookmarksData: BookmarksResponse = {
   favorites: sampleFavorites,
+  pins: samplePins,
   bookmarks: sampleBookmarks
 }

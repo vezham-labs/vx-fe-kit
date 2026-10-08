@@ -12,9 +12,13 @@ import { type FavoriteItem } from '../types'
 
 export interface QuickAccessProps {
   mode: 'sections' | 'all'
-  quickAccessFavorites: FavoriteItem[]
-  scrollFavorites: FavoriteItem[]
-  hasMoreFavorites: boolean
+  favorites: FavoriteItem[]
+  onUnpin: (id: string) => void
+  onFavoriteRemove: (id: string) => void
+  onFavoritesReorder: (items: FavoriteItem[]) => void
+  pins: FavoriteItem[]
+  visiblePins: FavoriteItem[]
+  hasMorePins: boolean
   isScrollFavoritesOpen: boolean
   renderFavoriteItem?: (props: {
     item: FavoriteItem
@@ -43,7 +47,7 @@ export interface QuickAccessProps {
     name: string
   ) => ComponentProps<typeof Typography.Paragraph>
   onFavoriteClick: (url: string, item: FavoriteItem) => void
-  onViewAllFavorites: () => void
+  onViewAllPins: () => void
   onBackToNormalView: () => void
   onToggleScrollFavorites: () => void
 }

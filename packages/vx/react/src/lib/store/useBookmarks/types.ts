@@ -13,6 +13,7 @@ export interface BookmarkItem {
   name: string
   url?: string
   avatar?: string
+  backgroundImage?: string
   icon?: string
   color?: string
   visualType?: 'emoji' | 'icon'
@@ -25,5 +26,6 @@ export interface BookmarkItem {
 
 export type BookmarksResponse = {
   favorites: FavoriteItem[]
+  pins: FavoriteItem[]
   bookmarks: BookmarkItem[]
 }
