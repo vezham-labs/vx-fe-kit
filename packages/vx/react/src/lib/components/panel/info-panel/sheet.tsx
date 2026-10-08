@@ -70,7 +70,7 @@ export const InfoPanelSheet = ({
                 />
               </Sheet.Header>
               <Sheet.Body
-                className={`${panelBodyClass} pb-[max(1rem,env(safe-area-inset-bottom))] ${panel.scrollable === false ? 'overflow-hidden' : 'overflow-y-auto overscroll-contain'}`}>
+                className={`${panelBodyClass} @container/info-panel pb-[max(1rem,env(safe-area-inset-bottom))] ${panel.scrollable === false ? 'overflow-hidden' : 'overflow-y-auto overscroll-contain'}`}>
                 {panel.content}
               </Sheet.Body>
             </Surface>

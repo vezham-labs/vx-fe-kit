@@ -15,7 +15,7 @@ const tva = tv({
     empty_title: 'text-xl font-semibold',
     empty_description: 'text-default-500 max-w-[220px]',
 
-    content_container: 'space-y-2 pb-6',
+    content_container: 'space-y-2 pb-6 @min-[24rem]/info-panel:space-y-6',
 
     section: '',
     section_header: 'my-3 flex items-center gap-2',

@@ -1,6 +1,6 @@
 import { type DragEvent, type ReactNode, useId, useState } from 'react'
 
-import { AltArrowLeft, Settings } from '@vezham/icons-react'
+import { AltArrowLeft, Minus, Settings } from '@vezham/icons-react'
 import { Button, Input, Surface, TextField, Tooltip } from '@vezham/react-v3'
 
 import type { EditorState } from '../../components/panel/footer/control-center/editor'
@@ -288,19 +288,7 @@ const GalleryPreview = ({
                     className="text-muted absolute -top-2 -left-2 z-10 size-6 min-w-0 rounded-full p-0"
                     aria-label={`Remove ${tile.label}`}
                     onPress={() => editor.onVisibilityChange(tile.id, false)}>
-                    <svg
-                      aria-hidden="true"
-                      width="14"
-                      height="14"
-                      viewBox="0 0 16 16"
-                      fill="none">
-                      <path
-                        d="M4 8h8"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                      />
-                    </svg>
+                    <Minus aria-hidden="true" className="size-3.5" />
                   </Button>
                   <Tooltip.Content>Remove {tile.label}</Tooltip.Content>
                 </Tooltip>

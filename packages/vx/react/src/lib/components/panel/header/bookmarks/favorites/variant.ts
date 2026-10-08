@@ -2,7 +2,7 @@ import { type VariantProps, tv } from '@vezham/react-v3'
 
 const tva = tv({
   slots: {
-    grid: 'relative grid w-full min-w-0 grid-cols-4 gap-2 outline-none data-[empty]:block [&_.react-aria-DropIndicator]:absolute [&_.react-aria-DropIndicator]:size-0 [&_.react-aria-DropIndicator]:overflow-hidden',
+    grid: 'relative grid w-full min-w-0 grid-cols-4 gap-2 outline-none data-[empty]:block @min-[24rem]/info-panel:grid-cols-[repeat(auto-fill,minmax(4rem,1fr))] [&_.react-aria-DropIndicator]:absolute [&_.react-aria-DropIndicator]:size-0 [&_.react-aria-DropIndicator]:overflow-hidden',
     item: 'group bg-default/50 hover:bg-default data-[selected]:bg-accent/10 relative flex min-w-0 items-center justify-center rounded-lg outline-none data-[focus-visible]:ring-2',
     itemDragging:
       'bg-accent/5 ring-accent/40 cursor-grabbing ring-1 ring-inset [&_[data-slot=favorite-tile-content]]:opacity-0',

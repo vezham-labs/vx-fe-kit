@@ -85,6 +85,7 @@ const FavoriteGridList = ({
                     {(item.avatar || item.backgroundImage) && (
                       <Avatar.Image
                         draggable={false}
+                        className="h-full w-full object-cover"
                         src={item.avatar || item.backgroundImage}
                         alt=""
                       />
