@@ -34,6 +34,7 @@ describe('Academic navigation', () => {
       name: 'Academic sections'
     })
     await screen.findByRole('tab', { name: 'All Classes' })
+    const toolbar = screen.getByRole('group', { name: 'Toolbar actions' })
     fireEvent.click(screen.getByRole('tab', { name: 'Schedule' }))
     await waitFor(() =>
       expect(screen.getByRole('tabpanel').textContent).toContain(
@@ -47,6 +48,7 @@ describe('Academic navigation', () => {
     expect(screen.getByRole('link', { name: 'Exam Results' })).toBeVisible()
     fireEvent.click(within(sidebar).getByRole('link', { name: 'Class Room' }))
     await screen.findByText('/academic/classroom')
+    expect(screen.getByRole('group', { name: 'Toolbar actions' })).toBe(toolbar)
     expect(screen.queryByRole('tablist')).toBeNull()
     expect(
       screen.getByRole('searchbox', { name: 'Search content' })
@@ -73,6 +75,7 @@ describe('Academic navigation', () => {
     )
     const allClasses = await screen.findByRole('tab', { name: 'All Classes' })
     expect(allClasses.getAttribute('aria-selected')).toBe('true')
+    expect(screen.getByRole('group', { name: 'Toolbar actions' })).toBe(toolbar)
     expect(screen.queryByRole('tab', { name: 'Exam Results' })).toBeNull()
   })
 

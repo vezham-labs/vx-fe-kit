@@ -176,9 +176,11 @@ scoped dispatcher; domain content stays in the app's route outlet.
 
 Short mobile tab groups use a centered content-width pill; long groups scroll
 within the available width, leaving space for Search when it sits beside the
-tabs. Keep row spacing outside the pill. A new
-tab collection remounts the Tabs root so its indicator measures the new labels;
-navigation within that collection preserves the root and its transition.
+tabs. Keep row spacing outside the pill. A new tab collection remounts only
+the list so its indicator measures the new labels. The Tabs root and section
+shell stay mounted across tabbed and standalone pages. Section layout owns
+spacing: the Tabs root has no extra gap and panels have no extra margin or
+padding, keeping page content aligned when tabs appear or disappear.
 
 Keep navigation-review demos focused on the navigation and toolbar. Their page
 outlets display only the current URL; domain page content is added separately.

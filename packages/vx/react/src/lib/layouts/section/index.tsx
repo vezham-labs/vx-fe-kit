@@ -214,6 +214,7 @@ const SectionLayout = ({
       />
       {isCompactToolbar && displayTabs.length > 0 && (
         <Tabs.ListContainer
+          key={JSON.stringify(displayTabs.map(tab => tab.key))}
           className={`scrollbar-hide order-2 mb-3 w-fit min-w-0 self-center overflow-x-auto rounded-full ${
             search && primaryAction
               ? 'max-w-[calc(100%-9rem)]'
@@ -234,7 +235,7 @@ const SectionLayout = ({
           </Tabs.List>
         </Tabs.ListContainer>
       )}
-      <div className="order-1 flex min-h-0 flex-1">
+      <div className="order-1 flex min-h-0 min-w-0 flex-1">
         {hasSidebar && !isNavigationCollapsed && (
           <aside
             id={sidebarId}
@@ -252,10 +253,10 @@ const SectionLayout = ({
               onSelectedFiltersChange={setSelectedFilters}
             />
           )}
-          <Surface className="min-h-0 flex-1 rounded-lg p-4 sm:p-5">
+          <Surface className="relative min-h-0 flex-1 rounded-lg p-4 sm:p-5">
             {displayTabs.length === 0 && children}
             {displayTabs.map(tab => (
-              <Tabs.Panel key={tab.key} id={tab.key}>
+              <Tabs.Panel key={tab.key} id={tab.key} className="m-0 p-0">
                 {tab.key === selectedTab?.key && children}
               </Tabs.Panel>
             ))}
@@ -267,21 +268,15 @@ const SectionLayout = ({
 
   return (
     <div className="bg-background flex h-full min-h-0 min-w-0 flex-1 flex-col">
-      {displayTabs.length > 0 ? (
-        <Tabs
-          // vx-bot/NOTE: Each section owns its tab collection and indicator measurements.
-          key={JSON.stringify(displayTabs.map(tab => tab.key))}
-          selectedKey={selectedTab?.key}
-          onSelectionChange={key => {
-            const tab = tabs.find(item => item.key === key)
-            if (tab?.href) void navigate({ to: tab.href })
-          }}
-          className="flex min-h-0 min-w-0 flex-1 flex-col">
-          {content}
-        </Tabs>
-      ) : (
-        <div className="flex min-h-0 flex-1 flex-col">{content}</div>
-      )}
+      <Tabs
+        selectedKey={selectedTab?.key ?? null}
+        onSelectionChange={key => {
+          const tab = displayTabs.find(item => item.key === key)
+          if (tab?.href) void navigate({ to: tab.href })
+        }}
+        className="flex min-h-0 min-w-0 flex-1 flex-col gap-0">
+        {content}
+      </Tabs>
 
       {hasSidebar && (
         <Drawer.Backdrop isOpen={isDrawerOpen} onOpenChange={setIsDrawerOpen}>

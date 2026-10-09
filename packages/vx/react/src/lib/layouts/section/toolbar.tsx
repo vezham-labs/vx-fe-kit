@@ -550,7 +550,9 @@ const SectionToolbar = ({
             {navigationControls}
           </div>
           {tabs.length > 0 && (
-            <Tabs.ListContainer className="scrollbar-hide col-span-2 row-start-2 mt-2 w-fit max-w-full min-w-0 justify-self-center overflow-x-auto rounded-full sm:mt-0 sm:max-w-fit sm:flex-1">
+            <Tabs.ListContainer
+              key={JSON.stringify(tabs.map(tab => tab.key))}
+              className="scrollbar-hide col-span-2 row-start-2 mt-2 w-fit max-w-full min-w-0 justify-self-center overflow-x-auto rounded-full sm:mt-0 sm:max-w-fit sm:flex-1">
               <Tabs.List
                 aria-label={`${title} tabs`}
                 className="flex min-w-max flex-nowrap *:whitespace-nowrap">
