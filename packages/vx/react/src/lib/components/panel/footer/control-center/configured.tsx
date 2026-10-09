@@ -163,7 +163,12 @@ export const resolveTiles = <Context extends object>(
       Tile: (props: Context) => (
         <Tile
           {...props}
-          label={tile.type === 'appearance-toggle' ? label : base.label}
+          label={
+            tile.type === 'appearance-toggle' ||
+            tile.type === 'direction-toggle'
+              ? label
+              : base.label
+          }
           onOpen={emit}
           onAction={emit}
         />

@@ -112,6 +112,8 @@
     "remark-gfm",
     "shiki",
     "streamdown",
+    // vx-bot/NOTE: React v3's tv exports reference these types in generated declarations.
+    "tailwind-variants",
     "yaml",
     "yargs"
   ],

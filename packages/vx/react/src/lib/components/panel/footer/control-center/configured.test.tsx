@@ -89,17 +89,21 @@ describe('configured control center', () => {
         />
       )
       fireEvent.click(screen.getByRole('button', { name: 'Control center' }))
-      const toggle = await screen.findByRole('button', { name: 'Direction' })
+      const toggle = await screen.findByRole('button', {
+        name: 'Switch to RTL'
+      })
       const initialIcon = toggle.innerHTML
       fireEvent.click(toggle)
       expect(document.documentElement.dir).toBe('rtl')
       await waitFor(() => expect(toggle.innerHTML).not.toBe(initialIcon))
+      expect(toggle).toHaveAccessibleName('Switch to LTR')
       expect(
         screen.queryByRole('button', { name: 'Back to Control Center' })
       ).toBeNull()
       fireEvent.click(toggle)
       expect(document.documentElement.dir).toBe('ltr')
       await waitFor(() => expect(toggle.innerHTML).toBe(initialIcon))
+      expect(toggle).toHaveAccessibleName('Switch to RTL')
     } finally {
       if (originalDirection === null)
         document.documentElement.removeAttribute('dir')
