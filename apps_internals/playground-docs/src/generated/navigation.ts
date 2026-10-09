@@ -9,8 +9,18 @@ export const appMenu = [] satisfies AppMenuItem[]
 export const controlCenter = {
   "tiles": [
     {
-      "id": "appearance-lite",
-      "type": "theme-toggle",
+      "id": "appearance-toggle",
+      "type": "appearance-toggle",
+      "span": "compact"
+    },
+    {
+      "id": "theme",
+      "type": "theme",
+      "span": "wide"
+    },
+    {
+      "id": "direction-toggle",
+      "type": "direction-toggle",
       "span": "compact"
     },
     {
@@ -19,43 +29,48 @@ export const controlCenter = {
       "span": "wide"
     },
     {
-      "id": "appearance",
-      "type": "appearance-toggle",
+      "id": "direction",
+      "type": "direction",
+      "span": "wide"
+    },
+    {
+      "id": "demo-appearance",
+      "type": "appearance",
       "span": "wide"
     },
     {
       "id": "appearance-lite1",
-      "type": "theme-toggle",
+      "type": "appearance-toggle",
       "span": "compact"
     },
     {
       "id": "appearance-23",
-      "type": "appearance-toggle",
+      "type": "appearance",
       "span": "standard"
     },
     {
       "id": "appearance-12",
-      "type": "appearance-toggle",
+      "type": "appearance",
       "span": "full"
     },
     {
       "id": "appearance-lite2",
-      "type": "theme-toggle",
+      "type": "appearance-toggle",
       "span": "compact"
     },
     {
       "id": "appearance-lite3",
-      "type": "theme-toggle",
+      "type": "appearance-toggle",
       "span": "compact"
     },
     {
       "id": "appearance-lite4",
-      "type": "theme-toggle",
+      "type": "appearance-toggle",
       "span": "compact"
     },
     {
       "id": "appearance-lite5",
-      "type": "theme-toggle",
+      "type": "appearance-toggle",
       "span": "compact"
     }
   ]

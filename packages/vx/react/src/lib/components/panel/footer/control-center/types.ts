@@ -69,7 +69,6 @@ export type LanguageAdapter = {
 }
 
 export type BuiltinTileType =
-  | 'theme-toggle'
   | 'direction-toggle'
   | 'appearance-toggle'
   | 'appearance'

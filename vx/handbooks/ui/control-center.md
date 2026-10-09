@@ -14,8 +14,7 @@ common detail panels. Apps keep their ordered YAML config and supply app-specifi
 actions. The notebook adapter connects shared appearance tiles to its theme
 provider and shared language tiles to its locale routes.
 
-Use `ThemeToggle` for a compact toggle,
-`AppearanceToggle` for a labeled direct toggle, or
+Use `AppearanceToggle` for a compact, icon-only light/dark toggle, or
 `AppearanceTile` with `AppearanceSettings` for a detail
 panel. Without an `appearance` adapter, `ControlCenter` tracks and changes the
 document root's `dark` class. Apps with a theme provider supply
@@ -139,11 +138,11 @@ Registrations are keyed by the YAML tile ID. React supplies the app context,
 (or emit the action when no panel exists). A registration may include `Panel`
 and `label`; the app retains these component references in TypeScript.
 
-Supported built-in types: `theme-toggle`, `appearance-toggle`, `appearance`,
+Supported built-in types: `appearance-toggle`, `appearance`,
 `theme`, `direction`, `direction-toggle`, `language`, `preview-wifi`,
 `preview-bluetooth`, `preview-airdrop`, `preview-focus`, `preview-stage-manager`,
 `preview-mirroring`, `preview-media`, `preview-display`, and `preview-sound`.
-`direction-toggle` switches LTR/RTL directly without opening a panel, like the compact `theme-toggle`.
+`direction-toggle` switches LTR/RTL directly without opening a panel, like the compact `appearance-toggle`.
 Keep `preview` enabled for simulated device controls. Shared behavior stays in
 React; only app-specific handlers, custom components, and adapters stay in apps.
 
@@ -157,16 +156,16 @@ elsewhere.
 Type the registry as `readonly TileDefinition<Context>[]` so its app context
 stays separate from the internal `onOpen` callback injected into detail tiles.
 Give every entry a unique `id`; it identifies both the React tile and its detail
-panel. Use `ThemeToggle` for compact icon tiles and
-`AppearanceToggle` for labeled standard, wide, or full tiles.
+panel. Use `AppearanceToggle` for compact icon tiles and `AppearanceTile` for a wide tile
+that opens light, dark, and system options.
 
 ```tsx
 import {
+  AppearanceToggle,
   ControlCenter,
   type LanguageAdapter,
   LanguageSettings,
   LanguageTile,
-  ThemeToggle,
   type TileDefinition
 } from '@vx/react/control-center'
 
@@ -176,7 +175,7 @@ type Context = {
 }
 
 const tiles: readonly TileDefinition<Context>[] = [
-  { id: 'theme', span: 'compact', Tile: ThemeToggle },
+  { id: 'theme', span: 'compact', Tile: AppearanceToggle },
   {
     id: 'language',
     span: 'standard',

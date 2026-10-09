@@ -7,8 +7,7 @@ import {
 import {
   AppearanceSettings,
   AppearanceTile,
-  AppearanceToggle,
-  ThemeToggle
+  AppearanceToggle
 } from './appearance'
 import { ControlCenter } from './control-center'
 import { DirectionSettings, DirectionTile, DirectionToggle } from './direction'
@@ -65,7 +64,6 @@ const ConfiguredLanguageSettings = ({
   )
 
 const builtins: Record<BuiltinTileType, TileRegistration<object>> = {
-  'theme-toggle': { Tile: ThemeToggle, label: 'Appearance' },
   'direction-toggle': { Tile: DirectionToggle, label: 'Direction' },
   'appearance-toggle': { Tile: AppearanceToggle, label: 'Appearance' },
   appearance: {
@@ -165,7 +163,7 @@ export const resolveTiles = <Context extends object>(
       Tile: (props: Context) => (
         <Tile
           {...props}
-          label={tile.type === 'theme-toggle' ? label : base.label}
+          label={tile.type === 'appearance-toggle' ? label : base.label}
           onOpen={emit}
           onAction={emit}
         />

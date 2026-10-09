@@ -1,5 +1,4 @@
 const TYPES = new Set([
-  'theme-toggle',
   'direction-toggle',
   'appearance-toggle',
   'appearance',

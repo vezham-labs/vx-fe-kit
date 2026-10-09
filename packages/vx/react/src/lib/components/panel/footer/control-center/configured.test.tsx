@@ -107,7 +107,7 @@ describe('configured control center', () => {
           { id: 'wifi', type: 'preview-wifi', span: 'wide' },
           { id: 'focus', type: 'preview-focus', span: 'full' },
           { id: 'sound', type: 'preview-sound', span: 'full' },
-          { id: 'toggle', type: 'theme-toggle', span: 'compact' }
+          { id: 'toggle', type: 'appearance-toggle', span: 'compact' }
         ]
       },
       vi.fn()

@@ -1051,13 +1051,13 @@ export const controlCenter = {
   "editControls": true,
   "tiles": [
     {
-      "id": "theme-toggle",
-      "type": "theme-toggle",
+      "id": "appearance-toggle",
+      "type": "appearance-toggle",
       "span": "compact"
     },
     {
-      "id": "direction",
-      "type": "direction",
+      "id": "theme",
+      "type": "theme",
       "span": "wide"
     },
     {
@@ -1071,9 +1071,24 @@ export const controlCenter = {
       "span": "wide"
     },
     {
-      "id": "theme",
-      "type": "theme",
+      "id": "direction",
+      "type": "direction",
       "span": "wide"
+    },
+    {
+      "id": "display",
+      "type": "preview-display",
+      "span": "full"
+    },
+    {
+      "id": "sound",
+      "type": "preview-sound",
+      "span": "full"
+    },
+    {
+      "id": "media",
+      "type": "preview-media",
+      "span": "full"
     },
     {
       "id": "wifi",
@@ -1106,68 +1121,53 @@ export const controlCenter = {
       "span": "full"
     },
     {
-      "id": "media",
-      "type": "preview-media",
-      "span": "full"
+      "id": "demo-appearance-lite",
+      "type": "appearance-toggle",
+      "span": "compact"
     },
     {
-      "id": "display",
-      "type": "preview-display",
-      "span": "full"
-    },
-    {
-      "id": "sound",
-      "type": "preview-sound",
-      "span": "full"
-    },
-    {
-      "id": "appearance",
+      "id": "demo-appearance",
       "type": "appearance",
       "span": "wide"
     },
     {
-      "id": "appearance-lite",
-      "type": "theme-toggle",
-      "span": "compact"
-    },
-    {
-      "id": "appearance-toggle",
-      "type": "appearance-toggle",
+      "id": "appearance-wide",
+      "type": "appearance",
       "span": "wide"
     },
     {
       "id": "appearance-lite1",
-      "type": "theme-toggle",
+      "type": "appearance-toggle",
       "span": "compact"
     },
     {
       "id": "appearance-23",
-      "type": "appearance-toggle",
+      "type": "appearance",
       "span": "standard"
     },
     {
       "id": "appearance-12",
-      "type": "appearance-toggle",
+      "type": "appearance",
       "span": "full"
     },
     {
       "id": "appearance-lite2",
-      "type": "theme-toggle",
+      "type": "appearance-toggle",
       "span": "compact"
     },
     {
       "id": "appearance-lite3",
-      "type": "theme-toggle",
+      "type": "appearance-toggle",
       "span": "compact"
     },
     {
       "id": "appearance-lite4",
-      "type": "theme-toggle",
+      "type": "appearance-toggle",
       "span": "compact"
     },
     {
       "id": "appearance-lite5",
-      "type": "theme-toggle",
+      "type": "appearance-toggle",
       "span": "compact"
     }
   ]

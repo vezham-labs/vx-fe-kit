@@ -90,7 +90,7 @@ export const useAppearance = () => {
   return appearance
 }
 
-export const ThemeToggle = ({ label }: { label?: string }) => {
+export const AppearanceToggle = ({ label }: { label?: string }) => {
   const { isDark, setDark } = useAppearance()
   const Icon = isDark ? Moon : Sun
   return (
@@ -98,22 +98,6 @@ export const ThemeToggle = ({ label }: { label?: string }) => {
       label={label ?? `Switch to ${isDark ? 'light' : 'dark'} mode`}
       compact
       icon={<Icon size={20} />}
-      onPress={() => setDark(!isDark)}
-    />
-  )
-}
-
-export const AppearanceToggle = ({
-  label = 'Appearance'
-}: {
-  label?: string
-}) => {
-  const { isDark, setDark } = useAppearance()
-  const Icon = isDark ? Moon : Sun
-  return (
-    <ActionTile
-      label={label}
-      icon={<Icon size={16} />}
       onPress={() => setDark(!isDark)}
     />
   )

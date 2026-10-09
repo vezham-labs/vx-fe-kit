@@ -4,18 +4,18 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   AppearanceSettings,
   AppearanceTile,
+  AppearanceToggle,
   ControlCenter,
   type LanguageAdapter,
   LanguageSettings,
   LanguageTile,
   ThemeSettings,
   ThemeTile,
-  ThemeToggle,
   type TileDefinition
 } from './index'
 
 const tiles = [
-  { id: 'theme', span: 'compact', Tile: ThemeToggle },
+  { id: 'theme', span: 'compact', Tile: AppearanceToggle },
   {
     id: 'language',
     span: 'wide',

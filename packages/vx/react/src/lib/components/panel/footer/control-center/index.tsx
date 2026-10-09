@@ -8,7 +8,6 @@ export type {
   Option
 } from './types'
 export {
-  ThemeToggle,
   AppearanceToggle,
   AppearanceTile,
   AppearanceSettings
