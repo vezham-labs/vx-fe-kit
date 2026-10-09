@@ -13,7 +13,7 @@ import {
 import { toast } from '@vezham/react-v3'
 import { cn } from '@vezham/react-v3'
 
-import type { NavigationToolbar } from '@vx/react'
+import type { AppNavigationItem } from '@vx/react'
 import { useToolbarAction, useToolbarActions } from '@vx/react/toolbar-actions'
 import {
   useSidebarShortcut,
@@ -27,15 +27,6 @@ import {
 
 import { sidebarItems } from './data'
 import { tvProps, tvSlots, tva } from './variant'
-
-type AcademicMenuItem = {
-  key: string
-  title: string
-  href: string
-  icon: string
-  toolbar?: NavigationToolbar
-  children?: AcademicMenuItem[]
-}
 
 type ActionItem = {
   key: string
@@ -60,7 +51,7 @@ type LayoutConfig = {
   collapsedSidebarMode?: SidebarProps['collapsedMode']
   initialSidebarCollapsed?: boolean
   renderChildrenInSidebar?: boolean
-  sidebarItems?: AcademicMenuItem[]
+  sidebarItems?: AppNavigationItem[]
 }
 
 type SectionLayoutDependencies = {
@@ -69,7 +60,7 @@ type SectionLayoutDependencies = {
   tva: typeof tva
 }
 
-type SidebarViewItem = Omit<AcademicMenuItem, 'children'> & {
+type SidebarViewItem = Omit<AppNavigationItem, 'children'> & {
   isExpanded: boolean
   isActive: boolean
   children?: SidebarViewItem[]
@@ -145,8 +136,9 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
     )
     const selectedTabKey = activeTabs.find(
       tab =>
-        location.pathname === tab.href ||
-        location.pathname.startsWith(`${tab.href}/`)
+        tab.href &&
+        (location.pathname === tab.href ||
+          location.pathname.startsWith(`${tab.href}/`))
     )?.key
 
     const { emit } = useToolbarActions()
@@ -254,8 +246,10 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
           return
         }
 
-        navigate({ to: item.href })
-        onNavigate?.()
+        if (item.href) {
+          navigate({ to: item.href })
+          onNavigate?.()
+        }
       }
     }
 
@@ -491,7 +485,7 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
       onPress: () => onSidebarAction(item.key)
     })
 
-    const getSidebarIconProps = (icon: string, isActive: boolean) => ({
+    const getSidebarIconProps = (icon = 'vx:folder', isActive: boolean) => ({
       icon,
       width: 18,
       className: isActive
@@ -587,7 +581,7 @@ const createSectionLayout = (dependencies: SectionLayoutDependencies) => {
         onTabSelectionChange: (key: Key) => {
           const tab = activeTabs.find(item => item.key === String(key))
 
-          if (tab) {
+          if (tab?.href) {
             navigate({ to: tab.href })
           }
         }
@@ -673,9 +667,11 @@ function mergeActions(
   return Array.from(actionMap.values())
 }
 
-function getActiveTabs(pathname: string, items: AcademicMenuItem[]) {
+function getActiveTabs(pathname: string, items: AppNavigationItem[]) {
   const activeItem = items.find(
-    item => pathname === item.href || pathname.startsWith(`${item.href}/`)
+    item =>
+      item.href &&
+      (pathname === item.href || pathname.startsWith(`${item.href}/`))
   )
 
   return (
@@ -687,31 +683,33 @@ function getActiveTabs(pathname: string, items: AcademicMenuItem[]) {
   )
 }
 
-function getActivePageKey(pathname: string, items: AcademicMenuItem[]) {
+function getActivePageKey(pathname: string, items: AppNavigationItem[]) {
   return (
     getMostSpecificActiveItem(pathname, flattenSidebarItems(items))?.key ??
     'academic1'
   )
 }
 
-function getActiveSidebarKey(pathname: string, items: AcademicMenuItem[]) {
+function getActiveSidebarKey(pathname: string, items: AppNavigationItem[]) {
   return getMostSpecificActiveItem(pathname, items)?.key ?? ''
 }
 
 function getMostSpecificActiveItem(
   pathname: string,
-  items: AcademicMenuItem[]
+  items: AppNavigationItem[]
 ) {
   return items
     .filter(
-      item => pathname === item.href || pathname.startsWith(`${item.href}/`)
+      (item): item is AppNavigationItem & { href: string } =>
+        Boolean(item.href) &&
+        (pathname === item.href || pathname.startsWith(`${item.href}/`))
     )
     .sort((a, b) => b.href.length - a.href.length)[0]
 }
 
 function createSidebarViewItems(
   pathname: string,
-  items: AcademicMenuItem[],
+  items: AppNavigationItem[],
   expandedKeys: Set<string>
 ): SidebarViewItem[] {
   return items.map(item => {
@@ -719,9 +717,10 @@ function createSidebarViewItems(
       ? createSidebarViewItems(pathname, item.children, expandedKeys)
       : undefined
     const isActive =
-      pathname === item.href ||
-      pathname.startsWith(`${item.href}/`) ||
-      Boolean(children?.some(child => child.isActive))
+      Boolean(
+        item.href &&
+        (pathname === item.href || pathname.startsWith(`${item.href}/`))
+      ) || Boolean(children?.some(child => child.isActive))
 
     return {
       ...item,
@@ -732,7 +731,7 @@ function createSidebarViewItems(
   })
 }
 
-function getActiveParentKeys(pathname: string, items: AcademicMenuItem[]) {
+function getActiveParentKeys(pathname: string, items: AppNavigationItem[]) {
   const parentKeys: string[] = []
 
   items.forEach(item => {
@@ -741,7 +740,9 @@ function getActiveParentKeys(pathname: string, items: AcademicMenuItem[]) {
     }
 
     const hasActiveChild = item.children.some(
-      child => pathname === child.href || pathname.startsWith(`${child.href}/`)
+      child =>
+        child.href &&
+        (pathname === child.href || pathname.startsWith(`${child.href}/`))
     )
 
     if (hasActiveChild) {
@@ -752,14 +753,14 @@ function getActiveParentKeys(pathname: string, items: AcademicMenuItem[]) {
   return parentKeys
 }
 
-function flattenSidebarItems(items: AcademicMenuItem[]): AcademicMenuItem[] {
+function flattenSidebarItems(items: AppNavigationItem[]): AppNavigationItem[] {
   return items.flatMap(item => [
     item,
     ...flattenSidebarItems(item.children ?? [])
   ])
 }
 
-function findSidebarItem(items: AcademicMenuItem[], key: string) {
+function findSidebarItem(items: AppNavigationItem[], key: string) {
   return flattenSidebarItems(items).find(item => item.key === key)
 }
 
@@ -779,7 +780,6 @@ const useAcademicLayoutProps = createSectionLayout({
 
 export { createSectionLayout, useAcademicLayoutProps }
 export type {
-  AcademicMenuItem,
   ActionItem,
   HeaderActionsConfig,
   LayoutConfig,

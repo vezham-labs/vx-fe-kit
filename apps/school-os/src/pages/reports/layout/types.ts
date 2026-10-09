@@ -19,4 +19,4 @@ const useReportsLayoutProps = createSectionLayout({
 })
 
 export { useReportsLayoutProps }
-export type { AcademicMenuItem, Props } from '@pages/academic/layout/types'
+export type { Props } from '@pages/academic/layout/types'

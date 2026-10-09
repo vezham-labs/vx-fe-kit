@@ -19,4 +19,4 @@ const useOperationsLayoutProps = createSectionLayout({
 })
 
 export { useOperationsLayoutProps }
-export type { AcademicMenuItem, Props } from '@pages/academic/layout/types'
+export type { Props } from '@pages/academic/layout/types'

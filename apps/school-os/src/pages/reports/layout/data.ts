@@ -1,6 +1,6 @@
+import type { AppNavigationItem } from '@vx/react'
+
 import { getNavigationChildren } from '@generated/navigation'
 
-import type { AcademicMenuItem } from './types'
-
-export const reportsSidebarItems: AcademicMenuItem[] =
+export const reportsSidebarItems: AppNavigationItem[] =
   getNavigationChildren('reports')
