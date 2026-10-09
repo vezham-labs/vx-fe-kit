@@ -9,6 +9,8 @@ import {
 
 import {
   Button,
+  Chip,
+  CloseButton,
   Dropdown,
   InputGroup,
   Label,
@@ -205,21 +207,24 @@ const SectionActiveFilters = ({
     <div
       role="group"
       aria-label="Active filters"
-      className="hidden min-w-0 flex-wrap items-center gap-2 md:flex">
+      className="flex min-w-0 flex-wrap items-center gap-2">
       {activeFilters.map(filter => (
-        <Button
+        <Chip
           key={filter.key}
-          variant="secondary"
-          aria-label={`Remove ${filter.label} filter`}
-          className="h-8 shrink-0 gap-1.5 rounded-full px-3"
-          onPress={() =>
-            onSelectedFiltersChange(
-              selectedFilters.filter(selected => selected !== filter.key)
-            )
-          }>
-          <Label>{filter.label}</Label>
-          <AppIcon icon="vx:close" size={14} aria-hidden="true" />
-        </Button>
+          variant="soft"
+          size="lg"
+          className="shrink-0 gap-1.5">
+          <Chip.Label>{filter.label}</Chip.Label>
+          <CloseButton
+            aria-label={`Remove ${filter.label} filter`}
+            className="h-6 min-h-6 w-6 min-w-6 rounded-full p-0"
+            onPress={() =>
+              onSelectedFiltersChange(
+                selectedFilters.filter(selected => selected !== filter.key)
+              )
+            }
+          />
+        </Chip>
       ))}
     </div>
   )

@@ -233,7 +233,10 @@ const SectionLayout = ({
             {sidebar}
           </aside>
         )}
-        <main className="flex min-w-0 flex-1 flex-col gap-2 overflow-auto p-4">
+        <main
+          className={`flex min-w-0 flex-1 flex-col gap-2 overflow-auto p-4 ${
+            filter && selectedFilters.length > 0 ? 'pt-2' : ''
+          }`}>
           {filter && (
             <SectionActiveFilters
               selectedFilters={selectedFilters}
