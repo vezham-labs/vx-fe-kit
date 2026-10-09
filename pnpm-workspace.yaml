@@ -23,19 +23,23 @@ overrides:
   # Remove each override only when upstream resolves patched versions without it;
   # regenerate the lockfile, run pnpm audit, and run relevant Nx checks before keeping the removal.
   # Retain overrides still needed to prevent vulnerable versions from returning.
-  'next>postcss': 8.5.23
-  sharp: 0.35.4
+  'next>postcss@<8.5.23': 8.5.23
+  'sharp@<0.35.5': 0.35.5
   'axios@>=1.0.0 <1.20.0': 1.20.0
-  '@cypress/request>uuid': 11.1.1
+  '@cypress/request>uuid@<11.1.1': 11.1.1
   'qs@<6.16.0': 6.16.0
   'undici@>=7.0.0 <7.29.1': 7.29.1
   'js-yaml@>=4.0.0 <4.3.2': 4.3.2
-  'smol-toml@<1.7.1': 1.7.1
+  'smol-toml@<1.9.0': 1.9.0
+  'seroval@<1.6.8': 1.6.8
+  'handlebars@>=4.0.0 <4.7.10': 4.7.10
+  'http-cache-semantics@<4.3.0': 4.3.0
+  'compression@<1.8.2': 1.8.2
   'brace-expansion@>=4.0.0 <5.0.12': 5.0.12
   'figlet@<1.11.3': 1.11.3
   'serialize-javascript@>=7.1.1 <7.1.2': 7.1.2
 
-# vx-bot/NOTE: Package lifecycle scripts are required by workspace dependencies.
+# vx-bot/NOTE: Run pre/post hooks around workspace package scripts.
 enablePrePostScripts: true
 
 # vx-bot/NOTE: Hoist internal packages so tools relying on Node.js resolution
@@ -50,6 +54,9 @@ minimumReleaseAgeExclude:
   - '@vx-cli/*'
   - '@vx-oss/*'
   - '@vezham/*'
+  # vx-bot/NOTE: Allow these security fixes before the seven-day release delay.
+  - 'handlebars@4.7.10' # vx-bot/TODO: Remove after 2026-10-12 22:38 UTC.
+  - 'http-cache-semantics@4.3.0' # vx-bot/TODO: Remove after 2026-10-11 02:57 UTC.
 
 allowBuilds:
   heroui-pro: true
@@ -69,9 +76,6 @@ allowBuilds:
 blockExoticSubdeps: true
 trustPolicy: no-downgrade
 trustPolicyExclude:
-  - 'chokidar@4.0.3'
-  - 'eslint-import-resolver-typescript@3.10.1'
   - 'pino@9.14.0'
-  - 'semver@5.7.2'
   - 'semver@6.3.1'
   - 'undici-types@6.21.0'

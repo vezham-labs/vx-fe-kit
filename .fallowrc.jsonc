@@ -112,6 +112,8 @@
     "remark-gfm",
     "shiki",
     "streamdown",
+    // vx-bot/NOTE: React v3's tv exports reference these types in generated declarations.
+    "tailwind-variants",
     "yaml",
     "yargs"
   ],
@@ -129,6 +131,10 @@
     { "package": "undici", "source": "pnpm-workspace.yaml" },
     { "package": "js-yaml", "source": "pnpm-workspace.yaml" },
     { "package": "smol-toml", "source": "pnpm-workspace.yaml" },
+    { "package": "seroval", "source": "pnpm-workspace.yaml" },
+    { "package": "handlebars", "source": "pnpm-workspace.yaml" },
+    { "package": "http-cache-semantics", "source": "pnpm-workspace.yaml" },
+    { "package": "compression", "source": "pnpm-workspace.yaml" },
     {
       "package": "brace-expansion",
       "source": "pnpm-workspace.yaml"

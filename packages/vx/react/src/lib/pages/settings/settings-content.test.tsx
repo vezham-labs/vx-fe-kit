@@ -40,9 +40,10 @@ it('hydrates saved notification preferences without changing the initial server 
       screen.getByRole('switch', { name: 'Notification badges' })
     ).toBeChecked()
     fireEvent.click(screen.getByRole('switch', { name: 'Notification sounds' }))
-    expect(
-      JSON.parse(localStorage.getItem('demo:notification-settings')!)
-    ).toEqual({ sounds: true, badges: true })
+    const preferences = localStorage.getItem('demo:notification-settings')
+    if (preferences === null)
+      throw new Error('Notification preferences were not saved')
+    expect(JSON.parse(preferences)).toEqual({ sounds: true, badges: true })
   } finally {
     await act(async () => root?.unmount())
     container.remove()
