@@ -9,7 +9,8 @@ export const controlCenterVariants = tv({
     sheetContent: 'mx-auto max-h-[85dvh] w-full max-w-72',
     sheetHeader: 'px-6 pt-0 pb-2',
     sheetHeading: 'text-base font-semibold',
-    content: 'relative',
+    content:
+      'relative flex max-h-[min(40rem,calc(100dvh-8rem))] min-h-0 flex-col overflow-hidden',
     edgeHighlight:
       'pointer-events-none absolute inset-x-8 top-0 h-px bg-linear-to-r from-transparent via-white/55 to-transparent dark:via-white/25',
     surfaceHighlight:
@@ -24,8 +25,7 @@ export const controlCenterVariants = tv({
     colorLabel: 'text-muted text-xs',
     colorPicker: 'gap-3',
     colorOption: 'min-h-11 min-w-11',
-    viewport:
-      'max-h-[min(40rem,calc(100dvh-8rem))] overflow-y-auto overscroll-contain',
+    viewport: 'min-h-0 flex-1 overflow-y-auto overscroll-contain',
     previewNotice: 'text-muted mb-3 px-2 pt-1 text-xs',
     previewSettings: 'flex flex-col gap-4',
     previewToggle: 'flex w-full items-center justify-between gap-3 text-sm',
@@ -53,8 +53,7 @@ export const controlCenterVariants = tv({
         surface:
           'bg-surface/75 dark:bg-surface/65 flex max-h-[85dvh] w-full flex-col rounded-b-none p-0',
         content:
-          'min-h-0 overflow-hidden px-6 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]',
-        viewport: 'max-h-[min(40rem,calc(85dvh-7rem))]'
+          'max-h-[min(40rem,calc(85dvh-7rem))] px-6 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]'
       }
     }
   },

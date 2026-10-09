@@ -53,24 +53,25 @@ export const ControlCenter = <Context extends object>({
     </Button>
   )
   const content = (
-    <ScrollShadow
-      key={panel ?? 'home'}
-      className={styles.viewport({
-        presentation: isCompact ? 'sheet' : 'popover'
-      })}>
-      {preview && (
-        <p className={styles.previewNotice()}>
-          UI preview · Device controls are simulated.
-        </p>
-      )}
-      <PanelOutlet
-        context={context}
-        tiles={visibleTiles}
-        panel={panel}
-        onPanelChange={setPanel}
-      />
+    <>
+      <ScrollShadow
+        key={panel ?? 'home'}
+        className={styles.viewport()}
+        hideScrollBar>
+        {preview && (
+          <p className={styles.previewNotice()}>
+            UI preview · Device controls are simulated.
+          </p>
+        )}
+        <PanelOutlet
+          context={context}
+          tiles={visibleTiles}
+          panel={panel}
+          onPanelChange={setPanel}
+        />
+      </ScrollShadow>
       {!panel && editControls && openSettings && (
-        <div className="mt-4 flex justify-center">
+        <div className="flex shrink-0 justify-center pt-4">
           <Button
             size="sm"
             variant="secondary"
@@ -83,7 +84,7 @@ export const ControlCenter = <Context extends object>({
           </Button>
         </div>
       )}
-    </ScrollShadow>
+    </>
   )
 
   const overlay = isCompact ? (

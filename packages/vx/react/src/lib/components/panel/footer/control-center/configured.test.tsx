@@ -56,6 +56,13 @@ describe('configured control center', () => {
       </SettingsNavigationContext.Provider>
     )
     fireEvent.click(screen.getByRole('button', { name: 'Control center' }))
+    await screen.findByRole('button', { name: 'Edit Controls' })
+    fireEvent.click(screen.getByRole('button', { name: 'Direction' }))
+    await screen.findByRole('button', { name: 'Back to Control Center' })
+    expect(screen.queryByRole('button', { name: 'Edit Controls' })).toBeNull()
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Back to Control Center' })
+    )
     fireEvent.click(
       await screen.findByRole('button', { name: 'Edit Controls' })
     )

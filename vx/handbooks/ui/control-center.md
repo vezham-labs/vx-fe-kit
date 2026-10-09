@@ -272,7 +272,8 @@ same open-state callback and return focus to the trigger or footer More entry.
 
 `controlCenter.editControls` is an optional boolean, defaulting to `false`. Enable
 it for apps that use `AppLayout settings` and provide a `/settings` route. It shows
-an Edit Controls link that closes Control Center and opens Settings. It is not a
+an Edit Controls link in a fixed footer outside the scrolling tiles. The link
+hides while a detail panel is open, closes Control Center, and opens Settings. It is not a
 tile and does not participate in hiding or reordering. Docs omit the option and
 have no editor or Settings link. Raw `ControlCenter` accepts the same optional
 `editControls` prop and requires application Settings navigation to show the link.
