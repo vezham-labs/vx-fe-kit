@@ -8,6 +8,7 @@ import {
 import { useRef, useState } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
+import { DEFAULT_SORT, type SectionSort } from './sort-menu'
 import {
   SectionActiveFilters,
   type SectionFilterKey,
@@ -24,6 +25,7 @@ const ToolbarFixture = ({ onSearch }: { onSearch?: () => void }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState<SectionFilterKey[]>([])
+  const [sortValue, setSortValue] = useState<SectionSort>(DEFAULT_SORT)
   const [search, setSearch] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   return (
@@ -41,6 +43,9 @@ const ToolbarFixture = ({ onSearch }: { onSearch?: () => void }) => {
           onOpenChange: setIsSearchOpen
         }}
         filter
+        sort
+        sortValue={sortValue}
+        onSortChange={setSortValue}
         view={[]}
         selectedFilters={selectedFilters}
         onSelectedFiltersChange={setSelectedFilters}
@@ -73,6 +78,33 @@ const ToolbarFixture = ({ onSearch }: { onSearch?: () => void }) => {
 }
 
 describe('Section toolbar', () => {
+  it('retains one sort field and direction while changing each independently', async () => {
+    render(<ToolbarFixture />)
+    fireEvent.click(screen.getByRole('button', { name: 'Sort' }))
+    const menu = await screen.findByRole('menu')
+    fireEvent.click(
+      within(menu).getByRole('menuitemcheckbox', { name: 'Created date' })
+    )
+    expect(
+      within(menu).getByRole('menuitemcheckbox', { name: 'Created date' })
+    ).toHaveAttribute('aria-checked', 'true')
+    expect(
+      within(menu).getByRole('menuitemcheckbox', { name: 'Name' })
+    ).toHaveAttribute('aria-checked', 'false')
+    fireEvent.click(
+      within(menu).getByRole('menuitemcheckbox', { name: 'Descending' })
+    )
+    expect(
+      within(menu).getByRole('menuitemcheckbox', { name: 'Descending' })
+    ).toHaveAttribute('aria-checked', 'true')
+    expect(
+      within(menu).getByRole('menuitemcheckbox', { name: 'Ascending' })
+    ).toHaveAttribute('aria-checked', 'false')
+    expect(
+      within(menu).getByRole('menuitemcheckbox', { name: 'Created date' })
+    ).toHaveAttribute('aria-checked', 'true')
+  })
+
   it('opens More and invokes its action', async () => {
     render(<ToolbarFixture />)
     fireEvent.click(screen.getByRole('button', { name: 'More' }))

@@ -127,6 +127,9 @@
         "filter": {
           "type": "boolean"
         },
+        "sort": {
+          "type": "boolean"
+        },
         "view": {
           "type": "array",
           "items": {

@@ -4,6 +4,7 @@ const TOOLBAR_FIELDS = new Set([
   'search',
   'sync',
   'filter',
+  'sort',
   'view',
   'menuActions',
   'primaryAction'
@@ -82,6 +83,8 @@ export const validateToolbar = (value: unknown, location: string) => {
     throw new Error(`${location}.sync must be a boolean`)
   if (value.filter !== undefined && typeof value.filter !== 'boolean')
     throw new Error(`${location}.filter must be a boolean`)
+  if (value.sort !== undefined && typeof value.sort !== 'boolean')
+    throw new Error(`${location}.sort must be a boolean`)
   if (value.view !== undefined)
     validateViewActions(value.view, `${location}.view`)
   if (value.menuActions !== undefined)

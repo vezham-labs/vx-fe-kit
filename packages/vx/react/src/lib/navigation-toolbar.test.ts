@@ -10,6 +10,7 @@ const items: AppNavigationItem[] = [
       search: { label: 'Search', placeholder: 'Find records' },
       sync: true,
       filter: true,
+      sort: true,
       view: [
         { key: 'grid', label: 'Grid view', icon: 'vx:grid' },
         { key: 'list', label: 'List view', icon: 'vx:list' }
@@ -39,6 +40,7 @@ const items: AppNavigationItem[] = [
               search: false,
               sync: false,
               filter: false,
+              sort: false,
               view: [],
               menuActions: []
             }
@@ -74,6 +76,7 @@ describe('navigation toolbar', () => {
     })
     expect(toolbar.sync).toBe(true)
     expect(toolbar.filter).toBe(true)
+    expect(toolbar.sort).toBe(true)
     expect(toolbar.view).toEqual([
       { key: 'grid', label: 'Grid view', icon: 'vx:grid' },
       { key: 'list', label: 'List view', icon: 'vx:list' }
@@ -86,6 +89,7 @@ describe('navigation toolbar', () => {
       search: false,
       sync: false,
       filter: false,
+      sort: false,
       view: [],
       menuActions: [],
       primaryAction: false

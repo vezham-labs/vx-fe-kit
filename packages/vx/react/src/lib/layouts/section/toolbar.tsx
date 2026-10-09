@@ -7,6 +7,7 @@ import {
   useState
 } from 'react'
 
+import { SortFromBottomToTop, SortFromTopToBottom } from '@vezham/icons-react'
 import {
   Button,
   Chip,
@@ -26,6 +27,7 @@ import { AppIcon } from '../../components/app-icon'
 import { useResponsiveToolbarAction } from '../../components/responsive-toolbar-action'
 import { ShortcutButton } from '../../components/shortcut-key'
 import type { AppNavigationItem } from '../../navigation'
+import { DEFAULT_SORT, type SectionSort, SortMenu } from './sort-menu'
 
 export type SectionAction = {
   key: string
@@ -78,6 +80,9 @@ type Props = {
   onSync: () => void
   sync?: boolean
   filter?: boolean
+  sort?: boolean
+  sortValue?: SectionSort
+  onSortChange?: (value: SectionSort) => void
   view?: SectionViewAction[]
   selectedFilters: SectionFilterKey[]
   onSelectedFiltersChange: (filters: SectionFilterKey[]) => void
@@ -267,6 +272,9 @@ const MobileToolbarMore = ({
   onToggleFilter,
   onViewModeChange,
   selectedFilters,
+  sort,
+  sortValue,
+  onSortChange,
   sync,
   viewModeActions
 }: {
@@ -277,6 +285,9 @@ const MobileToolbarMore = ({
   onViewModeChange: (viewMode: SectionViewMode) => void
   selectedFilters: SectionFilterKey[]
   sync: boolean
+  sort: boolean
+  sortValue: SectionSort
+  onSortChange?: (value: SectionSort) => void
   viewModeActions: SectionViewAction[]
 }) => (
   <Dropdown>
@@ -313,7 +324,23 @@ const MobileToolbarMore = ({
             </Dropdown.Popover>
           </Dropdown.SubmenuTrigger>
         )}
-        {filterAction && viewModeActions.length > 0 && <Separator />}
+        {sort && (
+          <Dropdown.SubmenuTrigger>
+            <Dropdown.Item id="sort" textValue="Sort">
+              {sortValue.direction === 'ascending' ? (
+                <SortFromBottomToTop size={18} aria-hidden="true" />
+              ) : (
+                <SortFromTopToBottom size={18} aria-hidden="true" />
+              )}
+              Sort
+              <Dropdown.SubmenuIndicator />
+            </Dropdown.Item>
+            <Dropdown.Popover>
+              <SortMenu value={sortValue} onChange={onSortChange} />
+            </Dropdown.Popover>
+          </Dropdown.SubmenuTrigger>
+        )}
+        {(filterAction || sort) && viewModeActions.length > 0 && <Separator />}
         {viewModeActions.map(action => (
           <Dropdown.Item
             key={action.key}
@@ -418,6 +445,9 @@ const SectionToolbar = ({
   onSync,
   sync = true,
   filter = false,
+  sort = false,
+  sortValue = DEFAULT_SORT,
+  onSortChange,
   view = EMPTY_VIEW_ACTIONS,
   selectedFilters,
   onSelectedFiltersChange,
@@ -453,6 +483,9 @@ const SectionToolbar = ({
           onToggleFilter={toggleFilter}
           onViewModeChange={onViewModeChange}
           selectedFilters={selectedFilters}
+          sort={sort}
+          sortValue={sortValue}
+          onSortChange={onSortChange}
           sync={sync}
           viewModeActions={viewModeActions}
         />
@@ -464,6 +497,9 @@ const SectionToolbar = ({
       onSync,
       onViewModeChange,
       selectedFilters,
+      sort,
+      sortValue,
+      onSortChange,
       sync,
       toggleFilter,
       viewModeActions
@@ -553,9 +589,30 @@ const SectionToolbar = ({
               </Dropdown.Popover>
             </Dropdown>
           )}
+          {sort && (
+            <Dropdown>
+              <Tooltip delay={0}>
+                <Button
+                  isIconOnly
+                  variant="ghost"
+                  aria-label="Sort"
+                  className={iconButtonClassName}>
+                  {sortValue.direction === 'ascending' ? (
+                    <SortFromBottomToTop size={18} aria-hidden="true" />
+                  ) : (
+                    <SortFromTopToBottom size={18} aria-hidden="true" />
+                  )}
+                </Button>
+                <Tooltip.Content>Sort</Tooltip.Content>
+              </Tooltip>
+              <Dropdown.Popover className="hidden md:block">
+                <SortMenu value={sortValue} onChange={onSortChange} />
+              </Dropdown.Popover>
+            </Dropdown>
+          )}
           {viewModeActions.length > 0 && (
             <>
-              {filterAction && (
+              {(filterAction || sort) && (
                 <Separator orientation="vertical" className="h-8" />
               )}
               <div

@@ -29,6 +29,7 @@ export const getToolbarActions = (
   return {
     sync: toolbar.sync ?? false,
     filter: toolbar.filter ?? false,
+    sort: toolbar.sort ?? false,
     view: toolbar.view
       ?.filter(action => action.enabled !== false)
       .map(bindViewAction),

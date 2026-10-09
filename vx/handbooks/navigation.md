@@ -90,6 +90,12 @@ Search sits above it beside the page tabs. When the primary action is absent or
 YAML anchors can reuse static defaults across sibling menus.
 `filter` independently enables the filter menu; `view` contains only grid/list
 view actions. Filter visibility does not depend on the configured view modes.
+`sort: true` independently enables Sort with Name, Created date, and Updated date
+fields and Ascending/Descending direction. It defaults to Name ascending;
+`sort: false` disables inherited sorting. `SectionLayout` retains the current
+selection and calls `onSortChange` with `{ by, direction }` so applications can
+apply it to their data. Sort appears after Filter and before View, including
+in the mobile More menu.
 
 Action `key` values are stable handler IDs. Apps bind them to callbacks and own
 state, permissions, API calls, and navigation behavior. Do not put executable

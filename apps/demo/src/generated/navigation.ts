@@ -34,6 +34,7 @@ export const navigationItems = [
       "search": true,
       "sync": true,
       "filter": true,
+      "sort": true,
       "view": [
         {
           "key": "grid",
@@ -114,6 +115,7 @@ export const navigationItems = [
       "search": true,
       "sync": true,
       "filter": true,
+      "sort": true,
       "view": [
         {
           "key": "grid",
@@ -232,6 +234,7 @@ export const navigationItems = [
       "search": true,
       "sync": true,
       "filter": true,
+      "sort": true,
       "view": [
         {
           "key": "grid",
@@ -491,6 +494,7 @@ export const navigationItems = [
       "search": true,
       "sync": true,
       "filter": true,
+      "sort": true,
       "view": [
         {
           "key": "grid",
@@ -826,6 +830,7 @@ export const navigationItems = [
       "search": true,
       "sync": true,
       "filter": true,
+      "sort": true,
       "view": [
         {
           "key": "grid",

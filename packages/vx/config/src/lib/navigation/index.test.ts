@@ -152,6 +152,7 @@ describe('navigation generation', () => {
       search: { label: 'Find', placeholder: 'Search records' },
       sync: true,
       filter: true,
+      sort: true,
       view: [
         { key: 'grid', label: 'Grid view', icon: 'vx:grid' },
         { key: 'list', label: 'List view', icon: 'vx:list' }
@@ -228,6 +229,7 @@ describe('navigation generation', () => {
     { search: 'yes' },
     { sync: 'yes' },
     { filter: 'yes' },
+    { sort: 'yes' },
     { view: 'yes' },
     { view: [{ key: 'list', label: 'Filter' }] },
     { view: [{ key: 'other', label: 'Other', icon: 'vx:other' }] },

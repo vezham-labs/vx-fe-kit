@@ -24,6 +24,7 @@ navigation:
       search: true
       sync: true
       filter: true
+      sort: true
       view:
         - key: grid
           label: Grid view

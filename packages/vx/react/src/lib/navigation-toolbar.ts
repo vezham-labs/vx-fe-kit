@@ -18,6 +18,7 @@ export type NavigationToolbar = {
   search?: boolean | { label?: string; placeholder?: string }
   sync?: boolean
   filter?: boolean
+  sort?: boolean
   view?: NavigationViewAction[]
   menuActions?: NavigationAction[]
   primaryAction?: false | NavigationAction

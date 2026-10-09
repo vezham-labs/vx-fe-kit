@@ -23,6 +23,7 @@ import {
   useWorkspaceNavigation
 } from '../../components/workspace-navigation'
 import type { AppNavigationItem } from '../../navigation'
+import { DEFAULT_SORT, type SectionSort } from './sort-menu'
 import {
   type SectionAction,
   SectionActiveFilters,
@@ -42,6 +43,8 @@ export type SectionLayoutProps = {
   search?: SectionSearch
   sync?: boolean
   filter?: boolean
+  sort?: boolean
+  onSortChange?: (value: SectionSort) => void
   view?: SectionViewAction[]
   onSync?: () => void
   menuActions?: SectionAction[]
@@ -65,6 +68,8 @@ const SectionLayout = ({
   search,
   sync = true,
   filter = false,
+  sort = false,
+  onSortChange,
   view = EMPTY_VIEW_ACTIONS,
   onSync,
   menuActions = EMPTY_MENU_ACTIONS,
@@ -80,6 +85,14 @@ const SectionLayout = ({
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState<SectionFilterKey[]>([])
+  const [sortValue, setSortValue] = useState<SectionSort>(DEFAULT_SORT)
+  const handleSortChange = useCallback(
+    (value: SectionSort) => {
+      setSortValue(value)
+      onSortChange?.(value)
+    },
+    [onSortChange]
+  )
   const [viewMode, setViewMode] = useState<SectionViewMode>('grid')
   const searchInput = useRef<HTMLInputElement>(null)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -148,6 +161,9 @@ const SectionLayout = ({
         isNavigationCollapsed={isNavigationCollapsed}
         sync={sync}
         filter={filter}
+        sort={sort}
+        sortValue={sortValue}
+        onSortChange={handleSortChange}
         view={view}
         selectedFilters={selectedFilters}
         onSelectedFiltersChange={setSelectedFilters}
@@ -299,3 +315,5 @@ export type {
   SectionViewMode
 } from './toolbar'
 export { SectionLayout }
+
+export type { SectionSort } from './sort-menu'
