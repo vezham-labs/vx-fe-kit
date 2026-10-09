@@ -6,12 +6,13 @@ import {
   CodeFile,
   Folder,
   FolderOpen,
-  TrashBinTrash as TrashBinTrashIcon
+  TrashBinTrash
 } from '@vezham/icons-react'
 import { ContextMenu, FileTree, useFileTreeDrag } from '@vezham/react-pro-v3'
-import { Avatar, Button, Typography } from '@vezham/react-v3'
+import { Avatar, Button } from '@vezham/react-v3'
 
 import { AppIcon } from '../../../../app-icon'
+import { panelContextMenuClass } from '../../../info-panel/styles'
 import {
   BookmarkContextMenuItems,
   BrowserContextMenuItems
@@ -20,6 +21,7 @@ import {
   type BookmarkContextTarget,
   type FolderTarget
 } from '../context-menu/types'
+import { BookmarkSectionEmptyState } from '../empty-state'
 import { FolderVisualPreview } from '../folder-modal'
 import {
   DEFAULT_FOLDER_COLOR,
@@ -125,34 +127,43 @@ const BookmarkFileTree = ({
             visualType="emoji"
             emoji={item.emoji}
             icon={item.icon ?? DEFAULT_FOLDER_ICON}
-            className="h-5 w-5 text-sm"
+            className="h-4 w-4 text-xs"
           />
         )
       }
 
-      if (item.visualType === 'icon' && item.icon) {
+      if (
+        item.visualType === 'icon' &&
+        item.icon &&
+        item.icon !== DEFAULT_FOLDER_ICON
+      ) {
         return (
           <FolderVisualPreview
             color={item.color ?? DEFAULT_FOLDER_COLOR}
             visualType="icon"
             emoji={item.emoji ?? DEFAULT_FOLDER_EMOJI}
             icon={item.icon}
-            className="h-5 w-5 text-sm"
+            className="h-4 w-4 text-xs"
           />
         )
       }
 
-      return folderIcon
+      return ({ isExpanded }: { isExpanded: boolean }) => (
+        <span className="text-warning">{folderIcon({ isExpanded })}</span>
+      )
     }
 
     if (item.bookmark?.icon) {
       return <AppIcon icon={item.bookmark.icon} size="1em" aria-hidden="true" />
     }
 
-    if (item.bookmark?.avatar) {
+    if (item.bookmark?.avatar || item.bookmark?.backgroundImage) {
       return (
-        <Avatar className="h-5 w-5 shrink-0">
-          <Avatar.Image src={item.bookmark.avatar} alt={item.title} />
+        <Avatar className="h-4 w-4 shrink-0 rounded-sm">
+          <Avatar.Image
+            src={item.bookmark.avatar ?? item.bookmark.backgroundImage}
+            alt={item.title}
+          />
           <Avatar.Fallback>
             {item.title.charAt(0).toUpperCase()}
           </Avatar.Fallback>
@@ -191,37 +202,64 @@ const BookmarkFileTree = ({
 
   const renderTitle = (item: (typeof tree.items)[number]) => (
     <div
-      className="group relative flex w-full min-w-0 flex-1 items-center"
+      className="relative flex min-h-7 w-full min-w-0 flex-1 items-center gap-2 pe-0 group-hover/bookmark-item:pe-14 group-has-[:focus-visible]/bookmark-item:pe-14 group-data-[focus-visible]/bookmark-item:pe-14 [@media(hover:none)]:pe-14"
       onContextMenu={event => handleItemContextMenu(event, item.value)}>
-      <Typography.Paragraph className="min-w-0 flex-1 truncate overflow-hidden">
-        {item.value.title}
-      </Typography.Paragraph>
+      {item.value.kind === 'folder' ? (
+        <button
+          type="button"
+          title={item.value.title}
+          className="min-w-0 flex-1 cursor-pointer truncate text-start text-sm leading-5 font-semibold"
+          aria-expanded={expandedKeys.has(String(item.key))}
+          onClick={event => {
+            event.stopPropagation()
+            toggleFolder(String(item.key))
+          }}>
+          {item.value.title}
+        </button>
+      ) : (
+        <span
+          title={item.value.title}
+          className="min-w-0 flex-1 truncate text-sm leading-5 font-normal">
+          {item.value.title}
+        </span>
+      )}
       <Button
         isIconOnly
         aria-label={`Remove ${item.value.title}`}
-        variant="tertiary"
-        className="text-danger text-danger absolute top-1/2 right-0 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100"
+        variant="ghost"
+        size="sm"
+        className="text-muted hover:text-danger absolute end-0 hidden size-7 min-w-0 shrink-0 group-hover/bookmark-item:inline-flex group-has-[:focus-visible]/bookmark-item:inline-flex group-data-[focus-visible]/bookmark-item:inline-flex hover:bg-transparent data-[hovered=true]:bg-transparent [@media(hover:none)]:inline-flex"
         onPress={() => {
-          if (item.value.kind === 'folder') {
-            onFolderDelete(String(item.key))
-            return
-          }
-
-          onBookmarkRemove(String(item.key))
+          if (item.value.kind === 'folder') onFolderDelete(String(item.key))
+          else onBookmarkRemove(String(item.key))
         }}>
-        <TrashBinTrashIcon size={20} aria-hidden="true" />
+        <TrashBinTrash size={16} aria-hidden="true" />
       </Button>
     </div>
   )
+
+  const toggleFolder = (key: string) => {
+    setExpandedKeys(currentKeys => {
+      const nextKeys = new Set(currentKeys)
+      if (nextKeys.has(key)) nextKeys.delete(key)
+      else nextKeys.add(key)
+      return nextKeys
+    })
+  }
 
   const renderItem = (item: (typeof tree.items)[number]) => {
     const isFolder = item.value.kind === 'folder'
 
     return (
       <FileTree.Item
-        className="px-0 py-2"
+        className="group/bookmark-item min-h-9 rounded-lg px-0 py-1 ring-inset [&_[data-slot=file-tree-item-content]]:min-w-0 [&_[data-slot=file-tree-item-content]]:gap-2 [&_[slot=chevron]]:size-4"
         icon={renderBookmarkIcon(item.value)}
         id={item.key}
+        onClick={(event: React.MouseEvent) => {
+          if (isFolder && !(event.target as HTMLElement).closest('button')) {
+            toggleFolder(String(item.key))
+          }
+        }}
         textValue={item.value.title}
         title={renderTitle(item)}
         onContextMenu={(event: React.MouseEvent) =>
@@ -238,8 +276,8 @@ const BookmarkFileTree = ({
 
   return (
     <ContextMenu>
-      <ContextMenu.Trigger className="block min-h-24">
-        <div className="min-h-24" onContextMenu={handleAreaContextMenu}>
+      <ContextMenu.Trigger className="block w-full">
+        <div className="w-full min-w-0" onContextMenu={handleAreaContextMenu}>
           <FileTree
             {...getFileTreeProps()}
             aria-label="Bookmarks file tree"
@@ -247,7 +285,11 @@ const BookmarkFileTree = ({
             expandedKeys={expandedKeys}
             items={tree.items}
             renderEmptyState={() => (
-              <div {...getBookmarkTreeEmptyStateProps()}>No bookmarks</div>
+              <BookmarkSectionEmptyState
+                title="No bookmarks yet."
+                description="Your saved links and folders appear here."
+                {...getBookmarkTreeEmptyStateProps()}
+              />
             )}
             selectedKeys={selectedKeys}
             showGuideLines="hover"
@@ -256,6 +298,7 @@ const BookmarkFileTree = ({
 
               if (bookmark) {
                 onBookmarkClick(bookmark)
+                return
               }
             }}
             onExpandedChange={(keys: Iterable<React.Key>) => {
@@ -266,7 +309,7 @@ const BookmarkFileTree = ({
           </FileTree>
         </div>
       </ContextMenu.Trigger>
-      <ContextMenu.Popover>
+      <ContextMenu.Popover className={panelContextMenuClass}>
         <ContextMenu.Menu>
           <BookmarkContextMenuItems
             contextTarget={contextTarget}
@@ -279,7 +322,7 @@ const BookmarkFileTree = ({
           />
         </ContextMenu.Menu>
       </ContextMenu.Popover>
-      <ContextMenu.Popover>
+      <ContextMenu.Popover className={panelContextMenuClass}>
         <ContextMenu.Menu>
           <BrowserContextMenuItems />
         </ContextMenu.Menu>

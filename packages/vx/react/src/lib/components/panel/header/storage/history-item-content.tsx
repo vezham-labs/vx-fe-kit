@@ -1,5 +1,4 @@
 import { Document as DocumentIcon } from '@vezham/icons-react'
-import { Typography } from '@vezham/react-v3'
 
 import type { useProps } from './types'
 
@@ -33,8 +32,8 @@ export const StorageHistoryItemContent = ({
       />
     )}
     <div {...getItemContentProps()}>
-      <Typography.Heading {...getItemTitleProps(item.title)} />
-      <Typography.Paragraph {...getItemUrlProps(item.url)} />
+      <span {...getItemTitleProps(item.title)} />
+      <span {...getItemUrlProps(item.url)} />
     </div>
   </>
 )

@@ -15,7 +15,7 @@ const tva = tv({
     empty_title: 'text-xl font-semibold',
     empty_description: 'text-default-500 max-w-[220px]',
 
-    content_container: 'space-y-2 pb-6',
+    content_container: 'space-y-2 pb-6 @min-[24rem]/info-panel:space-y-6',
 
     section: '',
     section_header: 'my-3 flex items-center gap-2',
@@ -55,8 +55,8 @@ const tva = tv({
     bookmark_arrow: 'text-default-400',
     bookmark_delete_button: 'opacity-0 group-hover:opacity-100',
     file_tree:
-      'max-h-[calc(100vh-96px)] w-full min-w-0 gap-0.5 [--file-tree-indent:0.875rem] [--file-tree-item-px:0.25rem] [&_.file-tree__drag-handle]:w-4 [&_.file-tree__icon]:h-4 [&_.file-tree__icon]:w-4 [&_.file-tree__item-content]:min-h-7 [&_.file-tree__item-content]:min-w-0 [&_.file-tree__item-content]:gap-1.5 [&_.file-tree__item-content]:rounded-md [&_.file-tree__item-content]:py-1 [&_.file-tree__item-content]:ps-1.5 [&_.file-tree__item-content]:pe-1 [&_.file-tree__label]:flex [&_.file-tree__label]:min-w-0',
-    bookmark_tree_empty_state: 'text-default-400 px-3 py-8 text-center text-sm',
+      '[&_[data-slot=file-tree-drag-handle]:focus-visible]:outline-focus! [&_[data-slot=file-tree-item]:hover]:bg-default! [&_[data-slot=file-tree-item][data-drop-target]]:bg-accent-soft! [&_[data-slot=file-tree-item][data-drop-target]]:outline-accent/40! [&_.react-aria-DropIndicator[data-drop-target]]:bg-accent! max-h-[calc(100vh-96px)] w-full min-w-0 gap-0.5 p-0 [--file-tree-chevron-offset:0px]! [--file-tree-indent:1rem] [--file-tree-item-px:0rem] data-[empty]:block! data-[empty]:min-h-0! data-[empty]:py-0! data-[empty]:text-left! data-[empty]:not-italic! [&_.react-aria-DropIndicator[data-drop-target]]:h-0.5! [&_.react-aria-DropIndicator[data-drop-target]]:rounded-full! [&_.react-aria-DropIndicator[data-drop-target]]:outline-none! [&_[data-slot=file-tree-drag-handle]]:pointer-events-none! [&_[data-slot=file-tree-drag-handle]]:absolute! [&_[data-slot=file-tree-drag-handle]]:end-8! [&_[data-slot=file-tree-drag-handle]]:size-7! [&_[data-slot=file-tree-drag-handle]]:rounded-md! [&_[data-slot=file-tree-drag-handle]]:opacity-0! [&_[data-slot=file-tree-drag-handle]]:transition-none! [&_[data-slot=file-tree-drag-handle]_svg]:size-4! [&_[data-slot=file-tree-drag-handle]:focus-visible]:opacity-100! [&_[data-slot=file-tree-drag-handle]:focus-visible]:outline-2! [&_[data-slot=file-tree-drag-handle]:hover]:bg-transparent! [&_[data-slot=file-tree-drag-handle]:hover]:opacity-100! [&_[data-slot=file-tree-icon]]:h-4 [&_[data-slot=file-tree-icon]]:w-4 [&_[data-slot=file-tree-item-content]]:min-h-7 [&_[data-slot=file-tree-item-content]]:min-w-0 [&_[data-slot=file-tree-item-content]]:gap-2 [&_[data-slot=file-tree-item-content]]:rounded-md [&_[data-slot=file-tree-item-content]]:pe-1 [&_[data-slot=file-tree-item]]:ring-inset [&_[data-slot=file-tree-item]:has(:focus-visible)_[data-slot=file-tree-drag-handle]]:pointer-events-auto! [&_[data-slot=file-tree-item]:has(:focus-visible)_[data-slot=file-tree-drag-handle]]:opacity-60! [&_[data-slot=file-tree-item]:hover_[data-slot=file-tree-drag-handle]]:pointer-events-auto! [&_[data-slot=file-tree-item]:hover_[data-slot=file-tree-drag-handle]]:opacity-60! [&_[data-slot=file-tree-item][data-drop-target]]:outline-1! [&_[data-slot=file-tree-item][data-focus-visible]_[data-slot=file-tree-drag-handle]]:pointer-events-auto! [&_[data-slot=file-tree-item][data-focus-visible]_[data-slot=file-tree-drag-handle]]:opacity-60! [&_[data-slot=file-tree-label]]:flex [&_[data-slot=file-tree-label]]:min-w-0 [&_[data-slot=file-tree-label]]:flex-1 [&_[slot=chevron]]:cursor-pointer! [&_[slot=chevron]:hover]:bg-transparent! [@media(hover:none)]:[&_[data-slot=file-tree-drag-handle]]:pointer-events-auto! [@media(hover:none)]:[&_[data-slot=file-tree-drag-handle]]:opacity-60!',
+    bookmark_tree_empty_state: 'w-full',
 
     folder_section: 'mt-6',
     folder_accordion: 'px-0',

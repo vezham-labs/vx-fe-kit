@@ -24,7 +24,7 @@ export const settingsSidebar: SidebarSection[] = [
     items: [
       {
         id: 'profiles',
-        label: 'Mia Chan',
+        label: 'Arya Chan',
         component: ProfileSettings
       }
     ]

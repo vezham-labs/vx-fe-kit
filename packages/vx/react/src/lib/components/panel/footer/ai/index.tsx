@@ -1,72 +1,41 @@
-import { forwardRef } from 'react'
+import { VezhamTamizhi } from '@vezham/icons-react'
 
-import { EmptyState } from '@vezham/react-pro-v3/empty-state'
-import { Drawer } from '@vezham/react-v3'
+import type { InfoPanelDefinition } from '../../info-panel'
+import { InfoPanelSheet } from '../../info-panel/sheet'
+import { AIContent } from './content'
+import { useMockConversation } from './conversation'
 
-import { AppIcon } from '../../../app-icon'
-import { InfoPanelDefinition } from '../../info-panel'
-import { Props, useProps } from './types'
+type Props = { isOpen: boolean; onClose: () => void }
 
-const AIContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const { Component, getBaseProps, getBodyProps, getIconProps } = useProps({
-    ...props,
-    ref
-  })
+const AISheet = ({ isOpen, onClose }: Props) =>
+  isOpen ? <AISession onClose={onClose} /> : null
 
+const AISession = ({ onClose }: Pick<Props, 'onClose'>) => {
+  const conversation = useMockConversation()
   return (
-    <Component {...getBaseProps()}>
-      <div {...getBodyProps()}>
-        <EmptyState className="rounded-2xl">
-          <EmptyState.Media>
-            <AppIcon {...getIconProps()} size="1em" aria-hidden="true" />
-          </EmptyState.Media>
-          <EmptyState.Title>AI is Empty</EmptyState.Title>
-        </EmptyState>
-      </div>
-    </Component>
+    <InfoPanelSheet
+      onClose={onClose}
+      panel={{
+        title: aiPanel.title,
+        titleIcon: aiPanel.titleIcon,
+        scrollable: false,
+        content: <AIContent conversation={conversation} panel />
+      }}
+    />
   )
-})
+}
 
-AIContent.displayName = 'AIContent'
-
-const AIDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const {
-    Component,
-    getBaseProps,
-    getWrapperProps,
-    getContentProps,
-    isOpen,
-    onClose,
-    backdrop,
-    placement
-  } = useProps({
-    ...props,
-    ref
-  })
-  const baseProps = getBaseProps()
-
-  return (
-    <Component {...baseProps}>
-      <Drawer.Backdrop
-        isOpen={isOpen}
-        onOpenChange={open => !open && onClose()}
-        variant={backdrop}
-        className={getWrapperProps().className}>
-        <Drawer.Content placement={placement} className={baseProps.className}>
-          <Drawer.Dialog className={getContentProps().className}>
-            <Drawer.Body>
-              <AIContent {...props} />
-            </Drawer.Body>
-          </Drawer.Dialog>
-        </Drawer.Content>
-      </Drawer.Backdrop>
-    </Component>
-  )
-})
-
-AIDrawer.displayName = 'AIDrawer'
+const AIPanelContent = () => {
+  const conversation = useMockConversation()
+  return <AIContent conversation={conversation} panel />
+}
 
 export const aiPanel: InfoPanelDefinition = {
-  title: 'AI',
-  content: <AIContent isOpen={false} onClose={() => undefined} />
+  title: 'Tamizhi AI',
+  titleIcon: (
+    <VezhamTamizhi size={20} aria-hidden="true" className="shrink-0" />
+  ),
+  scrollable: false,
+  content: <AIPanelContent />,
+  renderCompact: props => <AISheet {...props} />
 }

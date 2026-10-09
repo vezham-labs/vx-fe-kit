@@ -1,13 +1,21 @@
 import { useNavigate } from '@tanstack/react-router'
 import { forwardRef } from 'react'
 
-import { Bell as BellIcon } from '@vezham/icons-react'
 import { EmptyState } from '@vezham/react-pro-v3/empty-state'
-import { Chip, CloseButton, Drawer, ScrollShadow } from '@vezham/react-v3'
+import {
+  Button,
+  CloseButton,
+  Drawer,
+  ScrollShadow,
+  useMediaQuery
+} from '@vezham/react-v3'
 
-import { WidgetsGrid } from '../../../../pages/widgets'
+import { useSettingsNavigation } from '../../../../pages/settings/navigation'
+import { InfoPanelSheet } from '../../info-panel/sheet'
+import { ACCOUNT_BUBBLE_MEDIA_QUERY } from '../../responsive'
 import { FooterDrawerFrame } from '../drawer-frame'
 import { Props, useProps } from './types'
+import { WidgetTiles, useWidgetTiles } from './widget-tiles'
 
 const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const {
@@ -20,14 +28,13 @@ const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
     closeButtonClassName,
     getDrawerBodyProps,
     getScrollShadowProps,
-    getEmptyStateProps,
-    getEmptyStateIconProps,
     getDrawerFooterProps,
-    getChipProps,
+    getEditButtonProps,
     isOpen,
     onClose,
     backdrop,
     placement,
+    title,
     onEdit,
     isEmpty
   } = useProps({
@@ -35,15 +42,76 @@ const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
     ref
   })
   const drawerBaseProps = getDrawerBaseProps()
-
   const navigate = useNavigate()
 
+  const compact = useMediaQuery(ACCOUNT_BUBBLE_MEDIA_QUERY, {
+    initializeWithValue: false
+  })
+
+  const openSettings = useSettingsNavigation()
+  const { visibleTiles } = useWidgetTiles()
+  const showEmptyState = isEmpty || visibleTiles.length === 0
+
+  const content = (
+    <ScrollShadow {...getScrollShadowProps()}>
+      {showEmptyState ? (
+        <EmptyState size="sm" className="py-12">
+          <EmptyState.Header>
+            <EmptyState.Title>No widgets yet</EmptyState.Title>
+            <EmptyState.Description>
+              Add widgets to personalize your Notification Center.
+            </EmptyState.Description>
+          </EmptyState.Header>
+        </EmptyState>
+      ) : (
+        <WidgetTiles />
+      )}
+    </ScrollShadow>
+  )
   const handleEdit = () => {
-    if (onEdit) {
+    if (openSettings) {
+      onClose()
+      openSettings('Edit Widgets')
+    } else if (onEdit) {
       onEdit()
     } else {
+      onClose()
       navigate({ to: '/widgets' })
     }
+  }
+
+  const editButton = (
+    <Button
+      variant="secondary"
+      size="sm"
+      {...getEditButtonProps()}
+      onPress={handleEdit}>
+      Edit Widgets
+    </Button>
+  )
+
+  if (compact) {
+    return (
+      <InfoPanelSheet
+        isOpen={isOpen}
+        heading={title}
+        panel={{
+          title: typeof title === 'string' ? title : 'Notification Center',
+          scrollable: false,
+          content: (
+            <div className="flex h-full min-h-0 flex-col">
+              {content}
+              {editButton && (
+                <div className="flex shrink-0 justify-center pt-3">
+                  {editButton}
+                </div>
+              )}
+            </div>
+          )
+        }}
+        onClose={onClose}
+      />
+    )
   }
 
   return (
@@ -54,39 +122,22 @@ const NotificationDrawer = forwardRef<HTMLDivElement, Props>((props, ref) => {
         backdrop={backdrop}
         placement={placement}
         wrapperClassName={getDrawerWrapperProps().className}
-        contentClassName={drawerBaseProps.className}
+        contentClassName={`${drawerBaseProps.className} overflow-hidden`}
         dialogClassName={getDrawerContentProps().className}>
         <Drawer.Header {...getDrawerHeaderProps()}>
-          <span {...getHeaderTitleProps()} />
-          <CloseButton className={closeButtonClassName} onPress={onClose} />
+          <Drawer.Heading {...getHeaderTitleProps()} />
+          <CloseButton
+            aria-label="Close Notification Center"
+            className={closeButtonClassName}
+            onPress={onClose}
+          />
         </Drawer.Header>
 
-        <Drawer.Body {...getDrawerBodyProps()}>
-          <ScrollShadow {...getScrollShadowProps()}>
-            {isEmpty ? (
-              <div {...getEmptyStateProps()}>
-                <EmptyState className="rounded-2xl">
-                  <EmptyState.Media>
-                    <BellIcon
-                      {...getEmptyStateIconProps()}
-                      weight="outline"
-                      aria-hidden="true"
-                    />
-                  </EmptyState.Media>
-                  <EmptyState.Title>Notifications are Empty</EmptyState.Title>
-                </EmptyState>
-              </div>
-            ) : (
-              <WidgetsGrid />
-            )}
-          </ScrollShadow>
-        </Drawer.Body>
+        <Drawer.Body {...getDrawerBodyProps()}>{content}</Drawer.Body>
 
-        {!isEmpty && (
+        {editButton && (
           <Drawer.Footer {...getDrawerFooterProps()}>
-            <Chip variant="primary" {...getChipProps()} onClick={handleEdit}>
-              Edit
-            </Chip>
+            {editButton}
           </Drawer.Footer>
         )}
       </FooterDrawerFrame>

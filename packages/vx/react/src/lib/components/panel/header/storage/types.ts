@@ -106,7 +106,7 @@ const useProps = (originalProps: Props) => {
 
   const getRestoreAllButtonProps = () => ({
     size: 'sm' as const,
-    variant: 'secondary' as const,
+    variant: 'outline' as const,
     className: 'text-success'
   })
 
@@ -188,21 +188,25 @@ const useProps = (originalProps: Props) => {
   })
 
   const getUnarchiveButtonProps = () => ({
+    size: 'sm' as const,
     className: slots.unarchive_button({ class: classNames?.unarchive_button }),
     'aria-label': 'Unarchive'
   })
 
   const getRestoreButtonProps = () => ({
+    size: 'sm' as const,
     className: slots.restore_button({ class: classNames?.restore_button }),
     'aria-label': 'Restore'
   })
 
   const getDeleteButtonProps = () => ({
+    size: 'sm' as const,
     className: slots.delete_button({ class: classNames?.delete_button }),
     'aria-label': 'Delete'
   })
 
   const getDeletePermanentButtonProps = () => ({
+    size: 'sm' as const,
     className: slots.delete_permanent_button({
       class: classNames?.delete_permanent_button
     }),

@@ -1,11 +1,11 @@
-import { useCallback, useState } from 'react'
+import { type ReactElement, useCallback, useState } from 'react'
 
 import {
   AltArrowDown as AltArrowDownIcon,
   Archive as ArchiveIcon,
+  Bookmark as BookmarkIcon,
   Magnifier as MagnifierIcon,
-  SidebarMinimalistic as SidebarMinimalisticIcon,
-  Star as StarIcon
+  SidebarMinimalistic as SidebarMinimalisticIcon
 } from '@vezham/icons-react'
 import {
   Avatar,
@@ -14,7 +14,8 @@ import {
   Label,
   Separator,
   Surface,
-  Tooltip
+  Tooltip,
+  useMediaQuery
 } from '@vezham/react-v3'
 
 import { AppIcon } from '../../app-icon'
@@ -22,6 +23,11 @@ import { useAppMenu } from '../../app-menu'
 import { useCommand } from '../../command'
 import { ShortcutKey, ShortcutTooltipLabel } from '../../shortcut-key'
 import { useInfoPanel } from '../info-panel'
+import { APPLICATION_MENU_SHEET_MEDIA_QUERY } from '../responsive'
+import {
+  type ApplicationMenuProps,
+  ApplicationMenuSheet
+} from './application-menu-sheet'
 import { BookmarksTrigger } from './bookmarks'
 import { StorageTrigger } from './storage'
 import { HeaderActionsProps } from './types'
@@ -84,7 +90,16 @@ const Header = ({
             <HeaderAvatar user={users} />
           </button>
 
-          <Dropdown isOpen={open} onOpenChange={setOpen}>
+          <HeaderApplicationMenu
+            isOpen={open}
+            onOpenChange={setOpen}
+            onClose={() => setOpen(false)}
+            onSearch={handleMenuSearch}
+            navigationLabel={navigationLabel}
+            onToggleNavigation={onToggleNavigation}
+            showMenuUtilities={showMenuUtilities}
+            showBookamarks={showBookamarks}
+            showStorage={showStorage}>
             <Button
               variant="ghost"
               isIconOnly
@@ -98,17 +113,7 @@ const Header = ({
                 aria-hidden="true"
               />
             </Button>
-
-            <HeaderApplicationMenuContent
-              onClose={() => setOpen(false)}
-              onSearch={handleMenuSearch}
-              navigationLabel={navigationLabel}
-              onToggleNavigation={onToggleNavigation}
-              showMenuUtilities={showMenuUtilities}
-              showBookamarks={showBookamarks}
-              showStorage={showStorage}
-            />
-          </Dropdown>
+          </HeaderApplicationMenu>
         </div>
 
         {onToggleNavigation && (
@@ -144,7 +149,16 @@ const Header = ({
         variant="transparent"
         className={`flex flex-row items-center gap-1 md:flex-col md:gap-3 ${className ?? ''}`}
         data-vx="header">
-        <Dropdown isOpen={open} onOpenChange={setOpen}>
+        <HeaderApplicationMenu
+          isOpen={open}
+          onOpenChange={setOpen}
+          onClose={() => setOpen(false)}
+          onSearch={handleMenuSearch}
+          navigationLabel={navigationLabel}
+          onToggleNavigation={onToggleNavigation}
+          showMenuUtilities={showMenuUtilities}
+          showBookamarks={false}
+          showStorage={false}>
           <Button
             variant="ghost"
             className="flex h-10 items-center gap-2 px-2 transition-transform duration-300"
@@ -158,17 +172,7 @@ const Header = ({
               aria-hidden="true"
             />
           </Button>
-
-          <HeaderApplicationMenuContent
-            onClose={() => setOpen(false)}
-            onSearch={handleMenuSearch}
-            navigationLabel={navigationLabel}
-            onToggleNavigation={onToggleNavigation}
-            showMenuUtilities={showMenuUtilities}
-            showBookamarks={false}
-            showStorage={false}
-          />
-        </Dropdown>
+        </HeaderApplicationMenu>
 
         {showSearch && (
           <Tooltip delay={0}>
@@ -208,6 +212,36 @@ const HeaderAvatar = ({ user }: { user: HeaderActionsProps['users'] }) => (
   </Avatar>
 )
 
+const HeaderApplicationMenu = ({
+  children,
+  isOpen,
+  onOpenChange,
+  ...props
+}: ApplicationMenuProps & {
+  children: ReactElement<{ onPress?: () => void }>
+  isOpen: boolean
+  onOpenChange: (open: boolean) => void
+}) => {
+  const small = useMediaQuery(APPLICATION_MENU_SHEET_MEDIA_QUERY, {
+    initializeWithValue: false
+  })
+  if (small)
+    return (
+      <ApplicationMenuSheet
+        {...props}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        trigger={children}
+      />
+    )
+  return (
+    <Dropdown isOpen={isOpen} onOpenChange={onOpenChange}>
+      {children}
+      <HeaderApplicationMenuContent {...props} />
+    </Dropdown>
+  )
+}
+
 const HeaderApplicationMenuContent = ({
   onClose,
   onSearch,
@@ -216,15 +250,7 @@ const HeaderApplicationMenuContent = ({
   showMenuUtilities,
   showBookamarks,
   showStorage
-}: {
-  onClose: () => void
-  onSearch: () => void
-  navigationLabel: string
-  onToggleNavigation?: () => void
-  showMenuUtilities: boolean
-  showBookamarks: boolean
-  showStorage: boolean
-}) => {
+}: ApplicationMenuProps) => {
   const appMenu = useAppMenu()
   return (
     <Dropdown.Popover>
@@ -328,7 +354,7 @@ const HeaderPanelMenuItems = ({
   showStorage: boolean
   onClose: () => void
 }) => {
-  const { toggleInfoPanel } = useInfoPanel()
+  const { toggleInfoPanel, activeInfoPanel, isOpen } = useInfoPanel()
 
   return (
     <>
@@ -342,7 +368,13 @@ const HeaderPanelMenuItems = ({
             onClose()
             toggleInfoPanel('bookmarks')
           }}>
-          <StarIcon size={18} aria-hidden="true" />
+          <BookmarkIcon
+            size={18}
+            weight={
+              isOpen && activeInfoPanel === 'bookmarks' ? 'filled' : 'outline'
+            }
+            aria-hidden="true"
+          />
           <Label>Bookmarks</Label>
           <ShortcutKey className="ms-auto" shortcut="Mod ⇧ B" />
         </Dropdown.Item>

@@ -43,7 +43,6 @@ const EMPTY_ITEMS: SidebarItem[] = []
 
 const BottomNavbar: React.FC<BottomNavbarProps> = ({
   items = EMPTY_ITEMS,
-  selectedKey,
   onSelect,
   isDarkMode = false,
   bgColorClass,
@@ -56,8 +55,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
   const { openCommand } = useCommand()
 
   const flatItems = useMemo(() => flattenMenuItems(items), [items])
-  const activeKey =
-    getSelectedMenuKey(location.pathname, flatItems) ?? selectedKey
+  const activeKey = getSelectedMenuKey(location.pathname, flatItems) ?? ''
 
   const { isOpen, open: onOpen, close: onClose } = useOverlayState()
   const [mainVisibleCount, setMainVisibleCount] = useState(flatItems.length)

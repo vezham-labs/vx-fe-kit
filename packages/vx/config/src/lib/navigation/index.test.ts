@@ -20,13 +20,19 @@ afterEach(() => {
 })
 
 describe('navigation generation', () => {
+  it('rejects the old top-level items key', () => {
+    const root = project()
+    writeFileSync(path.join(root, 'vx.nav.yaml'), stringify({ items: [] }))
+    expect(() => getNavigationFiles(root)).toThrow('must contain navigation')
+  })
+
   it('looks up children, returns an empty list for leaves, and rejects missing keys', () => {
     const root = project()
     const children = [{ key: 'classes', title: 'Classes' }]
     writeFileSync(
       path.join(root, 'vx.nav.yaml'),
       stringify({
-        items: [
+        navigation: [
           { key: 'school', title: 'School', children },
           { key: 'home', title: 'Home' }
         ]
@@ -72,7 +78,7 @@ describe('navigation generation', () => {
     ]
     writeFileSync(
       path.join(root, 'vx.nav.yaml'),
-      stringify({ items: [], appMenu })
+      stringify({ navigation: [], appMenu })
     )
     const exports: { appMenu?: unknown } = {}
     runInNewContext(
@@ -115,7 +121,7 @@ describe('navigation generation', () => {
     const root = project()
     writeFileSync(
       path.join(root, 'vx.nav.yaml'),
-      stringify({ items: [], appMenu })
+      stringify({ navigation: [], appMenu })
     )
     expect(() => getNavigationFiles(root)).toThrow()
   })
@@ -129,7 +135,7 @@ describe('navigation generation', () => {
     writeFileSync(
       path.join(root, 'vx.nav.yaml'),
       stringify({
-        items: [
+        navigation: [
           { key: 'home', title: 'Home', toolbar: { search: true } },
           { key: 'other', title: 'Other', toolbar: { search: false } }
         ]
@@ -158,7 +164,7 @@ describe('navigation generation', () => {
     writeFileSync(
       path.join(root, 'vx.nav.yaml'),
       stringify({
-        items: [
+        navigation: [
           {
             key: 'school',
             title: 'School',
@@ -217,7 +223,7 @@ describe('navigation generation', () => {
     const root = project()
     writeFileSync(
       path.join(root, 'vx.nav.yaml'),
-      stringify({ items: [{ key: 'home', title: 'Home', toolbar }] })
+      stringify({ navigation: [{ key: 'home', title: 'Home', toolbar }] })
     )
     expect(() => getNavigationFiles(root)).toThrow()
   })
@@ -239,7 +245,10 @@ describe('navigation generation', () => {
         ]
       }
     ]
-    writeFileSync(path.join(root, 'vx.nav.yaml'), stringify({ items }))
+    writeFileSync(
+      path.join(root, 'vx.nav.yaml'),
+      stringify({ navigation: items })
+    )
     const [file] = getNavigationFiles(root)
     expect(file.path).toBe(path.join(root, 'src/generated/navigation.ts'))
     expect(file.content).toContain(JSON.stringify(items, null, 2))
@@ -256,7 +265,87 @@ describe('navigation generation', () => {
     [{ key: 'home', title: 'Home', href: 42 }]
   ])('rejects invalid navigation before writing output: %j', (...items) => {
     const root = project()
-    writeFileSync(path.join(root, 'vx.nav.yaml'), stringify({ items }))
+    writeFileSync(
+      path.join(root, 'vx.nav.yaml'),
+      stringify({ navigation: items })
+    )
+    expect(() => getNavigationFiles(root)).toThrow()
+  })
+})
+
+describe('control center configuration', () => {
+  it.each(['true', 1, null])(
+    'rejects a non-boolean editControls value: %j',
+    editControls => {
+      const root = project()
+      writeFileSync(
+        path.join(root, 'vx.nav.yaml'),
+        stringify({
+          navigation: [],
+          controlCenter: { tiles: [], editControls }
+        })
+      )
+      expect(() => getNavigationFiles(root)).toThrow(
+        'editControls must be a boolean'
+      )
+    }
+  )
+  it('generates the configured tile order and custom action keys', () => {
+    const root = project()
+    const controlCenter = {
+      editControls: true,
+      tiles: [
+        { id: 'language', type: 'language', span: 'wide' },
+        { id: 'direction-toggle', type: 'direction-toggle', span: 'compact' },
+        {
+          id: 'workspace',
+          type: 'custom',
+          span: 'full',
+          action: 'workspace.open'
+        }
+      ]
+    }
+    writeFileSync(
+      path.join(root, 'vx.nav.yaml'),
+      stringify({ navigation: [], controlCenter })
+    )
+    const [file] = getNavigationFiles(root)
+    const generated = {
+      exports: {} as { controlCenter?: typeof controlCenter }
+    }
+    runInNewContext(
+      transpile(file.content, { module: ModuleKind.CommonJS }),
+      generated
+    )
+    expect(generated.exports.controlCenter).toEqual(controlCenter)
+  })
+
+  it.each([
+    [{ id: 'one', type: 'unknown', span: 'wide' }],
+    [{ id: 'one', type: 'theme', span: 'tiny' }],
+    [{ id: 'one', type: 'edit-controls', span: 'full' }],
+    [
+      {
+        id: 'edit-controls',
+        type: 'custom',
+        action: 'custom.edit',
+        span: 'full'
+      }
+    ],
+    [{ id: 'one', type: 'custom', span: 'wide' }],
+    [{ id: 'one', type: 'theme', span: 'wide', action: 'bad' }],
+    [{ id: 'one', type: 'theme', span: 'wide', surprise: true }],
+    [{ id: 'one', type: 'theme', span: 'wide', title: 'Old heading' }],
+    [
+      { id: 'one', type: 'theme', span: 'wide' },
+      { id: 'one', type: 'theme', span: 'wide' }
+    ]
+  ])('rejects invalid tiles %j', (...tiles) => {
+    const root = project()
+    writeFileSync(
+      path.join(root, 'vx.nav.yaml'),
+      stringify({ navigation: [], controlCenter: { tiles } })
+    )
     expect(() => getNavigationFiles(root)).toThrow()
   })
 })

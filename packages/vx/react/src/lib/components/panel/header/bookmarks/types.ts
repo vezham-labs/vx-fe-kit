@@ -46,8 +46,11 @@ interface Props extends tvProps, ComponentPropsWithRef<'div'> {
   classNames?: Partial<Record<tvSlots, string>>
   favorites?: FavoriteItem[]
   bookmarks?: BookmarkItem[]
+  pins?: FavoriteItem[]
   onFavoriteClick?: (url: string, item: FavoriteItem) => void
   onBookmarkClick?: (url: string, item: BookmarkItem) => void
+  onFavoritesChange?: (items: FavoriteItem[]) => void
+  onPinsChange?: (items: FavoriteItem[]) => void
   onFavoritesReorder?: (newFavorites: FavoriteItem[]) => void
   onBookmarksReorder?: (newBookmarks: BookmarkItem[]) => void
   onFolderReorder?: (newBookmarks: BookmarkItem[]) => void
@@ -70,8 +73,11 @@ const useProps = (originalProps: Props) => {
     classNames,
     favorites: externalFavorites,
     bookmarks: externalBookmarks,
+    pins: externalPins,
     onFavoriteClick,
     onBookmarkClick,
+    onFavoritesChange,
+    onPinsChange,
     onFavoritesReorder,
     onBookmarksReorder,
     onFolderReorder,
@@ -382,8 +388,11 @@ const useProps = (originalProps: Props) => {
     getFolderBodyProps,
     externalFavorites,
     externalBookmarks,
+    externalPins,
     onFavoriteClick,
     onBookmarkClick,
+    onFavoritesChange,
+    onPinsChange,
     onFavoritesReorder,
     onBookmarksReorder,
     onFolderReorder,

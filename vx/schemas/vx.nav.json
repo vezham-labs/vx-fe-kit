@@ -4,9 +4,9 @@
   "title": "Vx navigation configuration",
   "type": "object",
   "additionalProperties": false,
-  "required": ["items"],
+  "required": ["navigation"],
   "properties": {
-    "items": {
+    "navigation": {
       "type": "array",
       "items": {
         "$ref": "#/definitions/item"
@@ -16,6 +16,24 @@
       "type": "array",
       "items": {
         "$ref": "#/definitions/appMenu"
+      }
+    },
+    "controlCenter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tiles"],
+      "properties": {
+        "editControls": {
+          "type": "boolean",
+          "description": "Show Edit Controls when application Settings navigation is available.",
+          "default": false
+        },
+        "tiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/controlCenterTile"
+          }
+        }
       }
     }
   },
@@ -176,6 +194,74 @@
           }
         }
       }
+    },
+    "controlCenterTile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "span"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "enum": [
+            "direction-toggle",
+            "appearance-toggle",
+            "appearance",
+            "theme",
+            "direction",
+            "language",
+            "preview-wifi",
+            "preview-bluetooth",
+            "preview-airdrop",
+            "preview-focus",
+            "preview-stage-manager",
+            "preview-mirroring",
+            "preview-media",
+            "preview-display",
+            "preview-sound",
+            "custom"
+          ]
+        },
+        "span": {
+          "enum": ["compact", "standard", "wide", "full"]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "editable": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "custom"
+              }
+            }
+          },
+          "then": {
+            "required": ["action"]
+          },
+          "else": {
+            "not": {
+              "required": ["action"]
+            }
+          }
+        }
+      ]
     }
   }
 }

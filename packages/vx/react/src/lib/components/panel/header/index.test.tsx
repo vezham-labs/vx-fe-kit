@@ -5,6 +5,13 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AppMenuProvider } from '../../app-menu'
 import { Header } from './index'
 
+const viewport = vi.hoisted(() => ({ small: false }))
+
+vi.mock('@vezham/react-v3', async importOriginal => ({
+  ...(await importOriginal<typeof import('@vezham/react-v3')>()),
+  useMediaQuery: () => viewport.small
+}))
+
 const actions = vi.hoisted(() => ({
   openCommand: vi.fn(),
   expand: vi.fn(),
@@ -17,7 +24,10 @@ vi.mock('../info-panel', () => ({
 }))
 
 describe('Shared compact navigation header', () => {
-  beforeEach(() => vi.clearAllMocks())
+  beforeEach(() => {
+    vi.clearAllMocks()
+    viewport.small = false
+  })
 
   it('matches the small ghost action buttons without extra spacing', () => {
     const { container } = render(
@@ -252,5 +262,53 @@ describe('Shared compact navigation header', () => {
       shortcut: 'Mod N'
     })
     await waitFor(() => expect(screen.queryByRole('menu')).toBeNull())
+  })
+})
+
+describe('application menu sheet', () => {
+  it('opens on small screens, handles utilities and dispatches app actions through local submenus', async () => {
+    viewport.small = true
+    const onAction = vi.fn()
+    render(
+      <AppMenuProvider
+        items={[
+          {
+            key: 'file',
+            label: 'File',
+            groups: [[{ key: 'file.new', label: 'New document' }]]
+          }
+        ]}
+        onAction={onAction}>
+        <Header
+          compact
+          users={{ id: '1', name: 'School' }}
+          showBookamarks
+          showStorage
+        />
+      </AppMenuProvider>
+    )
+    const trigger = screen.getByRole('button', {
+      name: 'Open application menu'
+    })
+    fireEvent.click(trigger)
+    const sheet = await screen.findByRole('dialog', {
+      name: 'Application menu'
+    })
+    expect(sheet.closest('[data-slot="sheet-backdrop"]')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Bookmarks' }))
+    expect(actions.toggleInfoPanel).toHaveBeenCalledWith('bookmarks')
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+    fireEvent.click(trigger)
+    fireEvent.click(await screen.findByRole('button', { name: 'File' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Back to application menu' })
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'File' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'New document' }))
+    expect(onAction).toHaveBeenCalledWith({
+      key: 'file.new',
+      label: 'New document'
+    })
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
   })
 })

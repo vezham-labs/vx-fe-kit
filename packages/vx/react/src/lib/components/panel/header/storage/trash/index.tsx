@@ -153,7 +153,7 @@ const Trash = (props: TrashProps) => {
                         handleRestore(item.id)
                       }}>
                       <ArchiveUpIcon
-                        {...getActionIconProps('success')}
+                        {...getActionIconProps('default')}
                         weight="outline"
                         aria-hidden="true"
                       />

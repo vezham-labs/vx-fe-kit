@@ -73,9 +73,6 @@ vi.mock('../../components/panel/header/bookmarks', () => ({
   bookmarksPanel: {}
 }))
 vi.mock('../../components/panel/header/storage', () => ({ storagePanel: {} }))
-vi.mock('../../components/panel/footer/control-center', () => ({
-  ControlCenterDrawer: () => null
-}))
 vi.mock('../../components/panel/footer/notification-center', () => ({
   NotificationDrawer: () => null
 }))

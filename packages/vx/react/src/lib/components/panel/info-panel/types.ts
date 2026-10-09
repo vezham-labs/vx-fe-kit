@@ -13,5 +13,8 @@ export interface InfoPanelContextValue {
 
 export interface InfoPanelDefinition {
   title: string
+  titleIcon?: ReactNode
   content: ReactNode
+  scrollable?: boolean
+  renderCompact?: (props: { isOpen: boolean; onClose: () => void }) => ReactNode
 }

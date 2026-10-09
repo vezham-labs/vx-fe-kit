@@ -5,7 +5,6 @@ import { Surface } from '@vezham/react-v3'
 import { BottomNavbar } from '../../components/menu'
 import { Footer } from '../../components/panel/footer'
 import { aiPanel } from '../../components/panel/footer/ai'
-import { ControlCenterDrawer } from '../../components/panel/footer/control-center'
 import { NotificationDrawer } from '../../components/panel/footer/notification-center'
 import { UserInfoModal } from '../../components/panel/footer/preferences/modal'
 import { Header } from '../../components/panel/header'
@@ -16,15 +15,14 @@ import {
   useInfoPanel
 } from '../../components/panel/info-panel'
 import { useWorkspaceNavigation } from '../../components/workspace-navigation'
-import type { AppNavigationItem } from '../../navigation'
 import { useUser } from '../../store/users/useUserStore'
+import type { MenuLayoutProps } from './index'
 
-const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
+const MenuSM = ({ items, controlCenter }: MenuLayoutProps) => {
   const [selectedKey, setSelectedKey] = React.useState(items[0]?.key ?? '')
   const [openSettings, setOpenSettings] = useState(false)
   const [settingsEntryPoint, setSettingsEntryPoint] = useState('account')
   const [notificationsOpen, setNotificationsOpen] = useState(false)
-  const [controlsOpen, setControlsOpen] = useState(false)
   const { openInfoPanel } = useInfoPanel()
   const { mobileSidebar } = useWorkspaceNavigation()
 
@@ -41,9 +39,7 @@ const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
 
   const { user } = useUser()
   return (
-    <Surface
-      variant="transparent"
-      className="bg-background relative z-20 flex min-h-0 shrink-0 flex-col">
+    <>
       <div className="pointer-events-none fixed top-3 right-3 left-3 z-40 flex items-center justify-between gap-2">
         <Surface
           variant="transparent"
@@ -77,10 +73,10 @@ const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
             }}
             showAI
             showControlCenter
+            controlCenter={controlCenter}
             showNotifications
             showUserInfo
             onAI={() => openInfoPanel('ai')}
-            onControlCenterClick={() => setControlsOpen(true)}
             onNotificationsClick={() => setNotificationsOpen(true)}
             onUserClick={(_user, entryPoint = 'account') => {
               setSettingsEntryPoint(entryPoint)
@@ -94,10 +90,6 @@ const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
         open={openSettings}
         onClose={() => setOpenSettings(false)}
         defaultActiveTab={settingsEntryPoint}
-      />
-      <ControlCenterDrawer
-        isOpen={controlsOpen}
-        onClose={() => setControlsOpen(false)}
       />
       <NotificationDrawer
         isOpen={notificationsOpen}
@@ -119,7 +111,7 @@ const MenuSM = ({ items }: { items: AppNavigationItem[] }) => {
           onSelect={handleItemSelect}
         />
       </div>
-    </Surface>
+    </>
   )
 }
 

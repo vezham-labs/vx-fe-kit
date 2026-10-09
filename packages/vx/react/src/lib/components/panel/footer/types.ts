@@ -1,3 +1,5 @@
+import type { ReactElement } from 'react'
+
 export interface UserInfo {
   id: string
   name: string
@@ -32,13 +34,13 @@ export interface FooterActionsProps {
 
   showAI?: boolean
   showControlCenter?: boolean
+  controlCenter?: ReactElement
   showNotifications?: boolean
   showUserInfo?: boolean
 
   notificationCount?: number
 
   onAI?: () => void
-  onControlCenterClick?: () => void
   onNotificationsClick?: () => void
   onUserClick?: (user: UserInfo, entryPoint?: UserSettingsEntryPoint) => void
 

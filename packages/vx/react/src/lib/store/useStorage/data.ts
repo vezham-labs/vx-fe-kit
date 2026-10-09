@@ -2,6 +2,24 @@ import type { ArchiveItem, StorageResponse, TrashItem } from './types'
 
 const sampleArchiveItems: ArchiveItem[] = [
   {
+    id: 'archive-all-classes',
+    title: 'All Classes',
+    url: '/academic/classes/allclasses',
+    archivedDate: '2026-04-09'
+  },
+  {
+    id: 'archive-operations',
+    title: 'Operations',
+    url: '/operations',
+    archivedDate: '2026-04-09'
+  },
+  {
+    id: 'archive-hello-world',
+    title: 'Hello World',
+    url: '/hello-world',
+    archivedDate: '2026-04-09'
+  },
+  {
     id: 'a1',
     title: 'HeroUI v3 (Previous',
     url: 'heroui.com',
@@ -93,6 +111,24 @@ const sampleArchiveItems: ArchiveItem[] = [
 ]
 
 const sampleTrashItems: TrashItem[] = [
+  {
+    id: 'trash-all-classes',
+    title: 'All Classes',
+    url: '/academic/classes/allclasses',
+    deletedDate: '2026-04-09'
+  },
+  {
+    id: 'trash-operations',
+    title: 'Operations',
+    url: '/operations',
+    deletedDate: '2026-04-09'
+  },
+  {
+    id: 'trash-hello-world',
+    title: 'Hello World',
+    url: '/hello-world',
+    deletedDate: '2026-04-09'
+  },
   {
     id: 't1',
     title: 'Untitled folder so just demo testing purpose',

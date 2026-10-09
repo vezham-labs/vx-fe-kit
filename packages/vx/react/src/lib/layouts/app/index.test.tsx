@@ -13,6 +13,8 @@ import { toast } from '@vezham/react-v3'
 
 import { useAppMenu } from '../../components/app-menu'
 import { useToolbarAction } from '../../components/toolbar-actions'
+import { useSettingsNavigation } from '../../pages/settings/navigation'
+import { useUser } from '../../store/users/useUserStore'
 import { AppFrame, AppLayout } from './index'
 
 vi.mock('../menu-layout', () => ({ MenuLayout: () => null }))
@@ -88,3 +90,50 @@ describe('AppFrame', () => {
     expect(markup).toContain('custom-content')
   })
 })
+
+it.each([false, true])(
+  'renders the outlet and preserves user state with settings=%s',
+  async settings => {
+    const Probe = () => {
+      const { user, updateUser } = useUser()
+      const openSettings = useSettingsNavigation()
+      return (
+        <>
+          <span>{user?.firstName}</span>
+          <button onClick={() => updateUser({ firstName: 'Updated' })}>
+            Update user
+          </button>
+          <span>{openSettings ? 'Settings enabled' : 'Settings disabled'}</span>
+        </>
+      )
+    }
+    const root = createRootRoute({
+      component: () => <AppLayout navigationItems={[]} settings={settings} />
+    })
+    const home = createRoute({
+      getParentRoute: () => root,
+      path: '/',
+      component: Probe
+    })
+    const settingsRoute = createRoute({
+      getParentRoute: () => root,
+      path: '/settings',
+      component: Probe
+    })
+    const router = createRouter({
+      routeTree: root.addChildren([home, settingsRoute]),
+      history: createMemoryHistory({ initialEntries: ['/'] })
+    })
+    await router.load()
+    const { container } = render(<RouterProvider router={router} />)
+    fireEvent.click(await screen.findByRole('button', { name: 'Update user' }))
+    await act(() => router.navigate({ to: '/settings' }))
+    expect(await screen.findByText('Updated')).toBeInTheDocument()
+    expect(
+      screen.getByText(settings ? 'Settings enabled' : 'Settings disabled')
+    ).toBeInTheDocument()
+    const content = container.querySelector('[data-slot="app-layout-content"]')
+    if (settings) expect(content).toHaveClass('p-0', 'overflow-hidden')
+    else expect(content).toHaveClass('pt-18')
+  }
+)

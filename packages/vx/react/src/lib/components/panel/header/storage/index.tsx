@@ -34,7 +34,7 @@ const StorageContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   return (
     <Component className="h-full">
       <div className="flex h-full min-h-0 w-full flex-col overflow-hidden">
-        <div className="bg-background/95 sticky top-0 z-20 shrink-0 pb-4">
+        <div className="shrink-0 px-1 pb-3">
           <Tabs
             variant="primary"
             {...storageProps.getTabsProps()}
@@ -121,6 +121,7 @@ const StoragePanelContent = () => {
 
 const storagePanel: InfoPanelDefinition = {
   title: 'Storage',
+  scrollable: false,
   content: <StoragePanelContent />
 }
 
