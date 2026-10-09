@@ -1,4 +1,4 @@
-# @vx/INFO: @vx/ci - trigger 000
+# @vx/INFO: @vx/ci - trigger
 name: demo | bnd
 
 on:
