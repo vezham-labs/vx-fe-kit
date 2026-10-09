@@ -83,15 +83,6 @@ const SectionLayout = ({
   const [viewMode, setViewMode] = useState<SectionViewMode>('grid')
   const searchInput = useRef<HTMLInputElement>(null)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  useHotkey(
-    'Mod+K',
-    () => {
-      if (window.matchMedia('(min-width: 768px)').matches)
-        searchInput.current?.focus()
-      else setIsSearchOpen(true)
-    },
-    { enabled: Boolean(search) }
-  )
   const selectedTab =
     tabs.find(tab => matchesPath(pathname, tab.href)) ?? tabs[0]
   const hasSidebar = sidebarItems.length > 0
@@ -213,7 +204,12 @@ const SectionLayout = ({
         }
       />
       {isCompactToolbar && tabs.length > 0 && (
-        <Tabs.ListContainer className="scrollbar-hide order-2 mb-3 w-fit max-w-full min-w-0 self-center overflow-x-auto rounded-full">
+        <Tabs.ListContainer
+          className={`scrollbar-hide order-2 mb-3 w-fit min-w-0 self-center overflow-x-auto rounded-full ${
+            search && primaryAction
+              ? 'max-w-[calc(100%-9rem)]'
+              : 'max-w-[calc(100%-1.5rem)]'
+          }`}>
           <Tabs.List
             aria-label={`${title} tabs`}
             className="flex min-w-max flex-nowrap *:whitespace-nowrap">
@@ -268,7 +264,7 @@ const SectionLayout = ({
             const tab = tabs.find(item => item.key === key)
             if (tab?.href) void navigate({ to: tab.href })
           }}
-          className="flex min-h-0 flex-1 flex-col">
+          className="flex min-h-0 min-w-0 flex-1 flex-col">
           {content}
         </Tabs>
       ) : (

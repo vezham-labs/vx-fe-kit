@@ -36,6 +36,7 @@ export type SectionAction = {
 export type SectionSearch = {
   value: string
   onChange: (value: string) => void
+  onSearch?: () => void
   label?: string
   placeholder?: string
 }
@@ -284,7 +285,7 @@ const MobileToolbarMore = ({
       </Button>
       <Tooltip.Content>More</Tooltip.Content>
     </Tooltip>
-    <Dropdown.Popover>
+    <Dropdown.Popover className="max-w-[calc(100vw-2rem)] min-w-48">
       <Dropdown.Menu aria-label="More">
         {sync && (
           <Dropdown.Item id="sync" textValue="Sync" onPress={onSync}>
@@ -307,6 +308,7 @@ const MobileToolbarMore = ({
             </Dropdown.Popover>
           </Dropdown.SubmenuTrigger>
         )}
+        {filterAction && viewModeActions.length > 0 && <Separator />}
         {viewModeActions.map(action => (
           <Dropdown.Item
             key={action.key}
@@ -345,22 +347,49 @@ const SectionSearchField = ({ search }: { search: ToolbarSearch }) => {
           placeholder={search.placeholder ?? 'Search'}
           value={search.value}
           onChange={event => search.onChange(event.target.value)}
+          onKeyDown={event => {
+            if (event.key === 'Enter') search.onSearch?.()
+          }}
         />
       </InputGroup>
     </TextField>
   )
 
+  if (search.onSearch) {
+    return (
+      <>
+        {input(true)}
+        <Tooltip delay={0}>
+          <Button
+            isIconOnly
+            variant="ghost"
+            size="sm"
+            aria-label="Search"
+            className={`${iconButtonClassName} hidden md:flex lg:hidden`}
+            onPress={search.onSearch}>
+            <AppIcon icon="vx:search" size={18} aria-hidden="true" />
+          </Button>
+          <Tooltip.Content>Search</Tooltip.Content>
+        </Tooltip>
+      </>
+    )
+  }
+
   return (
     <>
       {input(true)}
       <Popover isOpen={search.isOpen} onOpenChange={search.onOpenChange}>
-        <ShortcutButton
-          label="Search"
-          shortcut="Mod K"
-          aria-keyshortcuts="Meta+K Control+K"
-          className={`${iconButtonClassName} hidden md:flex lg:hidden`}>
-          <AppIcon icon="vx:search" size={18} aria-hidden="true" />
-        </ShortcutButton>
+        <Tooltip delay={0}>
+          <Button
+            isIconOnly
+            variant="ghost"
+            size="sm"
+            aria-label="Search"
+            className={`${iconButtonClassName} hidden md:flex lg:hidden`}>
+            <AppIcon icon="vx:search" size={18} aria-hidden="true" />
+          </Button>
+          <Tooltip.Content>Search</Tooltip.Content>
+        </Tooltip>
         <Popover.Content className="hidden md:block">
           <Popover.Dialog aria-label={label}>
             <Popover.Heading className="sr-only">{label}</Popover.Heading>
@@ -479,7 +508,7 @@ const SectionToolbar = ({
         <div
           role="group"
           aria-label="Toolbar actions"
-          className="scrollbar-hide col-start-2 row-start-1 hidden max-w-[calc(100vw-2rem)] min-w-0 items-center gap-2 overflow-x-auto md:flex">
+          className="scrollbar-hide col-start-2 row-start-1 -m-1 hidden max-w-[calc(100vw-2rem)] min-w-0 items-center gap-2 overflow-x-auto p-1 md:flex">
           {search && <SectionSearchField search={search} />}
           {toolbar}
           {sync && (
@@ -553,6 +582,18 @@ const SectionToolbar = ({
               </div>
             </>
           )}
+          {primaryAction && (
+            <Button
+              variant="primary"
+              aria-label={primaryAction.label}
+              className="h-9 min-w-9 px-0 md:px-3"
+              onPress={primaryAction.onAction}>
+              <AppIcon icon={primaryAction.icon} size={18} aria-hidden="true" />
+              <Label className="hidden !text-inherit md:inline">
+                {primaryAction.label}
+              </Label>
+            </Button>
+          )}
           {menuActions.length > 0 && (
             <Dropdown isOpen={isMenuOpen} onOpenChange={onMenuOpenChange}>
               <Tooltip delay={0}>
@@ -575,18 +616,6 @@ const SectionToolbar = ({
               </Dropdown.Popover>
             </Dropdown>
           )}
-          {primaryAction && (
-            <Button
-              variant="primary"
-              aria-label={primaryAction.label}
-              className="h-9 min-w-9 px-0 md:px-3"
-              onPress={primaryAction.onAction}>
-              <AppIcon icon={primaryAction.icon} size={18} aria-hidden="true" />
-              <Label className="hidden !text-inherit md:inline">
-                {primaryAction.label}
-              </Label>
-            </Button>
-          )}
         </div>
       </div>
       {isMobile && primaryAction && (
@@ -595,7 +624,7 @@ const SectionToolbar = ({
             isIconOnly
             variant="primary"
             aria-label={primaryAction.label}
-            className="fixed right-8 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-50 h-12 w-12 rounded-full p-0 shadow-lg"
+            className="fixed right-3 bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+0.5rem)] z-80 h-11 w-11 rounded-full p-0 shadow-lg"
             onPress={primaryAction.onAction}>
             <AppIcon icon={primaryAction.icon} size={22} aria-hidden="true" />
           </Button>

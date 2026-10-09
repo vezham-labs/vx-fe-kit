@@ -65,7 +65,7 @@ const CompactActions = ({
     <Dropdown>
       <Dropdown.Trigger
         aria-label="Open footer actions"
-        className="button button--ghost flex h-10 w-10 items-center justify-center rounded-lg">
+        className="button button--ghost flex h-10 w-10 items-center justify-center rounded-full">
         <MenuDotsIcon size={20} aria-hidden="true" />
       </Dropdown.Trigger>
       <Dropdown.Popover>

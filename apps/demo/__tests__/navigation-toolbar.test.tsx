@@ -22,6 +22,19 @@ describe('Navigation toolbar', () => {
     Element.prototype.getAnimations = () => []
   })
 
+  it('shows a placeholder toast for page search without opening command search', async () => {
+    await renderApp('/tabs/overview')
+    const search = await screen.findByRole('button', { name: 'Search' })
+    const notice = vi.spyOn(toast, 'info').mockReturnValue('search-notice')
+    try {
+      fireEvent.click(search)
+      expect(notice).toHaveBeenCalledWith('Search is not implemented yet.')
+      expect(screen.queryByPlaceholderText(/Search commands/)).toBeNull()
+    } finally {
+      notice.mockRestore()
+    }
+  })
+
   it('uses page-specific Add actions in the School OS toolbar order', async () => {
     await renderApp('/academic/classes/allclasses')
     const create = await screen.findByRole('button', { name: 'Add Class' })

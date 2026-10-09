@@ -76,6 +76,17 @@ are replaced as whole fields. `search: false`, `sync: false`,
 menu. Omitted controls are absent. Menu actions support recursive `children`.
 `search: true` uses the default label “Search content” and placeholder “Search”.
 Use a search object with `label` and `placeholder` for custom text.
+The mobile bottom navigation shows its Search button only when the active
+destination's resolved `toolbar.search` is enabled; absent or false hides it.
+Its button emits the page-scoped `search` toolbar action. Demo toolbar searches
+show a placeholder toast until page search is implemented; global command
+search remains a separate application-menu action.
+At `lg`, toolbar Search shows an editable input and Enter invokes its action.
+Smaller screens use the Search icon. Toolbar Search has no keyboard shortcut;
+Mod+K is reserved for global command search.
+On mobile, the primary action sits at bottom-right beside the navigation pill;
+Search sits above it beside the page tabs. When the primary action is absent or
+`false`, Search moves down beside the navigation pill.
 YAML anchors can reuse static defaults across sibling menus.
 `filter` independently enables the filter menu; `view` contains only grid/list
 view actions. Filter visibility does not depend on the configured view modes.
@@ -155,7 +166,8 @@ primary action keeps its icon while hiding its label. Demo actions use the same
 scoped dispatcher; domain content stays in the app's route outlet.
 
 Short mobile tab groups use a centered content-width pill; long groups scroll
-within the available header width. Keep row spacing outside the pill. A new
+within the available width, leaving space for Search when it sits beside the
+tabs. Keep row spacing outside the pill. A new
 tab collection remounts the Tabs root so its indicator measures the new labels;
 navigation within that collection preserves the root and its transition.
 

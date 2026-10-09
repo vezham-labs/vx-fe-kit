@@ -20,7 +20,7 @@ const actions = vi.hoisted(() => ({
   create: vi.fn()
 }))
 
-const ToolbarFixture = () => {
+const ToolbarFixture = ({ onSearch }: { onSearch?: () => void }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState<SectionFilterKey[]>([])
@@ -35,6 +35,7 @@ const ToolbarFixture = () => {
         search={{
           value: search,
           onChange: setSearch,
+          onSearch,
           inputRef,
           isOpen: isSearchOpen,
           onOpenChange: setIsSearchOpen
@@ -78,6 +79,18 @@ describe('Section toolbar', () => {
     const menu = await screen.findByRole('menu', { name: 'More' })
     fireEvent.click(within(menu).getByRole('menuitem', { name: 'Import' }))
     expect(actions.import).toHaveBeenCalledOnce()
+  })
+
+  it('keeps the large-screen input editable and invokes search on Enter', () => {
+    const onSearch = vi.fn()
+    render(<ToolbarFixture onSearch={onSearch} />)
+    const input = screen.getByRole('searchbox')
+    fireEvent.change(input, { target: { value: 'science' } })
+    expect(input).toHaveValue('science')
+    expect(onSearch).not.toHaveBeenCalled()
+    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+    expect(onSearch).toHaveBeenCalledOnce()
+    expect(screen.queryByRole('dialog', { name: 'Search content' })).toBeNull()
   })
 
   it('edits mobile search and dismisses it with Escape', async () => {

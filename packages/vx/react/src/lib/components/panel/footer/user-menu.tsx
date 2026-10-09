@@ -282,7 +282,7 @@ const UserMenu = ({ user, onLogout, onProfile, onPreferences }: Props) => {
         <Trigger
           onPress={small ? () => setOpen(true) : undefined}
           aria-label={`Open ${user.name || 'user'} menu`}
-          className="button button--ghost relative flex h-12 w-12 items-center justify-center rounded-xl">
+          className={`button button--ghost relative flex h-12 w-12 items-center justify-center ${bubble ? 'rounded-full' : 'rounded-xl'}`}>
           <Badge.Anchor>
             <Avatar size="sm" className="h-6 w-6 rounded-md">
               {user.avatar ? (
@@ -299,7 +299,9 @@ const UserMenu = ({ user, onLogout, onProfile, onPreferences }: Props) => {
           </Badge.Anchor>
         </Trigger>
       </Tooltip.Trigger>
-      <Tooltip.Content placement="right">{tooltipText}</Tooltip.Content>
+      <Tooltip.Content placement={bubble ? 'bottom' : 'right'}>
+        {tooltipText}
+      </Tooltip.Content>
     </Tooltip>
   )
 

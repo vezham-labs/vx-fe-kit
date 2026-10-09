@@ -45,6 +45,13 @@ const NavigationDemoSection = ({
     // vx-bot/TODO: Replace this notice with server synchronization.
     toast.info('Server sync is not implemented yet.')
   })
+  useToolbarAction(
+    'search',
+    () => {
+      toast.info('Search is not implemented yet.')
+    },
+    { pageKey: page.key, pathname }
+  )
   useToolbarAction('print', () => window.print())
   useToolbarAction('create', () => {
     toast.info('Create is not implemented in this navigation demo.')
@@ -64,7 +71,14 @@ const NavigationDemoSection = ({
       }}
       search={
         toolbar.search
-          ? { ...toolbar.search, value: search, onChange: setSearch }
+          ? {
+              ...toolbar.search,
+              value: search,
+              onChange: setSearch,
+              onSearch: () => {
+                emit({ actionKey: 'search', pageKey: page.key, pathname })
+              }
+            }
           : undefined
       }>
       <Outlet />
