@@ -8,7 +8,7 @@ export type NavigationAction = {
 }
 
 export type NavigationViewAction = {
-  key: 'filter' | 'grid' | 'list'
+  key: 'grid' | 'list'
   label: string
   icon: string
   enabled?: boolean
@@ -17,6 +17,7 @@ export type NavigationViewAction = {
 export type NavigationToolbar = {
   search?: boolean | { label?: string; placeholder?: string }
   sync?: boolean
+  filter?: boolean
   view?: NavigationViewAction[]
   menuActions?: NavigationAction[]
   primaryAction?: false | NavigationAction

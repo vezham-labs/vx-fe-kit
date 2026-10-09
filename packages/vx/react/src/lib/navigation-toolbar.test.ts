@@ -9,8 +9,8 @@ const items: AppNavigationItem[] = [
     toolbar: {
       search: { label: 'Search', placeholder: 'Find records' },
       sync: true,
+      filter: true,
       view: [
-        { key: 'filter', label: 'Filter', icon: 'vx:sort-descending' },
         { key: 'grid', label: 'Grid view', icon: 'vx:grid' },
         { key: 'list', label: 'List view', icon: 'vx:list' }
       ],
@@ -38,6 +38,7 @@ const items: AppNavigationItem[] = [
               primaryAction: false,
               search: false,
               sync: false,
+              filter: false,
               view: [],
               menuActions: []
             }
@@ -72,8 +73,8 @@ describe('navigation toolbar', () => {
       placeholder: 'Find records'
     })
     expect(toolbar.sync).toBe(true)
+    expect(toolbar.filter).toBe(true)
     expect(toolbar.view).toEqual([
-      { key: 'filter', label: 'Filter', icon: 'vx:sort-descending' },
       { key: 'grid', label: 'Grid view', icon: 'vx:grid' },
       { key: 'list', label: 'List view', icon: 'vx:list' }
     ])
@@ -84,6 +85,7 @@ describe('navigation toolbar', () => {
     expect(getNavigationToolbar(items, '/academic/exam/attendance')).toEqual({
       search: false,
       sync: false,
+      filter: false,
       view: [],
       menuActions: [],
       primaryAction: false

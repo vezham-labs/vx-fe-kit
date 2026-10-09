@@ -23,10 +23,8 @@ navigation:
     toolbar: &sectionToolbar
       search: true
       sync: true
+      filter: true
       view:
-        - key: filter
-          label: Filter
-          icon: vx:sort-descending
         - key: grid
           label: Grid view
           icon: vx:grid

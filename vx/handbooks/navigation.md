@@ -57,6 +57,7 @@ the owning menu and page-specific overrides on its descendants:
 toolbar:
   search: true
   sync: true
+  filter: true
   menuActions:
     - key: print
       label: Print
@@ -70,12 +71,14 @@ toolbar:
 Use `getNavigationToolbar(navigationItems, pathname)` from `@vx/react` to resolve
 the deepest matching destination and its ancestors. Toolbar fields inherit
 until explicitly overridden. Search objects, primary actions, and menu arrays
-are replaced as whole fields. `search: false`, `sync: false`, and
-`primaryAction: false` disable inherited controls; `menuActions: []` clears the
+are replaced as whole fields. `search: false`, `sync: false`,
+`filter: false`, and `primaryAction: false` disable inherited controls; `menuActions: []` clears the
 menu. Omitted controls are absent. Menu actions support recursive `children`.
 `search: true` uses the default label “Search content” and placeholder “Search”.
 Use a search object with `label` and `placeholder` for custom text.
 YAML anchors can reuse static defaults across sibling menus.
+`filter` independently enables the filter menu; `view` contains only grid/list
+view actions. Filter visibility does not depend on the configured view modes.
 
 Action `key` values are stable handler IDs. Apps bind them to callbacks and own
 state, permissions, API calls, and navigation behavior. Do not put executable

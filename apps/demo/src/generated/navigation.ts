@@ -33,12 +33,8 @@ export const navigationItems = [
     "toolbar": {
       "search": true,
       "sync": true,
+      "filter": true,
       "view": [
-        {
-          "key": "filter",
-          "label": "Filter",
-          "icon": "vx:sort-descending"
-        },
         {
           "key": "grid",
           "label": "Grid view",
@@ -117,12 +113,8 @@ export const navigationItems = [
     "toolbar": {
       "search": true,
       "sync": true,
+      "filter": true,
       "view": [
-        {
-          "key": "filter",
-          "label": "Filter",
-          "icon": "vx:sort-descending"
-        },
         {
           "key": "grid",
           "label": "Grid view",
@@ -239,12 +231,8 @@ export const navigationItems = [
     "toolbar": {
       "search": true,
       "sync": true,
+      "filter": true,
       "view": [
-        {
-          "key": "filter",
-          "label": "Filter",
-          "icon": "vx:sort-descending"
-        },
         {
           "key": "grid",
           "label": "Grid view",
@@ -502,12 +490,8 @@ export const navigationItems = [
     "toolbar": {
       "search": true,
       "sync": true,
+      "filter": true,
       "view": [
-        {
-          "key": "filter",
-          "label": "Filter",
-          "icon": "vx:sort-descending"
-        },
         {
           "key": "grid",
           "label": "Grid view",
@@ -841,12 +825,8 @@ export const navigationItems = [
     "toolbar": {
       "search": true,
       "sync": true,
+      "filter": true,
       "view": [
-        {
-          "key": "filter",
-          "label": "Filter",
-          "icon": "vx:sort-descending"
-        },
         {
           "key": "grid",
           "label": "Grid view",

@@ -55,17 +55,23 @@ describe('Navigation toolbar', () => {
     fireEvent.click(within(actions).getByRole('button', { name: 'Filter' }))
     fireEvent.click(await screen.findByRole('menuitem', { name: 'Images' }))
     expect(
-      within(actions).getByRole('button', { name: 'Filter' })
-    ).toHaveAttribute('aria-pressed', 'true')
+      within(actions)
+        .getByRole('button', { name: 'Filter' })
+        .getAttribute('aria-pressed')
+    ).toBe('true')
     expect(
-      within(viewOptions).getByRole('button', { name: 'Grid view' })
-    ).toHaveAttribute('aria-pressed', 'true')
+      within(viewOptions)
+        .getByRole('button', { name: 'Grid view' })
+        .getAttribute('aria-pressed')
+    ).toBe('true')
     fireEvent.click(
       within(viewOptions).getByRole('button', { name: 'List view' })
     )
     expect(
-      within(viewOptions).getByRole('button', { name: 'List view' })
-    ).toHaveAttribute('aria-pressed', 'true')
+      within(viewOptions)
+        .getByRole('button', { name: 'List view' })
+        .getAttribute('aria-pressed')
+    ).toBe('true')
     fireEvent.click(screen.getByRole('tab', { name: 'Schedule' }))
     await screen.findByRole('button', { name: 'Add Schedule' })
     expect(screen.getByRole('tabpanel').textContent).toContain(

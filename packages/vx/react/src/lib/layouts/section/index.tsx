@@ -41,6 +41,7 @@ export type SectionLayoutProps = {
   toolbar?: ReactNode
   search?: SectionSearch
   sync?: boolean
+  filter?: boolean
   view?: SectionViewAction[]
   onSync?: () => void
   menuActions?: SectionAction[]
@@ -63,6 +64,7 @@ const SectionLayout = ({
   toolbar,
   search,
   sync = true,
+  filter = false,
   view = EMPTY_VIEW_ACTIONS,
   onSync,
   menuActions = EMPTY_MENU_ACTIONS,
@@ -154,6 +156,7 @@ const SectionLayout = ({
         title={title}
         isNavigationCollapsed={isNavigationCollapsed}
         sync={sync}
+        filter={filter}
         view={view}
         selectedFilters={selectedFilters}
         onSelectedFiltersChange={setSelectedFilters}
@@ -235,10 +238,12 @@ const SectionLayout = ({
           </aside>
         )}
         <main className="flex min-w-0 flex-1 flex-col gap-2 overflow-auto p-4">
-          <SectionActiveFilters
-            selectedFilters={selectedFilters}
-            onSelectedFiltersChange={setSelectedFilters}
-          />
+          {filter && (
+            <SectionActiveFilters
+              selectedFilters={selectedFilters}
+              onSelectedFiltersChange={setSelectedFilters}
+            />
+          )}
           <Surface className="min-h-0 flex-1 rounded-lg p-4 sm:p-5">
             {tabs.length === 0 && children}
             {tabs.map(tab => (

@@ -7,14 +7,14 @@ import { getToolbarActions } from './actions'
 describe('getToolbarActions', () => {
   it('removes only view actions explicitly disabled in navigation metadata', () => {
     const toolbar: NavigationToolbar = {
+      filter: true,
       view: [
         {
-          key: 'filter',
-          label: 'Filter',
-          icon: 'vx:sort-descending',
+          key: 'grid',
+          label: 'Grid view',
+          icon: 'vx:grid',
           enabled: false
         },
-        { key: 'grid', label: 'Grid view', icon: 'vx:grid' },
         { key: 'list', label: 'List view', icon: 'vx:list' }
       ]
     }
@@ -24,10 +24,14 @@ describe('getToolbarActions', () => {
         toolbar,
         { pageKey: 'classes', pathname: '/classes' },
         vi.fn()
+      ).filter
+    ).toBe(true)
+    expect(
+      getToolbarActions(
+        toolbar,
+        { pageKey: 'classes', pathname: '/classes' },
+        vi.fn()
       ).view
-    ).toEqual([
-      { key: 'grid', label: 'Grid view', icon: 'vx:grid' },
-      { key: 'list', label: 'List view', icon: 'vx:list' }
-    ])
+    ).toEqual([{ key: 'list', label: 'List view', icon: 'vx:list' }])
   })
 })

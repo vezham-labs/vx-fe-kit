@@ -39,11 +39,8 @@ const ToolbarFixture = () => {
           isOpen: isSearchOpen,
           onOpenChange: setIsSearchOpen
         }}
-        view={[
-          { key: 'filter', label: 'Filter', icon: 'vx:sort-descending' },
-          { key: 'grid', label: 'Grid view', icon: 'vx:grid' },
-          { key: 'list', label: 'List view', icon: 'vx:list' }
-        ]}
+        filter
+        view={[]}
         selectedFilters={selectedFilters}
         onSelectedFiltersChange={setSelectedFilters}
         viewMode="grid"
@@ -166,7 +163,7 @@ describe('Section toolbar', () => {
     )
   })
 
-  it('omits only a disabled view action', () => {
+  it('keeps view actions visible when filtering is disabled', () => {
     render(
       <SectionToolbar
         title="Classes"

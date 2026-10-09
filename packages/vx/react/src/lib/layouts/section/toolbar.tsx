@@ -52,7 +52,7 @@ export type SectionFilterKey =
   | 'pdfs'
 
 export type SectionViewAction = {
-  key: 'filter' | SectionViewMode
+  key: SectionViewMode
   label: string
   icon: string
 }
@@ -74,6 +74,7 @@ type Props = {
   primaryAction?: SectionAction
   onSync: () => void
   sync?: boolean
+  filter?: boolean
   view?: SectionViewAction[]
   selectedFilters: SectionFilterKey[]
   onSelectedFiltersChange: (filters: SectionFilterKey[]) => void
@@ -85,6 +86,11 @@ type Props = {
 
 const iconButtonClassName = 'h-9 w-9 min-w-9 p-0'
 const EMPTY_VIEW_ACTIONS: SectionViewAction[] = []
+const FILTER_ACTION: SectionAction = {
+  key: 'filter',
+  label: 'Filter',
+  icon: 'vx:sort-descending'
+}
 
 type FilterOption = Readonly<{
   key: SectionFilterKey
@@ -119,11 +125,6 @@ const getActiveFilters = (selectedFilters: readonly SectionFilterKey[]) =>
     const option = filterOptions.find(option => option.key === filter)
     return option ? [option] : []
   })
-
-const isViewModeAction = (
-  action: SectionViewAction
-): action is SectionViewAction & { key: SectionViewMode } =>
-  action.key === 'grid' || action.key === 'list'
 
 const FilterMenuItem = ({
   option,
@@ -263,7 +264,7 @@ const MobileToolbarMore = ({
   sync,
   viewModeActions
 }: {
-  filterAction?: SectionViewAction
+  filterAction?: SectionAction
   menuActions: SectionAction[]
   onSync: () => void
   onToggleFilter: (filter: SectionFilterKey) => void
@@ -382,6 +383,7 @@ const SectionToolbar = ({
   primaryAction,
   onSync,
   sync = true,
+  filter = false,
   view = EMPTY_VIEW_ACTIONS,
   selectedFilters,
   onSelectedFiltersChange,
@@ -393,11 +395,8 @@ const SectionToolbar = ({
   const isMobile = useMediaQuery('(max-width: 767px)')
   const { setAction: setResponsiveToolbarAction } = useResponsiveToolbarAction()
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false)
-  const filterAction = useMemo(
-    () => view.find(action => action.key === 'filter'),
-    [view]
-  )
-  const viewModeActions = useMemo(() => view.filter(isViewModeAction), [view])
+  const filterAction = filter ? FILTER_ACTION : undefined
+  const viewModeActions = view
   const activeFilters = getActiveFilters(selectedFilters)
   const toggleFilter = useCallback(
     (filter: SectionFilterKey) => {

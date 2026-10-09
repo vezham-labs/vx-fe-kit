@@ -151,8 +151,8 @@ describe('navigation generation', () => {
     const toolbar = {
       search: { label: 'Find', placeholder: 'Search records' },
       sync: true,
+      filter: true,
       view: [
-        { key: 'filter', label: 'Filter', icon: 'vx:sort-descending' },
         { key: 'grid', label: 'Grid view', icon: 'vx:grid' },
         { key: 'list', label: 'List view', icon: 'vx:list' }
       ],
@@ -208,7 +208,7 @@ describe('navigation generation', () => {
     const toolbar = {
       view: [
         {
-          key: 'filter',
+          key: 'list',
           label: 'Filter',
           icon: 'vx:sort-descending',
           enabled: false
@@ -227,19 +227,20 @@ describe('navigation generation', () => {
   it.each([
     { search: 'yes' },
     { sync: 'yes' },
+    { filter: 'yes' },
     { view: 'yes' },
-    { view: [{ key: 'filter', label: 'Filter' }] },
+    { view: [{ key: 'list', label: 'Filter' }] },
     { view: [{ key: 'other', label: 'Other', icon: 'vx:other' }] },
     {
       view: [
-        { key: 'filter', label: 'Filter', icon: 'vx:sort-descending' },
-        { key: 'filter', label: 'Another filter', icon: 'vx:filter' }
+        { key: 'grid', label: 'Grid', icon: 'vx:grid' },
+        { key: 'grid', label: 'Another grid', icon: 'vx:grid' }
       ]
     },
     {
       view: [
         {
-          key: 'filter',
+          key: 'list',
           label: 'Filter',
           icon: 'vx:sort-descending',
           enabled: 'false'

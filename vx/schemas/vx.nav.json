@@ -124,6 +124,9 @@
         "sync": {
           "type": "boolean"
         },
+        "filter": {
+          "type": "boolean"
+        },
         "view": {
           "type": "array",
           "items": {
@@ -155,7 +158,7 @@
       "properties": {
         "key": {
           "type": "string",
-          "enum": ["filter", "grid", "list"]
+          "enum": ["grid", "list"]
         },
         "label": {
           "type": "string",
