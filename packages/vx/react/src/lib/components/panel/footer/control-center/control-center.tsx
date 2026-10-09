@@ -6,7 +6,7 @@ import { Button, Popover, ScrollShadow, useMediaQuery } from '@vezham/react-v3'
 
 import { useSettingsNavigation } from '../../../../pages/settings/navigation'
 import { AppearanceProvider } from './appearance'
-import { EditorProvider, useTileEditor } from './editor'
+import { useTileEditor } from './editor'
 import { FooterControlCenterContext } from './footer-context'
 import { PreviewProvider } from './preview'
 import { ActionTile } from './tile'
@@ -29,7 +29,8 @@ export const ControlCenter = <Context extends object>({
   placement = 'bottom end',
   onOpenChange,
   appearance,
-  preview = false
+  preview = false,
+  editControls = false
 }: ControlCenterProps<Context>) => {
   const isCompact = useMediaQuery('(width < 768px)', {
     initializeWithValue: false
@@ -39,7 +40,7 @@ export const ControlCenter = <Context extends object>({
   const isOpen = footer?.isOpen ?? localOpen
   const setOpen = footer?.onOpenChange ?? setLocalOpen
   const [panel, setPanel] = useState<string | null>(null)
-  const { editor, visibleTiles } = useTileEditor(tiles)
+  const { visibleTiles } = useTileEditor(tiles)
   const openSettings = useSettingsNavigation()
   const changeOpen = (nextOpen: boolean) => {
     setOpen(nextOpen)
@@ -52,34 +53,37 @@ export const ControlCenter = <Context extends object>({
     </Button>
   )
   const content = (
-    <EditorProvider value={editor}>
-      <ScrollShadow
-        key={panel ?? 'home'}
-        className={styles.viewport({
-          presentation: isCompact ? 'sheet' : 'popover'
-        })}>
-        {preview && (
-          <p className={styles.previewNotice()}>
-            UI preview · Device controls are simulated.
-          </p>
-        )}
-        <PanelOutlet
-          context={context}
-          tiles={visibleTiles}
-          panel={panel}
-          onPanelChange={id => {
-            if (
-              id &&
-              tiles.find(tile => tile.id === id)?.title === 'Edit Controls' &&
-              openSettings
-            ) {
+    <ScrollShadow
+      key={panel ?? 'home'}
+      className={styles.viewport({
+        presentation: isCompact ? 'sheet' : 'popover'
+      })}>
+      {preview && (
+        <p className={styles.previewNotice()}>
+          UI preview · Device controls are simulated.
+        </p>
+      )}
+      <PanelOutlet
+        context={context}
+        tiles={visibleTiles}
+        panel={panel}
+        onPanelChange={setPanel}
+      />
+      {!panel && editControls && openSettings && (
+        <div className="mt-4 flex justify-center">
+          <Button
+            size="sm"
+            variant="secondary"
+            className="rounded-full"
+            onPress={() => {
               changeOpen(false)
               openSettings('Edit Controls')
-            } else setPanel(id)
-          }}
-        />
-      </ScrollShadow>
-    </EditorProvider>
+            }}>
+            Edit Controls
+          </Button>
+        </div>
+      )}
+    </ScrollShadow>
   )
 
   const overlay = isCompact ? (

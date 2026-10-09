@@ -23,6 +23,11 @@
       "additionalProperties": false,
       "required": ["tiles"],
       "properties": {
+        "editControls": {
+          "type": "boolean",
+          "description": "Show Edit Controls when application Settings navigation is available.",
+          "default": false
+        },
         "tiles": {
           "type": "array",
           "items": {
@@ -202,6 +207,7 @@
         "type": {
           "enum": [
             "theme-toggle",
+            "direction-toggle",
             "appearance-toggle",
             "appearance",
             "theme",

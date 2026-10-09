@@ -274,11 +274,29 @@ describe('navigation generation', () => {
 })
 
 describe('control center configuration', () => {
+  it.each(['true', 1, null])(
+    'rejects a non-boolean editControls value: %j',
+    editControls => {
+      const root = project()
+      writeFileSync(
+        path.join(root, 'vx.nav.yaml'),
+        stringify({
+          navigation: [],
+          controlCenter: { tiles: [], editControls }
+        })
+      )
+      expect(() => getNavigationFiles(root)).toThrow(
+        'editControls must be a boolean'
+      )
+    }
+  )
   it('generates the configured tile order and custom action keys', () => {
     const root = project()
     const controlCenter = {
+      editControls: true,
       tiles: [
         { id: 'language', type: 'language', span: 'wide' },
+        { id: 'direction-toggle', type: 'direction-toggle', span: 'compact' },
         {
           id: 'workspace',
           type: 'custom',

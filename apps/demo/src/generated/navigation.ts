@@ -1048,7 +1048,33 @@ export const appMenu = [
 ] satisfies AppMenuItem[]
 
 export const controlCenter = {
+  "editControls": true,
   "tiles": [
+    {
+      "id": "theme-toggle",
+      "type": "theme-toggle",
+      "span": "compact"
+    },
+    {
+      "id": "direction",
+      "type": "direction",
+      "span": "wide"
+    },
+    {
+      "id": "direction-toggle",
+      "type": "direction-toggle",
+      "span": "compact"
+    },
+    {
+      "id": "language",
+      "type": "language",
+      "span": "wide"
+    },
+    {
+      "id": "theme",
+      "type": "theme",
+      "span": "wide"
+    },
     {
       "id": "wifi",
       "type": "preview-wifi",
@@ -1093,11 +1119,6 @@ export const controlCenter = {
       "id": "sound",
       "type": "preview-sound",
       "span": "full"
-    },
-    {
-      "id": "theme-toggle",
-      "type": "theme-toggle",
-      "span": "compact"
     },
     {
       "id": "appearance",
@@ -1148,21 +1169,6 @@ export const controlCenter = {
       "id": "appearance-lite5",
       "type": "theme-toggle",
       "span": "compact"
-    },
-    {
-      "id": "direction",
-      "type": "direction",
-      "span": "wide"
-    },
-    {
-      "id": "theme",
-      "type": "theme",
-      "span": "wide"
-    },
-    {
-      "id": "language",
-      "type": "language",
-      "span": "wide"
     }
   ]
 } satisfies ControlCenterConfig

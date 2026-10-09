@@ -50,7 +50,8 @@ import app-specific providers, generated locales, or route definitions.
 
 The footer accepts a `controlCenter` element alongside `showControlCenter`.
 When enabled without app registration, it opens the shared Control Center with
-Appearance, Theme color, Direction, and Edit Controls. The old drawer and
+Appearance, Theme color, and Direction. When application Settings navigation
+is available, the default also offers an Edit Controls link to Settings. The old drawer and
 `onControlCenterClick` callback have been removed. On small screens (below 768px), Control Center opens from the footer More
 menu. On larger screens, its trigger renders directly in the footer. Both paths
 use the same instance and settings state.
@@ -78,24 +79,20 @@ system brightness or audio, system notification settings, or play actual media.
 The preview provider owns state across detail screens, overlay closing, and
 responsive presentation changes; apps keep only tile registration.
 
-Register `EditControlsTile` with
-`EditControlsSettings` to hide, show, and reorder the registry.
-Give its descriptor `editable: false` so the editor cannot hide itself. An
-optional descriptor `label` names the item in the editor; otherwise its panel
-title or readable ID is used. Reset Controls restores registry order and shows
-all controls. These preferences last for the mounted Control Center instance.
-The shared viewport scrolls and resets scroll position when changing panels.
+Editing controls happens in the application Settings gallery. There is no inline
+editor in Control Center. Detail screens still use the local panel outlet and
+reset scroll position when changing panels.
 
 ## YAML configuration
 
 Configure the app layout under `controlCenter.tiles` in `vx.nav.yaml`. Array
 order determines the initial visual and keyboard order. Each entry has a unique
 `id`, a built-in `type` or `custom`, and a `span`. Optional `label` overrides the tile name, detail panel heading, and Edit Controls row. Built-in names are used when omitted.
-Set `editable: false` to prevent hiding or moving a tile. Edit Controls defaults
-to protected. Reset Controls restores the YAML order.
+Set `editable: false` to prevent hiding or moving a tile. Reset Controls in Settings restores the YAML order.
 
 ```yaml
 controlCenter:
+  editControls: true
   tiles:
     - id: appearance
       type: appearance
@@ -143,9 +140,10 @@ Registrations are keyed by the YAML tile ID. React supplies the app context,
 and `label`; the app retains these component references in TypeScript.
 
 Supported built-in types: `theme-toggle`, `appearance-toggle`, `appearance`,
-`theme`, `direction`, `language`, `preview-wifi`,
+`theme`, `direction`, `direction-toggle`, `language`, `preview-wifi`,
 `preview-bluetooth`, `preview-airdrop`, `preview-focus`, `preview-stage-manager`,
 `preview-mirroring`, `preview-media`, `preview-display`, and `preview-sound`.
+`direction-toggle` switches LTR/RTL directly without opening a panel, like the compact `theme-toggle`.
 Keep `preview` enabled for simulated device controls. Shared behavior stays in
 React; only app-specific handlers, custom components, and adapters stay in apps.
 
@@ -273,5 +271,9 @@ so tile sliders and settings remain usable. Tile detail screens and Back stay
 inside the same sheet. Escape, outside press, close, and handle dismissal use the
 same open-state callback and return focus to the trigger or footer More entry.
 
-`Edit Controls` is appended by `@vx/react` as a locked built-in action. Do not
-declare it in `vx.nav.yaml`; the YAML tile list owns only configurable controls.
+`controlCenter.editControls` is an optional boolean, defaulting to `false`. Enable
+it for apps that use `AppLayout settings` and provide a `/settings` route. It shows
+an Edit Controls link that closes Control Center and opens Settings. It is not a
+tile and does not participate in hiding or reordering. Docs omit the option and
+have no editor or Settings link. Raw `ControlCenter` accepts the same optional
+`editControls` prop and requires application Settings navigation to show the link.

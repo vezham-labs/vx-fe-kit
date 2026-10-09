@@ -20,10 +20,9 @@ export {
   DocumentLanguageTile,
   DocumentLanguageSettings
 } from './language'
-export { DirectionTile, DirectionSettings } from './direction'
+export { DirectionTile, DirectionSettings, DirectionToggle } from './direction'
 export { ActionTile } from './tile'
 export { Options } from './options'
-export { EditControlsTile, EditControlsSettings } from './editor'
 export {
   PreviewWiFiTile,
   PreviewWiFiSettings,

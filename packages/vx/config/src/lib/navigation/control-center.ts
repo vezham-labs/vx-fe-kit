@@ -1,5 +1,6 @@
 const TYPES = new Set([
   'theme-toggle',
+  'direction-toggle',
   'appearance-toggle',
   'appearance',
   'theme',
@@ -31,10 +32,15 @@ const object = (value: unknown): value is Record<string, unknown> =>
 export const validateControlCenter = (value: unknown, location: string) => {
   if (
     !object(value) ||
-    Object.keys(value).some(key => key !== 'tiles') ||
+    Object.keys(value).some(key => !['tiles', 'editControls'].includes(key)) ||
     !Array.isArray(value.tiles)
   )
     throw new Error(`${location} must contain a tiles array`)
+  if (
+    value.editControls !== undefined &&
+    typeof value.editControls !== 'boolean'
+  )
+    throw new Error(`${location}.editControls must be a boolean`)
   const ids = new Set<string>()
   for (const tile of value.tiles) {
     if (!object(tile)) throw new Error(`${location}.tiles must contain objects`)

@@ -44,6 +44,7 @@ export type ControlCenterProps<Context extends object> = {
   onOpenChange?: (open: boolean) => void
   appearance?: AppearanceAdapter
   preview?: boolean
+  editControls?: boolean
 }
 
 export type ThemeMode = 'light' | 'dark' | 'auto'
@@ -69,6 +70,7 @@ export type LanguageAdapter = {
 
 export type BuiltinTileType =
   | 'theme-toggle'
+  | 'direction-toggle'
   | 'appearance-toggle'
   | 'appearance'
   | 'theme'
@@ -94,7 +96,10 @@ export type TileConfig = {
   { type: BuiltinTileType; action?: never } | { type: 'custom'; action: string }
 )
 
-export type ControlCenterConfig = { tiles: readonly TileConfig[] }
+export type ControlCenterConfig = {
+  tiles: readonly TileConfig[]
+  editControls?: boolean
+}
 export type ControlCenterI18n = {
   defaultLanguage: string
   languages: readonly string[]

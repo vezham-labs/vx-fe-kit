@@ -34,12 +34,7 @@ export const controlCenterVariants = tv({
     previewHeader: 'flex items-center gap-2 [&>button]:ms-auto',
     previewTitle: 'text-sm font-medium',
     mediaControls: 'flex items-center justify-center gap-2',
-    connectionIcon: 'text-muted',
-    editor: 'flex flex-col gap-3',
-    editorRow: 'flex min-w-0 items-center justify-between gap-1',
-    editorToggle: 'flex min-w-0 items-center gap-2',
-    editorLabel: 'truncate text-xs',
-    editorActions: 'flex shrink-0 items-center'
+    connectionIcon: 'text-muted'
   },
   variants: {
     active: { true: { connectionIcon: 'text-accent' }, false: {} },

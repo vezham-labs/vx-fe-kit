@@ -1,7 +1,6 @@
 import { AppearanceSettings, AppearanceTile } from './appearance'
 import { ControlCenter } from './control-center'
 import { DirectionSettings, DirectionTile } from './direction'
-import { EditControlsSettings, EditControlsTile } from './editor'
 import { ThemeSettings, ThemeTile } from './theme'
 import type { ControlCenterProps, TileDefinition } from './types'
 
@@ -26,14 +25,6 @@ const tiles: readonly TileDefinition[] = [
     Tile: DirectionTile,
     title: 'Direction',
     Panel: DirectionSettings
-  },
-  {
-    id: 'edit-controls',
-    span: 'full',
-    editable: false,
-    Tile: EditControlsTile,
-    title: 'Edit Controls',
-    Panel: EditControlsSettings
   }
 ]
 
@@ -42,4 +33,4 @@ export const DefaultControlCenter = (
     ControlCenterProps<object>,
     'placement' | 'appearance' | 'onOpenChange'
   >
-) => <ControlCenter context={{}} tiles={tiles} {...props} />
+) => <ControlCenter context={{}} tiles={tiles} editControls {...props} />

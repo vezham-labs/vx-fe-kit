@@ -1,6 +1,7 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import { SettingsNavigationContext } from '../../../../pages/settings/navigation'
 import {
   ToolbarActionsProvider,
   useToolbarAction
@@ -22,18 +23,81 @@ const config: ControlCenterConfig = {
 }
 
 describe('configured control center', () => {
-  it('adds one locked Edit Controls action after the configured tiles', () => {
+  it('resolves only configured tiles without an inline editor', () => {
     const tiles = resolveTiles(config, vi.fn())
-    expect(tiles.map(tile => tile.id)).toEqual([
-      'direction',
-      'workspace',
-      'edit-controls'
-    ])
-    expect(tiles.at(-1)).toMatchObject({
-      title: 'Edit Controls',
-      editable: false,
-      span: 'full'
-    })
+    expect(tiles.map(tile => tile.id)).toEqual(['direction', 'workspace'])
+  })
+
+  it.each([undefined, false])(
+    'omits Edit Controls unless enabled (%s)',
+    async editControls => {
+      render(
+        <SettingsNavigationContext.Provider value={vi.fn()}>
+          <ConfiguredControlCenter
+            config={{ ...config, editControls }}
+            context={{}}
+          />
+        </SettingsNavigationContext.Provider>
+      )
+      fireEvent.click(screen.getByRole('button', { name: 'Control center' }))
+      await screen.findByRole('dialog', { name: 'Control Center' })
+      expect(screen.queryByRole('button', { name: 'Edit Controls' })).toBeNull()
+    }
+  )
+
+  it('closes Control Center and opens application Settings when editing is enabled', async () => {
+    const openSettings = vi.fn()
+    render(
+      <SettingsNavigationContext.Provider value={openSettings}>
+        <ConfiguredControlCenter
+          config={{ ...config, editControls: true }}
+          context={{}}
+        />
+      </SettingsNavigationContext.Provider>
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Control center' }))
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Edit Controls' })
+    )
+    expect(openSettings).toHaveBeenCalledExactlyOnceWith('Edit Controls')
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+  })
+
+  it('toggles direction directly and keeps the tile icon in sync', async () => {
+    const originalDirection = document.documentElement.getAttribute('dir')
+    document.documentElement.dir = 'ltr'
+    try {
+      render(
+        <ConfiguredControlCenter
+          config={{
+            tiles: [
+              {
+                id: 'direction-toggle',
+                type: 'direction-toggle',
+                span: 'compact'
+              }
+            ]
+          }}
+          context={{}}
+        />
+      )
+      fireEvent.click(screen.getByRole('button', { name: 'Control center' }))
+      const toggle = await screen.findByRole('button', { name: 'Direction' })
+      const initialIcon = toggle.innerHTML
+      fireEvent.click(toggle)
+      expect(document.documentElement.dir).toBe('rtl')
+      await waitFor(() => expect(toggle.innerHTML).not.toBe(initialIcon))
+      expect(
+        screen.queryByRole('button', { name: 'Back to Control Center' })
+      ).toBeNull()
+      fireEvent.click(toggle)
+      expect(document.documentElement.dir).toBe('ltr')
+      await waitFor(() => expect(toggle.innerHTML).toBe(initialIcon))
+    } finally {
+      if (originalDirection === null)
+        document.documentElement.removeAttribute('dir')
+      else document.documentElement.setAttribute('dir', originalDirection)
+    }
   })
 
   it('supplies built-in display names without YAML labels or titles', () => {

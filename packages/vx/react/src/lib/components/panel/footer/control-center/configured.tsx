@@ -11,8 +11,7 @@ import {
   ThemeToggle
 } from './appearance'
 import { ControlCenter } from './control-center'
-import { DirectionSettings, DirectionTile } from './direction'
-import { EditControlsSettings, EditControlsTile } from './editor'
+import { DirectionSettings, DirectionTile, DirectionToggle } from './direction'
 import {
   DocumentLanguageSettings,
   DocumentLanguageTile,
@@ -67,6 +66,7 @@ const ConfiguredLanguageSettings = ({
 
 const builtins: Record<BuiltinTileType, TileRegistration<object>> = {
   'theme-toggle': { Tile: ThemeToggle, label: 'Appearance' },
+  'direction-toggle': { Tile: DirectionToggle, label: 'Direction' },
   'appearance-toggle': { Tile: AppearanceToggle, label: 'Appearance' },
   appearance: {
     Tile: AppearanceTile,
@@ -117,7 +117,7 @@ const builtins: Record<BuiltinTileType, TileRegistration<object>> = {
 export type ControlCenterActionEvent = ToolbarActionEvent & { tileId: string }
 export type ConfiguredControlCenterProps<Context extends object> = Omit<
   ControlCenterProps<Context & ControlCenterContext>,
-  'tiles'
+  'tiles' | 'editControls'
 > & {
   config: ControlCenterConfig
   registrations?: Readonly<
@@ -130,8 +130,8 @@ export const resolveTiles = <Context extends object>(
   config: ControlCenterConfig,
   onAction: (tileId: string, actionKey: string) => void,
   registrations: Readonly<Record<string, TileRegistration<Context>>> = {}
-): readonly TileDefinition<Context>[] => [
-  ...config.tiles.map(tile => {
+): readonly TileDefinition<Context>[] =>
+  config.tiles.map(tile => {
     const { id, span, label, description, editable } = tile
     const registration =
       tile.type === 'custom' ? registrations[id] : builtins[tile.type]
@@ -171,16 +171,7 @@ export const resolveTiles = <Context extends object>(
         />
       )
     }
-  }),
-  {
-    id: 'edit-controls',
-    span: 'full',
-    editable: false,
-    title: 'Edit Controls',
-    Tile: EditControlsTile,
-    Panel: EditControlsSettings
-  }
-]
+  })
 
 export const ConfiguredControlCenter = <Context extends object>({
   config,
@@ -208,5 +199,11 @@ export const ConfiguredControlCenter = <Context extends object>({
       resolveTiles<Context & ControlCenterContext>(config, emit, registrations),
     [config, emit, registrations]
   )
-  return <ControlCenter {...props} tiles={tiles} />
+  return (
+    <ControlCenter
+      {...props}
+      tiles={tiles}
+      editControls={config.editControls}
+    />
+  )
 }

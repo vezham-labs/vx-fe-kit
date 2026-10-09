@@ -1,17 +1,8 @@
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within
-} from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
 import {
   ControlCenter,
-  EditControlsSettings,
-  EditControlsTile,
   PreviewAirDropSettings,
   PreviewAirDropTile,
   PreviewBluetoothSettings,
@@ -86,14 +77,6 @@ const tiles: readonly TileDefinition[] = [
     label: 'Sound',
     span: 'full',
     Tile: PreviewSoundTile
-  },
-  {
-    id: 'edit',
-    span: 'full',
-    editable: false,
-    Tile: EditControlsTile,
-    title: 'Edit Controls',
-    Panel: EditControlsSettings
   }
 ]
 
@@ -186,37 +169,10 @@ describe('Control Center UI preview', () => {
     expect((volume as HTMLInputElement).value).toBe('74')
   })
 
-  it('hides and reorders controls, protects the editor, and resets the registry', async () => {
-    render(<ControlCenter tiles={tiles} context={{}} preview />)
+  it('does not offer an inline editor without application Settings', async () => {
+    render(<ControlCenter tiles={tiles} context={{}} preview editControls />)
     await open()
-    fireEvent.click(screen.getByRole('button', { name: 'Edit Controls' }))
-    const wifi = await screen.findByRole('switch', { name: 'Show Wi-Fi' })
-    fireEvent.click(wifi)
-    expect(
-      screen
-        .getByRole('switch', { name: 'Show Edit Controls' })
-        .hasAttribute('disabled')
-    ).toBe(true)
-    fireEvent.click(screen.getByRole('button', { name: 'Move Bluetooth up' }))
-    back()
-    const dialog = screen.getByRole('dialog')
-    expect(within(dialog).queryByRole('button', { name: 'Wi-Fi' })).toBeNull()
-    expect(
-      within(dialog).getAllByRole('button')[0].getAttribute('aria-label')
-    ).toBe('Bluetooth')
-    fireEvent.keyDown(dialog, { key: 'Escape' })
-    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
-    await open()
-    expect(screen.queryByRole('button', { name: 'Wi-Fi' })).toBeNull()
-    fireEvent.click(screen.getByRole('button', { name: 'Edit Controls' }))
-    fireEvent.click(
-      await screen.findByRole('button', { name: 'Reset Controls' })
-    )
-    back()
-    expect(
-      within(screen.getByRole('dialog'))
-        .getAllByRole('button')[0]
-        .getAttribute('aria-label')
-    ).toBe('Wi-Fi')
+    expect(screen.queryByRole('button', { name: 'Edit Controls' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Reset Controls' })).toBeNull()
   })
 })
