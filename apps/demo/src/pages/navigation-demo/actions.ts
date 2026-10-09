@@ -1,5 +1,12 @@
-import type { NavigationAction, NavigationToolbar } from '@vx/react'
-import type { SectionAction } from '@vx/react/layouts/section'
+import type {
+  NavigationAction,
+  NavigationToolbar,
+  NavigationViewAction
+} from '@vx/react'
+import type {
+  SectionAction,
+  SectionViewAction
+} from '@vx/react/layouts/section'
 import type { ToolbarActionEvent } from '@vx/react/toolbar-actions'
 
 export const getToolbarActions = (
@@ -14,8 +21,16 @@ export const getToolbarActions = (
       emit({ ...context, actionKey: action.key })
     }
   })
+  const bindViewAction = (action: NavigationViewAction): SectionViewAction => ({
+    key: action.key,
+    label: action.label,
+    icon: action.icon
+  })
   return {
     sync: toolbar.sync ?? false,
+    view: toolbar.view
+      ?.filter(action => action.enabled !== false)
+      .map(bindViewAction),
     menuActions: toolbar.menuActions?.map(bindAction) ?? [],
     primaryAction: toolbar.primaryAction
       ? bindAction(toolbar.primaryAction)

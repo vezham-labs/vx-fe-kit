@@ -23,6 +23,16 @@ navigation:
     toolbar: &sectionToolbar
       search: true
       sync: true
+      view:
+        - key: filter
+          label: Filter
+          icon: vx:sort-descending
+        - key: grid
+          label: Grid view
+          icon: vx:grid
+        - key: list
+          label: List view
+          icon: vx:list
       menuActions:
         - key: import
           label: Import

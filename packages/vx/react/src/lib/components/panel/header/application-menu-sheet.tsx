@@ -7,7 +7,7 @@ import {
   Bookmark,
   SidebarMinimalistic
 } from '@vezham/icons-react'
-import { Button, Separator } from '@vezham/react-v3'
+import { Button, Label, Separator } from '@vezham/react-v3'
 
 import { AppIcon } from '../../app-icon'
 import { useAppMenu } from '../../app-menu'
@@ -20,6 +20,7 @@ export type ApplicationMenuProps = {
   onSearch: () => void
   navigationLabel: string
   onToggleNavigation?: () => void
+  showHistoryNavigation: boolean
   showMenuUtilities: boolean
   showBookamarks: boolean
   showStorage: boolean
@@ -42,6 +43,7 @@ export const ApplicationMenuSheet = ({
   onSearch,
   navigationLabel,
   onToggleNavigation,
+  showHistoryNavigation,
   showMenuUtilities,
   showBookamarks,
   showStorage
@@ -115,6 +117,36 @@ export const ApplicationMenuSheet = ({
             <Button variant="ghost" className={actionClass} onPress={close}>
               Back to home
             </Button>
+            {showHistoryNavigation && (
+              <>
+                <Button
+                  variant="ghost"
+                  className={actionClass}
+                  aria-label="Back"
+                  aria-keyshortcuts="Meta+ArrowLeft"
+                  onPress={() => {
+                    close()
+                    window.history.back()
+                  }}>
+                  <AltArrowLeft size={18} aria-hidden="true" />
+                  <Label className="flex-1">Back</Label>
+                  <ShortcutKey shortcut="⌘ ←" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  className={actionClass}
+                  aria-label="Forward"
+                  aria-keyshortcuts="Meta+ArrowRight"
+                  onPress={() => {
+                    close()
+                    window.history.forward()
+                  }}>
+                  <AltArrowRight size={18} aria-hidden="true" />
+                  <Label className="flex-1">Forward</Label>
+                  <ShortcutKey shortcut="⌘ →" />
+                </Button>
+              </>
+            )}
             {showMenuUtilities && onToggleNavigation && (
               <Button
                 variant="ghost"

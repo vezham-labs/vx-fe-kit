@@ -14,6 +14,7 @@ import {
   InfoPanelContainer,
   useInfoPanel
 } from '../../components/panel/info-panel'
+import { useResponsiveToolbarAction } from '../../components/responsive-toolbar-action'
 import { useWorkspaceNavigation } from '../../components/workspace-navigation'
 import { useUser } from '../../store/users/useUserStore'
 import type { MenuLayoutProps } from './index'
@@ -25,6 +26,7 @@ const MenuSM = ({ items, controlCenter }: MenuLayoutProps) => {
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const { openInfoPanel } = useInfoPanel()
   const { mobileSidebar } = useWorkspaceNavigation()
+  const { action: toolbarAction } = useResponsiveToolbarAction()
 
   const handleItemSelect = (key: string) => {
     setSelectedKey(key)
@@ -82,6 +84,7 @@ const MenuSM = ({ items, controlCenter }: MenuLayoutProps) => {
               setSettingsEntryPoint(entryPoint)
               setOpenSettings(true)
             }}
+            toolbarAction={toolbarAction}
           />
         </Surface>
       </div>

@@ -112,6 +112,7 @@ const Footer = ({
   onAI,
   onNotificationsClick,
   onUserClick,
+  toolbarAction,
   className
 }: FooterActionsProps) => {
   const { clearUser } = useUser()
@@ -183,6 +184,12 @@ const Footer = ({
             onLogout={clearUser}
           />
         ) : null}
+
+        {toolbarAction && (
+          <Surface variant="transparent" className="md:hidden">
+            {toolbarAction}
+          </Surface>
+        )}
       </Surface>
     </>
   )

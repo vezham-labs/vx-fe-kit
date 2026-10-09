@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 
 export interface UserInfo {
   id: string
@@ -44,5 +44,6 @@ export interface FooterActionsProps {
   onNotificationsClick?: () => void
   onUserClick?: (user: UserInfo, entryPoint?: UserSettingsEntryPoint) => void
 
+  toolbarAction?: ReactNode
   className?: string
 }

@@ -14,7 +14,7 @@ import {
   useState
 } from 'react'
 
-import { Drawer, Surface, Tabs } from '@vezham/react-v3'
+import { Drawer, Surface, Tabs, useMediaQuery } from '@vezham/react-v3'
 
 import { AppIcon } from '../../components/app-icon'
 import { ShortcutButton } from '../../components/shortcut-key'
@@ -25,8 +25,12 @@ import {
 import type { AppNavigationItem } from '../../navigation'
 import {
   type SectionAction,
+  SectionActiveFilters,
+  type SectionFilterKey,
   type SectionSearch,
-  SectionToolbar
+  SectionToolbar,
+  type SectionViewAction,
+  type SectionViewMode
 } from './toolbar'
 
 export type SectionLayoutProps = {
@@ -37,6 +41,7 @@ export type SectionLayoutProps = {
   toolbar?: ReactNode
   search?: SectionSearch
   sync?: boolean
+  view?: SectionViewAction[]
   onSync?: () => void
   menuActions?: SectionAction[]
   primaryAction?: SectionAction
@@ -45,6 +50,7 @@ export type SectionLayoutProps = {
 
 const EMPTY_SIDEBAR_ITEMS: AppNavigationItem[] = []
 const EMPTY_MENU_ACTIONS: SectionAction[] = []
+const EMPTY_VIEW_ACTIONS: SectionViewAction[] = []
 
 const matchesPath = (pathname: string, href?: string) =>
   Boolean(href && (pathname === href || pathname.startsWith(`${href}/`)))
@@ -57,6 +63,7 @@ const SectionLayout = ({
   toolbar,
   search,
   sync = true,
+  view = EMPTY_VIEW_ACTIONS,
   onSync,
   menuActions = EMPTY_MENU_ACTIONS,
   primaryAction,
@@ -67,8 +74,11 @@ const SectionLayout = ({
   const router = useRouter()
   const { isNavigationCollapsed, toggleNavigation, registerMobileSidebar } =
     useWorkspaceNavigation()
+  const isCompactToolbar = useMediaQuery('(max-width: 767px)')
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [selectedFilters, setSelectedFilters] = useState<SectionFilterKey[]>([])
+  const [viewMode, setViewMode] = useState<SectionViewMode>('grid')
   const searchInput = useRef<HTMLInputElement>(null)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   useHotkey(
@@ -87,6 +97,7 @@ const SectionLayout = ({
     () => setIsDrawerOpen(open => !open),
     []
   )
+  const handleSync = useCallback(() => onSync?.(), [onSync])
   useEffect(() => {
     if (hasSidebar) {
       return registerMobileSidebar({
@@ -141,8 +152,14 @@ const SectionLayout = ({
     <>
       <SectionToolbar
         title={title}
+        isNavigationCollapsed={isNavigationCollapsed}
         sync={sync}
-        tabs={tabs}
+        view={view}
+        selectedFilters={selectedFilters}
+        onSelectedFiltersChange={setSelectedFilters}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+        tabs={isCompactToolbar ? [] : tabs}
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
         search={
@@ -158,21 +175,23 @@ const SectionLayout = ({
         menuActions={menuActions}
         primaryAction={primaryAction}
         toolbar={toolbar}
-        onSync={() => onSync?.()}
+        onSync={handleSync}
         navigationControls={
           <>
+            {!isNavigationCollapsed && (
+              <ShortcutButton
+                className="h-9 w-9 min-w-9 p-0"
+                label="Hide Sidebar"
+                shortcut="⌘ S"
+                aria-keyshortcuts="Meta+S"
+                aria-controls={sidebarId}
+                aria-expanded
+                onPress={toggleNavigation}>
+                <AppIcon icon="vx:sidebar" size={18} aria-hidden="true" />
+              </ShortcutButton>
+            )}
             <ShortcutButton
-              className="h-9 w-9 min-w-9 p-0"
-              label={isNavigationCollapsed ? 'Show Sidebar' : 'Hide Sidebar'}
-              shortcut="⌘ S"
-              aria-keyshortcuts="Meta+S"
-              aria-controls={sidebarId}
-              aria-expanded={!isNavigationCollapsed}
-              onPress={toggleNavigation}>
-              <AppIcon icon="vx:sidebar" size={18} aria-hidden="true" />
-            </ShortcutButton>
-            <ShortcutButton
-              className="h-9 w-9 min-w-9 p-0"
+              className="hidden h-9 w-9 min-w-9 p-0 lg:inline-flex"
               label="Back"
               shortcut="⌘ ←"
               aria-keyshortcuts="Meta+ArrowLeft"
@@ -180,7 +199,7 @@ const SectionLayout = ({
               <AppIcon icon="vx:arrow-left" size={18} aria-hidden="true" />
             </ShortcutButton>
             <ShortcutButton
-              className="h-9 w-9 min-w-9 p-0"
+              className="hidden h-9 w-9 min-w-9 p-0 lg:inline-flex"
               label="Forward"
               shortcut="⌘ →"
               aria-keyshortcuts="Meta+ArrowRight"
@@ -190,7 +209,24 @@ const SectionLayout = ({
           </>
         }
       />
-      <div className="flex min-h-0 flex-1">
+      {isCompactToolbar && tabs.length > 0 && (
+        <Tabs.ListContainer className="scrollbar-hide order-2 mb-3 w-fit max-w-full min-w-0 self-center overflow-x-auto rounded-full">
+          <Tabs.List
+            aria-label={`${title} tabs`}
+            className="flex min-w-max flex-nowrap *:whitespace-nowrap">
+            {tabs.map(tab => (
+              <Tabs.Tab
+                key={tab.key}
+                id={tab.key}
+                className="whitespace-nowrap">
+                {tab.title}
+                <Tabs.Indicator />
+              </Tabs.Tab>
+            ))}
+          </Tabs.List>
+        </Tabs.ListContainer>
+      )}
+      <div className="order-1 flex min-h-0 flex-1">
         {hasSidebar && !isNavigationCollapsed && (
           <aside
             id={sidebarId}
@@ -198,8 +234,12 @@ const SectionLayout = ({
             {sidebar}
           </aside>
         )}
-        <main className="min-w-0 flex-1 overflow-auto p-4">
-          <Surface className="min-h-full rounded-lg p-4 sm:p-5">
+        <main className="flex min-w-0 flex-1 flex-col gap-2 overflow-auto p-4">
+          <SectionActiveFilters
+            selectedFilters={selectedFilters}
+            onSelectedFiltersChange={setSelectedFilters}
+          />
+          <Surface className="min-h-0 flex-1 rounded-lg p-4 sm:p-5">
             {tabs.length === 0 && children}
             {tabs.map(tab => (
               <Tabs.Panel key={tab.key} id={tab.key}>
@@ -247,5 +287,11 @@ const SectionLayout = ({
   )
 }
 
-export type { SectionAction, SectionSearch } from './toolbar'
+export type {
+  SectionAction,
+  SectionFilterKey,
+  SectionSearch,
+  SectionViewAction,
+  SectionViewMode
+} from './toolbar'
 export { SectionLayout }

@@ -33,6 +33,23 @@ export const navigationItems = [
     "toolbar": {
       "search": true,
       "sync": true,
+      "view": [
+        {
+          "key": "filter",
+          "label": "Filter",
+          "icon": "vx:sort-descending"
+        },
+        {
+          "key": "grid",
+          "label": "Grid view",
+          "icon": "vx:grid"
+        },
+        {
+          "key": "list",
+          "label": "List view",
+          "icon": "vx:list"
+        }
+      ],
       "menuActions": [
         {
           "key": "import",
@@ -100,6 +117,23 @@ export const navigationItems = [
     "toolbar": {
       "search": true,
       "sync": true,
+      "view": [
+        {
+          "key": "filter",
+          "label": "Filter",
+          "icon": "vx:sort-descending"
+        },
+        {
+          "key": "grid",
+          "label": "Grid view",
+          "icon": "vx:grid"
+        },
+        {
+          "key": "list",
+          "label": "List view",
+          "icon": "vx:list"
+        }
+      ],
       "menuActions": [
         {
           "key": "import",
@@ -205,6 +239,23 @@ export const navigationItems = [
     "toolbar": {
       "search": true,
       "sync": true,
+      "view": [
+        {
+          "key": "filter",
+          "label": "Filter",
+          "icon": "vx:sort-descending"
+        },
+        {
+          "key": "grid",
+          "label": "Grid view",
+          "icon": "vx:grid"
+        },
+        {
+          "key": "list",
+          "label": "List view",
+          "icon": "vx:list"
+        }
+      ],
       "menuActions": [
         {
           "key": "import",
@@ -451,6 +502,23 @@ export const navigationItems = [
     "toolbar": {
       "search": true,
       "sync": true,
+      "view": [
+        {
+          "key": "filter",
+          "label": "Filter",
+          "icon": "vx:sort-descending"
+        },
+        {
+          "key": "grid",
+          "label": "Grid view",
+          "icon": "vx:grid"
+        },
+        {
+          "key": "list",
+          "label": "List view",
+          "icon": "vx:list"
+        }
+      ],
       "menuActions": [
         {
           "key": "import",
@@ -773,6 +841,23 @@ export const navigationItems = [
     "toolbar": {
       "search": true,
       "sync": true,
+      "view": [
+        {
+          "key": "filter",
+          "label": "Filter",
+          "icon": "vx:sort-descending"
+        },
+        {
+          "key": "grid",
+          "label": "Grid view",
+          "icon": "vx:grid"
+        },
+        {
+          "key": "list",
+          "label": "List view",
+          "icon": "vx:list"
+        }
+      ],
       "menuActions": [
         {
           "key": "import",
