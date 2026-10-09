@@ -10,13 +10,13 @@ export const DEFAULT_SORT: SectionSort = {
   direction: 'ascending'
 }
 
-const sortFields = [
+export const sortFields = [
   { key: 'name', label: 'Name' },
   { key: 'created', label: 'Created date' },
   { key: 'updated', label: 'Updated date' }
 ] as const
 
-const sortDirections = [
+export const sortDirections = [
   { key: 'ascending', label: 'Ascending' },
   { key: 'descending', label: 'Descending' }
 ] as const

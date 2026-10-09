@@ -95,7 +95,10 @@ fields and Ascending/Descending direction. It defaults to Name ascending;
 `sort: false` disables inherited sorting. `SectionLayout` retains the current
 selection and calls `onSortChange` with `{ by, direction }` so applications can
 apply it to their data. Sort appears after Filter and before View, including
-in the mobile More menu.
+in the mobile More menu. Below 640 px, More uses the same sheet as the
+application menu: Filter, Sort, and nested actions replace the sheet contents
+with Back navigation. Selection changes keep the sheet open; invoking an action
+closes it. Wider screens retain dropdowns and submenus.
 
 Action `key` values are stable handler IDs. Apps bind them to callbacks and own
 state, permissions, API calls, and navigation behavior. Do not put executable

@@ -24,10 +24,12 @@ import {
 } from '@vezham/react-v3'
 
 import { AppIcon } from '../../components/app-icon'
+import { APPLICATION_MENU_SHEET_MEDIA_QUERY } from '../../components/panel/responsive'
 import { useResponsiveToolbarAction } from '../../components/responsive-toolbar-action'
 import { ShortcutButton } from '../../components/shortcut-key'
 import type { AppNavigationItem } from '../../navigation'
 import { DEFAULT_SORT, type SectionSort, SortMenu } from './sort-menu'
+import { ToolbarMoreSheet } from './toolbar-more-sheet'
 
 export type SectionAction = {
   key: string
@@ -265,7 +267,7 @@ const renderMenuItems = (actions: SectionAction[]): ReactNode =>
     )
   )
 
-const MobileToolbarMore = ({
+const MobileToolbarDropdown = ({
   filterAction,
   menuActions,
   onSync,
@@ -356,6 +358,25 @@ const MobileToolbarMore = ({
     </Dropdown.Popover>
   </Dropdown>
 )
+
+const MobileToolbarMore = (
+  props: Parameters<typeof MobileToolbarDropdown>[0]
+) => {
+  const small = useMediaQuery(APPLICATION_MENU_SHEET_MEDIA_QUERY, {
+    initializeWithValue: false
+  })
+  return small ? (
+    <ToolbarMoreSheet
+      {...props}
+      filterGroups={[
+        { label: 'Source', options: sourceFilterOptions },
+        { label: 'File type', options: fileTypeFilterOptions }
+      ]}
+    />
+  ) : (
+    <MobileToolbarDropdown {...props} />
+  )
+}
 
 const SectionSearchField = ({ search }: { search: ToolbarSearch }) => {
   const label = search.label ?? 'Search content'
