@@ -57,10 +57,11 @@ describe('Navigation toolbar', () => {
       'Search',
       'Sync',
       'Filter',
+      'Sort',
       'Grid view',
       'List view',
-      'More',
-      'Add Class'
+      'Add Class',
+      'More'
     ])
     const viewOptions = within(actions).getByRole('group', {
       name: 'View options'
@@ -94,7 +95,7 @@ describe('Navigation toolbar', () => {
 
   it('shows the Sync placeholder without refreshing and hides Add on result pages', async () => {
     const router = await renderApp('/academic/examinations/exam-results')
-    await screen.findByRole('tab', { name: 'Exam Results' })
+    await screen.findByRole('link', { name: 'Exam Results' })
     const actions = screen.getByRole('group', { name: 'Toolbar actions' })
     expect(within(actions).queryByRole('button', { name: /^Add / })).toBeNull()
     const refresh = vi.spyOn(router, 'invalidate')
@@ -104,8 +105,8 @@ describe('Navigation toolbar', () => {
     })
     expect(refresh).not.toHaveBeenCalled()
     toast.clear()
-    expect(screen.getByRole('tabpanel').textContent).toContain(
-      '/academic/examinations/exam-results'
-    )
+    expect(
+      await screen.findByText('/academic/examinations/exam-results')
+    ).toBeTruthy()
   })
 })

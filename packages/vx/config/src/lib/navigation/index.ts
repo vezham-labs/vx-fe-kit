@@ -26,6 +26,11 @@ const validateItems = (items: unknown, location: string): void => {
     for (const [field, value] of Object.entries(item)) {
       if (field === 'children') {
         validateItems(value, `${location}.${key}.children`)
+      } else if (field === 'childrenDisplay') {
+        if (value !== 'tabs' && value !== 'sidebar')
+          throw new Error(
+            `${location}.${key}.childrenDisplay must be tabs or sidebar`
+          )
       } else if (field === 'toolbar') {
         validateToolbar(value, `${location}.${key}.toolbar`)
       } else if (

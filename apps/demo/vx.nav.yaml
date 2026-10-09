@@ -209,6 +209,7 @@ navigation:
             icon: vx:plus
       - key: examinations
         title: Examinations
+        childrenDisplay: sidebar
         href: /academic/examinations
         icon: vx:academic-cap
         children:

@@ -60,6 +60,12 @@
         "iconActive": {
           "type": "string"
         },
+        "childrenDisplay": {
+          "type": "string",
+          "enum": ["tabs", "sidebar"],
+          "default": "tabs",
+          "description": "Display child pages as tabs or an expandable section sidebar list."
+        },
         "children": {
           "type": "array",
           "items": {

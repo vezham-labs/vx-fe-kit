@@ -407,6 +407,7 @@ export const navigationItems = [
       {
         "key": "examinations",
         "title": "Examinations",
+        "childrenDisplay": "sidebar",
         "href": "/academic/examinations",
         "icon": "vx:academic-cap",
         "children": [

@@ -1,10 +1,5 @@
 import { useHotkey } from '@tanstack/react-hotkeys'
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useRouter
-} from '@tanstack/react-router'
+import { useLocation, useNavigate, useRouter } from '@tanstack/react-router'
 import {
   type ReactNode,
   useCallback,
@@ -22,7 +17,8 @@ import {
   useSidebarShortcut,
   useWorkspaceNavigation
 } from '../../components/workspace-navigation'
-import type { AppNavigationItem } from '../../navigation'
+import { type AppNavigationItem, getSelectedMenuKey } from '../../navigation'
+import { SectionSidebar } from './sidebar'
 import { DEFAULT_SORT, type SectionSort } from './sort-menu'
 import {
   type SectionAction,
@@ -82,6 +78,9 @@ const SectionLayout = ({
   const { isNavigationCollapsed, toggleNavigation, registerMobileSidebar } =
     useWorkspaceNavigation()
   const isCompactToolbar = useMediaQuery('(max-width: 767px)')
+  const [expandedSidebarKeys, setExpandedSidebarKeys] = useState<Set<string>>(
+    () => new Set()
+  )
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState<SectionFilterKey[]>([])
@@ -96,8 +95,14 @@ const SectionLayout = ({
   const [viewMode, setViewMode] = useState<SectionViewMode>('grid')
   const searchInput = useRef<HTMLInputElement>(null)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const displayTabs = sidebarItems.some(
+    item =>
+      item.childrenDisplay === 'sidebar' && getSelectedMenuKey(pathname, [item])
+  )
+    ? []
+    : tabs
   const selectedTab =
-    tabs.find(tab => matchesPath(pathname, tab.href)) ?? tabs[0]
+    displayTabs.find(tab => matchesPath(pathname, tab.href)) ?? displayTabs[0]
   const hasSidebar = sidebarItems.length > 0
   const toggleMobileSidebar = useCallback(
     () => setIsDrawerOpen(open => !open),
@@ -132,26 +137,14 @@ const SectionLayout = ({
     { enabled: sync && Boolean(onSync) }
   )
   const sidebar = (
-    <nav aria-label={navigationLabel} className="space-y-1 p-2">
-      {sidebarItems.map(item => {
-        const isActive =
-          matchesPath(pathname, item.href) ||
-          item.children?.some(child => matchesPath(pathname, child.href))
-        return (
-          <Link
-            key={item.key}
-            to={item.href ?? item.children?.[0]?.href ?? '/'}
-            aria-current={isActive ? 'page' : undefined}
-            onClick={() => setIsDrawerOpen(false)}
-            className={`flex items-center gap-3 rounded-full px-3 py-2 text-sm ${isActive ? 'bg-surface-secondary text-foreground font-bold' : 'text-muted hover:bg-surface-secondary'}`}>
-            {item.icon && (
-              <AppIcon icon={item.icon} size={18} aria-hidden="true" />
-            )}
-            {item.title}
-          </Link>
-        )
-      })}
-    </nav>
+    <SectionSidebar
+      items={sidebarItems}
+      pathname={pathname}
+      label={navigationLabel}
+      expandedKeys={expandedSidebarKeys}
+      onExpandedChange={setExpandedSidebarKeys}
+      onNavigate={() => setIsDrawerOpen(false)}
+    />
   )
 
   const content = (
@@ -169,7 +162,7 @@ const SectionLayout = ({
         onSelectedFiltersChange={setSelectedFilters}
         viewMode={viewMode}
         onViewModeChange={setViewMode}
-        tabs={isCompactToolbar ? [] : tabs}
+        tabs={isCompactToolbar ? [] : displayTabs}
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
         search={
@@ -219,7 +212,7 @@ const SectionLayout = ({
           </>
         }
       />
-      {isCompactToolbar && tabs.length > 0 && (
+      {isCompactToolbar && displayTabs.length > 0 && (
         <Tabs.ListContainer
           className={`scrollbar-hide order-2 mb-3 w-fit min-w-0 self-center overflow-x-auto rounded-full ${
             search && primaryAction
@@ -229,7 +222,7 @@ const SectionLayout = ({
           <Tabs.List
             aria-label={`${title} tabs`}
             className="flex min-w-max flex-nowrap *:whitespace-nowrap">
-            {tabs.map(tab => (
+            {displayTabs.map(tab => (
               <Tabs.Tab
                 key={tab.key}
                 id={tab.key}
@@ -260,8 +253,8 @@ const SectionLayout = ({
             />
           )}
           <Surface className="min-h-0 flex-1 rounded-lg p-4 sm:p-5">
-            {tabs.length === 0 && children}
-            {tabs.map(tab => (
+            {displayTabs.length === 0 && children}
+            {displayTabs.map(tab => (
               <Tabs.Panel key={tab.key} id={tab.key}>
                 {tab.key === selectedTab?.key && children}
               </Tabs.Panel>
@@ -274,10 +267,10 @@ const SectionLayout = ({
 
   return (
     <div className="bg-background flex h-full min-h-0 min-w-0 flex-1 flex-col">
-      {tabs.length > 0 ? (
+      {displayTabs.length > 0 ? (
         <Tabs
           // vx-bot/NOTE: Each section owns its tab collection and indicator measurements.
-          key={JSON.stringify(tabs.map(tab => tab.key))}
+          key={JSON.stringify(displayTabs.map(tab => tab.key))}
           selectedKey={selectedTab?.key}
           onSelectionChange={key => {
             const tab = tabs.find(item => item.key === key)

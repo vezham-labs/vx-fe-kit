@@ -41,6 +41,10 @@ describe('Academic navigation', () => {
       )
     )
 
+    fireEvent.click(
+      within(sidebar).getByRole('button', { name: 'Examinations' })
+    )
+    expect(screen.getByRole('link', { name: 'Exam Results' })).toBeVisible()
     fireEvent.click(within(sidebar).getByRole('link', { name: 'Class Room' }))
     await screen.findByText('/academic/classroom')
     expect(screen.queryByRole('tablist')).toBeNull()
@@ -48,23 +52,19 @@ describe('Academic navigation', () => {
       screen.getByRole('searchbox', { name: 'Search content' })
     ).toBeTruthy()
 
-    fireEvent.click(
-      within(
-        screen.getByRole('navigation', { name: 'Academic sections' })
-      ).getByRole('link', { name: 'Examinations' })
-    )
-    await screen.findByRole('tab', { name: 'Exam' })
-    fireEvent.click(screen.getByRole('tab', { name: 'Exam Results' }))
+    await screen.findByRole('link', { name: 'Exam' })
+    fireEvent.click(screen.getByRole('link', { name: 'Exam Results' }))
     await waitFor(() =>
-      expect(screen.getByRole('tabpanel').textContent).toContain(
-        '/academic/examinations/exam-results'
-      )
+      expect(
+        screen.getByText('/academic/examinations/exam-results')
+      ).toBeTruthy()
     )
     expect(
       screen
-        .getByRole('tab', { name: 'Exam Results' })
-        .getAttribute('aria-selected')
-    ).toBe('true')
+        .getByRole('link', { name: 'Exam Results' })
+        .getAttribute('aria-current')
+    ).toBe('page')
+    expect(screen.queryByRole('tablist')).toBeNull()
 
     fireEvent.click(
       within(
@@ -76,13 +76,14 @@ describe('Academic navigation', () => {
     expect(screen.queryByRole('tab', { name: 'Exam Results' })).toBeNull()
   })
 
-  it('loads an Academic tab directly', async () => {
+  it('loads an expanded sidebar child directly', async () => {
     await renderApp('/academic/examinations/grades')
-    const grades = await screen.findByRole('tab', { name: 'Grades' })
-    expect(grades.getAttribute('aria-selected')).toBe('true')
-    expect(screen.getByRole('tabpanel').textContent).toContain(
-      '/academic/examinations/grades'
-    )
+    const grades = await screen.findByRole('link', { name: 'Grades' })
+    expect(grades.getAttribute('aria-current')).toBe('page')
+    expect(
+      await screen.findByText('/academic/examinations/grades')
+    ).toBeTruthy()
+    expect(screen.queryByRole('tablist')).toBeNull()
   })
 
   it('shows and hides the mobile sidebar with its shortcut', async () => {

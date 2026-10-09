@@ -20,6 +20,35 @@ afterEach(() => {
 })
 
 describe('navigation generation', () => {
+  it('preserves child display modes and rejects unsupported values', () => {
+    const root = project()
+    const file = path.join(root, 'vx.nav.yaml')
+    writeFileSync(
+      file,
+      stringify({
+        navigation: [
+          { key: 'exams', title: 'Exams', childrenDisplay: 'sidebar' },
+          { key: 'classes', title: 'Classes', childrenDisplay: 'tabs' }
+        ]
+      })
+    )
+    expect(getNavigationFiles(root)[0].content).toContain(
+      '"childrenDisplay": "sidebar"'
+    )
+    expect(getNavigationFiles(root)[0].content).toContain(
+      '"childrenDisplay": "tabs"'
+    )
+    writeFileSync(
+      file,
+      stringify({
+        navigation: [{ key: 'exams', title: 'Exams', childrenDisplay: 'auto' }]
+      })
+    )
+    expect(() => getNavigationFiles(root)).toThrow(
+      'childrenDisplay must be tabs or sidebar'
+    )
+  })
+
   it('rejects the old top-level items key', () => {
     const root = project()
     writeFileSync(path.join(root, 'vx.nav.yaml'), stringify({ items: [] }))

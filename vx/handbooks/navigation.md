@@ -210,3 +210,14 @@ Home. Keep section sidebar controls labeled **Show Sidebar** / **Hide Sidebar**.
 
 For root shell composition, optional Settings routing, and Control Center props,
 see [App layout](./ui/app-layout.md).
+
+Section navigation items can set `childrenDisplay: sidebar` to show child pages
+in an expandable, indented sidebar group instead of page tabs. The default is
+`tabs`; there is no automatic item-count threshold. The active sidebar group
+opens on navigation and highlights its child page. Clicking the parent row
+toggles expansion without navigating; child rows navigate. Expansion state lives
+in the section layout so switching tab collections or standalone pages does not
+collapse open groups. Hover highlights the whole row. Sidebar typography, spacing, icons,
+and the trailing disclosure arrow retain the section navigation styling.
+The mobile section drawer
+uses the same nested list. Demo Examinations exercises the sidebar mode.
