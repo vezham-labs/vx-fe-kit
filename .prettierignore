@@ -6,7 +6,7 @@
 .vezham
 
 # MDX content
-**/content/**/*.mdx
+# **/content/**/*.mdx
 
 # --- END of @vx/fe-kit-config ---
 

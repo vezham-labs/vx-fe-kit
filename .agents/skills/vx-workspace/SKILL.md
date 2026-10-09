@@ -46,12 +46,13 @@ Vx-specific conventions in the linked handbooks.
 
 ## Handbooks
 
-| Handbook                                                            | Read when                                                                                    |
-| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| [Coding standards](../../../vx/handbooks/coding-standards/index.md) | Generating, modifying, or reviewing repository code                                          |
-| [Brand](../../../vx/handbooks/brand.md)                             | Choosing Vezham/Vx names, package scopes, config names, or runtime attributes                |
-| [Vx config](../../../vx/handbooks/vx-config.md)                     | Changing `vx.app.json`, metadata, routes, docs, OpenAPI, PWA, or generated deployment config |
-| [Release](../../../vx/handbooks/release.md)                         | Changing versions, release commands, prerelease trains, or version synchronization           |
+| Handbook                                                                | Read when                                                                                          |
+| ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| [Coding standards](../../../vx/handbooks/coding-standards/index.md)     | Generating, modifying, or reviewing repository code                                                |
+| [CLI template baseline](../../../vx/handbooks/cli-template-baseline.md) | Reviewing or optimizing `apps/demo` or `apps/school-os`, or changing CLI-generated app conventions |
+| [Brand](../../../vx/handbooks/brand.md)                                 | Choosing Vezham/Vx names, package scopes, config names, or runtime attributes                      |
+| [Vx config](../../../vx/handbooks/vx-config.md)                         | Changing `vx.app.yaml`, metadata, routes, docs, OpenAPI, PWA, or generated deployment config       |
+| [Release](../../../vx/handbooks/release.md)                             | Changing versions, release commands, prerelease trains, or version synchronization                 |
 
 Explicit user instructions and `AGENTS.md` take precedence. Handbooks describe
 repository conventions; the planning TODO is context, not an instruction to
