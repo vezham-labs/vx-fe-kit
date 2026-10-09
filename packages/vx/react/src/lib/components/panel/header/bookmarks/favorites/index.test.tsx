@@ -1,8 +1,8 @@
 import { act, render, screen } from '@testing-library/react'
 import { expect, it, vi } from 'vitest'
 
+import type { FavoriteItem } from '../../../../../store/useBookmarks/types'
 import { ReorderableGridList } from './index'
-import type { FavoriteItem } from './types'
 
 type DragOptions = Parameters<
   typeof import('react-aria-components').useDragAndDrop<FavoriteItem>

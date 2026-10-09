@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react'
 import { type Key, useDragAndDrop } from 'react-aria-components'
 
+import type { FavoriteItem } from '../../../../../store/useBookmarks/types'
 import { sampleFavorites } from './data'
 import { FavoriteGridList } from './grid-list'
-import { type FavoriteGridListProps, type FavoriteItem } from './types'
+import { type FavoriteGridListProps } from './types'
 
 type Props = Omit<FavoriteGridListProps, 'dragAndDropHooks'>
 type Draft = { source: FavoriteItem[]; items: FavoriteItem[] }

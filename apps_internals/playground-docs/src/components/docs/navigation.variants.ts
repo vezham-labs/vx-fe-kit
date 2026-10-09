@@ -1,4 +1,4 @@
-import { tv } from 'tailwind-variants'
+import { tv } from '@vezham/react-v3'
 
 export const sectionTabVariants = tv({
   base: 'inline-flex h-full items-center border-b-2 text-sm font-medium transition-colors',

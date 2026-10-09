@@ -287,81 +287,43 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   return (
     <Component className="h-full min-h-0">
       <ScrollShadow {...getScrollShadowProps()}>
-        {showAllPinsMode ? (
-          <div {...getContentContainerProps()}>
-            <QuickAccess
-              mode="all"
-              favorites={favorites}
-              onUnpin={membership.unpin}
-              onFavoriteRemove={membership.removeFavorite}
-              onFavoritesReorder={items => {
-                membership.reorderFavorites(items)
-                onFavoritesReorder?.(items)
-              }}
-              pins={pins}
-              visiblePins={visiblePins}
-              hasMorePins={hasMorePins}
-              isScrollFavoritesOpen={isScrollFavoritesOpen}
-              renderFavoriteItem={renderFavoriteItem}
-              getSectionProps={getSectionProps}
-              getSectionHeaderProps={getSectionHeaderProps}
-              getSectionTitleProps={getSectionTitleProps}
-              getSectionIconProps={getSectionIconProps}
-              getFavorite2ItemsProps={getFavorite2ItemsProps}
-              getFavoriteBackgroundImageProps={getFavoriteBackgroundImageProps}
-              getFavoriteBackgroundGradientProps={
-                getFavoriteBackgroundGradientProps
-              }
-              getFavoriteOverlayProps={getFavoriteOverlayProps}
-              getFavoriteAvatarContainerProps={getFavoriteAvatarContainerProps}
-              getFavoriteAvatarProps={getFavoriteAvatarProps}
-              getFavoriteAvatarIconProps={getFavoriteAvatarIconPropsForIcon}
-              getFavoriteAvatarFallbackProps={getFavoriteAvatarFallbackProps}
-              getFavoriteContentProps={getFavoriteContentProps}
-              getFavoriteNameProps={getFavoriteNameProps}
-              onFavoriteClick={openFavorite}
-              onViewAllPins={handleViewAllPins}
-              onBackToNormalView={handleBackToNormalView}
-              onToggleScrollFavorites={toggleScrollFavorites}
-            />
-          </div>
-        ) : (
-          <div {...getContentContainerProps()}>
-            <QuickAccess
-              mode="sections"
-              favorites={favorites}
-              onUnpin={membership.unpin}
-              onFavoriteRemove={membership.removeFavorite}
-              onFavoritesReorder={items => {
-                membership.reorderFavorites(items)
-                onFavoritesReorder?.(items)
-              }}
-              pins={pins}
-              visiblePins={visiblePins}
-              hasMorePins={hasMorePins}
-              isScrollFavoritesOpen={isScrollFavoritesOpen}
-              renderFavoriteItem={renderFavoriteItem}
-              getSectionProps={getSectionProps}
-              getSectionHeaderProps={getSectionHeaderProps}
-              getSectionTitleProps={getSectionTitleProps}
-              getSectionIconProps={getSectionIconProps}
-              getFavorite2ItemsProps={getFavorite2ItemsProps}
-              getFavoriteBackgroundImageProps={getFavoriteBackgroundImageProps}
-              getFavoriteBackgroundGradientProps={
-                getFavoriteBackgroundGradientProps
-              }
-              getFavoriteOverlayProps={getFavoriteOverlayProps}
-              getFavoriteAvatarContainerProps={getFavoriteAvatarContainerProps}
-              getFavoriteAvatarProps={getFavoriteAvatarProps}
-              getFavoriteAvatarIconProps={getFavoriteAvatarIconPropsForIcon}
-              getFavoriteAvatarFallbackProps={getFavoriteAvatarFallbackProps}
-              getFavoriteContentProps={getFavoriteContentProps}
-              getFavoriteNameProps={getFavoriteNameProps}
-              onFavoriteClick={openFavorite}
-              onViewAllPins={handleViewAllPins}
-              onBackToNormalView={handleBackToNormalView}
-              onToggleScrollFavorites={toggleScrollFavorites}
-            />
+        <div {...getContentContainerProps()}>
+          <QuickAccess
+            mode={showAllPinsMode ? 'all' : 'sections'}
+            favorites={favorites}
+            onUnpin={membership.unpin}
+            onFavoriteRemove={membership.removeFavorite}
+            onFavoritesReorder={items => {
+              membership.reorderFavorites(items)
+              onFavoritesReorder?.(items)
+            }}
+            pins={pins}
+            visiblePins={visiblePins}
+            hasMorePins={hasMorePins}
+            isScrollFavoritesOpen={isScrollFavoritesOpen}
+            renderFavoriteItem={renderFavoriteItem}
+            getSectionProps={getSectionProps}
+            getSectionHeaderProps={getSectionHeaderProps}
+            getSectionTitleProps={getSectionTitleProps}
+            getSectionIconProps={getSectionIconProps}
+            getFavorite2ItemsProps={getFavorite2ItemsProps}
+            getFavoriteBackgroundImageProps={getFavoriteBackgroundImageProps}
+            getFavoriteBackgroundGradientProps={
+              getFavoriteBackgroundGradientProps
+            }
+            getFavoriteOverlayProps={getFavoriteOverlayProps}
+            getFavoriteAvatarContainerProps={getFavoriteAvatarContainerProps}
+            getFavoriteAvatarProps={getFavoriteAvatarProps}
+            getFavoriteAvatarIconProps={getFavoriteAvatarIconPropsForIcon}
+            getFavoriteAvatarFallbackProps={getFavoriteAvatarFallbackProps}
+            getFavoriteContentProps={getFavoriteContentProps}
+            getFavoriteNameProps={getFavoriteNameProps}
+            onFavoriteClick={openFavorite}
+            onViewAllPins={handleViewAllPins}
+            onBackToNormalView={handleBackToNormalView}
+            onToggleScrollFavorites={toggleScrollFavorites}
+          />
+          {!showAllPinsMode && (
             <section {...getSectionProps()}>
               <div {...getSectionHeaderProps()}>
                 <BookmarkIcon
@@ -386,8 +348,8 @@ const BookmarksContent = forwardRef<HTMLDivElement, Props>((props, ref) => {
                 onTreeChange={handleBookmarkTreeChange}
               />
             </section>
-          </div>
-        )}
+          )}
+        </div>
       </ScrollShadow>
       <FolderModal
         open={folderModalOpen}

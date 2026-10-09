@@ -112,7 +112,6 @@
     "remark-gfm",
     "shiki",
     "streamdown",
-    "tailwind-variants",
     "yaml",
     "yargs"
   ],

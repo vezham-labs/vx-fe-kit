@@ -5,7 +5,7 @@ import { Button, Input, Surface, TextField, Tooltip } from '@vezham/react-v3'
 
 import type { EditorState } from '../../components/panel/footer/control-center/editor'
 
-export type GalleryTile = {
+type GalleryTile = {
   id: string
   label: string
   category: string

@@ -1,7 +1,7 @@
 import { AppearanceSettings, AppearanceTile } from './appearance'
+import { ControlCenter } from './control-center'
 import { DirectionSettings, DirectionTile } from './direction'
 import { EditControlsSettings, EditControlsTile } from './editor'
-import { ControlCenter } from './index'
 import { ThemeSettings, ThemeTile } from './theme'
 import type { ControlCenterProps, TileDefinition } from './types'
 

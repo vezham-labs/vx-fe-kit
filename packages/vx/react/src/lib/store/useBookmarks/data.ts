@@ -91,7 +91,7 @@ export const sampleFavorites: FavoriteItem[] = [
   }
 ]
 
-export const samplePins: FavoriteItem[] = [
+const samplePins: FavoriteItem[] = [
   {
     id: 'pin-all-classes',
     name: 'All Classes',

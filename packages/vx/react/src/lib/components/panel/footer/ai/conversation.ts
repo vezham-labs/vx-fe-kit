@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-export type Attachment = {
+type Attachment = {
   id: number
   name: string
   mimeType: string

@@ -13,9 +13,7 @@ const tileSizes = [
   'large'
 ] satisfies ('small' | 'medium' | 'large')[]
 
-export const hasWidgetTiles = tileSizes.length > 0
-
-export const widgetDefinitions = tileSizes.map((size, index) => ({
+const widgetDefinitions = tileSizes.map((size, index) => ({
   id: `widget-${index}`,
   label: `${size[0].toUpperCase()}${size.slice(1)} widget ${index + 1}`,
   size
