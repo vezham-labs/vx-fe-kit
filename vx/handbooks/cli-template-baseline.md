@@ -9,8 +9,10 @@ feature; a playground app does not need to be as small as the app the CLI create
 `vx-fe-kit-next-template`. Implement shared code, exports, and audit configuration
 in the source before carrying them into the workspace-only template. When removing
 reference apps from the template, also remove their TypeScript project references.
-Keep Next.js in production dependencies while a checkout contains Next apps;
-the workspace-only template keeps it in development dependencies.
+Keep the root Next.js dependency in `devDependencies` in both workspaces. The
+current Nx build and start commands use the full workspace installation. A Next
+app deployed with a production-only installation must declare `next` as its own
+runtime dependency.
 
 ## Agreed boundaries
 
