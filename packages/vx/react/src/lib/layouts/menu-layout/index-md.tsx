@@ -198,7 +198,7 @@ const CollapsedNavigation = ({
   return (
     <Surface
       variant="transparent"
-      className="border-default-200 bg-background/90 fixed top-3 left-3 z-40 flex h-[50px] w-fit items-center rounded-full border px-2 py-0 shadow-[0_14px_28px_rgba(15,23,42,0.14)] backdrop-blur-xl">
+      className="border-default-200 bg-background/90 fixed top-3 left-3 z-40 flex h-[45px] w-fit items-center rounded-full border px-2 py-0 shadow-[0_14px_28px_rgba(15,23,42,0.14)] backdrop-blur-xl">
       <Header
         compact
         users={headerUsers}

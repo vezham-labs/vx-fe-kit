@@ -1,11 +1,16 @@
 const ACTION_FIELDS = new Set(['key', 'label', 'icon', 'children'])
+const VIEW_ACTION_FIELDS = new Set(['key', 'label', 'icon', 'enabled'])
 const TOOLBAR_FIELDS = new Set([
   'search',
   'sync',
+  'filter',
+  'sort',
+  'view',
   'menuActions',
   'primaryAction'
 ])
 const SEARCH_FIELDS = new Set(['label', 'placeholder'])
+const VIEW_ACTION_KEYS = new Set(['grid', 'list'])
 
 const object = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -45,6 +50,25 @@ const validateActions = (value: unknown, location: string) => {
   }
 }
 
+const validateViewActions = (value: unknown, location: string) => {
+  if (!Array.isArray(value)) throw new Error(`${location} must be an array`)
+  const keys = new Set<unknown>()
+  for (const action of value) {
+    if (!object(action))
+      throw new Error(`${location} must contain action objects`)
+    validateFields(action, VIEW_ACTION_FIELDS, location)
+    for (const field of ['key', 'label', 'icon'])
+      validateString(action[field], `${location}.${field}`)
+    if (typeof action.key !== 'string' || !VIEW_ACTION_KEYS.has(action.key))
+      throw new Error(`Unknown view action key: ${location}.${action.key}`)
+    if (action.enabled !== undefined && typeof action.enabled !== 'boolean')
+      throw new Error(`${location}.${action.key}.enabled must be a boolean`)
+    if (keys.has(action.key))
+      throw new Error(`Duplicate action key: ${location}.${action.key}`)
+    keys.add(action.key)
+  }
+}
+
 export const validateToolbar = (value: unknown, location: string) => {
   if (!object(value)) throw new Error(`${location} must be an object`)
   validateFields(value, TOOLBAR_FIELDS, location)
@@ -57,6 +81,12 @@ export const validateToolbar = (value: unknown, location: string) => {
   }
   if (value.sync !== undefined && typeof value.sync !== 'boolean')
     throw new Error(`${location}.sync must be a boolean`)
+  if (value.filter !== undefined && typeof value.filter !== 'boolean')
+    throw new Error(`${location}.filter must be a boolean`)
+  if (value.sort !== undefined && typeof value.sort !== 'boolean')
+    throw new Error(`${location}.sort must be a boolean`)
+  if (value.view !== undefined)
+    validateViewActions(value.view, `${location}.view`)
   if (value.menuActions !== undefined)
     validateActions(value.menuActions, `${location}.menuActions`)
   if (value.primaryAction !== undefined && value.primaryAction !== false)

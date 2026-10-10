@@ -28,7 +28,7 @@ export const AppFrame = ({
       <main
         data-slot="app-layout-content"
         className={cn(
-          'min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto pt-18 pb-32 transition-[width,transform] duration-300 ease-out md:p-0',
+          'min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto pt-18 pb-20 transition-transform duration-300 ease-out md:p-0',
           contentClassName
         )}>
         {children}

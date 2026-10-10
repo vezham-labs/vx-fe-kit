@@ -11,6 +11,7 @@ export type AppNavigationItem = {
   toolbar?: NavigationToolbar
   startContent?: ReactNode
   endContent?: ReactNode
+  childrenDisplay?: 'tabs' | 'sidebar'
   children?: AppNavigationItem[]
   submenu?: AppNavigationItem[]
   items?: AppNavigationItem[]

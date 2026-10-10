@@ -20,6 +20,35 @@ afterEach(() => {
 })
 
 describe('navigation generation', () => {
+  it('preserves child display modes and rejects unsupported values', () => {
+    const root = project()
+    const file = path.join(root, 'vx.nav.yaml')
+    writeFileSync(
+      file,
+      stringify({
+        navigation: [
+          { key: 'exams', title: 'Exams', childrenDisplay: 'sidebar' },
+          { key: 'classes', title: 'Classes', childrenDisplay: 'tabs' }
+        ]
+      })
+    )
+    expect(getNavigationFiles(root)[0].content).toContain(
+      '"childrenDisplay": "sidebar"'
+    )
+    expect(getNavigationFiles(root)[0].content).toContain(
+      '"childrenDisplay": "tabs"'
+    )
+    writeFileSync(
+      file,
+      stringify({
+        navigation: [{ key: 'exams', title: 'Exams', childrenDisplay: 'auto' }]
+      })
+    )
+    expect(() => getNavigationFiles(root)).toThrow(
+      'childrenDisplay must be tabs or sidebar'
+    )
+  })
+
   it('rejects the old top-level items key', () => {
     const root = project()
     writeFileSync(path.join(root, 'vx.nav.yaml'), stringify({ items: [] }))
@@ -151,6 +180,12 @@ describe('navigation generation', () => {
     const toolbar = {
       search: { label: 'Find', placeholder: 'Search records' },
       sync: true,
+      filter: true,
+      sort: true,
+      view: [
+        { key: 'grid', label: 'Grid view', icon: 'vx:grid' },
+        { key: 'list', label: 'List view', icon: 'vx:list' }
+      ],
       menuActions: [
         {
           key: 'export',
@@ -198,9 +233,51 @@ describe('navigation generation', () => {
     )
   })
 
+  it('accepts disabling an individual view action', () => {
+    const root = project()
+    const toolbar = {
+      view: [
+        {
+          key: 'list',
+          label: 'Filter',
+          icon: 'vx:sort-descending',
+          enabled: false
+        },
+        { key: 'grid', label: 'Grid view', icon: 'vx:grid' }
+      ]
+    }
+    writeFileSync(
+      path.join(root, 'vx.nav.yaml'),
+      stringify({ navigation: [{ key: 'home', title: 'Home', toolbar }] })
+    )
+
+    expect(getNavigationFiles(root)[0].content).toContain('"enabled": false')
+  })
+
   it.each([
     { search: 'yes' },
     { sync: 'yes' },
+    { filter: 'yes' },
+    { sort: 'yes' },
+    { view: 'yes' },
+    { view: [{ key: 'list', label: 'Filter' }] },
+    { view: [{ key: 'other', label: 'Other', icon: 'vx:other' }] },
+    {
+      view: [
+        { key: 'grid', label: 'Grid', icon: 'vx:grid' },
+        { key: 'grid', label: 'Another grid', icon: 'vx:grid' }
+      ]
+    },
+    {
+      view: [
+        {
+          key: 'list',
+          label: 'Filter',
+          icon: 'vx:sort-descending',
+          enabled: 'false'
+        }
+      ]
+    },
     { primaryAction: { key: 'create' } },
     {
       menuActions: [

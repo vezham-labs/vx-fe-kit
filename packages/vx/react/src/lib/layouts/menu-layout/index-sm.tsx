@@ -1,6 +1,7 @@
+import { useLocation } from '@tanstack/react-router'
 import React, { useState } from 'react'
 
-import { Surface } from '@vezham/react-v3'
+import { Surface, toast } from '@vezham/react-v3'
 
 import { BottomNavbar } from '../../components/menu'
 import { Footer } from '../../components/panel/footer'
@@ -14,7 +15,11 @@ import {
   InfoPanelContainer,
   useInfoPanel
 } from '../../components/panel/info-panel'
+import { useResponsiveToolbarAction } from '../../components/responsive-toolbar-action'
+import { useToolbarActions } from '../../components/toolbar-actions'
 import { useWorkspaceNavigation } from '../../components/workspace-navigation'
+import { getNavigationPageKey } from '../../navigation'
+import { getNavigationToolbar } from '../../navigation-toolbar'
 import { useUser } from '../../store/users/useUserStore'
 import type { MenuLayoutProps } from './index'
 
@@ -25,6 +30,22 @@ const MenuSM = ({ items, controlCenter }: MenuLayoutProps) => {
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const { openInfoPanel } = useInfoPanel()
   const { mobileSidebar } = useWorkspaceNavigation()
+  const { action: toolbarAction } = useResponsiveToolbarAction()
+  const { pathname } = useLocation()
+  const toolbar = getNavigationToolbar(items, pathname)
+  const showSearch = Boolean(toolbar.search)
+  const { emit } = useToolbarActions()
+  const handleSearch = () => {
+    if (
+      !emit({
+        actionKey: 'search',
+        pageKey: getNavigationPageKey(items, pathname),
+        pathname
+      })
+    ) {
+      toast.info('Search is not implemented yet.')
+    }
+  }
 
   const handleItemSelect = (key: string) => {
     setSelectedKey(key)
@@ -82,6 +103,7 @@ const MenuSM = ({ items, controlCenter }: MenuLayoutProps) => {
               setSettingsEntryPoint(entryPoint)
               setOpenSettings(true)
             }}
+            toolbarAction={toolbarAction}
           />
         </Surface>
       </div>
@@ -107,6 +129,9 @@ const MenuSM = ({ items, controlCenter }: MenuLayoutProps) => {
       <div className="shrink-0">
         <BottomNavbar
           items={items}
+          showSearch={showSearch}
+          hasPrimaryAction={Boolean(toolbar.primaryAction)}
+          onSearch={handleSearch}
           selectedKey={selectedKey}
           onSelect={handleItemSelect}
         />

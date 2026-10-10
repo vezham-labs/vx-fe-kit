@@ -37,8 +37,10 @@ it('keeps closing content inert until the CSS animation finishes and handles reo
     </InfoPanelProvider>
   )
   fireEvent.click(screen.getByText('Open bookmarks'))
-  const panel = screen.getByText('Bookmark entry').closest('[data-state]')!
-  const aside = panel.closest('aside')!
+  const panel = screen.getByText('Bookmark entry').closest('[data-state]')
+  if (!panel) throw new Error('Info panel content was not found')
+  const aside = panel.closest('aside')
+  if (!aside) throw new Error('Info panel container was not found')
   expect(panel).toHaveAttribute('data-state', 'open')
   expect(aside).toHaveStyle({ width: '328px' })
   fireEvent.click(screen.getByText('Close panel'))

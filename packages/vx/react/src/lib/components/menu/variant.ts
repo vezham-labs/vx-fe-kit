@@ -9,8 +9,8 @@ export const getNavbarContainerClasses = ({
 }): string => {
   return (
     cn(
-      'fixed bottom-0 z-75 flex w-full md:hidden',
-      'px-8 pt-4 pb-[max(0.75rem,env(safe-area-inset-bottom))]',
+      'pointer-events-none fixed bottom-0 z-75 flex w-full md:hidden',
+      'pt-4 pr-20 pb-[max(0.75rem,env(safe-area-inset-bottom))] pl-3',
       bgColorClass,
       isDarkMode ? 'dark' : ''
     ) ?? ''
@@ -24,7 +24,7 @@ export const getNavbarMenuContainerClasses = ({
 }): string => {
   return (
     cn(
-      'flex inline-flex items-center gap-4 rounded-full p-2 px-4 shadow-xl',
+      'pointer-events-auto flex inline-flex items-center gap-4 rounded-full p-2 px-4 shadow-xl',
       isDarkMode
         ? 'bg-white/5 dark:backdrop-blur-md'
         : 'bg-white backdrop-blur-md'
@@ -76,13 +76,18 @@ export const getNavbarIconClasses = ({
 }
 
 export const getSearchButtonClasses = ({
-  isDarkMode = false
+  isDarkMode = false,
+  hasPrimaryAction = false
 }: {
   isDarkMode?: boolean
+  hasPrimaryAction?: boolean
 }): string => {
   return (
     cn(
-      'ml-4 flex h-13 w-13 items-center justify-center rounded-full shadow-xl',
+      'pointer-events-auto fixed right-3 flex h-11 w-11 items-center justify-center rounded-full shadow-xl',
+      hasPrimaryAction
+        ? 'bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+4.25rem)]'
+        : 'bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+0.5rem)]',
       isDarkMode
         ? 'bg-white/5 text-gray-300 hover:bg-white/20 dark:backdrop-blur-md'
         : 'hover:bg-default/20 bg-white text-gray-500 backdrop-blur-md'

@@ -52,6 +52,9 @@ const Header = ({
   const [open, setOpen] = useState(false)
 
   const { openCommand } = useCommand()
+  const showHistoryNavigation = useMediaQuery('(max-width: 1023px)', {
+    initializeWithValue: false
+  })
   const onToggleNavigation = onToggleSidebar ?? onToggleDock
   const navigationLabel = onToggleSidebar
     ? isSidebarOpen
@@ -97,6 +100,7 @@ const Header = ({
             onSearch={handleMenuSearch}
             navigationLabel={navigationLabel}
             onToggleNavigation={onToggleNavigation}
+            showHistoryNavigation={showHistoryNavigation}
             showMenuUtilities={showMenuUtilities}
             showBookamarks={showBookamarks}
             showStorage={showStorage}>
@@ -156,6 +160,7 @@ const Header = ({
           onSearch={handleMenuSearch}
           navigationLabel={navigationLabel}
           onToggleNavigation={onToggleNavigation}
+          showHistoryNavigation={showHistoryNavigation}
           showMenuUtilities={showMenuUtilities}
           showBookamarks={false}
           showStorage={false}>
@@ -247,6 +252,7 @@ const HeaderApplicationMenuContent = ({
   onSearch,
   navigationLabel,
   onToggleNavigation,
+  showHistoryNavigation,
   showMenuUtilities,
   showBookamarks,
   showStorage
@@ -258,6 +264,34 @@ const HeaderApplicationMenuContent = ({
         <Dropdown.Item id="home" textValue="Back to home" onPress={onClose}>
           <Label>Back to home</Label>
         </Dropdown.Item>
+        {showHistoryNavigation && (
+          <>
+            <Dropdown.Item
+              id="back"
+              textValue="Back"
+              aria-keyshortcuts="Meta+ArrowLeft"
+              onPress={() => {
+                onClose()
+                window.history.back()
+              }}>
+              <AppIcon icon="vx:arrow-left" size={18} aria-hidden="true" />
+              <Label>Back</Label>
+              <ShortcutKey className="ms-auto" shortcut="⌘ ←" />
+            </Dropdown.Item>
+            <Dropdown.Item
+              id="forward"
+              textValue="Forward"
+              aria-keyshortcuts="Meta+ArrowRight"
+              onPress={() => {
+                onClose()
+                window.history.forward()
+              }}>
+              <AppIcon icon="vx:arrow-right" size={18} aria-hidden="true" />
+              <Label>Forward</Label>
+              <ShortcutKey className="ms-auto" shortcut="⌘ →" />
+            </Dropdown.Item>
+          </>
+        )}
         {!showMenuUtilities && <Separator />}
         {showMenuUtilities && onToggleNavigation && (
           <Dropdown.Item

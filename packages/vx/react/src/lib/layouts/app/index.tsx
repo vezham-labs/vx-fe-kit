@@ -16,6 +16,7 @@ import type {
   ControlCenterI18n
 } from '../../components/panel/footer/control-center/types'
 import { InfoPanelProvider } from '../../components/panel/info-panel'
+import { ResponsiveToolbarActionProvider } from '../../components/responsive-toolbar-action'
 import {
   ToolbarActionsProvider,
   useToolbarActions
@@ -63,7 +64,9 @@ export const AppLayoutProviders = ({
         <CommandProvider items={navigationItems}>
           <InfoPanelProvider>
             <WorkspaceNavigationProvider>
-              {children}
+              <ResponsiveToolbarActionProvider>
+                {children}
+              </ResponsiveToolbarActionProvider>
             </WorkspaceNavigationProvider>
           </InfoPanelProvider>
         </CommandProvider>
