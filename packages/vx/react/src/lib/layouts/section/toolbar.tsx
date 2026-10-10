@@ -480,6 +480,12 @@ const SectionToolbar = ({
   const isMobile = useMediaQuery('(max-width: 767px)')
   const { setAction: setResponsiveToolbarAction } = useResponsiveToolbarAction()
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false)
+  const [previousIsMobile, setPreviousIsMobile] = useState(isMobile)
+
+  if (previousIsMobile !== isMobile) {
+    setPreviousIsMobile(isMobile)
+    if (isMobile) setIsFilterMenuOpen(false)
+  }
   const filterAction = filter ? FILTER_ACTION : undefined
   const viewModeActions = view
   const activeFilters = getActiveFilters(selectedFilters)
@@ -535,7 +541,6 @@ const SectionToolbar = ({
   useEffect(() => {
     if (!isMobile) return
 
-    setIsFilterMenuOpen(false)
     onMenuOpenChange(false)
   }, [isMobile, onMenuOpenChange])
 
