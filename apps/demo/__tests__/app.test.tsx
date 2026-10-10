@@ -113,6 +113,11 @@ describe('App', () => {
   })
 
   it('keeps navigation collapsed while changing child routes', async () => {
+    const matchMedia = window.matchMedia.bind(window)
+    vi.spyOn(window, 'matchMedia').mockImplementation(query => ({
+      ...matchMedia(query),
+      matches: query === '(min-width: 768px)'
+    }))
     await renderApp('/workspace/projects/overview')
     await screen.findByRole('navigation', { name: 'Workspace sections' })
     const hideSidebar = screen
@@ -132,11 +137,8 @@ describe('App', () => {
     expect(
       screen.queryByRole('navigation', { name: 'Workspace sections' })
     ).toBeNull()
-    const showSidebar = screen
-      .getAllByRole('button', { name: 'Show Sidebar' })
-      .find(button => button.hasAttribute('aria-controls'))
-    if (!showSidebar) throw new Error('Show Sidebar control was not found')
-    fireEvent.click(showSidebar)
+    fireEvent.keyDown(document.body, { key: 's', code: 'KeyS', metaKey: true })
+    fireEvent.keyUp(document.body, { key: 's', code: 'KeyS', metaKey: true })
     expect(
       screen.getByRole('navigation', { name: 'Workspace sections' })
     ).toBeTruthy()

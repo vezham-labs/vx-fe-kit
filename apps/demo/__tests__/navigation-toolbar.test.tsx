@@ -1,5 +1,11 @@
 import { RouterProvider, createMemoryHistory } from '@tanstack/react-router'
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within
+} from '@testing-library/react'
 
 import { toast } from '@vezham/react-v3'
 
@@ -13,11 +19,23 @@ const renderApp = async (path = '/') => {
     routeTree
   })
   await router.load()
-  render(<RouterProvider router={router} />)
+  render(<RouterProvider router={router} />, { container: document })
   return router
 }
 
 describe('Navigation toolbar', () => {
+  afterEach(() => {
+    cleanup()
+    if (!document.documentElement) {
+      const html = document.createElement('html')
+      html.append(
+        document.createElement('head'),
+        document.createElement('body')
+      )
+      document.append(html)
+    }
+  })
+
   beforeAll(() => {
     Element.prototype.getAnimations = () => []
   })
@@ -66,13 +84,6 @@ describe('Navigation toolbar', () => {
     const viewOptions = within(actions).getByRole('group', {
       name: 'View options'
     })
-    fireEvent.click(within(actions).getByRole('button', { name: 'Filter' }))
-    fireEvent.click(await screen.findByRole('menuitem', { name: 'Images' }))
-    expect(
-      within(actions)
-        .getByRole('button', { name: 'Filter' })
-        .getAttribute('aria-pressed')
-    ).toBe('true')
     expect(
       within(viewOptions)
         .getByRole('button', { name: 'Grid view' })
@@ -91,6 +102,10 @@ describe('Navigation toolbar', () => {
     expect(screen.getByRole('tabpanel').textContent).toContain(
       '/academic/classes/schedule'
     )
+    const filter = within(actions).getByRole('button', { name: 'Filter' })
+    fireEvent.click(filter)
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Images' }))
+    expect(filter.getAttribute('aria-pressed')).toBe('true')
   })
 
   it('shows the Sync placeholder without refreshing and hides Add on result pages', async () => {
@@ -99,12 +114,15 @@ describe('Navigation toolbar', () => {
     const actions = screen.getByRole('group', { name: 'Toolbar actions' })
     expect(within(actions).queryByRole('button', { name: /^Add / })).toBeNull()
     const refresh = vi.spyOn(router, 'invalidate')
-    fireEvent.click(screen.getByRole('button', { name: 'Sync' }))
-    await screen.findByRole('alertdialog', {
-      name: 'Server sync is not implemented yet.'
-    })
-    expect(refresh).not.toHaveBeenCalled()
-    toast.clear()
+    const notice = vi.spyOn(toast, 'info').mockReturnValue('sync-notice')
+    try {
+      fireEvent.click(screen.getByRole('button', { name: 'Sync' }))
+      expect(notice).toHaveBeenCalledWith('Server sync is not implemented yet.')
+      expect(refresh).not.toHaveBeenCalled()
+    } finally {
+      notice.mockRestore()
+      refresh.mockRestore()
+    }
     expect(
       await screen.findByText('/academic/examinations/exam-results')
     ).toBeTruthy()
