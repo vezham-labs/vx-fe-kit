@@ -25,6 +25,8 @@
     "packages/vx/styles"
   ],
   "entry": [
+    // vx-bot/NOTE: Generated apps import these shared stylesheet roots directly.
+    "packages/vx/styles/{index.css,docs/index.css}",
     // vx-bot/NOTE: For Next.js app
     "**/src/app/**/{page,layout,error,global-error,loading,not-found}.tsx",
     "**/src/app/**/route.ts",

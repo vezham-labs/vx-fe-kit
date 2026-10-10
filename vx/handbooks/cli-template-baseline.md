@@ -5,6 +5,13 @@ creation. The current repository is the reviewed baseline. Keep adding test apps
 or scenarios when they help evaluate a framework, hosting preset, or shared Vx
 feature; a playground app does not need to be as small as the app the CLI creates.
 
+`vx-fe-kit-next` is the source workspace; changes flow from it into
+`vx-fe-kit-next-template`. Implement shared code, exports, and audit configuration
+in the source before carrying them into the workspace-only template. When removing
+reference apps from the template, also remove their TypeScript project references.
+Keep Next.js in production dependencies while a checkout contains Next apps;
+the workspace-only template keeps it in development dependencies.
+
 ## Agreed boundaries
 
 - Keep static shell navigation and toolbar settings in `vx.nav.yaml`; see the
