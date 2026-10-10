@@ -25,6 +25,14 @@ is excluded only from duplication checks. Framework entry points and targeted
 false positives are configured separately so authored code remains covered.
 React Doctor supply-chain API calls remain disabled.
 
+The workspace-only template keeps reusable docs pages exported explicitly from
+`@vx/start` and registers the shared stylesheet roots as audit entry points.
+Removing reference apps must not make these generated-app inputs appear unused.
+Keep Next.js in the root development dependencies in both the source workspace
+and workspace-only template. Current Nx build and start commands use the full
+workspace installation; Next apps using production-only installations must
+declare their own runtime dependency.
+
 Review findings before adding suppressions. Do not add these audits to the
 formatter; QA enforces the reviewed `minimumScore` baseline.
 

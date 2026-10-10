@@ -3,6 +3,7 @@ import { Label } from '@vezham/react-v3'
 
 import { AppIcon } from '../../../../app-icon'
 import { ShortcutKey } from '../../../../shortcut-key'
+import { panelContextMenuClass } from '../../../info-panel/styles'
 import { type BookmarkTreeItem } from '../types'
 import { type BookmarkContextMenuItemsProps } from './types'
 
@@ -80,7 +81,7 @@ const BookmarkContextMenuItems = ({
         {renderContextMenuLabel('vx:folder-with-files', 'Move')}
         <ContextMenu.SubmenuIndicator />
       </ContextMenu.Item>
-      <ContextMenu.Popover>
+      <ContextMenu.Popover className={panelContextMenuClass}>
         <ContextMenu.Menu>
           <ContextMenu.Item
             id="move-root"

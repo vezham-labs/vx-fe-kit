@@ -11,7 +11,6 @@ import { Button, useOverlayState } from '@vezham/react-v3'
 
 import { getSelectedMenuKey } from '../../navigation'
 import { AppIcon } from '../app-icon'
-import { useCommand } from '../command'
 import { MenuDrawer } from './drawer'
 import { BottomNavbarProps, SidebarItem, SidebarItemType } from './types'
 import {
@@ -43,21 +42,20 @@ const EMPTY_ITEMS: SidebarItem[] = []
 
 const BottomNavbar: React.FC<BottomNavbarProps> = ({
   items = EMPTY_ITEMS,
-  selectedKey,
   onSelect,
   isDarkMode = false,
   bgColorClass,
-  hasMoreAction = true,
+  showSearch = false,
+  hasPrimaryAction = false,
+  onSearch,
   textColorClass,
   buttonTextColor
 }) => {
   const navigate = useNavigate()
   const location = useLocation()
-  const { openCommand } = useCommand()
 
   const flatItems = useMemo(() => flattenMenuItems(items), [items])
-  const activeKey =
-    getSelectedMenuKey(location.pathname, flatItems) ?? selectedKey
+  const activeKey = getSelectedMenuKey(location.pathname, flatItems) ?? ''
 
   const { isOpen, open: onOpen, close: onClose } = useOverlayState()
   const [mainVisibleCount, setMainVisibleCount] = useState(flatItems.length)
@@ -164,12 +162,12 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
           )}
         </div>
 
-        {hasMoreAction && (
+        {showSearch && (
           <Button
             aria-label="Search"
-            className={getSearchButtonClasses({ isDarkMode })}
+            className={getSearchButtonClasses({ isDarkMode, hasPrimaryAction })}
             variant="ghost"
-            onPress={openCommand}>
+            onPress={onSearch}>
             <MagnifierIcon
               className="m-auto h-5 w-5"
               size="1em"

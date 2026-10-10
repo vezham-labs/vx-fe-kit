@@ -13,6 +13,9 @@ import { SectionLayout } from '../section'
 import { MenuSM } from './index-sm'
 
 const actions = vi.hoisted(() => ({
+  pathname: '/academic',
+  emit: vi.fn(() => true),
+  bottomNavbar: vi.fn(),
   openCommand: vi.fn(),
   closeCommand: vi.fn(),
   openInfoPanel: vi.fn(),
@@ -21,7 +24,7 @@ const actions = vi.hoisted(() => ({
 }))
 
 vi.mock('@tanstack/react-router', () => ({
-  useLocation: () => ({ pathname: '/academic' }),
+  useLocation: () => ({ pathname: actions.pathname }),
   useNavigate: () => vi.fn(),
   useRouter: () => ({ history: { back: vi.fn(), forward: vi.fn() } }),
   Link: ({ to, children, ...props }: ComponentProps<'a'> & { to: string }) => (
@@ -38,6 +41,9 @@ vi.mock('../section/toolbar', () => ({
   }) => <div>{navigationControls}</div>
 }))
 
+vi.mock('../../components/toolbar-actions', () => ({
+  useToolbarActions: () => ({ emit: actions.emit })
+}))
 vi.mock('../../components/command', () => ({
   useCommand: () => actions
 }))
@@ -49,7 +55,23 @@ vi.mock('../../store/users/useUserStore', () => ({
   useUser: () => ({ user: null })
 }))
 vi.mock('../../components/menu', () => ({
-  BottomNavbar: () => <nav aria-label="Bottom navigation">Home</nav>
+  BottomNavbar: ({
+    showSearch,
+    onSearch,
+    hasPrimaryAction
+  }: {
+    showSearch?: boolean
+    onSearch?: () => void
+    hasPrimaryAction?: boolean
+  }) => {
+    actions.bottomNavbar({ hasPrimaryAction })
+    return (
+      <nav aria-label="Bottom navigation">
+        Home
+        {showSearch && <button onClick={onSearch}>Search</button>}
+      </nav>
+    )
+  }
 }))
 vi.mock('../../components/panel/footer', () => ({
   Footer: () => <button>Account</button>
@@ -59,9 +81,6 @@ vi.mock('../../components/panel/header/bookmarks', () => ({
   bookmarksPanel: {}
 }))
 vi.mock('../../components/panel/header/storage', () => ({ storagePanel: {} }))
-vi.mock('../../components/panel/footer/control-center', () => ({
-  ControlCenterDrawer: () => null
-}))
 vi.mock('../../components/panel/footer/notification-center', () => ({
   NotificationDrawer: () => null
 }))
@@ -79,7 +98,110 @@ const renderMobile = () =>
   )
 
 describe('Small-screen navigation', () => {
-  beforeEach(() => vi.clearAllMocks())
+  beforeEach(() => {
+    vi.clearAllMocks()
+    actions.pathname = '/academic'
+  })
+
+  it('follows inherited search settings and hides bottom search when navigating away', () => {
+    const navigation = [
+      {
+        key: 'academic',
+        title: 'Academic',
+        href: '/academic',
+        toolbar: { search: true },
+        children: [
+          {
+            key: 'results',
+            title: 'Results',
+            href: '/academic/results',
+            toolbar: { search: false }
+          }
+        ]
+      }
+    ]
+    const content = () => (
+      <WorkspaceNavigationProvider>
+        <MenuSM items={navigation} />
+      </WorkspaceNavigationProvider>
+    )
+    actions.pathname = '/academic/classes'
+    const { rerender } = render(content())
+    const bottom = () =>
+      within(screen.getByRole('navigation', { name: 'Bottom navigation' }))
+    expect(bottom().getByRole('button', { name: 'Search' })).toBeVisible()
+
+    fireEvent.click(bottom().getByRole('button', { name: 'Search' }))
+    expect(actions.emit).toHaveBeenCalledWith({
+      actionKey: 'search',
+      pageKey: 'academic',
+      pathname: '/academic/classes'
+    })
+    expect(actions.openCommand).not.toHaveBeenCalled()
+
+    actions.pathname = '/academic/results'
+    rerender(content())
+    expect(bottom().queryByRole('button', { name: 'Search' })).toBeNull()
+
+    actions.pathname = '/academic/classes'
+    rerender(content())
+    expect(bottom().getByRole('button', { name: 'Search' })).toBeVisible()
+
+    actions.pathname = '/'
+    rerender(content())
+    expect(bottom().queryByRole('button', { name: 'Search' })).toBeNull()
+  })
+
+  it('clears the primary action slot when a destination overrides it with false', () => {
+    const navigation = [
+      {
+        key: 'academic',
+        title: 'Academic',
+        href: '/academic',
+        toolbar: {
+          search: true,
+          primaryAction: { key: 'create', label: 'Add Class', icon: 'vx:plus' }
+        },
+        children: [
+          {
+            key: 'results',
+            title: 'Results',
+            href: '/academic/results',
+            toolbar: { primaryAction: false as const }
+          }
+        ]
+      }
+    ]
+    const content = () => (
+      <WorkspaceNavigationProvider>
+        <MenuSM items={navigation} />
+      </WorkspaceNavigationProvider>
+    )
+    actions.pathname = '/academic/classes'
+    const { rerender } = render(content())
+    expect(actions.bottomNavbar).toHaveBeenLastCalledWith({
+      hasPrimaryAction: true
+    })
+
+    actions.pathname = '/academic/results'
+    rerender(content())
+    expect(actions.bottomNavbar).toHaveBeenLastCalledWith({
+      hasPrimaryAction: false
+    })
+    expect(screen.getByRole('button', { name: 'Search' })).toBeVisible()
+
+    actions.pathname = '/academic/classes'
+    rerender(content())
+    expect(actions.bottomNavbar).toHaveBeenLastCalledWith({
+      hasPrimaryAction: true
+    })
+
+    actions.pathname = '/'
+    rerender(content())
+    expect(actions.bottomNavbar).toHaveBeenLastCalledWith({
+      hasPrimaryAction: false
+    })
+  })
 
   it.each([
     { label: 'Bookmarks', panel: 'bookmarks' },

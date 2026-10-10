@@ -9,6 +9,11 @@
       "import": "./src/index.ts",
       "default": "./src/index.ts"
     },
+    "./control-center": {
+      "types": "./src/lib/components/panel/footer/control-center/index.tsx",
+      "import": "./src/lib/components/panel/footer/control-center/index.tsx",
+      "default": "./src/lib/components/panel/footer/control-center/index.tsx"
+    },
     "./actions-header": {
       "types": "./src/lib/components/actions-header/index.tsx",
       "import": "./src/lib/components/actions-header/index.tsx",
@@ -58,13 +63,17 @@
       "types": "./src/lib/components/mobile-controls/index.tsx",
       "import": "./src/lib/components/mobile-controls/index.tsx",
       "default": "./src/lib/components/mobile-controls/index.tsx"
+    },
+    "./pages/settings": {
+      "types": "./src/lib/pages/settings/index.tsx",
+      "import": "./src/lib/pages/settings/index.tsx",
+      "default": "./src/lib/pages/settings/index.tsx"
     }
   },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "dependencies": {
     "@tanstack/react-hotkeys": "catalog:",
-    "framer-motion": "catalog:",
     "react-aria-components": "catalog:"
   }
 }

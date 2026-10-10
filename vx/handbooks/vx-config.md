@@ -509,3 +509,12 @@ Shared metadata and i18n are generated for every app. Only Next apps generate
 `vxDocs` is generated only for `tanstack-docs`.
 The global Vitest config reads this field to select browser setup and framework
 plugins. App-local Vitest files are only needed for additional overrides.
+
+## Control Center
+
+`vx.nav.yaml` owns the ordered `controlCenter.tiles` layout. Metadata generation
+validates IDs, built-in types, spans, and custom action keys, then exports the
+serializable config from `src/generated/navigation.ts`. React resolves built-in
+tile components; custom components and emitted action handlers remain in the app.
+See [Control Center](./ui/control-center.md#yaml-configuration) for configuration
+and dispatch examples.

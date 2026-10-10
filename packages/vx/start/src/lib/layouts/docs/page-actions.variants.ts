@@ -1,4 +1,4 @@
-import { tv } from 'tailwind-variants'
+import { tv } from '@vezham/react-v3'
 
 export const pageActionsVariants = tv({
   slots: {

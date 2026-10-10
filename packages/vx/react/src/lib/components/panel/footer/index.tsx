@@ -1,10 +1,10 @@
-import type { ReactNode } from 'react'
+import { type ReactNode, useMemo, useState } from 'react'
 
 import {
   Bell as BellIcon,
   MenuDots as MenuDotsIcon,
-  QuestionCircle as QuestionIcon,
-  Settings as SettingsIcon
+  Settings as SettingsIcon,
+  VezhamTamizhi
 } from '@vezham/icons-react'
 import {
   Badge,
@@ -12,10 +12,14 @@ import {
   Dropdown,
   Separator,
   Surface,
-  Tooltip
+  Tooltip,
+  useMediaQuery
 } from '@vezham/react-v3'
 
 import { useUser } from '../../../store/users/useUserStore'
+import { ACCOUNT_BUBBLE_MEDIA_QUERY } from '../responsive'
+import { DefaultControlCenter } from './control-center/default'
+import { FooterControlCenterContext } from './control-center/footer-context'
 import type { FooterActionsProps } from './types'
 import { UserMenu } from './user-menu'
 
@@ -47,25 +51,29 @@ const FooterAction = ({ children, label, onPress }: Props) => {
 const CompactActions = ({
   showAI,
   showControlCenter,
+  onControlCenter,
   showNotifications,
   notificationCount,
   onAI,
-  onControlCenterClick,
   onNotificationsClick
-}: Omit<FooterActionsProps, 'user' | 'showUserInfo' | 'onUserClick'>) => {
+}: Omit<FooterActionsProps, 'user' | 'showUserInfo' | 'onUserClick'> & {
+  onControlCenter: () => void
+}) => {
+  if (!showAI && !showNotifications && !showControlCenter) return null
+
   return (
     <Dropdown>
       <Dropdown.Trigger
         aria-label="Open footer actions"
-        className="button button--ghost flex h-10 w-10 items-center justify-center rounded-lg">
+        className="button button--ghost flex h-10 w-10 items-center justify-center rounded-full">
         <MenuDotsIcon size={20} aria-hidden="true" />
       </Dropdown.Trigger>
       <Dropdown.Popover>
         <Dropdown.Menu aria-label="Footer actions">
           {showControlCenter ? (
-            <Dropdown.Item onPress={onControlCenterClick}>
+            <Dropdown.Item onPress={onControlCenter}>
               <SettingsIcon size={20} aria-hidden="true" />
-              Control Center
+              Control center
             </Dropdown.Item>
           ) : null}
           {showNotifications ? (
@@ -83,8 +91,8 @@ const CompactActions = ({
           ) : null}
           {showAI ? (
             <Dropdown.Item onPress={onAI}>
-              <QuestionIcon size={20} aria-hidden="true" />
-              AI
+              <VezhamTamizhi size={20} aria-hidden="true" />
+              Tamizhi AI
             </Dropdown.Item>
           ) : null}
         </Dropdown.Menu>
@@ -97,16 +105,29 @@ const Footer = ({
   user,
   showAI = false,
   showControlCenter = false,
+  controlCenter,
   showNotifications = false,
   showUserInfo = true,
   notificationCount = 0,
   onAI,
-  onControlCenterClick,
   onNotificationsClick,
   onUserClick,
+  toolbarAction,
   className
 }: FooterActionsProps) => {
   const { clearUser } = useUser()
+  const compact = useMediaQuery(ACCOUNT_BUBBLE_MEDIA_QUERY, {
+    initializeWithValue: false
+  })
+  const [controlCenterOpen, setControlCenterOpen] = useState(false)
+  const controlCenterContext = useMemo(
+    () => ({
+      compact,
+      isOpen: controlCenterOpen,
+      onOpenChange: setControlCenterOpen
+    }),
+    [compact, controlCenterOpen]
+  )
 
   return (
     <>
@@ -114,16 +135,10 @@ const Footer = ({
       <Surface
         variant="transparent"
         className={`flex items-center justify-center gap-2 md:flex-col md:gap-3 ${className ?? ''}`}>
-        <div className="hidden min-[420px]:contents">
+        <div className="hidden md:contents">
           {showAI ? (
-            <FooterAction label="AI" onPress={onAI}>
-              <QuestionIcon size={20} aria-hidden="true" />
-            </FooterAction>
-          ) : null}
-
-          {showControlCenter ? (
-            <FooterAction label="Control Center" onPress={onControlCenterClick}>
-              <SettingsIcon size={20} aria-hidden="true" />
+            <FooterAction label="Tamizhi AI" onPress={onAI}>
+              <VezhamTamizhi size={20} aria-hidden="true" />
             </FooterAction>
           ) : null}
 
@@ -143,14 +158,20 @@ const Footer = ({
           ) : null}
         </div>
 
-        <div className="min-[420px]:hidden">
+        {showControlCenter && (
+          <FooterControlCenterContext.Provider value={controlCenterContext}>
+            {controlCenter ?? <DefaultControlCenter placement="right bottom" />}
+          </FooterControlCenterContext.Provider>
+        )}
+
+        <div className="md:hidden">
           <CompactActions
-            showAI={showAI}
             showControlCenter={showControlCenter}
+            onControlCenter={() => setControlCenterOpen(true)}
+            showAI={showAI}
             showNotifications={showNotifications}
             notificationCount={notificationCount}
             onAI={onAI}
-            onControlCenterClick={onControlCenterClick}
             onNotificationsClick={onNotificationsClick}
           />
         </div>
@@ -163,6 +184,12 @@ const Footer = ({
             onLogout={clearUser}
           />
         ) : null}
+
+        {toolbarAction && (
+          <Surface variant="transparent" className="md:hidden">
+            {toolbarAction}
+          </Surface>
+        )}
       </Surface>
     </>
   )

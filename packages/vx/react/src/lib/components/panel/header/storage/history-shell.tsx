@@ -14,7 +14,7 @@ export const StorageHistoryShell = ({
   children: ReactNode
 }) => (
   <div className="flex min-h-0 flex-1 flex-col">
-    <div className="bg-background/95 sticky top-0 z-10 shrink-0 pb-3">
+    <div className="shrink-0 px-1 pt-1 pb-3">
       {search}
       {actions}
     </div>

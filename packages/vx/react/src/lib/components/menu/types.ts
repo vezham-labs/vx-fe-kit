@@ -14,7 +14,9 @@ export interface BottomNavbarProps {
   selectedKey: string
   onSelect: (key: string) => void
   isDarkMode?: boolean
-  hasMoreAction?: boolean
+  showSearch?: boolean
+  hasPrimaryAction?: boolean
+  onSearch?: () => void
   bgColorClass?: string
   textColorClass?: string
   buttonTextColor?: string

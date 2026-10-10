@@ -9,6 +9,7 @@ on:
     branches:
       - timeline
       - next
+      - next-template
       - feat/**
     # paths:
     #   - '.github/workflows/qa.yml'

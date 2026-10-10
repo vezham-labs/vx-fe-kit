@@ -4,50 +4,51 @@ const tva = tv({
   slots: {
     // vx-bot/INFO: Main Drawer slots
     drawer_base:
-      'z-[50] max-w-[440px] rounded-none border-none bg-transparent shadow-none md:translate-x-[106px]',
-    drawer_wrapper: 'z-[50]',
+      'z-80 max-w-[384px] rounded-none border-none bg-transparent shadow-none md:translate-x-[106px]',
+    drawer_wrapper:
+      'z-80 duration-180 ease-out data-[exiting=true]:duration-150 data-[exiting=true]:ease-out',
     drawer_content:
-      'border border-white/20 bg-black/5 shadow-xl backdrop-blur-lg',
+      'w-full border-0 bg-transparent p-0 shadow-none [--drawer-enter-duration:180ms] [--drawer-enter-ease:cubic-bezier(0,0,0.58,1)] [--drawer-exit-duration:150ms] [--drawer-exit-ease:cubic-bezier(0,0,0.58,1)]',
 
     // vx-bot/INFO: Header slots
-    drawer_header: 'flex shrink-0 items-start justify-between text-white/90',
-    header_title: 'text-foreground text-lg font-semibold',
-    close_button:
-      'text-default-500 shrink-0 bg-transparent hover:bg-transparent data-[hovered=true]:bg-transparent',
+    drawer_header: 'flex shrink-0 flex-row items-center justify-between gap-2',
+    header_title:
+      'text-foreground min-w-0 flex-1 truncate text-base font-semibold',
+    close_button: 'static shrink-0',
 
     // vx-bot/INFO: Body slots
-    drawer_body: 'overflow-y-auto',
-    scroll_shadow: '',
+    drawer_body: 'flex min-h-0 flex-1 flex-col overflow-hidden',
+    scroll_shadow: 'min-h-0 flex-1 overflow-y-auto overscroll-contain',
     empty_state:
       'flex min-h-[320px] flex-col items-center justify-center text-center',
-    empty_state_icon: 'text-muted-foreground',
+    empty_state_icon: 'text-muted',
 
     // vx-bot/INFO: Footer slots
-    drawer_footer: 'flex items-center justify-center',
-    chip: 'cursor-pointer bg-white'
+    drawer_footer: 'flex shrink-0 items-center justify-center',
+    chip: 'rounded-full'
   },
   variants: {
     variant: {
       default: {
-        drawer_content: 'border-white/20 bg-black/5',
+        drawer_content: 'bg-black/5',
         drawer_header: 'text-white/90',
         header_title: '',
         chip: ''
       },
       dark: {
-        drawer_content: 'border-white/10 bg-black/30',
+        drawer_content: 'bg-surface/80',
         drawer_header: 'text-white/70',
         header_title: '',
         chip: ''
       },
       light: {
-        drawer_content: 'border-black/20 bg-white/10',
+        drawer_content: 'bg-surface/80',
         drawer_header: 'text-black/90',
         header_title: '',
         chip: ''
       },
       glass: {
-        drawer_content: 'border-white/30 bg-white/10 backdrop-blur-xl',
+        drawer_content: 'bg-surface/60 backdrop-blur-xl',
         drawer_header: 'text-white',
         header_title: '',
         chip: ''
@@ -55,16 +56,16 @@ const tva = tv({
     },
     placement: {
       left: {
-        drawer_base: 'max-w-[440px] md:translate-x-[106px]'
+        drawer_base: 'max-w-[384px] md:translate-x-[106px]'
       },
       right: {
-        drawer_base: 'max-w-[440px] md:-translate-x-[106px]'
+        drawer_base: 'max-w-[384px] md:-translate-x-[106px]'
       },
       top: {
-        drawer_base: 'max-h-[440px] max-w-full md:translate-y-[106px]'
+        drawer_base: 'max-h-[384px] max-w-full md:translate-y-[106px]'
       },
       bottom: {
-        drawer_base: 'max-h-[440px] max-w-full md:-translate-y-[106px]'
+        drawer_base: 'max-h-[384px] max-w-full md:-translate-y-[106px]'
       }
     },
     size: {
@@ -76,9 +77,9 @@ const tva = tv({
         drawer_footer: 'p-3'
       },
       md: {
-        drawer_base: 'max-w-[440px] md:translate-x-[106px]',
+        drawer_base: 'max-w-[384px] md:translate-x-[106px]',
         drawer_header: 'p-4',
-        header_title: 'text-lg',
+        header_title: 'text-base',
         drawer_body: 'p-4',
         drawer_footer: 'p-4'
       },
@@ -157,7 +158,7 @@ const tva = tv({
     placement: 'left',
     size: 'md',
     blur: 'lg',
-    border: 'subtle'
+    border: 'none'
   }
 })
 
