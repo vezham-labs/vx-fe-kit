@@ -454,29 +454,179 @@ const SectionSearchField = ({ search }: { search: ToolbarSearch }) => {
   )
 }
 
-const SectionToolbar = ({
-  title,
-  tabs,
-  navigationControls,
-  isNavigationCollapsed = false,
-  toolbar,
+type ToolbarActionsProps = Props & {
+  isMobile: boolean
+  filterAction?: SectionAction
+  hasFilters: boolean
+  isFilterMenuOpen: boolean
+  onFilterOpenChange: (open: boolean) => void
+  onToggleFilter: (filter: SectionFilterKey) => void
+}
+
+const ToolbarActions = ({
   search,
-  menuActions,
-  primaryAction,
-  onSync,
+  toolbar,
   sync = true,
-  filter = false,
+  onSync,
+  filterAction,
+  hasFilters,
+  isMobile,
+  isFilterMenuOpen,
+  onFilterOpenChange,
+  selectedFilters,
+  onToggleFilter,
   sort = false,
   sortValue = DEFAULT_SORT,
   onSortChange,
-  view = EMPTY_VIEW_ACTIONS,
-  selectedFilters,
-  onSelectedFiltersChange,
+  view: viewModeActions = EMPTY_VIEW_ACTIONS,
   viewMode,
   onViewModeChange,
+  primaryAction,
+  menuActions,
   isMenuOpen,
   onMenuOpenChange
-}: Props) => {
+}: ToolbarActionsProps) => (
+  <div
+    role="group"
+    aria-label="Toolbar actions"
+    className="scrollbar-hide col-start-2 row-start-1 -m-1 hidden max-w-[calc(100vw-2rem)] min-w-0 items-center gap-2 overflow-x-auto p-1 md:flex">
+    {search && <SectionSearchField search={search} />}
+    {toolbar}
+    {sync && (
+      <ShortcutButton
+        label="Sync"
+        shortcut="⌘ R"
+        aria-keyshortcuts="Meta+R"
+        className={iconButtonClassName}
+        onPress={onSync}>
+        <AppIcon icon="vx:refresh" size={18} aria-hidden="true" />
+      </ShortcutButton>
+    )}
+    {filterAction && (
+      <Dropdown
+        isOpen={!isMobile && isFilterMenuOpen}
+        onOpenChange={onFilterOpenChange}>
+        <Tooltip delay={0}>
+          <Button
+            isIconOnly
+            variant={hasFilters ? 'secondary' : 'ghost'}
+            aria-label={filterAction.label}
+            aria-pressed={hasFilters}
+            className={`${iconButtonClassName} shrink-0 rounded-full`}>
+            <AppIcon icon={filterAction.icon} size={18} aria-hidden="true" />
+          </Button>
+          <Tooltip.Content>{filterAction.label}</Tooltip.Content>
+        </Tooltip>
+        <Dropdown.Popover className="hidden md:block">
+          <FilterMenu
+            selectedFilters={selectedFilters}
+            onToggle={onToggleFilter}
+          />
+        </Dropdown.Popover>
+      </Dropdown>
+    )}
+    {sort && (
+      <Dropdown>
+        <Tooltip delay={0}>
+          <Button
+            isIconOnly
+            variant="ghost"
+            aria-label="Sort"
+            className={iconButtonClassName}>
+            {sortValue.direction === 'ascending' ? (
+              <SortFromBottomToTop size={18} aria-hidden="true" />
+            ) : (
+              <SortFromTopToBottom size={18} aria-hidden="true" />
+            )}
+          </Button>
+          <Tooltip.Content>Sort</Tooltip.Content>
+        </Tooltip>
+        <Dropdown.Popover className="hidden md:block">
+          <SortMenu value={sortValue} onChange={onSortChange} />
+        </Dropdown.Popover>
+      </Dropdown>
+    )}
+    {viewModeActions.length > 0 && (
+      <>
+        {(filterAction || sort) && (
+          <Separator orientation="vertical" className="h-8" />
+        )}
+        <div
+          role="group"
+          aria-label="View options"
+          className="flex items-center gap-1">
+          {viewModeActions.map(action => (
+            <Tooltip key={action.key} delay={0}>
+              <Tooltip.Trigger>
+                <Button
+                  isIconOnly
+                  aria-label={action.label}
+                  aria-pressed={viewMode === action.key}
+                  variant={viewMode === action.key ? 'secondary' : 'ghost'}
+                  className={iconButtonClassName}
+                  onPress={() => onViewModeChange(action.key)}>
+                  <AppIcon icon={action.icon} size={18} aria-hidden="true" />
+                </Button>
+              </Tooltip.Trigger>
+              <Tooltip.Content>{action.label}</Tooltip.Content>
+            </Tooltip>
+          ))}
+        </div>
+      </>
+    )}
+    {primaryAction && (
+      <Button
+        variant="primary"
+        aria-label={primaryAction.label}
+        className="h-9 min-w-9 px-0 md:px-3"
+        onPress={primaryAction.onAction}>
+        <AppIcon icon={primaryAction.icon} size={18} aria-hidden="true" />
+        <Label className="hidden !text-inherit md:inline">
+          {primaryAction.label}
+        </Label>
+      </Button>
+    )}
+    {menuActions.length > 0 && (
+      <Dropdown isOpen={isMenuOpen} onOpenChange={onMenuOpenChange}>
+        <Tooltip delay={0}>
+          <Button
+            isIconOnly
+            variant="ghost"
+            aria-label="More"
+            onPress={() => onMenuOpenChange(true)}
+            className={iconButtonClassName}>
+            <AppIcon icon="vx:menu-vertical" size={18} aria-hidden="true" />
+          </Button>
+          <Tooltip.Content>More</Tooltip.Content>
+        </Tooltip>
+        <Dropdown.Popover className="hidden md:block">
+          <Dropdown.Menu>{renderMenuItems(menuActions)}</Dropdown.Menu>
+        </Dropdown.Popover>
+      </Dropdown>
+    )}
+  </div>
+)
+
+const SectionToolbar = (props: Props) => {
+  const {
+    title,
+    tabs,
+    navigationControls,
+    isNavigationCollapsed = false,
+    menuActions,
+    primaryAction,
+    onSync,
+    sync = true,
+    filter = false,
+    sort = false,
+    sortValue = DEFAULT_SORT,
+    onSortChange,
+    view = EMPTY_VIEW_ACTIONS,
+    selectedFilters,
+    onSelectedFiltersChange,
+    onViewModeChange,
+    onMenuOpenChange
+  } = props
   const isMobile = useMediaQuery('(max-width: 767px)')
   const { setAction: setResponsiveToolbarAction } = useResponsiveToolbarAction()
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false)
@@ -574,139 +724,15 @@ const SectionToolbar = ({
             </Tabs.ListContainer>
           )}
         </div>
-        <div
-          role="group"
-          aria-label="Toolbar actions"
-          className="scrollbar-hide col-start-2 row-start-1 -m-1 hidden max-w-[calc(100vw-2rem)] min-w-0 items-center gap-2 overflow-x-auto p-1 md:flex">
-          {search && <SectionSearchField search={search} />}
-          {toolbar}
-          {sync && (
-            <ShortcutButton
-              label="Sync"
-              shortcut="⌘ R"
-              aria-keyshortcuts="Meta+R"
-              className={iconButtonClassName}
-              onPress={onSync}>
-              <AppIcon icon="vx:refresh" size={18} aria-hidden="true" />
-            </ShortcutButton>
-          )}
-          {filterAction && (
-            <Dropdown
-              isOpen={!isMobile && isFilterMenuOpen}
-              onOpenChange={setIsFilterMenuOpen}>
-              <Tooltip delay={0}>
-                <Button
-                  isIconOnly
-                  variant={hasFilters ? 'secondary' : 'ghost'}
-                  aria-label={filterAction.label}
-                  aria-pressed={hasFilters}
-                  className={`${iconButtonClassName} shrink-0 rounded-full`}>
-                  <AppIcon
-                    icon={filterAction.icon}
-                    size={18}
-                    aria-hidden="true"
-                  />
-                </Button>
-                <Tooltip.Content>{filterAction.label}</Tooltip.Content>
-              </Tooltip>
-              <Dropdown.Popover className="hidden md:block">
-                <FilterMenu
-                  selectedFilters={selectedFilters}
-                  onToggle={toggleFilter}
-                />
-              </Dropdown.Popover>
-            </Dropdown>
-          )}
-          {sort && (
-            <Dropdown>
-              <Tooltip delay={0}>
-                <Button
-                  isIconOnly
-                  variant="ghost"
-                  aria-label="Sort"
-                  className={iconButtonClassName}>
-                  {sortValue.direction === 'ascending' ? (
-                    <SortFromBottomToTop size={18} aria-hidden="true" />
-                  ) : (
-                    <SortFromTopToBottom size={18} aria-hidden="true" />
-                  )}
-                </Button>
-                <Tooltip.Content>Sort</Tooltip.Content>
-              </Tooltip>
-              <Dropdown.Popover className="hidden md:block">
-                <SortMenu value={sortValue} onChange={onSortChange} />
-              </Dropdown.Popover>
-            </Dropdown>
-          )}
-          {viewModeActions.length > 0 && (
-            <>
-              {(filterAction || sort) && (
-                <Separator orientation="vertical" className="h-8" />
-              )}
-              <div
-                role="group"
-                aria-label="View options"
-                className="flex items-center gap-1">
-                {viewModeActions.map(action => (
-                  <Tooltip key={action.key} delay={0}>
-                    <Tooltip.Trigger>
-                      <Button
-                        isIconOnly
-                        aria-label={action.label}
-                        aria-pressed={viewMode === action.key}
-                        variant={
-                          viewMode === action.key ? 'secondary' : 'ghost'
-                        }
-                        className={iconButtonClassName}
-                        onPress={() => onViewModeChange(action.key)}>
-                        <AppIcon
-                          icon={action.icon}
-                          size={18}
-                          aria-hidden="true"
-                        />
-                      </Button>
-                    </Tooltip.Trigger>
-                    <Tooltip.Content>{action.label}</Tooltip.Content>
-                  </Tooltip>
-                ))}
-              </div>
-            </>
-          )}
-          {primaryAction && (
-            <Button
-              variant="primary"
-              aria-label={primaryAction.label}
-              className="h-9 min-w-9 px-0 md:px-3"
-              onPress={primaryAction.onAction}>
-              <AppIcon icon={primaryAction.icon} size={18} aria-hidden="true" />
-              <Label className="hidden !text-inherit md:inline">
-                {primaryAction.label}
-              </Label>
-            </Button>
-          )}
-          {menuActions.length > 0 && (
-            <Dropdown isOpen={isMenuOpen} onOpenChange={onMenuOpenChange}>
-              <Tooltip delay={0}>
-                <Button
-                  isIconOnly
-                  variant="ghost"
-                  aria-label="More"
-                  onPress={() => onMenuOpenChange(true)}
-                  className={iconButtonClassName}>
-                  <AppIcon
-                    icon="vx:menu-vertical"
-                    size={18}
-                    aria-hidden="true"
-                  />
-                </Button>
-                <Tooltip.Content>More</Tooltip.Content>
-              </Tooltip>
-              <Dropdown.Popover className="hidden md:block">
-                <Dropdown.Menu>{renderMenuItems(menuActions)}</Dropdown.Menu>
-              </Dropdown.Popover>
-            </Dropdown>
-          )}
-        </div>
+        <ToolbarActions
+          {...props}
+          isMobile={isMobile}
+          filterAction={filterAction}
+          hasFilters={hasFilters}
+          isFilterMenuOpen={isFilterMenuOpen}
+          onFilterOpenChange={setIsFilterMenuOpen}
+          onToggleFilter={toggleFilter}
+        />
       </div>
       {isMobile && primaryAction && (
         <Tooltip delay={0}>

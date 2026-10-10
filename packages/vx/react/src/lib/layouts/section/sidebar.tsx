@@ -1,16 +1,11 @@
 import { Link } from '@tanstack/react-router'
-import {
-  type Dispatch,
-  type SetStateAction,
-  useEffect,
-  useId,
-  useState
-} from 'react'
+import { type Dispatch, type SetStateAction, useId } from 'react'
 
 import { AltArrowDown } from '@vezham/icons-react'
 
 import { AppIcon } from '../../components/app-icon'
 import { type AppNavigationItem, getSelectedMenuKey } from '../../navigation'
+import { useSectionSidebarState } from './sidebar-state'
 
 const SidebarEntry = ({
   item,
@@ -30,13 +25,6 @@ const SidebarEntry = ({
     item.childrenDisplay === 'sidebar' && Boolean(item.children?.length)
   const expanded = expandedKeys.has(item.key)
   const childrenId = useId()
-  useEffect(() => {
-    if (active && expandable) {
-      setExpandedKeys(current =>
-        current.has(item.key) ? current : new Set([...current, item.key])
-      )
-    }
-  }, [active, expandable, item.key, pathname, setExpandedKeys])
   const content = (
     <>
       {item.icon && (
@@ -118,9 +106,10 @@ export const SectionSidebar = ({
   expandedKeys?: Set<string>
   onExpandedChange?: Dispatch<SetStateAction<Set<string>>>
 }) => {
-  const [localExpandedKeys, setLocalExpandedKeys] = useState<Set<string>>(
-    () => new Set()
-  )
+  const {
+    expandedKeys: localExpandedKeys,
+    setExpandedKeys: setLocalExpandedKeys
+  } = useSectionSidebarState(items, pathname)
   const expandedKeys = controlledExpandedKeys ?? localExpandedKeys
   const setExpandedKeys = onExpandedChange ?? setLocalExpandedKeys
   return (

@@ -18,8 +18,10 @@ import {
   useWorkspaceNavigation
 } from '../../components/workspace-navigation'
 import { type AppNavigationItem, getSelectedMenuKey } from '../../navigation'
+import { useSectionPreferences } from './preferences'
 import { SectionSidebar } from './sidebar'
-import { DEFAULT_SORT, type SectionSort } from './sort-menu'
+import { useSectionSidebarState } from './sidebar-state'
+import type { SectionSort } from './sort-menu'
 import {
   type SectionAction,
   SectionActiveFilters,
@@ -56,6 +58,110 @@ const EMPTY_VIEW_ACTIONS: SectionViewAction[] = []
 const matchesPath = (pathname: string, href?: string) =>
   Boolean(href && (pathname === href || pathname.startsWith(`${href}/`)))
 
+const CompactTabs = ({
+  title,
+  displayTabs,
+  search,
+  primaryAction
+}: {
+  title: string
+  displayTabs: AppNavigationItem[]
+  search?: SectionSearch
+  primaryAction?: SectionAction
+}) => (
+  <>
+    {displayTabs.length > 0 && (
+      <Tabs.ListContainer
+        key={JSON.stringify(displayTabs.map(tab => tab.key))}
+        className={`scrollbar-hide order-2 mb-3 w-fit min-w-0 self-center overflow-x-auto rounded-full ${
+          search && primaryAction
+            ? 'max-w-[calc(100%-9rem)]'
+            : 'max-w-[calc(100%-1.5rem)]'
+        }`}>
+        <Tabs.List
+          aria-label={`${title} tabs`}
+          className="flex min-w-max flex-nowrap *:whitespace-nowrap">
+          {displayTabs.map(tab => (
+            <Tabs.Tab key={tab.key} id={tab.key} className="whitespace-nowrap">
+              {tab.title}
+              <Tabs.Indicator />
+            </Tabs.Tab>
+          ))}
+        </Tabs.List>
+      </Tabs.ListContainer>
+    )}
+  </>
+)
+
+const SectionPanels = ({
+  displayTabs,
+  selectedTab,
+  children
+}: {
+  displayTabs: AppNavigationItem[]
+  selectedTab?: AppNavigationItem
+  children: ReactNode
+}) => (
+  <>
+    {displayTabs.length === 0 && children}
+    {displayTabs.map(tab => (
+      <Tabs.Panel key={tab.key} id={tab.key} className="m-0 p-0">
+        {tab.key === selectedTab?.key && children}
+      </Tabs.Panel>
+    ))}
+  </>
+)
+
+const SectionBody = ({
+  hasSidebar,
+  isNavigationCollapsed,
+  sidebarId,
+  sidebar,
+  filter,
+  selectedFilters,
+  setSelectedFilters,
+  displayTabs,
+  selectedTab,
+  children
+}: {
+  hasSidebar: boolean
+  isNavigationCollapsed: boolean
+  sidebarId: string
+  sidebar: ReactNode
+  filter: boolean
+  selectedFilters: SectionFilterKey[]
+  setSelectedFilters: (filters: SectionFilterKey[]) => void
+  displayTabs: AppNavigationItem[]
+  selectedTab?: AppNavigationItem
+  children: ReactNode
+}) => (
+  <div className="order-1 flex min-h-0 min-w-0 flex-1">
+    {hasSidebar && !isNavigationCollapsed && (
+      <aside
+        id={sidebarId}
+        className="hidden w-56 shrink-0 overflow-y-auto md:block">
+        {sidebar}
+      </aside>
+    )}
+    <main
+      className={`flex min-w-0 flex-1 flex-col gap-2 overflow-auto p-4 ${
+        filter && selectedFilters.length > 0 ? 'pt-2' : ''
+      }`}>
+      {filter && (
+        <SectionActiveFilters
+          selectedFilters={selectedFilters}
+          onSelectedFiltersChange={setSelectedFilters}
+        />
+      )}
+      <Surface className="relative min-h-0 flex-1 rounded-lg p-4 sm:p-5">
+        <SectionPanels displayTabs={displayTabs} selectedTab={selectedTab}>
+          {children}
+        </SectionPanels>
+      </Surface>
+    </main>
+  </div>
+)
+
 const SectionLayout = ({
   title,
   sectionKey,
@@ -80,33 +186,18 @@ const SectionLayout = ({
   const { isNavigationCollapsed, toggleNavigation, registerMobileSidebar } =
     useWorkspaceNavigation()
   const isCompactToolbar = useMediaQuery('(max-width: 767px)')
-  const [expandedSidebarKeys, setExpandedSidebarKeys] = useState<Set<string>>(
-    () => new Set()
-  )
+  const {
+    expandedKeys: expandedSidebarKeys,
+    setExpandedKeys: setExpandedSidebarKeys
+  } = useSectionSidebarState(sidebarItems, pathname)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [selectedFilters, setSelectedFilters] = useState<SectionFilterKey[]>([])
-  const [sortValue, setSortValue] = useState<SectionSort>(DEFAULT_SORT)
   const stateScope =
     sectionKey ??
     getSelectedMenuKey(pathname, sidebarItems) ??
     (tabs.length > 0 ? JSON.stringify(tabs.map(tab => tab.key)) : title)
-  const previousStateScope = useRef(stateScope)
-  useEffect(() => {
-    if (previousStateScope.current === stateScope) return
-    previousStateScope.current = stateScope
-    setSelectedFilters([])
-    setSortValue(DEFAULT_SORT)
-    onSortChange?.(DEFAULT_SORT)
-  }, [stateScope, onSortChange])
-
-  const handleSortChange = useCallback(
-    (value: SectionSort) => {
-      setSortValue(value)
-      onSortChange?.(value)
-    },
-    [onSortChange]
-  )
+  const { selectedFilters, setSelectedFilters, sortValue, handleSortChange } =
+    useSectionPreferences(stateScope, onSortChange)
   const [viewMode, setViewMode] = useState<SectionViewMode>('grid')
   const searchInput = useRef<HTMLInputElement>(null)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -227,57 +318,26 @@ const SectionLayout = ({
           </>
         }
       />
-      {isCompactToolbar && displayTabs.length > 0 && (
-        <Tabs.ListContainer
-          key={JSON.stringify(displayTabs.map(tab => tab.key))}
-          className={`scrollbar-hide order-2 mb-3 w-fit min-w-0 self-center overflow-x-auto rounded-full ${
-            search && primaryAction
-              ? 'max-w-[calc(100%-9rem)]'
-              : 'max-w-[calc(100%-1.5rem)]'
-          }`}>
-          <Tabs.List
-            aria-label={`${title} tabs`}
-            className="flex min-w-max flex-nowrap *:whitespace-nowrap">
-            {displayTabs.map(tab => (
-              <Tabs.Tab
-                key={tab.key}
-                id={tab.key}
-                className="whitespace-nowrap">
-                {tab.title}
-                <Tabs.Indicator />
-              </Tabs.Tab>
-            ))}
-          </Tabs.List>
-        </Tabs.ListContainer>
+      {isCompactToolbar && (
+        <CompactTabs
+          title={title}
+          displayTabs={displayTabs}
+          search={search}
+          primaryAction={primaryAction}
+        />
       )}
-      <div className="order-1 flex min-h-0 min-w-0 flex-1">
-        {hasSidebar && !isNavigationCollapsed && (
-          <aside
-            id={sidebarId}
-            className="hidden w-56 shrink-0 overflow-y-auto md:block">
-            {sidebar}
-          </aside>
-        )}
-        <main
-          className={`flex min-w-0 flex-1 flex-col gap-2 overflow-auto p-4 ${
-            filter && selectedFilters.length > 0 ? 'pt-2' : ''
-          }`}>
-          {filter && (
-            <SectionActiveFilters
-              selectedFilters={selectedFilters}
-              onSelectedFiltersChange={setSelectedFilters}
-            />
-          )}
-          <Surface className="relative min-h-0 flex-1 rounded-lg p-4 sm:p-5">
-            {displayTabs.length === 0 && children}
-            {displayTabs.map(tab => (
-              <Tabs.Panel key={tab.key} id={tab.key} className="m-0 p-0">
-                {tab.key === selectedTab?.key && children}
-              </Tabs.Panel>
-            ))}
-          </Surface>
-        </main>
-      </div>
+      <SectionBody
+        hasSidebar={hasSidebar}
+        isNavigationCollapsed={isNavigationCollapsed}
+        sidebarId={sidebarId}
+        sidebar={sidebar}
+        filter={filter}
+        selectedFilters={selectedFilters}
+        setSelectedFilters={setSelectedFilters}
+        displayTabs={displayTabs}
+        selectedTab={selectedTab}>
+        {children}
+      </SectionBody>
     </>
   )
 

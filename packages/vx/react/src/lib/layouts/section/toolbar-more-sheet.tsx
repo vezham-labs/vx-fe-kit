@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { type ReactNode, useState } from 'react'
 
 import {
   AltArrowLeft,
@@ -40,6 +40,147 @@ type Props = {
 
 const actionClass =
   'h-auto min-h-11 w-full justify-start gap-3 rounded-lg px-3 py-2 text-start'
+
+const SheetFilters = ({
+  filterGroups,
+  selectedFilters,
+  onToggleFilter
+}: Pick<Props, 'filterGroups' | 'selectedFilters' | 'onToggleFilter'>) => {
+  const selectedFilterKeys = new Set(selectedFilters)
+  return filterGroups.map((group, index) => (
+    <div key={group.label} className="flex flex-col gap-1">
+      {index > 0 && <Separator className="my-1" />}
+      <Label className="text-muted px-3 pt-2">{group.label}</Label>
+      {group.options.map(option => (
+        <Button
+          key={option.key}
+          variant="ghost"
+          className={actionClass}
+          aria-pressed={selectedFilterKeys.has(option.key)}
+          onPress={() => onToggleFilter(option.key)}>
+          <AppIcon icon={option.icon} size={18} aria-hidden="true" />
+          <span className="flex-1">{option.label}</span>
+          {selectedFilterKeys.has(option.key) && (
+            <CheckCircle size={18} aria-hidden="true" weight="filled" />
+          )}
+        </Button>
+      ))}
+    </div>
+  ))
+}
+
+const SheetSort = ({
+  sortValue,
+  onSortChange
+}: Pick<Props, 'sortValue' | 'onSortChange'>) => (
+  <>
+    <Label className="text-muted px-3 pt-2">Sort by</Label>
+    {sortFields.map(option => (
+      <Button
+        key={option.key}
+        variant="ghost"
+        className={actionClass}
+        aria-pressed={sortValue.by === option.key}
+        onPress={() => onSortChange?.({ ...sortValue, by: option.key })}>
+        <span className="flex-1">{option.label}</span>
+        {sortValue.by === option.key && (
+          <CheckCircle size={18} aria-hidden="true" weight="filled" />
+        )}
+      </Button>
+    ))}
+    <Separator className="my-1" />
+    <Label className="text-muted px-3 pt-2">Direction</Label>
+    {sortDirections.map(option => (
+      <Button
+        key={option.key}
+        variant="ghost"
+        className={actionClass}
+        aria-pressed={sortValue.direction === option.key}
+        onPress={() => onSortChange?.({ ...sortValue, direction: option.key })}>
+        <span className="flex-1">{option.label}</span>
+        {sortValue.direction === option.key && (
+          <CheckCircle size={18} aria-hidden="true" weight="filled" />
+        )}
+      </Button>
+    ))}
+  </>
+)
+
+const SheetHome = ({
+  sync,
+  onSync,
+  filterAction,
+  sort,
+  sortValue,
+  viewModeActions,
+  onViewModeChange,
+  menuActions,
+  setPage,
+  renderActions
+}: Pick<
+  Props,
+  | 'sync'
+  | 'onSync'
+  | 'filterAction'
+  | 'sort'
+  | 'sortValue'
+  | 'viewModeActions'
+  | 'onViewModeChange'
+  | 'menuActions'
+> & {
+  setPage: (page: 'home' | 'filter' | 'sort') => void
+  renderActions: (actions: SectionAction[]) => ReactNode
+}) => (
+  <>
+    {sync &&
+      renderActions([
+        {
+          key: 'sync',
+          label: 'Sync',
+          icon: 'vx:refresh',
+          onAction: onSync
+        }
+      ])}
+    {filterAction && (
+      <Button
+        variant="ghost"
+        className={actionClass}
+        onPress={() => setPage('filter')}>
+        <AppIcon icon={filterAction.icon} size={18} aria-hidden="true" />
+        <span className="flex-1">Filter</span>
+        <AltArrowRight size={18} aria-hidden="true" />
+      </Button>
+    )}
+    {sort && (
+      <Button
+        variant="ghost"
+        className={actionClass}
+        onPress={() => setPage('sort')}>
+        {sortValue.direction === 'ascending' ? (
+          <SortFromBottomToTop size={18} aria-hidden="true" />
+        ) : (
+          <SortFromTopToBottom size={18} aria-hidden="true" />
+        )}
+        <span className="flex-1">Sort</span>
+        <AltArrowRight size={18} aria-hidden="true" />
+      </Button>
+    )}
+    {(filterAction || sort) && viewModeActions.length > 0 && (
+      <Separator className="my-1" />
+    )}
+    {renderActions(
+      viewModeActions.map(action => ({
+        ...action,
+        onAction: () => onViewModeChange(action.key)
+      }))
+    )}
+    {menuActions.length > 0 &&
+      (sync || filterAction || sort || viewModeActions.length > 0) && (
+        <Separator className="my-1" />
+      )}
+    {renderActions(menuActions)}
+  </>
+)
 
 export const ToolbarMoreSheet = ({
   filterAction,
@@ -126,118 +267,28 @@ export const ToolbarMoreSheet = ({
           </Button>
         )}
         {page === 'filter' ? (
-          filterGroups.map((group, index) => (
-            <div key={group.label} className="flex flex-col gap-1">
-              {index > 0 && <Separator className="my-1" />}
-              <Label className="text-muted px-3 pt-2">{group.label}</Label>
-              {group.options.map(option => (
-                <Button
-                  key={option.key}
-                  variant="ghost"
-                  className={actionClass}
-                  aria-pressed={selectedFilters.includes(option.key)}
-                  onPress={() => onToggleFilter(option.key)}>
-                  <AppIcon icon={option.icon} size={18} aria-hidden="true" />
-                  <span className="flex-1">{option.label}</span>
-                  {selectedFilters.includes(option.key) && (
-                    <CheckCircle size={18} aria-hidden="true" weight="filled" />
-                  )}
-                </Button>
-              ))}
-            </div>
-          ))
+          <SheetFilters
+            filterGroups={filterGroups}
+            selectedFilters={selectedFilters}
+            onToggleFilter={onToggleFilter}
+          />
         ) : page === 'sort' ? (
-          <>
-            <Label className="text-muted px-3 pt-2">Sort by</Label>
-            {sortFields.map(option => (
-              <Button
-                key={option.key}
-                variant="ghost"
-                className={actionClass}
-                aria-pressed={sortValue.by === option.key}
-                onPress={() =>
-                  onSortChange?.({ ...sortValue, by: option.key })
-                }>
-                <span className="flex-1">{option.label}</span>
-                {sortValue.by === option.key && (
-                  <CheckCircle size={18} aria-hidden="true" weight="filled" />
-                )}
-              </Button>
-            ))}
-            <Separator className="my-1" />
-            <Label className="text-muted px-3 pt-2">Direction</Label>
-            {sortDirections.map(option => (
-              <Button
-                key={option.key}
-                variant="ghost"
-                className={actionClass}
-                aria-pressed={sortValue.direction === option.key}
-                onPress={() =>
-                  onSortChange?.({ ...sortValue, direction: option.key })
-                }>
-                <span className="flex-1">{option.label}</span>
-                {sortValue.direction === option.key && (
-                  <CheckCircle size={18} aria-hidden="true" weight="filled" />
-                )}
-              </Button>
-            ))}
-          </>
+          <SheetSort sortValue={sortValue} onSortChange={onSortChange} />
         ) : current ? (
           renderActions(current.children ?? [])
         ) : (
-          <>
-            {sync &&
-              renderActions([
-                {
-                  key: 'sync',
-                  label: 'Sync',
-                  icon: 'vx:refresh',
-                  onAction: onSync
-                }
-              ])}
-            {filterAction && (
-              <Button
-                variant="ghost"
-                className={actionClass}
-                onPress={() => setPage('filter')}>
-                <AppIcon
-                  icon={filterAction.icon}
-                  size={18}
-                  aria-hidden="true"
-                />
-                <span className="flex-1">Filter</span>
-                <AltArrowRight size={18} aria-hidden="true" />
-              </Button>
-            )}
-            {sort && (
-              <Button
-                variant="ghost"
-                className={actionClass}
-                onPress={() => setPage('sort')}>
-                {sortValue.direction === 'ascending' ? (
-                  <SortFromBottomToTop size={18} aria-hidden="true" />
-                ) : (
-                  <SortFromTopToBottom size={18} aria-hidden="true" />
-                )}
-                <span className="flex-1">Sort</span>
-                <AltArrowRight size={18} aria-hidden="true" />
-              </Button>
-            )}
-            {(filterAction || sort) && viewModeActions.length > 0 && (
-              <Separator className="my-1" />
-            )}
-            {renderActions(
-              viewModeActions.map(action => ({
-                ...action,
-                onAction: () => onViewModeChange(action.key)
-              }))
-            )}
-            {menuActions.length > 0 &&
-              (sync || filterAction || sort || viewModeActions.length > 0) && (
-                <Separator className="my-1" />
-              )}
-            {renderActions(menuActions)}
-          </>
+          <SheetHome
+            sync={sync}
+            onSync={onSync}
+            filterAction={filterAction}
+            sort={sort}
+            sortValue={sortValue}
+            viewModeActions={viewModeActions}
+            onViewModeChange={onViewModeChange}
+            menuActions={menuActions}
+            setPage={setPage}
+            renderActions={renderActions}
+          />
         )}
       </div>
     </MenuSheet>
