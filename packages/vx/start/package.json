@@ -34,10 +34,15 @@
       "import": "./src/lib/layouts/*/index.tsx",
       "default": "./src/lib/layouts/*/index.tsx"
     },
-    "./pages/*": {
-      "types": "./src/lib/pages/*/index.tsx",
-      "import": "./src/lib/pages/*/index.tsx",
-      "default": "./src/lib/pages/*/index.tsx"
+    "./pages/docs/openapi": {
+      "types": "./src/lib/pages/docs/openapi/index.tsx",
+      "import": "./src/lib/pages/docs/openapi/index.tsx",
+      "default": "./src/lib/pages/docs/openapi/index.tsx"
+    },
+    "./pages/docs/route": {
+      "types": "./src/lib/pages/docs/route/index.tsx",
+      "import": "./src/lib/pages/docs/route/index.tsx",
+      "default": "./src/lib/pages/docs/route/index.tsx"
     },
     "./runtime/*": {
       "types": "./src/lib/runtime/*/index.ts",
