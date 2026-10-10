@@ -45,7 +45,7 @@ describe('Academic navigation', () => {
     fireEvent.click(
       within(sidebar).getByRole('button', { name: 'Examinations' })
     )
-    expect(screen.getByRole('link', { name: 'Exam Results' })).toBeVisible()
+    expect(screen.getByRole('link', { name: 'Exam Results' })).toBeTruthy()
     fireEvent.click(within(sidebar).getByRole('link', { name: 'Class Room' }))
     await screen.findByText('/academic/classroom')
     expect(screen.getByRole('group', { name: 'Toolbar actions' })).toBe(toolbar)

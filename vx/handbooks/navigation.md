@@ -223,3 +223,9 @@ collapse open groups. Hover highlights the whole row. Sidebar typography, spacin
 and the trailing disclosure arrow retain the section navigation styling.
 The mobile section drawer
 uses the same nested list. Demo Examinations exercises the sidebar mode.
+
+Filter and sort selections reset when navigating to a different section. Tabs
+within the same section retain them. Sort resets to Name ascending and notifies
+`onSortChange`. Pass a stable `sectionKey` to identify the scope explicitly;
+otherwise the selected sidebar item, tab collection, or standalone title defines
+it. Demo passes the section key from generated navigation.

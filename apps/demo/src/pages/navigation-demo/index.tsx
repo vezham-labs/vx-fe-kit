@@ -59,6 +59,7 @@ const NavigationDemoSection = ({
 
   return (
     <SectionLayout
+      sectionKey={menuKey === 'tabs' ? menuKey : section.key}
       title={menuKey === 'tabs' ? 'Demo' : section.title}
       navigationLabel={
         menuKey === 'academic' ? 'Academic sections' : 'Workspace sections'

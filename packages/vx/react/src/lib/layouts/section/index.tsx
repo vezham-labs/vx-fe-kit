@@ -32,6 +32,7 @@ import {
 
 export type SectionLayoutProps = {
   title: string
+  sectionKey?: string
   navigationLabel?: string
   sidebarItems?: AppNavigationItem[]
   tabs: AppNavigationItem[]
@@ -57,6 +58,7 @@ const matchesPath = (pathname: string, href?: string) =>
 
 const SectionLayout = ({
   title,
+  sectionKey,
   navigationLabel = `${title} sections`,
   sidebarItems = EMPTY_SIDEBAR_ITEMS,
   tabs,
@@ -85,6 +87,19 @@ const SectionLayout = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState<SectionFilterKey[]>([])
   const [sortValue, setSortValue] = useState<SectionSort>(DEFAULT_SORT)
+  const stateScope =
+    sectionKey ??
+    getSelectedMenuKey(pathname, sidebarItems) ??
+    (tabs.length > 0 ? JSON.stringify(tabs.map(tab => tab.key)) : title)
+  const previousStateScope = useRef(stateScope)
+  useEffect(() => {
+    if (previousStateScope.current === stateScope) return
+    previousStateScope.current = stateScope
+    setSelectedFilters([])
+    setSortValue(DEFAULT_SORT)
+    onSortChange?.(DEFAULT_SORT)
+  }, [stateScope, onSortChange])
+
   const handleSortChange = useCallback(
     (value: SectionSort) => {
       setSortValue(value)
