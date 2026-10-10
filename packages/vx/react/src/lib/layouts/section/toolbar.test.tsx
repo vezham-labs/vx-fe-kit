@@ -1,4 +1,5 @@
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -174,14 +175,23 @@ describe('Section toolbar', () => {
     render(<ToolbarFixture />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Filter' }))
-    fireEvent.click(await screen.findByRole('menuitem', { name: 'Images' }))
+    const images = await screen.findByRole('menuitem', { name: 'Images' })
+    const menu = screen.getByRole('menu', { name: 'Filter' })
+    await waitFor(() =>
+      expect(menu.contains(document.activeElement)).toBe(true)
+    )
+    fireEvent.click(images)
     expect(screen.getByRole('menuitem', { name: 'Documents' })).toBeVisible()
     fireEvent.click(screen.getByRole('menuitem', { name: 'Documents' }))
     expect(screen.getByRole('menuitem', { name: 'Images' })).toBeVisible()
-    fireEvent.keyDown(screen.getByRole('menuitem', { name: 'Images' }), {
+    const documents = screen.getByRole('menuitem', { name: 'Documents' })
+    act(() => documents.focus())
+    await waitFor(() => expect(documents).toHaveFocus())
+    fireEvent.keyDown(documents, {
       key: 'Escape',
       code: 'Escape'
     })
+    fireEvent.keyUp(document.body, { key: 'Escape', code: 'Escape' })
     await waitFor(() =>
       expect(screen.queryByRole('menuitem', { name: 'Images' })).toBeNull()
     )
