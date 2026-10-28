@@ -1,0 +1,9 @@
+{
+  "name": "demo",
+  "version": "26.0.0-alpha.1",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "react-aria-components": "catalog:"
+  }
+}
