@@ -7,6 +7,18 @@
   "references": [
     {
       "path": "./packages/vx/react"
+    },
+    {
+      "path": "./apps/test-e2e"
+    },
+    {
+      "path": "./apps/test"
+    },
+    {
+      "path": "./apps/test-1-e2e"
+    },
+    {
+      "path": "./apps/test-1"
     }
   ],
   "compilerOptions": {

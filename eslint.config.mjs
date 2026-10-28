@@ -34,7 +34,6 @@ const ignores = [
   '**/vite.config.*.timestamp*',
   '**/vitest.config.*.timestamp*'
 ]
-
 const vxLintIgnores = [
   'eslint.config.mjs',
   '**/.agents/**',
@@ -192,7 +191,7 @@ export default [
     ],
     // Override or add rules here
     rules: {}
-  }
+  },
   // --- wjdlz/TODO: review based on WS
   // ----------
   // --- wjdlz/NOTE(vx): skipped for internal tools
@@ -262,4 +261,11 @@ export default [
   //     '@typescript-eslint/no-empty-interface': 'off'
   //   }
   // }
+  {
+    ignores: [
+      '**/vite.config.*.timestamp*',
+      '**/vitest.config.*.timestamp*',
+      '**/test-output'
+    ]
+  }
 ]
