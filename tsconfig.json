@@ -67,6 +67,36 @@
     },
     {
       "path": "./apps/crm"
+    },
+    {
+      "path": "./apps-showcases/d1-docs-e2e"
+    },
+    {
+      "path": "./apps-showcases/d1-app-e2e"
+    },
+    {
+      "path": "./apps-showcases/d1-docs"
+    },
+    {
+      "path": "./apps-showcases/d1-app"
+    },
+    {
+      "path": "./apps-showcases/d1-e2e"
+    },
+    {
+      "path": "./apps-cdns/d1-cdn-e2e"
+    },
+    {
+      "path": "./packages/lib-react"
+    },
+    {
+      "path": "./apps-showcases/d1"
+    },
+    {
+      "path": "./apps-cdns/d1-cdn"
+    },
+    {
+      "path": "./packages/lib"
     }
   ],
   "compilerOptions": {
