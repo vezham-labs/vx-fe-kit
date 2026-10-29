@@ -1,0 +1,9 @@
+{
+  "name": "d1-cdn-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps-cdns/d1-cdn-e2e/src",
+  "tags": ["category:cdn", "e2e"],
+  "implicitDependencies": ["d1-cdn"],
+  "targets": {}
+}

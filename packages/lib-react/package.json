@@ -1,0 +1,28 @@
+{
+  "name": "@vezham/lib-react",
+  "version": "26.0.0-beta.2",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vezham/vx-fe-kit.git",
+    "directory": "packages/lib-react"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "@vx/fe-kit": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "!**/*.tsbuildinfo",
+    "dist",
+    "LICENSE"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "d1-docs",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps-showcases/d1-docs/src",
+  "targets": {
+    "build": {
+      "dependsOn": [
+        "metadata:generate",
+        "deploy:generate",
+        "og:generate",
+        "^build"
+      ],
+      "outputs": ["{projectRoot}/.output"]
+    },
+    "dev": {
+      "dependsOn": ["metadata:watch", "og:generate"]
+    },
+    "hosts:setup": {},
+    "deploy:generate": {},
+    "openapi:generate": {},
+    "metadata:generate": {},
+    "metadata:watch": {},
+    "og:generate": {},
+    "routes:tanstack": {}
+  },
+  "tags": ["category:showcase"]
+}
