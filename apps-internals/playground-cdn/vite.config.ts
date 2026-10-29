@@ -9,8 +9,8 @@ export default defineConfig({
   root: import.meta.dirname,
   plugins: [
     tanstackRouter({ target: 'react', autoCodeSplitting: true }),
-    react(),
     tailwindcss(),
+    react(),
     nxReadySignal()
   ]
 })

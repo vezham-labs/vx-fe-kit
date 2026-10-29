@@ -17,7 +17,6 @@ export default defineConfig({
   plugins: [
     docsMdx(),
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
-    tailwindcss(),
     story({
       tsconfigPath: path.join(import.meta.dirname, 'tsconfig.app.json')
     }),
@@ -32,6 +31,7 @@ export default defineConfig({
       },
       pages: getPrerenderPages(import.meta.dirname)
     }),
+    tailwindcss(),
     react(),
     nxReadySignal()
   ]

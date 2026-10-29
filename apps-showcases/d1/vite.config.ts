@@ -10,7 +10,6 @@ export default defineConfig({
   root: import.meta.dirname,
   plugins: [
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
-    tailwindcss(),
     tanstackStart({
       spa: {
         enabled: true,
@@ -21,6 +20,7 @@ export default defineConfig({
       },
       pages: getPrerenderPages(import.meta.dirname)
     }),
+    tailwindcss(),
     react(),
     nxReadySignal()
   ]

@@ -10,8 +10,8 @@ export default defineConfig({
   root: import.meta.dirname,
   plugins: [
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
-    tailwindcss(),
     tanstackStart(),
+    tailwindcss(),
     react(),
     nxReadySignal()
   ]
